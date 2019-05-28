@@ -1,9 +1,8 @@
 package;
 
-import haxe.Timer;
-
 class Game
 {
+	private var _mainSprite:Sprite;
 	private var _entitySystem:EntitySystem;
 	private var _sceneSystem:SceneSystem;
 	private var _graphicsSystem:GraphicsSystem;
@@ -57,11 +56,12 @@ class Game
 
 
 
-	public function new( width:Int, height:Int, fps:Int ):Void
+	public function new( width:Int, height:Int, fps:Int, mainSprite:Sprite ):Void
 	{
 		this._entitySystem = new EntitySystem( this );
 		this._sceneSystem = new SceneSystem( this );
 		this._graphicsSystem = new GraphicsSystem( this );
+		this._mainSprite = mainSprite;
 		this._calculateTimeParams();
 		this.start();
 	}
@@ -106,7 +106,12 @@ class Game
 			case "entity" : return this._entitySystem;
 			case "graphics": return this._graphicsSystem;
 			case "scene": return this._sceneSystem;
-			default: trace( "error in Game.getSystem; system can't be " + system + "." );
+			default: trace( "error in Game.getSystem; system can't be: " + system + "." );
 		}
+	}
+
+	public function getMainSprite():Sprite
+	{
+		return this._mainSprite;
 	}
 }
