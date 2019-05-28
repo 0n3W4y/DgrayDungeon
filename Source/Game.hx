@@ -26,14 +26,15 @@ class Game
 
 	private function _calculateTimeParams():Void
 	{
-		_delta = 1000 / _fps;
-		_doubleDelta = _delta * 2;
+		this._delta = 1000 / this._fps;
+		this._doubleDelta = this._delta * 2;
 	}
 
 	private function _tick():Void
 	{
 		this._currentTime = Date.now().getTime();
 		var delta = this._currentTime - this._lastTime;
+
 		if ( delta >= this._delta ){
 			if( delta >= this._doubleDelta ){
 				delta = this._doubleDelta;
@@ -46,7 +47,7 @@ class Game
 
 	private function _update( time:Float ):Void
 	{
-		if( !_onPause )
+		if( !this._onPause )
 		{
 			trace( "tick" );
 		}
@@ -55,56 +56,57 @@ class Game
 
 
 
+
 	public function new( width:Int, height:Int, fps:Int ):Void
 	{
-		_entitySystem = new EntitySystem( this );
-		_sceneSystem = new SceneSystem( this );
-		_graphicsSystem = new GraphicsSystem( this );
-		_calculateTimeParams();
-		start();
+		this._entitySystem = new EntitySystem( this );
+		this._sceneSystem = new SceneSystem( this );
+		this._graphicsSystem = new GraphicsSystem( this );
+		this._calculateTimeParams();
+		this.start();
 	}
 
 	public function start():Void
 	{
-		if( !_loopStartTime )
-			_loopStartTime = Date.now().getTime();
+		if( !this._loopStartTime )
+			this._loopStartTime = Date.now().getTime();
 		
-		var time = Std.int( Math.ffloor( _delta ) );
+		var time = Std.int( Math.ffloor( this._delta ) );
 
-		_mainLoop = new Timer( time );
-		_mainLoop.run = _tick;
-		_lastTime = _loopStartTime;
+		this._mainLoop = new Timer( time );
+		this._mainLoop.run = _tick;
+		this._lastTime = _loopStartTime;
 	}
 
 	public function stop():Void
 	{
-		_mainLoop.stop();
+		this._mainLoop.stop();
 	}
 
 	public function pause():Void
 	{
-		if( _onPause )
-		{
-			_onPause = false;
-		}
+		if( this._onPause )
+			this._onPause = false;
 		else
-		{
-			_onPause = true;
-		}
+			this._onPause = true;
 	}
 
 	public function changeFpsTo( fps:Int ):Void
 	{
-
-		_fps = fps;
-		_calculateTimeParams();
-
-
+		this._fps = fps;
+		this._calculateTimeParams();
+		this.stop();
+		this.start();
 	}
 
-	
-
-
-
-
+	public function getSystem( system:String ):Dynamic
+	{
+		switch( system )
+		{
+			case "entity" : return this._entitySystem;
+			case "graphics": return this._graphicsSystem;
+			case "scene": return this._sceneSystem;
+			default: trace( "error in Game.getSystem; system can't be " + system + "." );
+		}
+	}
 }

@@ -2,30 +2,26 @@ package;
 
 class Component 
 {
-	public var name:String;
-	public var id:String;
+	private var _name:String;
+	private var _id:Int;
 
 	private var _parent:Entity;
 
 	public function new( name:String, id:Int, parent:Entity ):Void
 	{
-		this.name = name;
-		this.id = id;
-		_parent = parent;
+		this._name = name;
+		this._id = id;
+		this._parent = parent;
 	}
 
-	public function update(time:Float):Void
+	public function update( time:Float ):Void
 	{
-
+		
 	}
 
 	public function getParent():Entity
 	{
-		return _parent;
+		return this._parent;
 	}
 
-	public function setParent(parent:Entity):Void
-	{
-		_parent = parent;
-	}
 }

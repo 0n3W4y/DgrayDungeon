@@ -6,6 +6,6 @@ class EntitySystem
 
 	public function new( parent:Game ):Void
 	{
-		_parent = parent;
+		this._parent = parent;
 	}
 }
