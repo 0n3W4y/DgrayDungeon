@@ -7,7 +7,7 @@ class Component
 
 	private var _parent:Entity;
 
-	public function new( name:String, id:Int, parent:Entity ):Void
+	public function new( parent:Entity, id:Int, name:String ):Void
 	{
 		this._name = name;
 		this._id = id;

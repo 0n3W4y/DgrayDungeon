@@ -1,5 +1,8 @@
 package;
 
+import openfl.display.Sprite;
+import haxe.Timer;
+
 class Game
 {
 	private var _mainSprite:Sprite;
@@ -23,7 +26,7 @@ class Game
 	private var _delta:Float;
 	private var _doubleDelta:Float;
 
-	private function _calculateTimeParams():Void
+	private function _calculateDelta():Void
 	{
 		this._delta = 1000 / this._fps;
 		this._doubleDelta = this._delta * 2;
@@ -62,13 +65,13 @@ class Game
 		this._sceneSystem = new SceneSystem( this );
 		this._graphicsSystem = new GraphicsSystem( this );
 		this._mainSprite = mainSprite;
-		this._calculateTimeParams();
+		this._calculateDelta();
 		this.start();
 	}
 
 	public function start():Void
 	{
-		if( !this._loopStartTime )
+		if( this._loopStartTime <= 0 )
 			this._loopStartTime = Date.now().getTime();
 		
 		var time = Std.int( Math.ffloor( this._delta ) );
@@ -76,6 +79,9 @@ class Game
 		this._mainLoop = new Timer( time );
 		this._mainLoop.run = _tick;
 		this._lastTime = _loopStartTime;
+
+		var scene = this._sceneSystem.createScene( "startScene" );
+		this._sceneSystem.doActiveScene( scene );
 	}
 
 	public function stop():Void
@@ -94,9 +100,8 @@ class Game
 	public function changeFpsTo( fps:Int ):Void
 	{
 		this._fps = fps;
-		this._calculateTimeParams();
-		this.stop();
-		this.start();
+		this._calculateDelta();
+		//TODO: start-stop function;
 	}
 
 	public function getSystem( system:String ):Dynamic
@@ -108,6 +113,7 @@ class Game
 			case "scene": return this._sceneSystem;
 			default: trace( "error in Game.getSystem; system can't be: " + system + "." );
 		}
+		return null;
 	}
 
 	public function getMainSprite():Sprite

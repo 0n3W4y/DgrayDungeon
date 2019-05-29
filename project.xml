@@ -9,5 +9,7 @@
 	<haxelib name="openfl" />
 	
 	<assets path="Assets" rename="assets" />
+
+	<window width="1920" height="1080" background="#FFFFFF" />
 	
 </project>

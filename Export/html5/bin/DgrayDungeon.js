@@ -893,9 +893,9 @@ ApplicationMain.create = function(config) {
 	ManifestResources.init(config);
 	var _this = app.meta;
 	if(__map_reserved["build"] != null) {
-		_this.setReserved("build","16");
+		_this.setReserved("build","37");
 	} else {
-		_this.h["build"] = "16";
+		_this.h["build"] = "37";
 	}
 	var _this1 = app.meta;
 	if(__map_reserved["company"] != null) {
@@ -927,7 +927,7 @@ ApplicationMain.create = function(config) {
 	} else {
 		_this5.h["version"] = "1.0.0";
 	}
-	var attributes = { allowHighDPI : false, alwaysOnTop : false, borderless : false, element : null, frameRate : 60, height : 0, hidden : false, maximized : false, minimized : false, parameters : { }, resizable : true, title : "DgrayDungeon", width : 0, x : null, y : null};
+	var attributes = { allowHighDPI : false, alwaysOnTop : false, borderless : false, element : null, frameRate : 60, height : 1080, hidden : false, maximized : false, minimized : false, parameters : { }, resizable : true, title : "DgrayDungeon", width : 1920, x : null, y : null};
 	attributes.context = { antialiasing : 0, background : 16777215, colorDepth : 32, depth : true, hardware : true, stencil : true, type : null, vsync : false};
 	if(app.__window == null) {
 		if(config != null) {
@@ -4217,6 +4217,9 @@ openfl_display_Sprite.prototype = $extend(openfl_display_DisplayObjectContainer.
 	,__class__: openfl_display_Sprite
 });
 var Main = function() {
+	this._fps = 60;
+	this._height = 1080;
+	this._width = 1920;
 	openfl_display_Sprite.call(this);
 	this._createGame();
 };
@@ -4229,7 +4232,7 @@ Main.prototype = $extend(openfl_display_Sprite.prototype,{
 	,_height: null
 	,_fps: null
 	,_createGame: function() {
-		this._game = new Game(this._width,this._height,this._fps);
+		this._game = new Game(this._width,this._height,this._fps,this);
 	}
 	,__class__: Main
 });
@@ -4244,6 +4247,24 @@ DocumentClass.__super__ = Main;
 DocumentClass.prototype = $extend(Main.prototype,{
 	__class__: DocumentClass
 });
+var Component = function(parent,id,name) {
+	this._name = name;
+	this._id = id;
+	this._parent = parent;
+};
+$hxClasses["Component"] = Component;
+Component.__name__ = ["Component"];
+Component.prototype = {
+	_name: null
+	,_id: null
+	,_parent: null
+	,update: function(time) {
+	}
+	,getParent: function() {
+		return this._parent;
+	}
+	,__class__: Component
+};
 var EReg = function(r,opt) {
 	this.r = new RegExp(r,opt.split("u").join(""));
 };
@@ -4336,27 +4357,100 @@ EReg.prototype = {
 	}
 	,__class__: EReg
 };
-var EntitySystem = function(parent) {
+var Entity = function(parent,id,type,name) {
+	this._components = [];
 	this._parent = parent;
+	this._id = id;
+	this._type = type;
+	this._name = name;
+};
+$hxClasses["Entity"] = Entity;
+Entity.__name__ = ["Entity"];
+Entity.prototype = {
+	_parent: null
+	,_id: null
+	,_type: null
+	,_name: null
+	,_components: null
+	,get: function(type) {
+		switch(type) {
+		case "id":
+			return this._id;
+		case "name":
+			return this._name;
+		case "parent":
+			return this._parent;
+		case "type":
+			return this._type;
+		default:
+			haxe_Log.trace("Error in Entity.get, type can't be: " + type + ".",{ fileName : "Entity.hx", lineNumber : 27, className : "Entity", methodName : "get"});
+		}
+		return null;
+	}
+	,update: function(time) {
+		var _g1 = 0;
+		var _g = this._components.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			this._components[i].update(time);
+		}
+	}
+	,__class__: Entity
+};
+var EntitySystem = function(parent) {
+	this._nextId = 0;
+	this._parent = parent;
+	this._aliveEntities = { "playerTeam" : [], "enemyTeam" : [], "neutralTeam" : []};
+	this._objectEntities = { "buttons" : []};
 };
 $hxClasses["EntitySystem"] = EntitySystem;
 EntitySystem.__name__ = ["EntitySystem"];
 EntitySystem.prototype = {
 	_parent: null
+	,_nextId: null
+	,_aliveEntities: null
+	,_objectEntities: null
+	,_createId: function() {
+		var id = this._nextId;
+		this._nextId++;
+		return id;
+	}
+	,_createButton: function(type,name,id) {
+		var button = new Entity(this,id,type,name);
+		return button;
+	}
+	,createEntity: function(type,name) {
+		var id = this._createId();
+		if(type == "button") {
+			return this._createButton(type,name,id);
+		} else {
+			haxe_Log.trace("Error in EntitySystem.createEntity, can't find entity with type: " + type + ".",{ fileName : "EntitySystem.hx", lineNumber : 47, className : "EntitySystem", methodName : "createEntity"});
+		}
+		return null;
+	}
+	,addComponentTo: function(component,entity) {
+	}
+	,createComponent: function(componentName,params) {
+		var component = null;
+		var tmp = params != null;
+		return component;
+	}
 	,__class__: EntitySystem
 };
-var Game = function(width,height,fps) {
+var Game = function(width,height,fps,mainSprite) {
 	this._onPause = false;
 	this._entitySystem = new EntitySystem(this);
 	this._sceneSystem = new SceneSystem(this);
 	this._graphicsSystem = new GraphicsSystem(this);
-	this._calculateTimeParams();
+	this._mainSprite = mainSprite;
+	this._calculateDelta();
 	this.start();
 };
 $hxClasses["Game"] = Game;
 Game.__name__ = ["Game"];
 Game.prototype = {
-	_entitySystem: null
+	_mainSprite: null
+	,_entitySystem: null
 	,_sceneSystem: null
 	,_graphicsSystem: null
 	,_timeSystem: null
@@ -4371,8 +4465,8 @@ Game.prototype = {
 	,_lastTime: null
 	,_delta: null
 	,_doubleDelta: null
-	,_calculateTimeParams: function() {
-		this._delta = 16.6;
+	,_calculateDelta: function() {
+		this._delta = 1000 / this._fps;
 		this._doubleDelta = this._delta * 2;
 	}
 	,_tick: function() {
@@ -4388,17 +4482,22 @@ Game.prototype = {
 	}
 	,_update: function(time) {
 		if(!this._onPause) {
-			haxe_Log.trace("tick",{ fileName : "Game.hx", lineNumber : 51, className : "Game", methodName : "_update"});
+			haxe_Log.trace("tick",{ fileName : "Game.hx", lineNumber : 54, className : "Game", methodName : "_update"});
 		}
 	}
 	,start: function() {
-		this._loopStartTime = new Date().getTime();
+		if(this._loopStartTime <= 0) {
+			this._loopStartTime = new Date().getTime();
+		}
 		var time = Math.floor(this._delta) | 0;
 		this._mainLoop = new haxe_Timer(time);
 		this._mainLoop.run = $bind(this,this._tick);
 		this._lastTime = this._loopStartTime;
+		var scene = this._sceneSystem.createScene("startScene");
+		this._sceneSystem.doActiveScene(scene);
 	}
 	,stop: function() {
+		this._mainLoop.stop();
 	}
 	,pause: function() {
 		if(this._onPause) {
@@ -4406,6 +4505,26 @@ Game.prototype = {
 		} else {
 			this._onPause = true;
 		}
+	}
+	,changeFpsTo: function(fps) {
+		this._fps = fps;
+		this._calculateDelta();
+	}
+	,getSystem: function(system) {
+		switch(system) {
+		case "entity":
+			return this._entitySystem;
+		case "graphics":
+			return this._graphicsSystem;
+		case "scene":
+			return this._sceneSystem;
+		default:
+			haxe_Log.trace("error in Game.getSystem; system can't be: " + system + ".",{ fileName : "Game.hx", lineNumber : 114, className : "Game", methodName : "getSystem"});
+		}
+		return null;
+	}
+	,getMainSprite: function() {
+		return this._mainSprite;
 	}
 	,__class__: Game
 };
@@ -4416,6 +4535,19 @@ $hxClasses["GraphicsSystem"] = GraphicsSystem;
 GraphicsSystem.__name__ = ["GraphicsSystem"];
 GraphicsSystem.prototype = {
 	_parent: null
+	,_addGgraphicsForStartScene: function(scene) {
+		var bitmapData = openfl_utils_Assets.getBitmapData("assets/background_game.png");
+		var bitmap = new openfl_display_Bitmap(bitmapData);
+		scene.setBackgoundGraphics(bitmap);
+	}
+	,addGraphicsForScene: function(scene) {
+		var sceneName = scene.getName();
+		if(sceneName == "startScene") {
+			this._addGgraphicsForStartScene(scene);
+		} else {
+			haxe_Log.trace("Error in GraphicsSystem.addGraphicsForScene, scene name: " + sceneName + " not available or scene not defined.",{ fileName : "GraphicsSystem.hx", lineNumber : 29, className : "GraphicsSystem", methodName : "addGraphicsForScene"});
+		}
+	}
 	,__class__: GraphicsSystem
 };
 var HxOverrides = function() { };
@@ -4535,7 +4667,7 @@ ManifestResources.init = function(config) {
 	var data;
 	var manifest;
 	var library;
-	data = "{\"name\":null,\"assets\":\"ah\",\"rootPath\":null,\"version\":2,\"libraryArgs\":[],\"libraryType\":null}";
+	data = "{\"name\":null,\"assets\":\"aoy4:pathy28:assets%2Fbackground_game.pngy4:sizei1909555y4:typey5:IMAGEy2:idR1y7:preloadtgh\",\"rootPath\":null,\"version\":2,\"libraryArgs\":[],\"libraryType\":null}";
 	manifest = lime_utils_AssetManifest.parse(data,ManifestResources.rootPath);
 	library = lime_utils_AssetLibrary.fromManifest(manifest);
 	lime_utils_Assets.registerLibrary("default",library);
@@ -4612,13 +4744,102 @@ Reflect.makeVarArgs = function(f) {
 		return f(a);
 	};
 };
-var SceneSystem = function(parent) {
+var Scene = function(parent,id,name) {
+	this._objectEntities = [];
+	this._aliveEntities = [];
+	this._active = false;
+	openfl_display_Sprite.call(this);
 	this._parent = parent;
+	this._id = id;
+	this._name = name;
+};
+$hxClasses["Scene"] = Scene;
+Scene.__name__ = ["Scene"];
+Scene.__super__ = openfl_display_Sprite;
+Scene.prototype = $extend(openfl_display_Sprite.prototype,{
+	_parent: null
+	,_id: null
+	,_name: null
+	,_active: null
+	,_aliveEntities: null
+	,_objectEntities: null
+	,_backgroundGraphics: null
+	,draw: function() {
+		var mainSprite = this._parent.getParent().getMainSprite();
+		this.addChild(this._backgroundGraphics);
+	}
+	,unDraw: function() {
+	}
+	,getId: function() {
+		return this._id;
+	}
+	,getParent: function() {
+		return this._parent;
+	}
+	,getName: function() {
+		return this._name;
+	}
+	,getBackgroundGraphics: function() {
+		return this._backgroundGraphics;
+	}
+	,setBackgoundGraphics: function(bitmap) {
+		this._backgroundGraphics = bitmap;
+	}
+	,changeActive: function(bool) {
+		this._active = bool;
+	}
+	,__class__: Scene
+});
+var SceneSystem = function(parent) {
+	this._nextId = 0;
+	this._parent = parent;
+	this._scenesArray = [];
 };
 $hxClasses["SceneSystem"] = SceneSystem;
 SceneSystem.__name__ = ["SceneSystem"];
 SceneSystem.prototype = {
 	_parent: null
+	,_scenesArray: null
+	,_activeScene: null
+	,_nextId: null
+	,_createId: function() {
+		var id = this._nextId;
+		this._nextId++;
+		return id;
+	}
+	,_addScene: function(scene) {
+		this._scenesArray.push(scene);
+	}
+	,_createStartScene: function(sceneName,id) {
+		var scene = new Scene(this,id,sceneName);
+		this._addScene(scene);
+		this._parent.getSystem("graphics").addGraphicsForScene(scene);
+		this._parent.getSystem("entity").createEntity("button","startGame");
+		return scene;
+	}
+	,createScene: function(sceneName) {
+		var id = this._createId();
+		if(sceneName == "startScene") {
+			return this._createStartScene(sceneName,id);
+		} else {
+			haxe_Log.trace("Error in SceneSystem.createScene, scene name can't be: " + sceneName + ".",{ fileName : "SceneSystem.hx", lineNumber : 47, className : "SceneSystem", methodName : "createScene"});
+		}
+		return null;
+	}
+	,removeScene: function(scene) {
+	}
+	,doActiveScene: function(scene) {
+		if(this._activeScene != null) {
+			this._parent.getMainSprite().removeChild(this._activeScene);
+			this._activeScene.unDraw();
+		}
+		this._activeScene = scene;
+		this._parent.getMainSprite().addChild(this._activeScene);
+		this._activeScene.draw();
+	}
+	,getParent: function() {
+		return this._parent;
+	}
 	,__class__: SceneSystem
 };
 var Std = function() { };
@@ -25499,7 +25720,7 @@ var lime_utils_AssetCache = function() {
 	this.audio = new haxe_ds_StringMap();
 	this.font = new haxe_ds_StringMap();
 	this.image = new haxe_ds_StringMap();
-	this.version = 904669;
+	this.version = 654742;
 };
 $hxClasses["lime.utils.AssetCache"] = lime_utils_AssetCache;
 lime_utils_AssetCache.__name__ = ["lime","utils","AssetCache"];
