@@ -1,7 +1,6 @@
 package;
 
 import openfl.display.Sprite;
-import openfl.display.Bitmap;
 
 class Scene extends Sprite
 {
@@ -10,10 +9,11 @@ class Scene extends Sprite
 	private var _name:String;
 	private var _active:Bool = false;
 
+
 	private var _aliveEntities:Array<Entity> = new Array(); //copy from EntitySystem, for fast access;
 	private var _objectEntities:Array<Entity> = new Array();
 
-	private var _backgroundGraphics:Bitmap;
+	private var _backgroundImageURL:String;
 
 	public function new( parent:SceneSystem, id:Int, name:String ):Void
 	{
@@ -25,15 +25,17 @@ class Scene extends Sprite
 
 	public function draw():Void
 	{
-		var mainSprite = this._parent.getParent().getMainSprite();
-		addChild( this._backgroundGraphics );
-		//TODO : draw all entities on this scene;
-		//TODO: draw UI;
+		this._parent.getParent().getSystem( "graphics" ).drawScene( this );
 	}
 
 	public function unDraw():Void
 	{
 
+	}
+
+	public function addEntity( type:String, entity:Entity ):Void
+	{
+		
 	}
 
 	public function getId():Int
@@ -51,18 +53,13 @@ class Scene extends Sprite
 		return this._name;
 	}
 
-	public function getBackgroundGraphics():Bitmap
+	public function getBackgroundImaheURL():String
 	{
-		return this._backgroundGraphics;
+		return this._backgroundImageURL;
 	}
 
-	public function setBackgoundGraphics( bitmap:Bitmap ):Void
+	public function setBackgroundImageURL( url:String ):Void
 	{
-		this._backgroundGraphics = bitmap;
-	}
-
-	public function changeActive( bool:Bool )
-	{
-		this._active = bool;
+		this._backgroundImageURL = url;
 	}
 }

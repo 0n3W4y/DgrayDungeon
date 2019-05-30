@@ -29,6 +29,19 @@ class Entity
 		return null;
 	}
 
+	public function getComponent( name:String ):Component
+	{
+		for( i in 0...this._components.length )
+		{
+			var component = this._components[ i ];
+			if( component.getName() == name )
+				return component;
+		}
+
+		trace( "Error in Entity.getComponent, no component with name: " + name + "." );
+		return null;
+	}
+
 	public function update( time:Float )
 	{
 		for( i in 0...this._components.length )

@@ -1,0 +1,88 @@
+{
+	"scene": 
+	{
+		"startScene": 
+		{
+			"backgroundImageURL": "assets/background_game.png",
+			"buttons":
+			{
+				"startButton": 
+				{
+					"graphics":
+					{
+						"url": "button_a",
+						"url2": "button_a_pushed.png",
+						"x": 0,
+						"y": 0,
+						"text": "Start game"
+					}					
+				},
+				"continueButton":
+				{
+					"url": "button_a",
+					"url2": "button_a_pushed.png",
+					"x": 0,
+					"y": 0,
+					"text": "Continue"
+				},
+				"optionButton": 
+				{
+					"url": "button_a",
+					"url2": "button_a_pushed.png",
+					"x": 0,
+					"y": 0,
+					"text": "Options"
+				},
+				"autors":
+				{
+					"url": "button_a",
+					"url2": "button_a_pushed.png",
+					"x": 0,
+					"y": 0,
+					"text": "Autors"
+				}
+			}
+		},
+
+		"optionsScene":
+		{
+			"backgroundImageURL": "url"
+		},
+
+		"cityScene": 
+		{
+			"backgroundImageURL": "url",
+			"hospital":
+			{
+
+			},
+			"tavern":
+			{
+
+			},
+			"inn":
+			{
+
+			},
+			"monastery":
+			{
+
+			}
+		},
+
+		"dungeonScene":
+		{
+
+		}
+	},
+
+	"entity":
+	{
+
+	},
+
+	"graphics":
+	{
+
+	}
+}

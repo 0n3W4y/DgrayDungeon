@@ -9,7 +9,7 @@ class Game
 	private var _entitySystem:EntitySystem;
 	private var _sceneSystem:SceneSystem;
 	private var _graphicsSystem:GraphicsSystem;
-	private var _timeSystem:TimeSystem;
+	private var _userInterface:UserInterface;
 
 	private var _date:Date;
 	private var _loopStartTime:Float;
@@ -55,18 +55,26 @@ class Game
 		}
 	}
 
+	private function _parseData():Dynamic
+	{
+		var conf = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/data.json" );
+		return conf;
+	}
 
 
 
 
 	public function new( width:Int, height:Int, fps:Int, mainSprite:Sprite ):Void
 	{
-		this._entitySystem = new EntitySystem( this );
-		this._sceneSystem = new SceneSystem( this );
+		var config = this._parseData();
+		this._entitySystem = new EntitySystem( this, config.entity );
+		this._sceneSystem = new SceneSystem( this, config.scene );
 		this._graphicsSystem = new GraphicsSystem( this );
+		this._userInterface = new UserInterface( this );
 		this._mainSprite = mainSprite;
 		this._calculateDelta();
 		this.start();
+		
 	}
 
 	public function start():Void

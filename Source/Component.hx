@@ -24,4 +24,9 @@ class Component
 		return this._parent;
 	}
 
+	public function getName():String
+	{
+		return this._name;
+	}
+
 }

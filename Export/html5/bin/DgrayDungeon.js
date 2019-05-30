@@ -893,9 +893,9 @@ ApplicationMain.create = function(config) {
 	ManifestResources.init(config);
 	var _this = app.meta;
 	if(__map_reserved["build"] != null) {
-		_this.setReserved("build","37");
+		_this.setReserved("build","46");
 	} else {
-		_this.h["build"] = "37";
+		_this.h["build"] = "46";
 	}
 	var _this1 = app.meta;
 	if(__map_reserved["company"] != null) {
@@ -4265,6 +4265,9 @@ Component.prototype = {
 	}
 	,__class__: Component
 };
+var ConfigJSON = function() { };
+$hxClasses["ConfigJSON"] = ConfigJSON;
+ConfigJSON.__name__ = ["ConfigJSON"];
 var EReg = function(r,opt) {
 	this.r = new RegExp(r,opt.split("u").join(""));
 };
@@ -4397,7 +4400,7 @@ Entity.prototype = {
 	}
 	,__class__: Entity
 };
-var EntitySystem = function(parent) {
+var EntitySystem = function(parent,params) {
 	this._nextId = 0;
 	this._parent = parent;
 	this._aliveEntities = { "playerTeam" : [], "enemyTeam" : [], "neutralTeam" : []};
@@ -4439,8 +4442,9 @@ EntitySystem.prototype = {
 };
 var Game = function(width,height,fps,mainSprite) {
 	this._onPause = false;
-	this._entitySystem = new EntitySystem(this);
-	this._sceneSystem = new SceneSystem(this);
+	var config = this._parseData();
+	this._entitySystem = new EntitySystem(this,config.entity);
+	this._sceneSystem = new SceneSystem(this,config.scene);
 	this._graphicsSystem = new GraphicsSystem(this);
 	this._mainSprite = mainSprite;
 	this._calculateDelta();
@@ -4485,6 +4489,10 @@ Game.prototype = {
 			haxe_Log.trace("tick",{ fileName : "Game.hx", lineNumber : 54, className : "Game", methodName : "_update"});
 		}
 	}
+	,_parseData: function() {
+		var conf = { graphics : { }, entity : { }, scene : { optionsScene : { backGround : "url"}, dungeonScene : { }, startScene : { backGround : "url", startButton : { url : "url", y : 0, x : 0, text : "Start game"}, continueButton : { url : "url", y : 0, x : 0, text : "Continue"}, optionButton : { url : "url", y : 0, x : 0, text : "Options"}}, cityScene : { background : "url", tavern : { }, hospital : { }, inn : { }, monastery : { }}}};
+		return conf;
+	}
 	,start: function() {
 		if(this._loopStartTime <= 0) {
 			this._loopStartTime = new Date().getTime();
@@ -4519,7 +4527,7 @@ Game.prototype = {
 		case "scene":
 			return this._sceneSystem;
 		default:
-			haxe_Log.trace("error in Game.getSystem; system can't be: " + system + ".",{ fileName : "Game.hx", lineNumber : 114, className : "Game", methodName : "getSystem"});
+			haxe_Log.trace("error in Game.getSystem; system can't be: " + system + ".",{ fileName : "Game.hx", lineNumber : 121, className : "Game", methodName : "getSystem"});
 		}
 		return null;
 	}
@@ -4667,7 +4675,7 @@ ManifestResources.init = function(config) {
 	var data;
 	var manifest;
 	var library;
-	data = "{\"name\":null,\"assets\":\"aoy4:pathy28:assets%2Fbackground_game.pngy4:sizei1909555y4:typey5:IMAGEy2:idR1y7:preloadtgh\",\"rootPath\":null,\"version\":2,\"libraryArgs\":[],\"libraryType\":null}";
+	data = "{\"name\":null,\"assets\":\"aoy4:pathy28:assets%2Fbackground_game.pngy4:sizei1860870y4:typey5:IMAGEy2:idR1y7:preloadtgoR0y21:assets%2Fbutton_a.pngR2i1941R3R4R5R7R6tgoR0y28:assets%2Fbutton_a_pushed.pngR2i2723R3R4R5R8R6tgh\",\"rootPath\":null,\"version\":2,\"libraryArgs\":[],\"libraryType\":null}";
 	manifest = lime_utils_AssetManifest.parse(data,ManifestResources.rootPath);
 	library = lime_utils_AssetLibrary.fromManifest(manifest);
 	lime_utils_Assets.registerLibrary("default",library);
@@ -4790,7 +4798,7 @@ Scene.prototype = $extend(openfl_display_Sprite.prototype,{
 	}
 	,__class__: Scene
 });
-var SceneSystem = function(parent) {
+var SceneSystem = function(parent,params) {
 	this._nextId = 0;
 	this._parent = parent;
 	this._scenesArray = [];
@@ -25720,7 +25728,7 @@ var lime_utils_AssetCache = function() {
 	this.audio = new haxe_ds_StringMap();
 	this.font = new haxe_ds_StringMap();
 	this.image = new haxe_ds_StringMap();
-	this.version = 654742;
+	this.version = 185949;
 };
 $hxClasses["lime.utils.AssetCache"] = lime_utils_AssetCache;
 lime_utils_AssetCache.__name__ = ["lime","utils","AssetCache"];
