@@ -10,6 +10,7 @@ class Game
 	private var _sceneSystem:SceneSystem;
 	private var _graphicsSystem:GraphicsSystem;
 	private var _userInterface:UserInterface;
+	private var _evemtSystem:EventSystem;
 
 	private var _date:Date;
 	private var _loopStartTime:Float;
@@ -119,6 +120,7 @@ class Game
 			case "entity" : return this._entitySystem;
 			case "graphics": return this._graphicsSystem;
 			case "scene": return this._sceneSystem;
+			case "event": return this._evemtSystem;
 			default: trace( "error in Game.getSystem; system can't be: " + system + "." );
 		}
 		return null;

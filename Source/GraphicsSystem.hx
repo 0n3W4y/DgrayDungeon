@@ -6,14 +6,7 @@ import openfl.Assets;
 class GraphicsSystem
 {
 	private var _parent:Game;
-
-	private function _addGgraphicsForStartScene( scene:Scene ):Void
-	{
-		//TODO: Url from data;
-		var bitmapData = Assets.getBitmapData( "assets/background_game.png" );
-		var bitmap = new Bitmap( bitmapData );
-		scene.setBackgoundGraphics( bitmap );
-	}
+	
 
 	public function new( parent:Game ):Void
 	{
@@ -28,5 +21,10 @@ class GraphicsSystem
 			case "startScene": this._addGgraphicsForStartScene( scene );
 			default: trace( "Error in GraphicsSystem.addGraphicsForScene, scene name: " + sceneName + " not available or scene not defined." );
 		}
+	}
+
+	public function drawScene( scene:Scene ):Void
+	{
+
 	}
 }

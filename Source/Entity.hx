@@ -29,7 +29,7 @@ class Entity
 		return null;
 	}
 
-	public function getComponent( name:String ):Component
+	public function getComponent( name:String ):Dynamic
 	{
 		for( i in 0...this._components.length )
 		{

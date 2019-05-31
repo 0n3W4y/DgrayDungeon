@@ -881,6 +881,7 @@ lime_app_Application.prototype = $extend(lime_app_Module.prototype,{
 		return this.__windows;
 	}
 	,__class__: lime_app_Application
+	,__properties__: {get_windows:"get_windows",get_window:"get_window",get_preloader:"get_preloader"}
 });
 var ApplicationMain = function() { };
 $hxClasses["ApplicationMain"] = ApplicationMain;
@@ -893,9 +894,9 @@ ApplicationMain.create = function(config) {
 	ManifestResources.init(config);
 	var _this = app.meta;
 	if(__map_reserved["build"] != null) {
-		_this.setReserved("build","46");
+		_this.setReserved("build","54");
 	} else {
-		_this.h["build"] = "46";
+		_this.h["build"] = "54";
 	}
 	var _this1 = app.meta;
 	if(__map_reserved["company"] != null) {
@@ -1237,6 +1238,7 @@ openfl_display_IBitmapDrawable.prototype = {
 var openfl__$Vector_Vector_$Impl_$ = {};
 $hxClasses["openfl._Vector.Vector_Impl_"] = openfl__$Vector_Vector_$Impl_$;
 openfl__$Vector_Vector_$Impl_$.__name__ = ["openfl","_Vector","Vector_Impl_"];
+openfl__$Vector_Vector_$Impl_$.__properties__ = {set_length:"set_length",get_length:"get_length",set_fixed:"set_fixed",get_fixed:"get_fixed"};
 openfl__$Vector_Vector_$Impl_$.concat = function(this1,vec) {
 	return this1.concat(vec);
 };
@@ -1554,6 +1556,7 @@ lime_utils_ObjectPool.prototype = {
 		return value;
 	}
 	,__class__: lime_utils_ObjectPool
+	,__properties__: {set_size:"set_size",get_size:"get_size"}
 };
 var haxe_IMap = function() { };
 $hxClasses["haxe.IMap"] = haxe_IMap;
@@ -3270,6 +3273,7 @@ openfl_display_DisplayObject.prototype = $extend(openfl_events_EventDispatcher.p
 		return this.__transform.ty = value;
 	}
 	,__class__: openfl_display_DisplayObject
+	,__properties__: {set_y:"set_y",get_y:"get_y",set_x:"set_x",get_x:"get_x",set_width:"set_width",get_width:"get_width",set_visible:"set_visible",get_visible:"get_visible",set_transform:"set_transform",get_transform:"get_transform",set_shader:"set_shader",get_shader:"get_shader",set_scrollRect:"set_scrollRect",get_scrollRect:"get_scrollRect",set_scaleY:"set_scaleY",get_scaleY:"get_scaleY",set_scaleX:"set_scaleX",get_scaleX:"get_scaleX",set_scale9Grid:"set_scale9Grid",get_scale9Grid:"get_scale9Grid",set_rotation:"set_rotation",get_rotation:"get_rotation",get_root:"get_root",set_name:"set_name",get_name:"get_name",get_mouseY:"get_mouseY",get_mouseX:"get_mouseX",set_mask:"set_mask",get_mask:"get_mask",get_loaderInfo:"get_loaderInfo",set_height:"set_height",get_height:"get_height",set_filters:"set_filters",get_filters:"get_filters",set_cacheAsBitmapMatrix:"set_cacheAsBitmapMatrix",get_cacheAsBitmapMatrix:"get_cacheAsBitmapMatrix",set_cacheAsBitmap:"set_cacheAsBitmap",get_cacheAsBitmap:"get_cacheAsBitmap",set_blendMode:"set_blendMode",get_blendMode:"get_blendMode",set_alpha:"set_alpha",get_alpha:"get_alpha"}
 });
 var openfl_display_InteractiveObject = function() {
 	openfl_display_DisplayObject.call(this);
@@ -3345,6 +3349,7 @@ openfl_display_InteractiveObject.prototype = $extend(openfl_display_DisplayObjec
 		return this.__tabIndex;
 	}
 	,__class__: openfl_display_InteractiveObject
+	,__properties__: $extend(openfl_display_DisplayObject.prototype.__properties__,{set_tabIndex:"set_tabIndex",get_tabIndex:"get_tabIndex",set_tabEnabled:"set_tabEnabled",get_tabEnabled:"get_tabEnabled"})
 });
 var openfl_display_DisplayObjectContainer = function() {
 	openfl_display_InteractiveObject.call(this);
@@ -4096,6 +4101,7 @@ openfl_display_DisplayObjectContainer.prototype = $extend(openfl_display_Interac
 		return this.__tabChildren;
 	}
 	,__class__: openfl_display_DisplayObjectContainer
+	,__properties__: $extend(openfl_display_InteractiveObject.prototype.__properties__,{set_tabChildren:"set_tabChildren",get_tabChildren:"get_tabChildren",get_numChildren:"get_numChildren"})
 });
 var openfl_display_Sprite = function() {
 	openfl_display_DisplayObjectContainer.call(this);
@@ -4215,6 +4221,7 @@ openfl_display_Sprite.prototype = $extend(openfl_display_DisplayObjectContainer.
 		return this.__buttonMode = value;
 	}
 	,__class__: openfl_display_Sprite
+	,__properties__: $extend(openfl_display_DisplayObjectContainer.prototype.__properties__,{get_graphics:"get_graphics",set_buttonMode:"set_buttonMode",get_buttonMode:"get_buttonMode"})
 });
 var Main = function() {
 	this._fps = 60;
@@ -4262,6 +4269,9 @@ Component.prototype = {
 	}
 	,getParent: function() {
 		return this._parent;
+	}
+	,getName: function() {
+		return this._name;
 	}
 	,__class__: Component
 };
@@ -4390,6 +4400,19 @@ Entity.prototype = {
 		}
 		return null;
 	}
+	,getComponent: function(name) {
+		var _g1 = 0;
+		var _g = this._components.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			var component = this._components[i];
+			if(component.getName() == name) {
+				return component;
+			}
+		}
+		haxe_Log.trace("Error in Entity.getComponent, no component with name: " + name + ".",{ fileName : "Entity.hx", lineNumber : 41, className : "Entity", methodName : "getComponent"});
+		return null;
+	}
 	,update: function(time) {
 		var _g1 = 0;
 		var _g = this._components.length;
@@ -4403,6 +4426,7 @@ Entity.prototype = {
 var EntitySystem = function(parent,params) {
 	this._nextId = 0;
 	this._parent = parent;
+	this._config = params;
 	this._aliveEntities = { "playerTeam" : [], "enemyTeam" : [], "neutralTeam" : []};
 	this._objectEntities = { "buttons" : []};
 };
@@ -4411,6 +4435,7 @@ EntitySystem.__name__ = ["EntitySystem"];
 EntitySystem.prototype = {
 	_parent: null
 	,_nextId: null
+	,_config: null
 	,_aliveEntities: null
 	,_objectEntities: null
 	,_createId: function() {
@@ -4418,16 +4443,16 @@ EntitySystem.prototype = {
 		this._nextId++;
 		return id;
 	}
-	,_createButton: function(type,name,id) {
+	,_createButton: function(type,name,id,params) {
 		var button = new Entity(this,id,type,name);
 		return button;
 	}
-	,createEntity: function(type,name) {
+	,createEntity: function(type,name,params) {
 		var id = this._createId();
 		if(type == "button") {
-			return this._createButton(type,name,id);
+			return this._createButton(type,name,id,params);
 		} else {
-			haxe_Log.trace("Error in EntitySystem.createEntity, can't find entity with type: " + type + ".",{ fileName : "EntitySystem.hx", lineNumber : 47, className : "EntitySystem", methodName : "createEntity"});
+			haxe_Log.trace("Error in EntitySystem.createEntity, can't find entity with type: " + type + ".",{ fileName : "EntitySystem.hx", lineNumber : 50, className : "EntitySystem", methodName : "createEntity"});
 		}
 		return null;
 	}
@@ -4440,12 +4465,48 @@ EntitySystem.prototype = {
 	}
 	,__class__: EntitySystem
 };
+var EventSystem = function(parent) {
+	this._parent = parent;
+};
+$hxClasses["EventSystem"] = EventSystem;
+EventSystem.__name__ = ["EventSystem"];
+EventSystem.prototype = {
+	_parent: null
+	,addEventListener: function(object,type) {
+		switch(type) {
+		case "MOUSE_CLIKC":
+			object.addEventListener("click",$bind(this,this.eventListenerMouseDown));
+			break;
+		case "MOUSE_DOWN":
+			object.addEventListener("mouseDown",$bind(this,this.eventListenerMouseDown));
+			break;
+		case "MOUSE_UP":
+			object.addEventListener("mouseUp",$bind(this,this.eventListenerMouseDown));
+			break;
+		default:
+			haxe_Log.trace("Error in EventSystem.addEventListener, type of event can't be: " + type + ".",{ fileName : "EventSystem.hx", lineNumber : 25, className : "EventSystem", methodName : "addEventListener"});
+		}
+	}
+	,eventListenerMouseDown: function(e) {
+		haxe_Log.trace("Mouse down",{ fileName : "EventSystem.hx", lineNumber : 32, className : "EventSystem", methodName : "eventListenerMouseDown"});
+	}
+	,eventListenerMouseUp: function(e) {
+		haxe_Log.trace("Mouse up",{ fileName : "EventSystem.hx", lineNumber : 38, className : "EventSystem", methodName : "eventListenerMouseUp"});
+	}
+	,eventListenerMouseClick: function(e) {
+		haxe_Log.trace("mouse click",{ fileName : "EventSystem.hx", lineNumber : 43, className : "EventSystem", methodName : "eventListenerMouseClick"});
+	}
+	,removeEventListener: function(object,type) {
+	}
+	,__class__: EventSystem
+};
 var Game = function(width,height,fps,mainSprite) {
 	this._onPause = false;
 	var config = this._parseData();
 	this._entitySystem = new EntitySystem(this,config.entity);
 	this._sceneSystem = new SceneSystem(this,config.scene);
 	this._graphicsSystem = new GraphicsSystem(this);
+	this._userInterface = new UserInterface(this);
 	this._mainSprite = mainSprite;
 	this._calculateDelta();
 	this.start();
@@ -4457,7 +4518,8 @@ Game.prototype = {
 	,_entitySystem: null
 	,_sceneSystem: null
 	,_graphicsSystem: null
-	,_timeSystem: null
+	,_userInterface: null
+	,_evemtSystem: null
 	,_date: null
 	,_loopStartTime: null
 	,_onPause: null
@@ -4486,11 +4548,11 @@ Game.prototype = {
 	}
 	,_update: function(time) {
 		if(!this._onPause) {
-			haxe_Log.trace("tick",{ fileName : "Game.hx", lineNumber : 54, className : "Game", methodName : "_update"});
+			haxe_Log.trace("tick",{ fileName : "Game.hx", lineNumber : 55, className : "Game", methodName : "_update"});
 		}
 	}
 	,_parseData: function() {
-		var conf = { graphics : { }, entity : { }, scene : { optionsScene : { backGround : "url"}, dungeonScene : { }, startScene : { backGround : "url", startButton : { url : "url", y : 0, x : 0, text : "Start game"}, continueButton : { url : "url", y : 0, x : 0, text : "Continue"}, optionButton : { url : "url", y : 0, x : 0, text : "Options"}}, cityScene : { background : "url", tavern : { }, hospital : { }, inn : { }, monastery : { }}}};
+		var conf = { graphics : { }, entity : { }, scene : { optionsScene : { backgroundImageURL : "url"}, dungeonScene : { }, startScene : { backgroundImageURL : "assets/background_game.png", buttons : { autors : { url : "button_a", y : 0, x : 0, url2 : "button_a_pushed.png", text : "Autors"}, startButton : { graphics : { url : "button_a", y : 0, x : 0, url2 : "button_a_pushed.png", text : "Start game"}}, continueButton : { url : "button_a", y : 0, x : 0, url2 : "button_a_pushed.png", text : "Continue"}, optionButton : { url : "button_a", y : 0, x : 0, url2 : "button_a_pushed.png", text : "Options"}}}, cityScene : { backgroundImageURL : "url", tavern : { }, hospital : { }, inn : { }, monastery : { }}}};
 		return conf;
 	}
 	,start: function() {
@@ -4522,12 +4584,14 @@ Game.prototype = {
 		switch(system) {
 		case "entity":
 			return this._entitySystem;
+		case "event":
+			return this._evemtSystem;
 		case "graphics":
 			return this._graphicsSystem;
 		case "scene":
 			return this._sceneSystem;
 		default:
-			haxe_Log.trace("error in Game.getSystem; system can't be: " + system + ".",{ fileName : "Game.hx", lineNumber : 121, className : "Game", methodName : "getSystem"});
+			haxe_Log.trace("error in Game.getSystem; system can't be: " + system + ".",{ fileName : "Game.hx", lineNumber : 124, className : "Game", methodName : "getSystem"});
 		}
 		return null;
 	}
@@ -4546,7 +4610,7 @@ GraphicsSystem.prototype = {
 	,_addGgraphicsForStartScene: function(scene) {
 		var bitmapData = openfl_utils_Assets.getBitmapData("assets/background_game.png");
 		var bitmap = new openfl_display_Bitmap(bitmapData);
-		scene.setBackgoundGraphics(bitmap);
+		scene.setBackgroundImageURL("assets/background_game.png");
 	}
 	,addGraphicsForScene: function(scene) {
 		var sceneName = scene.getName();
@@ -4555,6 +4619,8 @@ GraphicsSystem.prototype = {
 		} else {
 			haxe_Log.trace("Error in GraphicsSystem.addGraphicsForScene, scene name: " + sceneName + " not available or scene not defined.",{ fileName : "GraphicsSystem.hx", lineNumber : 29, className : "GraphicsSystem", methodName : "addGraphicsForScene"});
 		}
+	}
+	,drawScene: function(scene) {
 	}
 	,__class__: GraphicsSystem
 };
@@ -4698,6 +4764,25 @@ Reflect.field = function(o,field) {
 		return null;
 	}
 };
+Reflect.getProperty = function(o,field) {
+	var tmp;
+	if(o == null) {
+		return null;
+	} else {
+		var tmp1;
+		if(o.__properties__) {
+			tmp = o.__properties__["get_" + field];
+			tmp1 = tmp;
+		} else {
+			tmp1 = false;
+		}
+		if(tmp1) {
+			return o[tmp]();
+		} else {
+			return o[field];
+		}
+	}
+};
 Reflect.fields = function(o) {
 	var a = [];
 	if(o != null) {
@@ -4753,6 +4838,7 @@ Reflect.makeVarArgs = function(f) {
 	};
 };
 var Scene = function(parent,id,name) {
+	this._uiEntities = [];
 	this._objectEntities = [];
 	this._aliveEntities = [];
 	this._active = false;
@@ -4771,12 +4857,21 @@ Scene.prototype = $extend(openfl_display_Sprite.prototype,{
 	,_active: null
 	,_aliveEntities: null
 	,_objectEntities: null
-	,_backgroundGraphics: null
+	,_uiEntities: null
+	,_backgroundImageURL: null
 	,draw: function() {
-		var mainSprite = this._parent.getParent().getMainSprite();
-		this.addChild(this._backgroundGraphics);
+		this._parent.getParent().getSystem("graphics").drawScene(this);
 	}
 	,unDraw: function() {
+	}
+	,addEntity: function(type,entity) {
+		switch(type) {
+		case "button":case "window":
+			this._uiEntities.push(entity);
+			break;
+		default:
+			haxe_Log.trace("Error in Scene.addEntity, can't add entity with type: " + type + ".",{ fileName : "Scene.hx", lineNumber : 42, className : "Scene", methodName : "addEntity"});
+		}
 	}
 	,getId: function() {
 		return this._id;
@@ -4787,14 +4882,11 @@ Scene.prototype = $extend(openfl_display_Sprite.prototype,{
 	,getName: function() {
 		return this._name;
 	}
-	,getBackgroundGraphics: function() {
-		return this._backgroundGraphics;
+	,getBackgroundImaheURL: function() {
+		return this._backgroundImageURL;
 	}
-	,setBackgoundGraphics: function(bitmap) {
-		this._backgroundGraphics = bitmap;
-	}
-	,changeActive: function(bool) {
-		this._active = bool;
+	,setBackgroundImageURL: function(url) {
+		this._backgroundImageURL = url;
 	}
 	,__class__: Scene
 });
@@ -4809,6 +4901,7 @@ SceneSystem.prototype = {
 	_parent: null
 	,_scenesArray: null
 	,_activeScene: null
+	,_config: null
 	,_nextId: null
 	,_createId: function() {
 		var id = this._nextId;
@@ -4820,17 +4913,53 @@ SceneSystem.prototype = {
 	}
 	,_createStartScene: function(sceneName,id) {
 		var scene = new Scene(this,id,sceneName);
+		var value = null;
+		var _g = 0;
+		var _g1 = Reflect.fields(this._config);
+		while(_g < _g1.length) {
+			var field = _g1[_g];
+			++_g;
+			if(field == sceneName) {
+				value = Reflect.getProperty(this._config,field);
+			} else {
+				haxe_Log.trace("Error in SceneSystem._screateStartScene, scenen name: " + sceneName + " not found in config containg.",{ fileName : "SceneSystem.hx", lineNumber : 33, className : "SceneSystem", methodName : "_createStartScene"});
+			}
+		}
+		var config = value;
+		scene.setBackgroundImageURL(config.backgroundImageURL);
+		var _g2 = 0;
+		var _g11 = Reflect.fields(this._config.buttons);
+		while(_g2 < _g11.length) {
+			var key = _g11[_g2];
+			++_g2;
+			var configButton = Reflect.getProperty(this._config.buttons,key);
+			var button = this._parent.getSystem("entity").createButton("button",key,configButton);
+			scene.addEntity("button",button);
+		}
 		this._addScene(scene);
-		this._parent.getSystem("graphics").addGraphicsForScene(scene);
-		this._parent.getSystem("entity").createEntity("button","startGame");
+		return scene;
+	}
+	,_createCityScene: function(sceneName,id) {
+		var scene = new Scene(this,id,sceneName);
+		this._addScene(scene);
+		return scene;
+	}
+	,_createDungeonChooseScene: function(sceneName,id) {
+		var scene = new Scene(this,id,sceneName);
+		this._addScene(scene);
 		return scene;
 	}
 	,createScene: function(sceneName) {
 		var id = this._createId();
-		if(sceneName == "startScene") {
+		switch(sceneName) {
+		case "cityScene":
+			return this._createCityScene(sceneName,id);
+		case "dungeonChooseScene":
+			return this._createDungeonChooseScene(sceneName,id);
+		case "startScene":
 			return this._createStartScene(sceneName,id);
-		} else {
-			haxe_Log.trace("Error in SceneSystem.createScene, scene name can't be: " + sceneName + ".",{ fileName : "SceneSystem.hx", lineNumber : 47, className : "SceneSystem", methodName : "createScene"});
+		default:
+			haxe_Log.trace("Error in SceneSystem.createScene, scene name can't be: " + sceneName + ".",{ fileName : "SceneSystem.hx", lineNumber : 81, className : "SceneSystem", methodName : "createScene"});
 		}
 		return null;
 	}
@@ -4950,15 +5079,6 @@ StringTools.hex = function(n,digits) {
 		while(s.length < digits) s = "0" + s;
 	}
 	return s;
-};
-var TimeSystem = function(game) {
-};
-$hxClasses["TimeSystem"] = TimeSystem;
-TimeSystem.__name__ = ["TimeSystem"];
-TimeSystem.prototype = {
-	_date: null
-	,_parent: null
-	,__class__: TimeSystem
 };
 var ValueType = $hxClasses["ValueType"] = { __ename__ : ["ValueType"], __constructs__ : ["TNull","TInt","TFloat","TBool","TObject","TFunction","TClass","TEnum","TUnknown"] };
 ValueType.TNull = ["TNull",0];
@@ -5135,6 +5255,28 @@ _$UInt_UInt_$Impl_$.toFloat = function(this1) {
 		return $int + 0.0;
 	}
 };
+var UserInterface = function(parent) {
+	openfl_display_Sprite.call(this);
+	this._parent = parent;
+};
+$hxClasses["UserInterface"] = UserInterface;
+UserInterface.__name__ = ["UserInterface"];
+UserInterface.__super__ = openfl_display_Sprite;
+UserInterface.prototype = $extend(openfl_display_Sprite.prototype,{
+	_parent: null
+	,addButton: function(button) {
+		var data = new openfl_display_Bitmap(button.getComponent("graphics").getUrl(0));
+		var sprite = new openfl_display_Sprite();
+		sprite.addChild(data);
+		sprite.set_x(button.getComponent("graphics").getCoordinates().x);
+		sprite.set_y(button.getComponent("graphics").getCoordinates().y);
+		this._parent.getSystem("event").addEventListener(sprite,"MOUSE_DOWN");
+		this.addChild(sprite);
+	}
+	,addWindow: function() {
+	}
+	,__class__: UserInterface
+});
 var haxe_StackItem = $hxClasses["haxe.StackItem"] = { __ename__ : ["haxe","StackItem"], __constructs__ : ["CFunction","Module","FilePos","Method","LocalFunction"] };
 haxe_StackItem.CFunction = ["CFunction",0];
 haxe_StackItem.CFunction.toString = $estr;
@@ -12649,6 +12791,7 @@ lime__$internal_unifill_InvalidCodeUnitSequence.prototype = $extend(lime__$inter
 var lime__$internal_unifill_InternalEncoding = function() { };
 $hxClasses["lime._internal.unifill.InternalEncoding"] = lime__$internal_unifill_InternalEncoding;
 lime__$internal_unifill_InternalEncoding.__name__ = ["lime","_internal","unifill","InternalEncoding"];
+lime__$internal_unifill_InternalEncoding.__properties__ = {get_internalEncoding:"get_internalEncoding"};
 lime__$internal_unifill_InternalEncoding.get_internalEncoding = function() {
 	return "UTF-16";
 };
@@ -13269,6 +13412,7 @@ lime__$internal_unifill_Unifill.uAddChar = function(sb,c) {
 var lime__$internal_unifill__$Utf16_Utf16_$Impl_$ = {};
 $hxClasses["lime._internal.unifill._Utf16.Utf16_Impl_"] = lime__$internal_unifill__$Utf16_Utf16_$Impl_$;
 lime__$internal_unifill__$Utf16_Utf16_$Impl_$.__name__ = ["lime","_internal","unifill","_Utf16","Utf16_Impl_"];
+lime__$internal_unifill__$Utf16_Utf16_$Impl_$.__properties__ = {get_length:"get_length"};
 lime__$internal_unifill__$Utf16_Utf16_$Impl_$.fromCodePoint = function(codePoint) {
 	if(codePoint <= 65535) {
 		var this1 = String.fromCharCode(codePoint);
@@ -13501,6 +13645,7 @@ lime__$internal_unifill__$Utf16_StringU16Buffer_$Impl_$.getStringU16 = function(
 var lime__$internal_unifill__$Utf16_StringU16_$Impl_$ = {};
 $hxClasses["lime._internal.unifill._Utf16.StringU16_Impl_"] = lime__$internal_unifill__$Utf16_StringU16_$Impl_$;
 lime__$internal_unifill__$Utf16_StringU16_$Impl_$.__name__ = ["lime","_internal","unifill","_Utf16","StringU16_Impl_"];
+lime__$internal_unifill__$Utf16_StringU16_$Impl_$.__properties__ = {get_length:"get_length"};
 lime__$internal_unifill__$Utf16_StringU16_$Impl_$.fromString = function(s) {
 	var this1 = s;
 	return this1;
@@ -13858,6 +14003,7 @@ lime_app_Promise.prototype = {
 		return this.future.isError;
 	}
 	,__class__: lime_app_Promise
+	,__properties__: {get_isError:"get_isError",get_isComplete:"get_isComplete"}
 };
 var lime_app__$Event_$Dynamic_$Void = function() {
 	this.canceled = false;
@@ -16743,6 +16889,7 @@ lime_graphics_Image.prototype = {
 		return this.buffer.transparent = value;
 	}
 	,__class__: lime_graphics_Image
+	,__properties__: {set_transparent:"set_transparent",get_transparent:"get_transparent",set_src:"set_src",get_src:"get_src",get_rect:"get_rect",set_premultiplied:"set_premultiplied",get_premultiplied:"get_premultiplied",set_powerOfTwo:"set_powerOfTwo",get_powerOfTwo:"get_powerOfTwo",set_format:"set_format",get_format:"get_format",set_data:"set_data",get_data:"get_data"}
 };
 var lime_graphics_ImageBuffer = function(data,width,height,bitsPerPixel,format) {
 	if(bitsPerPixel == null) {
@@ -16840,6 +16987,7 @@ lime_graphics_ImageBuffer.prototype = {
 		return this.width * (this.bitsPerPixel / 8 | 0);
 	}
 	,__class__: lime_graphics_ImageBuffer
+	,__properties__: {get_stride:"get_stride",set_src:"set_src",get_src:"get_src"}
 };
 var lime_graphics_ImageChannel = $hxClasses["lime.graphics.ImageChannel"] = { __ename__ : ["lime","graphics","ImageChannel"], __constructs__ : ["RED","GREEN","BLUE","ALPHA"] };
 lime_graphics_ImageChannel.RED = ["RED",0];
@@ -17140,6 +17288,7 @@ var lime_graphics_cairo_Cairo = function(surface) {
 };
 $hxClasses["lime.graphics.cairo.Cairo"] = lime_graphics_cairo_Cairo;
 lime_graphics_cairo_Cairo.__name__ = ["lime","graphics","cairo","Cairo"];
+lime_graphics_cairo_Cairo.__properties__ = {get_versionString:"get_versionString",get_version:"get_version"};
 lime_graphics_cairo_Cairo.get_version = function() {
 	return 0;
 };
@@ -17355,6 +17504,7 @@ lime_graphics_cairo_Cairo.prototype = {
 		return value;
 	}
 	,__class__: lime_graphics_cairo_Cairo
+	,__properties__: {set_tolerance:"set_tolerance",get_tolerance:"get_tolerance",get_target:"get_target",set_source:"set_source",get_source:"get_source",set_operator:"set_operator",get_operator:"get_operator",set_miterLimit:"set_miterLimit",get_miterLimit:"get_miterLimit",set_matrix:"set_matrix",get_matrix:"get_matrix",set_lineWidth:"set_lineWidth",get_lineWidth:"get_lineWidth",set_lineJoin:"set_lineJoin",get_lineJoin:"get_lineJoin",set_lineCap:"set_lineCap",get_lineCap:"get_lineCap",get_hasCurrentPoint:"get_hasCurrentPoint",get_groupTarget:"get_groupTarget",set_fontOptions:"set_fontOptions",get_fontOptions:"get_fontOptions",set_fontFace:"set_fontFace",get_fontFace:"get_fontFace",set_fillRule:"set_fillRule",get_fillRule:"get_fillRule",get_dashCount:"get_dashCount",set_dash:"set_dash",get_dash:"get_dash",get_currentPoint:"get_currentPoint",set_antialias:"set_antialias",get_antialias:"get_antialias"}
 };
 var lime_graphics_cairo__$CairoFTFontFace_CairoFTFontFace_$Impl_$ = {};
 $hxClasses["lime.graphics.cairo._CairoFTFontFace.CairoFTFontFace_Impl_"] = lime_graphics_cairo__$CairoFTFontFace_CairoFTFontFace_$Impl_$;
@@ -17379,6 +17529,7 @@ lime_graphics_cairo__$CairoFontFace_CairoFontFace_$Impl_$.status = function(this
 var lime_graphics_cairo__$CairoFontOptions_CairoFontOptions_$Impl_$ = {};
 $hxClasses["lime.graphics.cairo._CairoFontOptions.CairoFontOptions_Impl_"] = lime_graphics_cairo__$CairoFontOptions_CairoFontOptions_$Impl_$;
 lime_graphics_cairo__$CairoFontOptions_CairoFontOptions_$Impl_$.__name__ = ["lime","graphics","cairo","_CairoFontOptions","CairoFontOptions_Impl_"];
+lime_graphics_cairo__$CairoFontOptions_CairoFontOptions_$Impl_$.__properties__ = {set_subpixelOrder:"set_subpixelOrder",get_subpixelOrder:"get_subpixelOrder",set_hintStyle:"set_hintStyle",get_hintStyle:"get_hintStyle",set_hintMetrics:"set_hintMetrics",get_hintMetrics:"get_hintMetrics",set_antialias:"set_antialias",get_antialias:"get_antialias"};
 lime_graphics_cairo__$CairoFontOptions_CairoFontOptions_$Impl_$._new = function() {
 	var this1 = null;
 	return this1;
@@ -17429,6 +17580,7 @@ lime_graphics_cairo_CairoGlyph.prototype = {
 var lime_graphics_cairo__$CairoImageSurface_CairoImageSurface_$Impl_$ = {};
 $hxClasses["lime.graphics.cairo._CairoImageSurface.CairoImageSurface_Impl_"] = lime_graphics_cairo__$CairoImageSurface_CairoImageSurface_$Impl_$;
 lime_graphics_cairo__$CairoImageSurface_CairoImageSurface_$Impl_$.__name__ = ["lime","graphics","cairo","_CairoImageSurface","CairoImageSurface_Impl_"];
+lime_graphics_cairo__$CairoImageSurface_CairoImageSurface_$Impl_$.__properties__ = {get_width:"get_width",get_stride:"get_stride",get_height:"get_height",get_format:"get_format",get_data:"get_data"};
 lime_graphics_cairo__$CairoImageSurface_CairoImageSurface_$Impl_$._new = function(format,width,height) {
 	var this1 = 0;
 	return this1;
@@ -17457,6 +17609,7 @@ lime_graphics_cairo__$CairoImageSurface_CairoImageSurface_$Impl_$.get_width = fu
 var lime_graphics_cairo__$CairoPattern_CairoPattern_$Impl_$ = {};
 $hxClasses["lime.graphics.cairo._CairoPattern.CairoPattern_Impl_"] = lime_graphics_cairo__$CairoPattern_CairoPattern_$Impl_$;
 lime_graphics_cairo__$CairoPattern_CairoPattern_$Impl_$.__name__ = ["lime","graphics","cairo","_CairoPattern","CairoPattern_Impl_"];
+lime_graphics_cairo__$CairoPattern_CairoPattern_$Impl_$.__properties__ = {set_matrix:"set_matrix",get_matrix:"get_matrix",set_filter:"set_filter",get_filter:"get_filter",set_extend:"set_extend",get_extend:"get_extend",get_colorStopCount:"get_colorStopCount"};
 lime_graphics_cairo__$CairoPattern_CairoPattern_$Impl_$._new = function(handle) {
 	var this1 = handle;
 	return this1;
@@ -18421,6 +18574,7 @@ lime_graphics_opengl_ext_KHR_$debug.prototype = {
 var lime_math__$ARGB_ARGB_$Impl_$ = {};
 $hxClasses["lime.math._ARGB.ARGB_Impl_"] = lime_math__$ARGB_ARGB_$Impl_$;
 lime_math__$ARGB_ARGB_$Impl_$.__name__ = ["lime","math","_ARGB","ARGB_Impl_"];
+lime_math__$ARGB_ARGB_$Impl_$.__properties__ = {set_r:"set_r",get_r:"get_r",set_g:"set_g",get_g:"get_g",set_b:"set_b",get_b:"get_b",set_a:"set_a",get_a:"get_a"};
 lime_math__$ARGB_ARGB_$Impl_$._new = function(argb) {
 	if(argb == null) {
 		argb = 0;
@@ -18555,6 +18709,7 @@ lime_math__$ARGB_ARGB_$Impl_$.set_r = function(this1,value) {
 var lime_math__$BGRA_BGRA_$Impl_$ = {};
 $hxClasses["lime.math._BGRA.BGRA_Impl_"] = lime_math__$BGRA_BGRA_$Impl_$;
 lime_math__$BGRA_BGRA_$Impl_$.__name__ = ["lime","math","_BGRA","BGRA_Impl_"];
+lime_math__$BGRA_BGRA_$Impl_$.__properties__ = {set_r:"set_r",get_r:"get_r",set_g:"set_g",get_g:"get_g",set_b:"set_b",get_b:"get_b",set_a:"set_a",get_a:"get_a"};
 lime_math__$BGRA_BGRA_$Impl_$._new = function(bgra) {
 	if(bgra == null) {
 		bgra = 0;
@@ -18689,6 +18844,7 @@ lime_math__$BGRA_BGRA_$Impl_$.set_r = function(this1,value) {
 var lime_math__$ColorMatrix_ColorMatrix_$Impl_$ = {};
 $hxClasses["lime.math._ColorMatrix.ColorMatrix_Impl_"] = lime_math__$ColorMatrix_ColorMatrix_$Impl_$;
 lime_math__$ColorMatrix_ColorMatrix_$Impl_$.__name__ = ["lime","math","_ColorMatrix","ColorMatrix_Impl_"];
+lime_math__$ColorMatrix_ColorMatrix_$Impl_$.__properties__ = {set_redOffset:"set_redOffset",get_redOffset:"get_redOffset",set_redMultiplier:"set_redMultiplier",get_redMultiplier:"get_redMultiplier",set_greenOffset:"set_greenOffset",get_greenOffset:"get_greenOffset",set_greenMultiplier:"set_greenMultiplier",get_greenMultiplier:"get_greenMultiplier",set_color:"set_color",get_color:"get_color",set_blueOffset:"set_blueOffset",get_blueOffset:"get_blueOffset",set_blueMultiplier:"set_blueMultiplier",get_blueMultiplier:"get_blueMultiplier",set_alphaOffset:"set_alphaOffset",get_alphaOffset:"get_alphaOffset",set_alphaMultiplier:"set_alphaMultiplier",get_alphaMultiplier:"get_alphaMultiplier"};
 lime_math__$ColorMatrix_ColorMatrix_$Impl_$._new = function(data) {
 	var this1;
 	if(data != null && data.length == 20) {
@@ -19232,6 +19388,7 @@ lime_math_Matrix3.prototype = {
 var lime_math__$Matrix4_Matrix4_$Impl_$ = {};
 $hxClasses["lime.math._Matrix4.Matrix4_Impl_"] = lime_math__$Matrix4_Matrix4_$Impl_$;
 lime_math__$Matrix4_Matrix4_$Impl_$.__name__ = ["lime","math","_Matrix4","Matrix4_Impl_"];
+lime_math__$Matrix4_Matrix4_$Impl_$.__properties__ = {set_position:"set_position",get_position:"get_position",get_determinant:"get_determinant"};
 lime_math__$Matrix4_Matrix4_$Impl_$._new = function(data) {
 	var this1;
 	if(data != null && data.length == 16) {
@@ -19851,6 +20008,7 @@ lime_math__$Matrix4_Matrix4_$Impl_$.set = function(this1,index,value) {
 var lime_math__$RGBA_RGBA_$Impl_$ = {};
 $hxClasses["lime.math._RGBA.RGBA_Impl_"] = lime_math__$RGBA_RGBA_$Impl_$;
 lime_math__$RGBA_RGBA_$Impl_$.__name__ = ["lime","math","_RGBA","RGBA_Impl_"];
+lime_math__$RGBA_RGBA_$Impl_$.__properties__ = {set_r:"set_r",get_r:"get_r",set_g:"set_g",get_g:"get_g",set_b:"set_b",get_b:"get_b",set_a:"set_a",get_a:"get_a"};
 lime_math__$RGBA_RGBA_$Impl_$._new = function(rgba) {
 	if(rgba == null) {
 		rgba = 0;
@@ -20193,6 +20351,7 @@ lime_math_Rectangle.prototype = {
 		return p.clone();
 	}
 	,__class__: lime_math_Rectangle
+	,__properties__: {set_topLeft:"set_topLeft",get_topLeft:"get_topLeft",set_top:"set_top",get_top:"get_top",set_size:"set_size",get_size:"get_size",set_right:"set_right",get_right:"get_right",set_left:"set_left",get_left:"get_left",set_bottomRight:"set_bottomRight",get_bottomRight:"get_bottomRight",set_bottom:"set_bottom",get_bottom:"get_bottom"}
 };
 var lime_math_Vector2 = function(x,y) {
 	if(y == null) {
@@ -20284,6 +20443,7 @@ lime_math_Vector2.prototype = {
 		return this.x * this.x + this.y * this.y;
 	}
 	,__class__: lime_math_Vector2
+	,__properties__: {get_lengthSquared:"get_lengthSquared",get_length:"get_length"}
 };
 var lime_math_Vector4 = function(x,y,z,w) {
 	if(w == null) {
@@ -20305,6 +20465,7 @@ var lime_math_Vector4 = function(x,y,z,w) {
 };
 $hxClasses["lime.math.Vector4"] = lime_math_Vector4;
 lime_math_Vector4.__name__ = ["lime","math","Vector4"];
+lime_math_Vector4.__properties__ = {get_Z_AXIS:"get_Z_AXIS",get_Y_AXIS:"get_Y_AXIS",get_X_AXIS:"get_X_AXIS"};
 lime_math_Vector4.angleBetween = function(a,b) {
 	var a0 = new lime_math_Vector4(a.x,a.y,a.z,a.w);
 	var l = Math.sqrt(a0.x * a0.x + a0.y * a0.y + a0.z * a0.z);
@@ -20466,6 +20627,7 @@ lime_math_Vector4.prototype = {
 		return this.x * this.x + this.y * this.y + this.z * this.z;
 	}
 	,__class__: lime_math_Vector4
+	,__properties__: {get_lengthSquared:"get_lengthSquared",get_length:"get_length"}
 };
 var lime_media_AudioBuffer = function() {
 };
@@ -20619,6 +20781,7 @@ lime_media_AudioBuffer.prototype = {
 		return this.__srcHowl = value;
 	}
 	,__class__: lime_media_AudioBuffer
+	,__properties__: {set_src:"set_src",get_src:"get_src"}
 };
 var lime_media_AudioContext = function(type) {
 	if(type != "custom") {
@@ -20780,6 +20943,7 @@ lime_media_AudioSource.prototype = {
 		return this.__backend.setPosition(value);
 	}
 	,__class__: lime_media_AudioSource
+	,__properties__: {set_position:"set_position",get_position:"get_position",set_loops:"set_loops",get_loops:"get_loops",set_length:"set_length",get_length:"get_length",set_gain:"set_gain",get_gain:"get_gain",set_currentTime:"set_currentTime",get_currentTime:"get_currentTime"}
 };
 var lime_media_FlashAudioContext = function() {
 };
@@ -22364,6 +22528,7 @@ lime_system__$CFFIPointer_CFFIPointer_$Impl_$.notEqualsPointer = function(a,b) {
 var lime_system_Clipboard = function() { };
 $hxClasses["lime.system.Clipboard"] = lime_system_Clipboard;
 lime_system_Clipboard.__name__ = ["lime","system","Clipboard"];
+lime_system_Clipboard.__properties__ = {set_text:"set_text",get_text:"get_text"};
 lime_system_Clipboard.__update = function() {
 	var cacheText = lime_system_Clipboard._text;
 	if(lime_system_Clipboard._text != cacheText) {
@@ -22583,6 +22748,7 @@ lime_system_JNIMethod.prototype = {
 var lime_system__$Locale_Locale_$Impl_$ = {};
 $hxClasses["lime.system._Locale.Locale_Impl_"] = lime_system__$Locale_Locale_$Impl_$;
 lime_system__$Locale_Locale_$Impl_$.__name__ = ["lime","system","_Locale","Locale_Impl_"];
+lime_system__$Locale_Locale_$Impl_$.__properties__ = {get_region:"get_region",get_language:"get_language",get_systemLocale:"get_systemLocale",set_currentLocale:"set_currentLocale",get_currentLocale:"get_currentLocale"};
 lime_system__$Locale_Locale_$Impl_$._new = function(value) {
 	var this1 = value;
 	return this1;
@@ -22711,6 +22877,7 @@ lime_system_SensorType.ACCELEROMETER.__enum__ = lime_system_SensorType;
 var lime_system_System = function() { };
 $hxClasses["lime.system.System"] = lime_system_System;
 lime_system_System.__name__ = ["lime","system","System"];
+lime_system_System.__properties__ = {get_userDirectory:"get_userDirectory",get_platformVersion:"get_platformVersion",get_platformName:"get_platformName",get_platformLabel:"get_platformLabel",get_numDisplays:"get_numDisplays",get_fontsDirectory:"get_fontsDirectory",get_endianness:"get_endianness",get_documentsDirectory:"get_documentsDirectory",get_deviceVendor:"get_deviceVendor",get_deviceModel:"get_deviceModel",get_desktopDirectory:"get_desktopDirectory",get_applicationStorageDirectory:"get_applicationStorageDirectory",get_applicationDirectory:"get_applicationDirectory",set_allowScreenTimeout:"set_allowScreenTimeout",get_allowScreenTimeout:"get_allowScreenTimeout"};
 lime_system_System.embed = $hx_exports["lime"]["embed"] = function(projectName,element,width,height,config) {
 	if(lime_system_System.__applicationEntryPoint == null) {
 		return;
@@ -23226,6 +23393,7 @@ lime_text_GlyphMetrics.prototype = {
 var lime_text__$UTF8String_UTF8String_$Impl_$ = {};
 $hxClasses["lime.text._UTF8String.UTF8String_Impl_"] = lime_text__$UTF8String_UTF8String_$Impl_$;
 lime_text__$UTF8String_UTF8String_$Impl_$.__name__ = ["lime","text","_UTF8String","UTF8String_Impl_"];
+lime_text__$UTF8String_UTF8String_$Impl_$.__properties__ = {get_length:"get_length"};
 lime_text__$UTF8String_UTF8String_$Impl_$._new = function(str) {
 	var this1 = new String(str);
 	return this1;
@@ -24754,6 +24922,7 @@ lime_text_harfbuzz_HB.shape = function(font,buffer,features) {
 var lime_text_harfbuzz__$HBBlob_HBBlob_$Impl_$ = {};
 $hxClasses["lime.text.harfbuzz._HBBlob.HBBlob_Impl_"] = lime_text_harfbuzz__$HBBlob_HBBlob_$Impl_$;
 lime_text_harfbuzz__$HBBlob_HBBlob_$Impl_$.__name__ = ["lime","text","harfbuzz","_HBBlob","HBBlob_Impl_"];
+lime_text_harfbuzz__$HBBlob_HBBlob_$Impl_$.__properties__ = {get_length:"get_length",get_immutable:"get_immutable",get_dataWritable:"get_dataWritable",get_data:"get_data",get_empty:"get_empty"};
 lime_text_harfbuzz__$HBBlob_HBBlob_$Impl_$._new = function(data,length,memoryMode) {
 	var this1 = null;
 	return this1;
@@ -24781,6 +24950,7 @@ lime_text_harfbuzz__$HBBlob_HBBlob_$Impl_$.get_length = function(this1) {
 var lime_text_harfbuzz__$HBBuffer_HBBuffer_$Impl_$ = {};
 $hxClasses["lime.text.harfbuzz._HBBuffer.HBBuffer_Impl_"] = lime_text_harfbuzz__$HBBuffer_HBBuffer_$Impl_$;
 lime_text_harfbuzz__$HBBuffer_HBBuffer_$Impl_$.__name__ = ["lime","text","harfbuzz","_HBBuffer","HBBuffer_Impl_"];
+lime_text_harfbuzz__$HBBuffer_HBBuffer_$Impl_$.__properties__ = {set_segmentProperties:"set_segmentProperties",get_segmentProperties:"get_segmentProperties",set_script:"set_script",get_script:"get_script",set_replacementCodepoint:"set_replacementCodepoint",get_replacementCodepoint:"get_replacementCodepoint",set_length:"set_length",get_length:"get_length",set_language:"set_language",get_language:"get_language",set_flags:"set_flags",get_flags:"get_flags",set_direction:"set_direction",get_direction:"get_direction",set_contentType:"set_contentType",get_contentType:"get_contentType",set_clusterLevel:"set_clusterLevel",get_clusterLevel:"get_clusterLevel",get_allocationSuccessful:"get_allocationSuccessful"};
 lime_text_harfbuzz__$HBBuffer_HBBuffer_$Impl_$._new = function() {
 	var this1 = null;
 	return this1;
@@ -24879,6 +25049,7 @@ lime_text_harfbuzz__$HBBuffer_HBBuffer_$Impl_$.set_segmentProperties = function(
 var lime_text_harfbuzz__$HBFTFont_HBFTFont_$Impl_$ = {};
 $hxClasses["lime.text.harfbuzz._HBFTFont.HBFTFont_Impl_"] = lime_text_harfbuzz__$HBFTFont_HBFTFont_$Impl_$;
 lime_text_harfbuzz__$HBFTFont_HBFTFont_$Impl_$.__name__ = ["lime","text","harfbuzz","_HBFTFont","HBFTFont_Impl_"];
+lime_text_harfbuzz__$HBFTFont_HBFTFont_$Impl_$.__properties__ = {set_loadFlags:"set_loadFlags",get_loadFlags:"get_loadFlags"};
 lime_text_harfbuzz__$HBFTFont_HBFTFont_$Impl_$._new = function(font) {
 	var this1;
 	if(font.src != null) {
@@ -24897,6 +25068,7 @@ lime_text_harfbuzz__$HBFTFont_HBFTFont_$Impl_$.set_loadFlags = function(this1,va
 var lime_text_harfbuzz__$HBFace_HBFace_$Impl_$ = {};
 $hxClasses["lime.text.harfbuzz._HBFace.HBFace_Impl_"] = lime_text_harfbuzz__$HBFace_HBFace_$Impl_$;
 lime_text_harfbuzz__$HBFace_HBFace_$Impl_$.__name__ = ["lime","text","harfbuzz","_HBFace","HBFace_Impl_"];
+lime_text_harfbuzz__$HBFace_HBFace_$Impl_$.__properties__ = {set_upem:"set_upem",get_upem:"get_upem",set_index:"set_index",get_index:"get_index",get_immutable:"get_immutable",set_glyphCount:"set_glyphCount",get_glyphCount:"get_glyphCount",get_empty:"get_empty"};
 lime_text_harfbuzz__$HBFace_HBFace_$Impl_$._new = function(blob,index) {
 	var this1 = null;
 	return this1;
@@ -24935,6 +25107,7 @@ lime_text_harfbuzz_HBFeature.prototype = {
 var lime_text_harfbuzz__$HBFont_HBFont_$Impl_$ = {};
 $hxClasses["lime.text.harfbuzz._HBFont.HBFont_Impl_"] = lime_text_harfbuzz__$HBFont_HBFont_$Impl_$;
 lime_text_harfbuzz__$HBFont_HBFont_$Impl_$.__name__ = ["lime","text","harfbuzz","_HBFont","HBFont_Impl_"];
+lime_text_harfbuzz__$HBFont_HBFont_$Impl_$.__properties__ = {set_scale:"set_scale",get_scale:"get_scale",set_ppem:"set_ppem",get_ppem:"get_ppem",get_parent:"get_parent",get_immutable:"get_immutable",get_face:"get_face",get_empty:"get_empty"};
 lime_text_harfbuzz__$HBFont_HBFont_$Impl_$._new = function(face) {
 	var this1 = null;
 	return this1;
@@ -25073,6 +25246,7 @@ lime_ui_Gamepad.prototype = {
 		return devices[this.id].id;
 	}
 	,__class__: lime_ui_Gamepad
+	,__properties__: {get_name:"get_name",get_guid:"get_guid"}
 };
 var lime_ui__$GamepadAxis_GamepadAxis_$Impl_$ = {};
 $hxClasses["lime.ui._GamepadAxis.GamepadAxis_Impl_"] = lime_ui__$GamepadAxis_GamepadAxis_$Impl_$;
@@ -25204,10 +25378,12 @@ lime_ui_Joystick.prototype = {
 		return 0;
 	}
 	,__class__: lime_ui_Joystick
+	,__properties__: {get_numTrackballs:"get_numTrackballs",get_numHats:"get_numHats",get_numButtons:"get_numButtons",get_numAxes:"get_numAxes",get_name:"get_name",get_guid:"get_guid"}
 };
 var lime_ui__$JoystickHatPosition_JoystickHatPosition_$Impl_$ = {};
 $hxClasses["lime.ui._JoystickHatPosition.JoystickHatPosition_Impl_"] = lime_ui__$JoystickHatPosition_JoystickHatPosition_$Impl_$;
 lime_ui__$JoystickHatPosition_JoystickHatPosition_$Impl_$.__name__ = ["lime","ui","_JoystickHatPosition","JoystickHatPosition_Impl_"];
+lime_ui__$JoystickHatPosition_JoystickHatPosition_$Impl_$.__properties__ = {set_up:"set_up",get_up:"get_up",set_right:"set_right",get_right:"get_right",set_left:"set_left",get_left:"get_left",set_down:"set_down",get_down:"get_down",set_center:"set_center",get_center:"get_center"};
 lime_ui__$JoystickHatPosition_JoystickHatPosition_$Impl_$._new = function(value) {
 	var this1 = value;
 	return this1;
@@ -25292,6 +25468,7 @@ lime_ui__$KeyCode_KeyCode_$Impl_$.plus = function(a,b) {
 var lime_ui__$KeyModifier_KeyModifier_$Impl_$ = {};
 $hxClasses["lime.ui._KeyModifier.KeyModifier_Impl_"] = lime_ui__$KeyModifier_KeyModifier_$Impl_$;
 lime_ui__$KeyModifier_KeyModifier_$Impl_$.__name__ = ["lime","ui","_KeyModifier","KeyModifier_Impl_"];
+lime_ui__$KeyModifier_KeyModifier_$Impl_$.__properties__ = {set_shiftKey:"set_shiftKey",get_shiftKey:"get_shiftKey",set_numLock:"set_numLock",get_numLock:"get_numLock",set_metaKey:"set_metaKey",get_metaKey:"get_metaKey",set_ctrlKey:"set_ctrlKey",get_ctrlKey:"get_ctrlKey",set_capsLock:"set_capsLock",get_capsLock:"get_capsLock",set_altKey:"set_altKey",get_altKey:"get_altKey"};
 lime_ui__$KeyModifier_KeyModifier_$Impl_$.get_altKey = function(this1) {
 	if((this1 & 256) <= 0) {
 		return (this1 & 512) > 0;
@@ -25718,6 +25895,7 @@ lime_ui_Window.prototype = {
 		return this.__y;
 	}
 	,__class__: lime_ui_Window
+	,__properties__: {set_y:"set_y",get_y:"get_y",set_x:"set_x",get_x:"get_x",set_width:"set_width",get_width:"get_width",set_title:"set_title",get_title:"get_title",set_textInputEnabled:"set_textInputEnabled",get_textInputEnabled:"get_textInputEnabled",get_scale:"get_scale",set_resizable:"set_resizable",get_resizable:"get_resizable",set_mouseLock:"set_mouseLock",get_mouseLock:"get_mouseLock",set_minimized:"set_minimized",get_minimized:"get_minimized",set_maximized:"set_maximized",get_maximized:"get_maximized",get_hidden:"get_hidden",set_height:"set_height",get_height:"get_height",set_fullscreen:"set_fullscreen",get_fullscreen:"get_fullscreen",set_frameRate:"set_frameRate",get_frameRate:"get_frameRate",set_displayMode:"set_displayMode",get_displayMode:"get_displayMode",get_display:"get_display",set_cursor:"set_cursor",get_cursor:"get_cursor",set_borderless:"set_borderless",get_borderless:"get_borderless"}
 };
 var lime_utils_TAError = $hxClasses["lime.utils.TAError"] = { __ename__ : ["lime","utils","TAError"], __constructs__ : ["RangeError"] };
 lime_utils_TAError.RangeError = ["RangeError",0];
@@ -25728,7 +25906,7 @@ var lime_utils_AssetCache = function() {
 	this.audio = new haxe_ds_StringMap();
 	this.font = new haxe_ds_StringMap();
 	this.image = new haxe_ds_StringMap();
-	this.version = 185949;
+	this.version = 506436;
 };
 $hxClasses["lime.utils.AssetCache"] = lime_utils_AssetCache;
 lime_utils_AssetCache.__name__ = ["lime","utils","AssetCache"];
@@ -28313,6 +28491,7 @@ lime_utils__$UInt8ClampedArray_UInt8ClampedArray_$Impl_$._clamp = function(_in) 
 var openfl_Lib = function() { };
 $hxClasses["openfl.Lib"] = openfl_Lib;
 openfl_Lib.__name__ = ["openfl","Lib"];
+openfl_Lib.__properties__ = {get_current:"get_current",get_application:"get_application"};
 openfl_Lib["as"] = function(v,c) {
 	if(js_Boot.__instanceof(v,c)) {
 		return v;
@@ -28507,6 +28686,7 @@ openfl__$Vector_IVector.prototype = {
 	,toString: null
 	,unshift: null
 	,__class__: openfl__$Vector_IVector
+	,__properties__: {set_length:"set_length",get_length:"get_length"}
 };
 var openfl__$Vector_BoolVector = function(length,fixed,array) {
 	if(fixed == null) {
@@ -28681,6 +28861,7 @@ openfl__$Vector_BoolVector.prototype = {
 		return this.__array.length;
 	}
 	,__class__: openfl__$Vector_BoolVector
+	,__properties__: {set_length:"set_length",get_length:"get_length"}
 };
 var openfl__$Vector_FloatVector = function(length,fixed,array,forceCopy) {
 	if(forceCopy == null) {
@@ -28866,6 +29047,7 @@ openfl__$Vector_FloatVector.prototype = {
 		return this.__array.length;
 	}
 	,__class__: openfl__$Vector_FloatVector
+	,__properties__: {set_length:"set_length",get_length:"get_length"}
 };
 var openfl__$Vector_FunctionVector = function(length,fixed,array) {
 	if(fixed == null) {
@@ -29040,6 +29222,7 @@ openfl__$Vector_FunctionVector.prototype = {
 		return this.__array.length;
 	}
 	,__class__: openfl__$Vector_FunctionVector
+	,__properties__: {set_length:"set_length",get_length:"get_length"}
 };
 var openfl__$Vector_IntVector = function(length,fixed,array) {
 	if(fixed == null) {
@@ -29210,6 +29393,7 @@ openfl__$Vector_IntVector.prototype = {
 		return this.__array.length;
 	}
 	,__class__: openfl__$Vector_IntVector
+	,__properties__: {set_length:"set_length",get_length:"get_length"}
 };
 var openfl__$Vector_ObjectVector = function(length,fixed,array,forceCopy) {
 	if(forceCopy == null) {
@@ -29395,6 +29579,7 @@ openfl__$Vector_ObjectVector.prototype = {
 		return this.__array.length;
 	}
 	,__class__: openfl__$Vector_ObjectVector
+	,__properties__: {set_length:"set_length",get_length:"get_length"}
 };
 var openfl__$internal_Lib = function() { };
 $hxClasses["openfl._internal.Lib"] = openfl__$internal_Lib;
@@ -33347,6 +33532,7 @@ openfl__$internal_renderer_DrawCommandBuffer.prototype = {
 		return this.types.length;
 	}
 	,__class__: openfl__$internal_renderer_DrawCommandBuffer
+	,__properties__: {get_length:"get_length"}
 };
 var openfl__$internal_renderer_DrawCommandReader = function(buffer) {
 	this.buffer = buffer;
@@ -35382,6 +35568,7 @@ openfl__$internal_renderer_DrawCommandReader.prototype = {
 var openfl__$internal_renderer__$DrawCommandReader_BeginBitmapFillView_$Impl_$ = {};
 $hxClasses["openfl._internal.renderer._DrawCommandReader.BeginBitmapFillView_Impl_"] = openfl__$internal_renderer__$DrawCommandReader_BeginBitmapFillView_$Impl_$;
 openfl__$internal_renderer__$DrawCommandReader_BeginBitmapFillView_$Impl_$.__name__ = ["openfl","_internal","renderer","_DrawCommandReader","BeginBitmapFillView_Impl_"];
+openfl__$internal_renderer__$DrawCommandReader_BeginBitmapFillView_$Impl_$.__properties__ = {get_smooth:"get_smooth",get_repeat:"get_repeat",get_matrix:"get_matrix",get_bitmap:"get_bitmap"};
 openfl__$internal_renderer__$DrawCommandReader_BeginBitmapFillView_$Impl_$._new = function(d) {
 	var this1 = d;
 	return this1;
@@ -35401,6 +35588,7 @@ openfl__$internal_renderer__$DrawCommandReader_BeginBitmapFillView_$Impl_$.get_s
 var openfl__$internal_renderer__$DrawCommandReader_BeginFillView_$Impl_$ = {};
 $hxClasses["openfl._internal.renderer._DrawCommandReader.BeginFillView_Impl_"] = openfl__$internal_renderer__$DrawCommandReader_BeginFillView_$Impl_$;
 openfl__$internal_renderer__$DrawCommandReader_BeginFillView_$Impl_$.__name__ = ["openfl","_internal","renderer","_DrawCommandReader","BeginFillView_Impl_"];
+openfl__$internal_renderer__$DrawCommandReader_BeginFillView_$Impl_$.__properties__ = {get_alpha:"get_alpha",get_color:"get_color"};
 openfl__$internal_renderer__$DrawCommandReader_BeginFillView_$Impl_$._new = function(d) {
 	var this1 = d;
 	return this1;
@@ -35414,6 +35602,7 @@ openfl__$internal_renderer__$DrawCommandReader_BeginFillView_$Impl_$.get_alpha =
 var openfl__$internal_renderer__$DrawCommandReader_BeginGradientFillView_$Impl_$ = {};
 $hxClasses["openfl._internal.renderer._DrawCommandReader.BeginGradientFillView_Impl_"] = openfl__$internal_renderer__$DrawCommandReader_BeginGradientFillView_$Impl_$;
 openfl__$internal_renderer__$DrawCommandReader_BeginGradientFillView_$Impl_$.__name__ = ["openfl","_internal","renderer","_DrawCommandReader","BeginGradientFillView_Impl_"];
+openfl__$internal_renderer__$DrawCommandReader_BeginGradientFillView_$Impl_$.__properties__ = {get_focalPointRatio:"get_focalPointRatio",get_interpolationMethod:"get_interpolationMethod",get_spreadMethod:"get_spreadMethod",get_matrix:"get_matrix",get_ratios:"get_ratios",get_alphas:"get_alphas",get_colors:"get_colors",get_type:"get_type"};
 openfl__$internal_renderer__$DrawCommandReader_BeginGradientFillView_$Impl_$._new = function(d) {
 	var this1 = d;
 	return this1;
@@ -35445,6 +35634,7 @@ openfl__$internal_renderer__$DrawCommandReader_BeginGradientFillView_$Impl_$.get
 var openfl__$internal_renderer__$DrawCommandReader_BeginShaderFillView_$Impl_$ = {};
 $hxClasses["openfl._internal.renderer._DrawCommandReader.BeginShaderFillView_Impl_"] = openfl__$internal_renderer__$DrawCommandReader_BeginShaderFillView_$Impl_$;
 openfl__$internal_renderer__$DrawCommandReader_BeginShaderFillView_$Impl_$.__name__ = ["openfl","_internal","renderer","_DrawCommandReader","BeginShaderFillView_Impl_"];
+openfl__$internal_renderer__$DrawCommandReader_BeginShaderFillView_$Impl_$.__properties__ = {get_shaderBuffer:"get_shaderBuffer"};
 openfl__$internal_renderer__$DrawCommandReader_BeginShaderFillView_$Impl_$._new = function(d) {
 	var this1 = d;
 	return this1;
@@ -35455,6 +35645,7 @@ openfl__$internal_renderer__$DrawCommandReader_BeginShaderFillView_$Impl_$.get_s
 var openfl__$internal_renderer__$DrawCommandReader_CubicCurveToView_$Impl_$ = {};
 $hxClasses["openfl._internal.renderer._DrawCommandReader.CubicCurveToView_Impl_"] = openfl__$internal_renderer__$DrawCommandReader_CubicCurveToView_$Impl_$;
 openfl__$internal_renderer__$DrawCommandReader_CubicCurveToView_$Impl_$.__name__ = ["openfl","_internal","renderer","_DrawCommandReader","CubicCurveToView_Impl_"];
+openfl__$internal_renderer__$DrawCommandReader_CubicCurveToView_$Impl_$.__properties__ = {get_anchorY:"get_anchorY",get_anchorX:"get_anchorX",get_controlY2:"get_controlY2",get_controlX2:"get_controlX2",get_controlY1:"get_controlY1",get_controlX1:"get_controlX1"};
 openfl__$internal_renderer__$DrawCommandReader_CubicCurveToView_$Impl_$._new = function(d) {
 	var this1 = d;
 	return this1;
@@ -35480,6 +35671,7 @@ openfl__$internal_renderer__$DrawCommandReader_CubicCurveToView_$Impl_$.get_anch
 var openfl__$internal_renderer__$DrawCommandReader_CurveToView_$Impl_$ = {};
 $hxClasses["openfl._internal.renderer._DrawCommandReader.CurveToView_Impl_"] = openfl__$internal_renderer__$DrawCommandReader_CurveToView_$Impl_$;
 openfl__$internal_renderer__$DrawCommandReader_CurveToView_$Impl_$.__name__ = ["openfl","_internal","renderer","_DrawCommandReader","CurveToView_Impl_"];
+openfl__$internal_renderer__$DrawCommandReader_CurveToView_$Impl_$.__properties__ = {get_anchorY:"get_anchorY",get_anchorX:"get_anchorX",get_controlY:"get_controlY",get_controlX:"get_controlX"};
 openfl__$internal_renderer__$DrawCommandReader_CurveToView_$Impl_$._new = function(d) {
 	var this1 = d;
 	return this1;
@@ -35499,6 +35691,7 @@ openfl__$internal_renderer__$DrawCommandReader_CurveToView_$Impl_$.get_anchorY =
 var openfl__$internal_renderer__$DrawCommandReader_DrawCircleView_$Impl_$ = {};
 $hxClasses["openfl._internal.renderer._DrawCommandReader.DrawCircleView_Impl_"] = openfl__$internal_renderer__$DrawCommandReader_DrawCircleView_$Impl_$;
 openfl__$internal_renderer__$DrawCommandReader_DrawCircleView_$Impl_$.__name__ = ["openfl","_internal","renderer","_DrawCommandReader","DrawCircleView_Impl_"];
+openfl__$internal_renderer__$DrawCommandReader_DrawCircleView_$Impl_$.__properties__ = {get_radius:"get_radius",get_y:"get_y",get_x:"get_x"};
 openfl__$internal_renderer__$DrawCommandReader_DrawCircleView_$Impl_$._new = function(d) {
 	var this1 = d;
 	return this1;
@@ -35515,6 +35708,7 @@ openfl__$internal_renderer__$DrawCommandReader_DrawCircleView_$Impl_$.get_radius
 var openfl__$internal_renderer__$DrawCommandReader_DrawEllipseView_$Impl_$ = {};
 $hxClasses["openfl._internal.renderer._DrawCommandReader.DrawEllipseView_Impl_"] = openfl__$internal_renderer__$DrawCommandReader_DrawEllipseView_$Impl_$;
 openfl__$internal_renderer__$DrawCommandReader_DrawEllipseView_$Impl_$.__name__ = ["openfl","_internal","renderer","_DrawCommandReader","DrawEllipseView_Impl_"];
+openfl__$internal_renderer__$DrawCommandReader_DrawEllipseView_$Impl_$.__properties__ = {get_height:"get_height",get_width:"get_width",get_y:"get_y",get_x:"get_x"};
 openfl__$internal_renderer__$DrawCommandReader_DrawEllipseView_$Impl_$._new = function(d) {
 	var this1 = d;
 	return this1;
@@ -35534,6 +35728,7 @@ openfl__$internal_renderer__$DrawCommandReader_DrawEllipseView_$Impl_$.get_heigh
 var openfl__$internal_renderer__$DrawCommandReader_DrawQuadsView_$Impl_$ = {};
 $hxClasses["openfl._internal.renderer._DrawCommandReader.DrawQuadsView_Impl_"] = openfl__$internal_renderer__$DrawCommandReader_DrawQuadsView_$Impl_$;
 openfl__$internal_renderer__$DrawCommandReader_DrawQuadsView_$Impl_$.__name__ = ["openfl","_internal","renderer","_DrawCommandReader","DrawQuadsView_Impl_"];
+openfl__$internal_renderer__$DrawCommandReader_DrawQuadsView_$Impl_$.__properties__ = {get_transforms:"get_transforms",get_indices:"get_indices",get_rects:"get_rects"};
 openfl__$internal_renderer__$DrawCommandReader_DrawQuadsView_$Impl_$._new = function(d) {
 	var this1 = d;
 	return this1;
@@ -35550,6 +35745,7 @@ openfl__$internal_renderer__$DrawCommandReader_DrawQuadsView_$Impl_$.get_transfo
 var openfl__$internal_renderer__$DrawCommandReader_DrawRectView_$Impl_$ = {};
 $hxClasses["openfl._internal.renderer._DrawCommandReader.DrawRectView_Impl_"] = openfl__$internal_renderer__$DrawCommandReader_DrawRectView_$Impl_$;
 openfl__$internal_renderer__$DrawCommandReader_DrawRectView_$Impl_$.__name__ = ["openfl","_internal","renderer","_DrawCommandReader","DrawRectView_Impl_"];
+openfl__$internal_renderer__$DrawCommandReader_DrawRectView_$Impl_$.__properties__ = {get_height:"get_height",get_width:"get_width",get_y:"get_y",get_x:"get_x"};
 openfl__$internal_renderer__$DrawCommandReader_DrawRectView_$Impl_$._new = function(d) {
 	var this1 = d;
 	return this1;
@@ -35569,6 +35765,7 @@ openfl__$internal_renderer__$DrawCommandReader_DrawRectView_$Impl_$.get_height =
 var openfl__$internal_renderer__$DrawCommandReader_DrawRoundRectView_$Impl_$ = {};
 $hxClasses["openfl._internal.renderer._DrawCommandReader.DrawRoundRectView_Impl_"] = openfl__$internal_renderer__$DrawCommandReader_DrawRoundRectView_$Impl_$;
 openfl__$internal_renderer__$DrawCommandReader_DrawRoundRectView_$Impl_$.__name__ = ["openfl","_internal","renderer","_DrawCommandReader","DrawRoundRectView_Impl_"];
+openfl__$internal_renderer__$DrawCommandReader_DrawRoundRectView_$Impl_$.__properties__ = {get_ellipseHeight:"get_ellipseHeight",get_ellipseWidth:"get_ellipseWidth",get_height:"get_height",get_width:"get_width",get_y:"get_y",get_x:"get_x"};
 openfl__$internal_renderer__$DrawCommandReader_DrawRoundRectView_$Impl_$._new = function(d) {
 	var this1 = d;
 	return this1;
@@ -35594,6 +35791,7 @@ openfl__$internal_renderer__$DrawCommandReader_DrawRoundRectView_$Impl_$.get_ell
 var openfl__$internal_renderer__$DrawCommandReader_DrawTrianglesView_$Impl_$ = {};
 $hxClasses["openfl._internal.renderer._DrawCommandReader.DrawTrianglesView_Impl_"] = openfl__$internal_renderer__$DrawCommandReader_DrawTrianglesView_$Impl_$;
 openfl__$internal_renderer__$DrawCommandReader_DrawTrianglesView_$Impl_$.__name__ = ["openfl","_internal","renderer","_DrawCommandReader","DrawTrianglesView_Impl_"];
+openfl__$internal_renderer__$DrawCommandReader_DrawTrianglesView_$Impl_$.__properties__ = {get_culling:"get_culling",get_uvtData:"get_uvtData",get_indices:"get_indices",get_vertices:"get_vertices"};
 openfl__$internal_renderer__$DrawCommandReader_DrawTrianglesView_$Impl_$._new = function(d) {
 	var this1 = d;
 	return this1;
@@ -35620,6 +35818,7 @@ openfl__$internal_renderer__$DrawCommandReader_EndFillView_$Impl_$._new = functi
 var openfl__$internal_renderer__$DrawCommandReader_LineBitmapStyleView_$Impl_$ = {};
 $hxClasses["openfl._internal.renderer._DrawCommandReader.LineBitmapStyleView_Impl_"] = openfl__$internal_renderer__$DrawCommandReader_LineBitmapStyleView_$Impl_$;
 openfl__$internal_renderer__$DrawCommandReader_LineBitmapStyleView_$Impl_$.__name__ = ["openfl","_internal","renderer","_DrawCommandReader","LineBitmapStyleView_Impl_"];
+openfl__$internal_renderer__$DrawCommandReader_LineBitmapStyleView_$Impl_$.__properties__ = {get_smooth:"get_smooth",get_repeat:"get_repeat",get_matrix:"get_matrix",get_bitmap:"get_bitmap"};
 openfl__$internal_renderer__$DrawCommandReader_LineBitmapStyleView_$Impl_$._new = function(d) {
 	var this1 = d;
 	return this1;
@@ -35639,6 +35838,7 @@ openfl__$internal_renderer__$DrawCommandReader_LineBitmapStyleView_$Impl_$.get_s
 var openfl__$internal_renderer__$DrawCommandReader_LineGradientStyleView_$Impl_$ = {};
 $hxClasses["openfl._internal.renderer._DrawCommandReader.LineGradientStyleView_Impl_"] = openfl__$internal_renderer__$DrawCommandReader_LineGradientStyleView_$Impl_$;
 openfl__$internal_renderer__$DrawCommandReader_LineGradientStyleView_$Impl_$.__name__ = ["openfl","_internal","renderer","_DrawCommandReader","LineGradientStyleView_Impl_"];
+openfl__$internal_renderer__$DrawCommandReader_LineGradientStyleView_$Impl_$.__properties__ = {get_focalPointRatio:"get_focalPointRatio",get_interpolationMethod:"get_interpolationMethod",get_spreadMethod:"get_spreadMethod",get_matrix:"get_matrix",get_ratios:"get_ratios",get_alphas:"get_alphas",get_colors:"get_colors",get_type:"get_type"};
 openfl__$internal_renderer__$DrawCommandReader_LineGradientStyleView_$Impl_$._new = function(d) {
 	var this1 = d;
 	return this1;
@@ -35670,6 +35870,7 @@ openfl__$internal_renderer__$DrawCommandReader_LineGradientStyleView_$Impl_$.get
 var openfl__$internal_renderer__$DrawCommandReader_LineStyleView_$Impl_$ = {};
 $hxClasses["openfl._internal.renderer._DrawCommandReader.LineStyleView_Impl_"] = openfl__$internal_renderer__$DrawCommandReader_LineStyleView_$Impl_$;
 openfl__$internal_renderer__$DrawCommandReader_LineStyleView_$Impl_$.__name__ = ["openfl","_internal","renderer","_DrawCommandReader","LineStyleView_Impl_"];
+openfl__$internal_renderer__$DrawCommandReader_LineStyleView_$Impl_$.__properties__ = {get_miterLimit:"get_miterLimit",get_joints:"get_joints",get_caps:"get_caps",get_scaleMode:"get_scaleMode",get_pixelHinting:"get_pixelHinting",get_alpha:"get_alpha",get_color:"get_color",get_thickness:"get_thickness"};
 openfl__$internal_renderer__$DrawCommandReader_LineStyleView_$Impl_$._new = function(d) {
 	var this1 = d;
 	return this1;
@@ -35701,6 +35902,7 @@ openfl__$internal_renderer__$DrawCommandReader_LineStyleView_$Impl_$.get_miterLi
 var openfl__$internal_renderer__$DrawCommandReader_LineToView_$Impl_$ = {};
 $hxClasses["openfl._internal.renderer._DrawCommandReader.LineToView_Impl_"] = openfl__$internal_renderer__$DrawCommandReader_LineToView_$Impl_$;
 openfl__$internal_renderer__$DrawCommandReader_LineToView_$Impl_$.__name__ = ["openfl","_internal","renderer","_DrawCommandReader","LineToView_Impl_"];
+openfl__$internal_renderer__$DrawCommandReader_LineToView_$Impl_$.__properties__ = {get_y:"get_y",get_x:"get_x"};
 openfl__$internal_renderer__$DrawCommandReader_LineToView_$Impl_$._new = function(d) {
 	var this1 = d;
 	return this1;
@@ -35714,6 +35916,7 @@ openfl__$internal_renderer__$DrawCommandReader_LineToView_$Impl_$.get_y = functi
 var openfl__$internal_renderer__$DrawCommandReader_MoveToView_$Impl_$ = {};
 $hxClasses["openfl._internal.renderer._DrawCommandReader.MoveToView_Impl_"] = openfl__$internal_renderer__$DrawCommandReader_MoveToView_$Impl_$;
 openfl__$internal_renderer__$DrawCommandReader_MoveToView_$Impl_$.__name__ = ["openfl","_internal","renderer","_DrawCommandReader","MoveToView_Impl_"];
+openfl__$internal_renderer__$DrawCommandReader_MoveToView_$Impl_$.__properties__ = {get_y:"get_y",get_x:"get_x"};
 openfl__$internal_renderer__$DrawCommandReader_MoveToView_$Impl_$._new = function(d) {
 	var this1 = d;
 	return this1;
@@ -35727,6 +35930,7 @@ openfl__$internal_renderer__$DrawCommandReader_MoveToView_$Impl_$.get_y = functi
 var openfl__$internal_renderer__$DrawCommandReader_OverrideBlendModeView_$Impl_$ = {};
 $hxClasses["openfl._internal.renderer._DrawCommandReader.OverrideBlendModeView_Impl_"] = openfl__$internal_renderer__$DrawCommandReader_OverrideBlendModeView_$Impl_$;
 openfl__$internal_renderer__$DrawCommandReader_OverrideBlendModeView_$Impl_$.__name__ = ["openfl","_internal","renderer","_DrawCommandReader","OverrideBlendModeView_Impl_"];
+openfl__$internal_renderer__$DrawCommandReader_OverrideBlendModeView_$Impl_$.__properties__ = {get_blendMode:"get_blendMode"};
 openfl__$internal_renderer__$DrawCommandReader_OverrideBlendModeView_$Impl_$._new = function(d) {
 	var this1 = d;
 	return this1;
@@ -35737,6 +35941,7 @@ openfl__$internal_renderer__$DrawCommandReader_OverrideBlendModeView_$Impl_$.get
 var openfl__$internal_renderer__$DrawCommandReader_OverrideMatrixView_$Impl_$ = {};
 $hxClasses["openfl._internal.renderer._DrawCommandReader.OverrideMatrixView_Impl_"] = openfl__$internal_renderer__$DrawCommandReader_OverrideMatrixView_$Impl_$;
 openfl__$internal_renderer__$DrawCommandReader_OverrideMatrixView_$Impl_$.__name__ = ["openfl","_internal","renderer","_DrawCommandReader","OverrideMatrixView_Impl_"];
+openfl__$internal_renderer__$DrawCommandReader_OverrideMatrixView_$Impl_$.__properties__ = {get_matrix:"get_matrix"};
 openfl__$internal_renderer__$DrawCommandReader_OverrideMatrixView_$Impl_$._new = function(d) {
 	var this1 = d;
 	return this1;
@@ -45079,6 +45284,7 @@ openfl_geom_Rectangle.prototype = {
 		return p.clone();
 	}
 	,__class__: openfl_geom_Rectangle
+	,__properties__: {set_topLeft:"set_topLeft",get_topLeft:"get_topLeft",set_top:"set_top",get_top:"get_top",set_size:"set_size",get_size:"get_size",set_right:"set_right",get_right:"get_right",set_left:"set_left",get_left:"get_left",set_bottomRight:"set_bottomRight",get_bottomRight:"get_bottomRight",set_bottom:"set_bottom",get_bottom:"get_bottom"}
 };
 var openfl_geom_Matrix = function(a,b,c,d,tx,ty) {
 	if(ty == null) {
@@ -45594,6 +45800,7 @@ openfl_geom_ColorTransform.prototype = {
 		return openfl_geom_ColorTransform.__limeColorMatrix;
 	}
 	,__class__: openfl_geom_ColorTransform
+	,__properties__: {set_color:"set_color",get_color:"get_color"}
 };
 var openfl__$internal_renderer_context3D_Context3DGraphics = function() { };
 $hxClasses["openfl._internal.renderer.context3D.Context3DGraphics"] = openfl__$internal_renderer_context3D_Context3DGraphics;
@@ -48869,6 +49076,7 @@ openfl_display_Shader.prototype = {
 		return this.__glVertexSource = value;
 	}
 	,__class__: openfl_display_Shader
+	,__properties__: {set_glVertexSource:"set_glVertexSource",get_glVertexSource:"get_glVertexSource",set_glFragmentSource:"set_glFragmentSource",get_glFragmentSource:"get_glFragmentSource",set_data:"set_data",get_data:"get_data"}
 };
 var openfl__$internal_renderer_context3D_Context3DMaskShader = function() {
 	if(this.__glFragmentSource == null) {
@@ -51353,6 +51561,7 @@ openfl__$internal_text_TextEngine.prototype = {
 		return this.text = value;
 	}
 	,__class__: openfl__$internal_text_TextEngine
+	,__properties__: {set_text:"set_text",set_scrollV:"set_scrollV",get_scrollV:"get_scrollV",set_restrict:"set_restrict",get_maxScrollV:"get_maxScrollV",get_bottomScrollV:"get_bottomScrollV"}
 };
 var openfl__$internal_text_TextFormatRange = function(format,start,end) {
 	this.format = format;
@@ -51513,10 +51722,12 @@ openfl__$internal_text_TextLayout.prototype = {
 		return value;
 	}
 	,__class__: openfl__$internal_text_TextLayout
+	,__properties__: {set_text:"set_text",set_size:"set_size",set_script:"set_script",get_script:"get_script",get_positions:"get_positions",set_language:"set_language",get_language:"get_language",get_glyphs:"get_glyphs",set_font:"set_font",set_direction:"set_direction",get_direction:"get_direction"}
 };
 var openfl__$internal_text__$TextLayout_TextDirection_$Impl_$ = {};
 $hxClasses["openfl._internal.text._TextLayout.TextDirection_Impl_"] = openfl__$internal_text__$TextLayout_TextDirection_$Impl_$;
 openfl__$internal_text__$TextLayout_TextDirection_$Impl_$.__name__ = ["openfl","_internal","text","_TextLayout","TextDirection_Impl_"];
+openfl__$internal_text__$TextLayout_TextDirection_$Impl_$.__properties__ = {get_vertical:"get_vertical",get_horizontal:"get_horizontal",get_forward:"get_forward",get_backward:"get_backward"};
 openfl__$internal_text__$TextLayout_TextDirection_$Impl_$.reverse = function(this1) {
 	this1 ^= 1;
 };
@@ -51563,6 +51774,7 @@ openfl__$internal_text__$TextLayout_TextDirection_$Impl_$.get_vertical = functio
 var openfl__$internal_text__$TextLayout_TextScript_$Impl_$ = {};
 $hxClasses["openfl._internal.text._TextLayout.TextScript_Impl_"] = openfl__$internal_text__$TextLayout_TextScript_$Impl_$;
 openfl__$internal_text__$TextLayout_TextScript_$Impl_$.__name__ = ["openfl","_internal","text","_TextLayout","TextScript_Impl_"];
+openfl__$internal_text__$TextLayout_TextScript_$Impl_$.__properties__ = {get_rightToLeft:"get_rightToLeft"};
 openfl__$internal_text__$TextLayout_TextScript_$Impl_$.toHBScript = function(this1) {
 	return 1517910393;
 };
@@ -52346,6 +52558,7 @@ openfl_display_Bitmap.prototype = $extend(openfl_display_DisplayObject.prototype
 		return value;
 	}
 	,__class__: openfl_display_Bitmap
+	,__properties__: $extend(openfl_display_DisplayObject.prototype.__properties__,{set_bitmapData:"set_bitmapData",get_bitmapData:"get_bitmapData"})
 });
 var openfl_display__$BlendMode_BlendMode_$Impl_$ = {};
 $hxClasses["openfl.display._BlendMode.BlendMode_Impl_"] = openfl_display__$BlendMode_BlendMode_$Impl_$;
@@ -53034,6 +53247,7 @@ openfl_display_FrameLabel.prototype = $extend(openfl_events_EventDispatcher.prot
 		return this.__name;
 	}
 	,__class__: openfl_display_FrameLabel
+	,__properties__: {get_name:"get_name",get_frame:"get_frame"}
 });
 var openfl_display__$GradientType_GradientType_$Impl_$ = {};
 $hxClasses["openfl.display._GradientType.GradientType_Impl_"] = openfl_display__$GradientType_GradientType_$Impl_$;
@@ -55258,6 +55472,7 @@ openfl_display_Graphics.prototype = {
 		return this.__dirty = value;
 	}
 	,__class__: openfl_display_Graphics
+	,__properties__: {set___dirty:"set___dirty"}
 };
 var openfl_display_IGraphicsFill = function() { };
 $hxClasses["openfl.display.IGraphicsFill"] = openfl_display_IGraphicsFill;
@@ -56674,6 +56889,7 @@ openfl_display_MovieClip.prototype = $extend(openfl_display_Sprite.prototype,{
 		return this.__totalFrames;
 	}
 	,__class__: openfl_display_MovieClip
+	,__properties__: $extend(openfl_display_Sprite.prototype.__properties__,{get_totalFrames:"get_totalFrames",get_isPlaying:"get_isPlaying",get_framesLoaded:"get_framesLoaded",set_enabled:"set_enabled",get_enabled:"get_enabled",get_currentLabels:"get_currentLabels",get_currentLabel:"get_currentLabel",get_currentFrameLabel:"get_currentFrameLabel",get_currentFrame:"get_currentFrame"})
 });
 var openfl_display__$MovieClip_FrameSymbolInstance = function(initFrame,initFrameObjectID,characterID,depth,displayObject,clipDepth) {
 	this.initFrame = initFrame;
@@ -58062,6 +58278,7 @@ openfl_display_ShaderParameter.prototype = {
 		return this.name = value;
 	}
 	,__class__: openfl_display_ShaderParameter
+	,__properties__: {set_name:"set_name"}
 };
 var openfl_display__$ShaderParameterType_ShaderParameterType_$Impl_$ = {};
 $hxClasses["openfl.display._ShaderParameterType.ShaderParameterType_Impl_"] = openfl_display__$ShaderParameterType_ShaderParameterType_$Impl_$;
@@ -58199,6 +58416,7 @@ openfl_display_Shape.prototype = $extend(openfl_display_DisplayObject.prototype,
 		return this.__graphics;
 	}
 	,__class__: openfl_display_Shape
+	,__properties__: $extend(openfl_display_DisplayObject.prototype.__properties__,{get_graphics:"get_graphics"})
 });
 var openfl_display_SimpleButton = function(upState,overState,downState,hitTestState) {
 	openfl_display_InteractiveObject.call(this);
@@ -58549,6 +58767,7 @@ openfl_display_SimpleButton.prototype = $extend(openfl_display_InteractiveObject
 		}
 	}
 	,__class__: openfl_display_SimpleButton
+	,__properties__: $extend(openfl_display_InteractiveObject.prototype.__properties__,{set___currentState:"set___currentState",set_upState:"set_upState",get_upState:"get_upState",set_soundTransform:"set_soundTransform",get_soundTransform:"get_soundTransform",set_overState:"set_overState",get_overState:"get_overState",set_hitTestState:"set_hitTestState",get_hitTestState:"get_hitTestState",set_downState:"set_downState",get_downState:"get_downState"})
 });
 var openfl_display__$SpreadMethod_SpreadMethod_$Impl_$ = {};
 $hxClasses["openfl.display._SpreadMethod.SpreadMethod_Impl_"] = openfl_display__$SpreadMethod_SpreadMethod_$Impl_$;
@@ -60580,6 +60799,7 @@ openfl_display_Stage.prototype = $extend(openfl_display_DisplayObjectContainer.p
 		return 0;
 	}
 	,__class__: openfl_display_Stage
+	,__properties__: $extend(openfl_display_DisplayObjectContainer.prototype.__properties__,{set_scaleMode:"set_scaleMode",get_scaleMode:"get_scaleMode",set_quality:"set_quality",get_quality:"get_quality",get_fullScreenWidth:"get_fullScreenWidth",set_fullScreenSourceRect:"set_fullScreenSourceRect",get_fullScreenSourceRect:"get_fullScreenSourceRect",get_fullScreenHeight:"get_fullScreenHeight",set_frameRate:"set_frameRate",get_frameRate:"get_frameRate",set_focus:"set_focus",get_focus:"get_focus",set_displayState:"set_displayState",get_displayState:"get_displayState",get_contentsScaleFactor:"get_contentsScaleFactor",set_color:"set_color",get_color:"get_color"})
 });
 var openfl_display_Stage3D = function(stage) {
 	openfl_events_EventDispatcher.call(this);
@@ -60727,6 +60947,7 @@ openfl_display_Stage3D.prototype = $extend(openfl_events_EventDispatcher.prototy
 		return value;
 	}
 	,__class__: openfl_display_Stage3D
+	,__properties__: {set_y:"set_y",get_y:"get_y",set_x:"set_x",get_x:"get_x"}
 });
 var openfl_display__$StageAlign_StageAlign_$Impl_$ = {};
 $hxClasses["openfl.display._StageAlign.StageAlign_Impl_"] = openfl_display__$StageAlign_StageAlign_$Impl_$;
@@ -62038,6 +62259,7 @@ openfl_display3D_Context3D.prototype = $extend(openfl_events_EventDispatcher.pro
 		return this.__enableErrorChecking = value;
 	}
 	,__class__: openfl_display3D_Context3D
+	,__properties__: {set_enableErrorChecking:"set_enableErrorChecking",get_enableErrorChecking:"get_enableErrorChecking"}
 });
 var openfl_display3D__$Context3DBlendFactor_Context3DBlendFactor_$Impl_$ = {};
 $hxClasses["openfl.display3D._Context3DBlendFactor.Context3DBlendFactor_Impl_"] = openfl_display3D__$Context3DBlendFactor_Context3DBlendFactor_$Impl_$;
@@ -65298,6 +65520,7 @@ openfl_filters_BlurFilter.prototype = $extend(openfl_filters_BitmapFilter.protot
 		return this.__quality = value;
 	}
 	,__class__: openfl_filters_BlurFilter
+	,__properties__: {set_quality:"set_quality",get_quality:"get_quality",set_blurY:"set_blurY",get_blurY:"get_blurY",set_blurX:"set_blurX",get_blurX:"get_blurX"}
 });
 var openfl_filters__$ColorMatrixFilter_ColorMatrixShader = function() {
 	if(this.__glFragmentSource == null) {
@@ -65465,6 +65688,7 @@ openfl_filters_ColorMatrixFilter.prototype = $extend(openfl_filters_BitmapFilter
 		return this.__matrix = value;
 	}
 	,__class__: openfl_filters_ColorMatrixFilter
+	,__properties__: {set_matrix:"set_matrix",get_matrix:"get_matrix"}
 });
 var openfl_filters__$ConvolutionFilter_ConvolutionShader = function() {
 	if(this.__glFragmentSource == null) {
@@ -65563,6 +65787,7 @@ openfl_filters_ConvolutionFilter.prototype = $extend(openfl_filters_BitmapFilter
 		return this.__matrix = v;
 	}
 	,__class__: openfl_filters_ConvolutionFilter
+	,__properties__: {set_matrix:"set_matrix",get_matrix:"get_matrix"}
 });
 var openfl_filters__$DisplacementMapFilter_DisplacementMapShader = function() {
 	if(this.__glFragmentSource == null) {
@@ -65770,6 +65995,7 @@ openfl_filters_DisplacementMapFilter.prototype = $extend(openfl_filters_BitmapFi
 		return this.__mode = value;
 	}
 	,__class__: openfl_filters_DisplacementMapFilter
+	,__properties__: {set_scaleY:"set_scaleY",get_scaleY:"get_scaleY",set_scaleX:"set_scaleX",get_scaleX:"get_scaleX",set_mode:"set_mode",get_mode:"get_mode",set_mapPoint:"set_mapPoint",get_mapPoint:"get_mapPoint",set_mapBitmap:"set_mapBitmap",get_mapBitmap:"get_mapBitmap",set_componentY:"set_componentY",get_componentY:"get_componentY",set_componentX:"set_componentX",get_componentX:"get_componentX",set_color:"set_color",get_color:"get_color",set_alpha:"set_alpha",get_alpha:"get_alpha"}
 });
 var openfl_filters_DropShadowFilter = function(distance,angle,color,alpha,blurX,blurY,strength,quality,inner,knockout,hideObject) {
 	if(hideObject == null) {
@@ -65973,6 +66199,7 @@ openfl_filters_DropShadowFilter.prototype = $extend(openfl_filters_BitmapFilter.
 		return this.__strength = value;
 	}
 	,__class__: openfl_filters_DropShadowFilter
+	,__properties__: {set_strength:"set_strength",get_strength:"get_strength",set_quality:"set_quality",get_quality:"get_quality",set_knockout:"set_knockout",get_knockout:"get_knockout",set_inner:"set_inner",get_inner:"get_inner",set_hideObject:"set_hideObject",get_hideObject:"get_hideObject",set_distance:"set_distance",get_distance:"get_distance",set_color:"set_color",get_color:"get_color",set_blurY:"set_blurY",get_blurY:"get_blurY",set_blurX:"set_blurX",get_blurX:"get_blurX",set_angle:"set_angle",get_angle:"get_angle",set_alpha:"set_alpha",get_alpha:"get_alpha"}
 });
 var openfl_filters__$GlowFilter_GlowShader = function() {
 	if(this.__glFragmentSource == null) {
@@ -66159,6 +66386,7 @@ openfl_filters_GlowFilter.prototype = $extend(openfl_filters_BitmapFilter.protot
 		return this.__strength = value;
 	}
 	,__class__: openfl_filters_GlowFilter
+	,__properties__: {set_strength:"set_strength",get_strength:"get_strength",set_quality:"set_quality",get_quality:"get_quality",set_knockout:"set_knockout",get_knockout:"get_knockout",set_inner:"set_inner",get_inner:"get_inner",set_color:"set_color",get_color:"get_color",set_blurY:"set_blurY",get_blurY:"get_blurY",set_blurX:"set_blurX",get_blurX:"get_blurX",set_alpha:"set_alpha",get_alpha:"get_alpha"}
 });
 var openfl_geom_Matrix3D = function(v) {
 	if(v != null && v.get_length() == 16) {
@@ -66913,6 +67141,7 @@ openfl_geom_Matrix3D.prototype = {
 		return val;
 	}
 	,__class__: openfl_geom_Matrix3D
+	,__properties__: {set_position:"set_position",get_position:"get_position",get_determinant:"get_determinant"}
 };
 var openfl_geom__$Orientation3D_Orientation3D_$Impl_$ = {};
 $hxClasses["openfl.geom._Orientation3D.Orientation3D_Impl_"] = openfl_geom__$Orientation3D_Orientation3D_$Impl_$;
@@ -67020,6 +67249,7 @@ openfl_geom_Point.prototype = {
 		return Math.sqrt(this.x * this.x + this.y * this.y);
 	}
 	,__class__: openfl_geom_Point
+	,__properties__: {get_length:"get_length"}
 };
 var openfl_geom_Transform = function(displayObject) {
 	this.__colorTransform = new openfl_geom_ColorTransform();
@@ -67128,6 +67358,7 @@ openfl_geom_Transform.prototype = {
 		}
 	}
 	,__class__: openfl_geom_Transform
+	,__properties__: {set_matrix3D:"set_matrix3D",get_matrix3D:"get_matrix3D",set_matrix:"set_matrix",get_matrix:"get_matrix",get_concatenatedMatrix:"get_concatenatedMatrix",set_colorTransform:"set_colorTransform",get_colorTransform:"get_colorTransform"}
 };
 var openfl_geom_Vector3D = function(x,y,z,w) {
 	if(w == null) {
@@ -67149,6 +67380,7 @@ var openfl_geom_Vector3D = function(x,y,z,w) {
 };
 $hxClasses["openfl.geom.Vector3D"] = openfl_geom_Vector3D;
 openfl_geom_Vector3D.__name__ = ["openfl","geom","Vector3D"];
+openfl_geom_Vector3D.__properties__ = {get_Z_AXIS:"get_Z_AXIS",get_Y_AXIS:"get_Y_AXIS",get_X_AXIS:"get_X_AXIS"};
 openfl_geom_Vector3D.angleBetween = function(a,b) {
 	var la = a.get_length();
 	var lb = b.get_length();
@@ -67278,6 +67510,7 @@ openfl_geom_Vector3D.prototype = {
 		return this.x * this.x + this.y * this.y + this.z * this.z;
 	}
 	,__class__: openfl_geom_Vector3D
+	,__properties__: {get_lengthSquared:"get_lengthSquared",get_length:"get_length"}
 };
 var openfl_media_ID3Info = function() {
 };
@@ -67471,6 +67704,7 @@ openfl_media_Sound.prototype = $extend(openfl_events_EventDispatcher.prototype,{
 		}
 	}
 	,__class__: openfl_media_Sound
+	,__properties__: {get_length:"get_length",get_id3:"get_id3"}
 });
 var openfl_media_SoundChannel = function(source,soundTransform) {
 	openfl_events_EventDispatcher.call(this,this);
@@ -67563,6 +67797,7 @@ openfl_media_SoundChannel.prototype = $extend(openfl_events_EventDispatcher.prot
 		this.dispatchEvent(new openfl_events_Event("soundComplete"));
 	}
 	,__class__: openfl_media_SoundChannel
+	,__properties__: {set_soundTransform:"set_soundTransform",get_soundTransform:"get_soundTransform",set_position:"set_position",get_position:"get_position"}
 });
 var openfl_media_SoundLoaderContext = function(bufferTime,checkPolicyFile) {
 	if(checkPolicyFile == null) {
@@ -67612,6 +67847,7 @@ openfl_media_SoundTransform.prototype = {
 var openfl_media_SoundMixer = function() { };
 $hxClasses["openfl.media.SoundMixer"] = openfl_media_SoundMixer;
 openfl_media_SoundMixer.__name__ = ["openfl","media","SoundMixer"];
+openfl_media_SoundMixer.__properties__ = {set_soundTransform:"set_soundTransform",get_soundTransform:"get_soundTransform"};
 openfl_media_SoundMixer.areSoundsInaccessible = function() {
 	return false;
 };
@@ -67869,6 +68105,7 @@ openfl_net_NetStream.prototype = $extend(openfl_events_EventDispatcher.prototype
 		return this.__seeking = value;
 	}
 	,__class__: openfl_net_NetStream
+	,__properties__: {set___seeking:"set___seeking",get___seeking:"get___seeking",set_speed:"set_speed",get_speed:"get_speed"}
 });
 var openfl_net_URLLoader = function(request) {
 	openfl_events_EventDispatcher.call(this);
@@ -68221,6 +68458,7 @@ openfl_text_Font.prototype = $extend(lime_text_Font.prototype,{
 		return this.name = value;
 	}
 	,__class__: openfl_text_Font
+	,__properties__: {set_fontName:"set_fontName",get_fontName:"get_fontName"}
 });
 var openfl_text__$FontStyle_FontStyle_$Impl_$ = {};
 $hxClasses["openfl.text._FontStyle.FontStyle_Impl_"] = openfl_text__$FontStyle_FontStyle_$Impl_$;
@@ -70761,6 +70999,7 @@ openfl_text_TextField.prototype = $extend(openfl_display_InteractiveObject.proto
 		this.dispatchEvent(new openfl_events_Event("change",true));
 	}
 	,__class__: openfl_text_TextField
+	,__properties__: $extend(openfl_display_InteractiveObject.prototype.__properties__,{set_wordWrap:"set_wordWrap",get_wordWrap:"get_wordWrap",set_type:"set_type",get_type:"get_type",get_textWidth:"get_textWidth",get_textHeight:"get_textHeight",set_textColor:"set_textColor",get_textColor:"get_textColor",set_text:"set_text",get_text:"get_text",set_sharpness:"set_sharpness",get_sharpness:"get_sharpness",get_selectionEndIndex:"get_selectionEndIndex",get_selectionBeginIndex:"get_selectionBeginIndex",set_selectable:"set_selectable",get_selectable:"get_selectable",set_scrollV:"set_scrollV",get_scrollV:"get_scrollV",set_scrollH:"set_scrollH",get_scrollH:"get_scrollH",set_restrict:"set_restrict",get_restrict:"get_restrict",get_numLines:"get_numLines",set_multiline:"set_multiline",get_multiline:"get_multiline",set_mouseWheelEnabled:"set_mouseWheelEnabled",get_mouseWheelEnabled:"get_mouseWheelEnabled",get_maxScrollV:"get_maxScrollV",get_maxScrollH:"get_maxScrollH",set_maxChars:"set_maxChars",get_maxChars:"get_maxChars",get_length:"get_length",set_htmlText:"set_htmlText",get_htmlText:"get_htmlText",set_gridFitType:"set_gridFitType",get_gridFitType:"get_gridFitType",set_embedFonts:"set_embedFonts",get_embedFonts:"get_embedFonts",set_displayAsPassword:"set_displayAsPassword",get_displayAsPassword:"get_displayAsPassword",set_defaultTextFormat:"set_defaultTextFormat",get_defaultTextFormat:"get_defaultTextFormat",get_caretIndex:"get_caretIndex",get_bottomScrollV:"get_bottomScrollV",set_borderColor:"set_borderColor",get_borderColor:"get_borderColor",set_border:"set_border",get_border:"get_border",set_backgroundColor:"set_backgroundColor",get_backgroundColor:"get_backgroundColor",set_background:"set_background",get_background:"get_background",set_autoSize:"set_autoSize",get_autoSize:"get_autoSize",set_antiAliasType:"set_antiAliasType",get_antiAliasType:"get_antiAliasType"})
 });
 var openfl_text__$TextFieldAutoSize_TextFieldAutoSize_$Impl_$ = {};
 $hxClasses["openfl.text._TextFieldAutoSize.TextFieldAutoSize_Impl_"] = openfl_text__$TextFieldAutoSize_TextFieldAutoSize_$Impl_$;
@@ -71320,6 +71559,7 @@ openfl_ui_GameInputDevice.prototype = {
 		return this.__controls.length;
 	}
 	,__class__: openfl_ui_GameInputDevice
+	,__properties__: {get_numControls:"get_numControls"}
 };
 var openfl_ui_Keyboard = function() { };
 $hxClasses["openfl.ui.Keyboard"] = openfl_ui_Keyboard;
@@ -71715,6 +71955,7 @@ openfl_ui_Keyboard.__getKeyLocation = function(key) {
 var openfl_ui_Mouse = function() { };
 $hxClasses["openfl.ui.Mouse"] = openfl_ui_Mouse;
 openfl_ui_Mouse.__name__ = ["openfl","ui","Mouse"];
+openfl_ui_Mouse.__properties__ = {set_cursor:"set_cursor",get_cursor:"get_cursor"};
 openfl_ui_Mouse.hide = function() {
 	openfl_ui_Mouse.__hidden = true;
 	var _g = 0;
@@ -72996,6 +73237,7 @@ openfl_utils_IAssetCache.prototype = {
 	,setFont: null
 	,setSound: null
 	,__class__: openfl_utils_IAssetCache
+	,__properties__: {set_enabled:"set_enabled",get_enabled:"get_enabled"}
 };
 var openfl_utils_AssetCache = function() {
 	this.__enabled = true;
@@ -73134,6 +73376,7 @@ openfl_utils_AssetCache.prototype = {
 		return this.__enabled = value;
 	}
 	,__class__: openfl_utils_AssetCache
+	,__properties__: {set_enabled:"set_enabled",get_enabled:"get_enabled"}
 };
 var openfl_utils_Assets = function() { };
 $hxClasses["openfl.utils.Assets"] = openfl_utils_Assets;
@@ -73462,6 +73705,7 @@ openfl_utils_Assets.LimeAssets_onChange = function() {
 var openfl_utils__$ByteArray_ByteArray_$Impl_$ = {};
 $hxClasses["openfl.utils._ByteArray.ByteArray_Impl_"] = openfl_utils__$ByteArray_ByteArray_$Impl_$;
 openfl_utils__$ByteArray_ByteArray_$Impl_$.__name__ = ["openfl","utils","_ByteArray","ByteArray_Impl_"];
+openfl_utils__$ByteArray_ByteArray_$Impl_$.__properties__ = {set_position:"set_position",get_position:"get_position",set_length:"set_length",get_length:"get_length",get_bytesAvailable:"get_bytesAvailable",set_defaultObjectEncoding:"set_defaultObjectEncoding",get_defaultObjectEncoding:"get_defaultObjectEncoding",set_defaultEndian:"set_defaultEndian",get_defaultEndian:"get_defaultEndian"};
 openfl_utils__$ByteArray_ByteArray_$Impl_$._new = function(length) {
 	if(length == null) {
 		length = 0;
@@ -73720,6 +73964,7 @@ openfl_utils_IDataOutput.prototype = {
 	,writeUTF: null
 	,writeUTFBytes: null
 	,__class__: openfl_utils_IDataOutput
+	,__properties__: {set_endian:"set_endian",get_endian:"get_endian"}
 };
 var openfl_utils_IDataInput = function() { };
 $hxClasses["openfl.utils.IDataInput"] = openfl_utils_IDataInput;
@@ -73744,6 +73989,7 @@ openfl_utils_IDataInput.prototype = {
 	,readUTF: null
 	,readUTFBytes: null
 	,__class__: openfl_utils_IDataInput
+	,__properties__: {set_endian:"set_endian",get_endian:"get_endian",get_bytesAvailable:"get_bytesAvailable"}
 };
 var openfl_utils_ByteArrayData = function(length) {
 	if(length == null) {
@@ -73766,6 +74012,7 @@ var openfl_utils_ByteArrayData = function(length) {
 $hxClasses["openfl.utils.ByteArrayData"] = openfl_utils_ByteArrayData;
 openfl_utils_ByteArrayData.__name__ = ["openfl","utils","ByteArrayData"];
 openfl_utils_ByteArrayData.__interfaces__ = [openfl_utils_IDataOutput,openfl_utils_IDataInput];
+openfl_utils_ByteArrayData.__properties__ = {set_defaultEndian:"set_defaultEndian",get_defaultEndian:"get_defaultEndian"};
 openfl_utils_ByteArrayData.fromBytes = function(bytes) {
 	var result = new openfl_utils_ByteArrayData();
 	result.__fromBytes(bytes);
@@ -74142,6 +74389,7 @@ openfl_utils_ByteArrayData.prototype = $extend(haxe_io_Bytes.prototype,{
 		return this.__endian = value;
 	}
 	,__class__: openfl_utils_ByteArrayData
+	,__properties__: {set_endian:"set_endian",get_endian:"get_endian",get_bytesAvailable:"get_bytesAvailable"}
 });
 var openfl_utils__$CompressionAlgorithm_CompressionAlgorithm_$Impl_$ = {};
 $hxClasses["openfl.utils._CompressionAlgorithm.CompressionAlgorithm_Impl_"] = openfl_utils__$CompressionAlgorithm_CompressionAlgorithm_$Impl_$;

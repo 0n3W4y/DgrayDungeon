@@ -33,13 +33,13 @@ class SceneSystem
 				trace( "Error in SceneSystem._screateStartScene, scenen name: " + sceneName + " not found in config containg." );
 		}
 		var config = value;
-		//CONFIG this._config[ sceneName ]
 		scene.setBackgroundImageURL( config.backgroundImageURL );
+
 		for( key in Reflect.fields( this._config.buttons ) )
 		{
 			var configButton = Reflect.getProperty( this._config.buttons, key );
-			var button = this._parent.getSystem( "entity" ).createButton( "button", key, configButton );
-			scene.addButton( button );
+			var button = this._parent.getSystem( "entity" ).createEntity( "button", key, configButton );
+			scene.addEntity( "button", button );
 		}
 
 		this._addScene( scene );
@@ -72,12 +72,11 @@ class SceneSystem
 
 	public function createScene( sceneName:String ):Scene
 	{
-		var id = _createId();
 		switch( sceneName )
 		{
-			case "startScene": return this._createStartScene( sceneName, id );
-			case "cityScene": return this._createCityScene( sceneName, id );
-			case "dungeonChooseScene": return this._createDungeonChooseScene( sceneName, id );
+			case "startScene": return this._createStartScene( sceneName );
+			case "cityScene": return this._createCityScene( sceneName );
+			case "dungeonChooseScene": return this._createDungeonChooseScene( sceneName );
 			default: trace( "Error in SceneSystem.createScene, scene name can't be: " + sceneName + "." );
 		}
 		return null;

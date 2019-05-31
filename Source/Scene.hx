@@ -12,6 +12,7 @@ class Scene extends Sprite
 
 	private var _aliveEntities:Array<Entity> = new Array(); //copy from EntitySystem, for fast access;
 	private var _objectEntities:Array<Entity> = new Array();
+	private var _uiEntities:Array<Entity> = new Array(); // buttons, windows e.t.c
 
 	private var _backgroundImageURL:String;
 
@@ -34,8 +35,12 @@ class Scene extends Sprite
 	}
 
 	public function addEntity( type:String, entity:Entity ):Void
-	{
-		
+	{	
+		switch( type )
+		{
+			case "button", "window" : this._uiEntities.push( entity );
+			default: trace( "Error in Scene.addEntity, can't add entity with type: " + type + "." );
+		}
 	}
 
 	public function getId():Int

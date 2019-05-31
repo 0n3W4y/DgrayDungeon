@@ -14,12 +14,18 @@ class UserInterface extends Sprite
 		this._parent = parent;
 	}
 
-	public function addButton( button:Entity, x:Int, y:Int ):Void
+	public function addButton( button:Entity ):Void
 	{
 		var data = new Bitmap( button.getComponent( "graphics" ).getUrl( 0 ) );
-		addChild( data );
-		data.x = x;
-		data.y = y;
+		var sprite = new Sprite();
+		sprite.addChild( data );
+
+		sprite.x = button.getComponent( "graphics" ).getCoordinates().x;
+		sprite.y = button.getComponent( "graphics" ).getCoordinates().y;
+		this._parent.getSystem( "event" ).addEventListener( sprite, "MOUSE_DOWN" );
+		addChild( sprite );
+		
+
 	}
 
 	public function addWindow():Void
