@@ -10,9 +10,9 @@ class Game
 	private var _sceneSystem:SceneSystem;
 	private var _graphicsSystem:GraphicsSystem;
 	private var _userInterface:UserInterface;
-	private var _evemtSystem:EventSystem;
+	private var _eventSystem:EventSystem;
 
-	private var _date:Date;
+	private var _gameStart:Float;
 	private var _loopStartTime:Float;
 
 	private var _onPause:Bool = false;
@@ -35,6 +35,7 @@ class Game
 
 	private function _tick():Void
 	{
+		//TODO: mathemathic tick with minimum time, graphics tick like FPS says;
 		this._currentTime = Date.now().getTime();
 		var delta = this._currentTime - this._lastTime;
 
@@ -62,6 +63,13 @@ class Game
 		return conf;
 	}
 
+	private function _startGame():Void
+	{
+		var scene = this._sceneSystem.createScene( "startScene" );
+		this._sceneSystem.doActiveScene( scene );
+		this.start();
+	}
+
 
 
 
@@ -72,25 +80,21 @@ class Game
 		this._sceneSystem = new SceneSystem( this, config.scene );
 		this._graphicsSystem = new GraphicsSystem( this );
 		this._userInterface = new UserInterface( this );
+		this._eventSystem = new EventSystem( this );
 		this._mainSprite = mainSprite;
 		this._calculateDelta();
-		this.start();
+		this._startGame();
+		this._gameStart = Date.now().getTime();
 		
 	}
 
 	public function start():Void
 	{
-		if( this._loopStartTime <= 0 )
-			this._loopStartTime = Date.now().getTime();
-		
 		var time = Std.int( Math.ffloor( this._delta ) );
 
 		this._mainLoop = new Timer( time );
 		this._mainLoop.run = _tick;
-		this._lastTime = _loopStartTime;
-
-		var scene = this._sceneSystem.createScene( "startScene" );
-		this._sceneSystem.doActiveScene( scene );
+		this._lastTime = Date.now().getTime();
 	}
 
 	public function stop():Void
@@ -110,7 +114,8 @@ class Game
 	{
 		this._fps = fps;
 		this._calculateDelta();
-		//TODO: start-stop function;
+		this.stop();
+		this.start();
 	}
 
 	public function getSystem( system:String ):Dynamic
@@ -120,7 +125,8 @@ class Game
 			case "entity" : return this._entitySystem;
 			case "graphics": return this._graphicsSystem;
 			case "scene": return this._sceneSystem;
-			case "event": return this._evemtSystem;
+			case "event": return this._eventSystem;
+			case "ui": return this._userInterface;
 			default: trace( "error in Game.getSystem; system can't be: " + system + "." );
 		}
 		return null;

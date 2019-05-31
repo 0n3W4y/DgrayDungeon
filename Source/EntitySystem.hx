@@ -20,6 +20,11 @@ class EntitySystem
 	private function _createButton( type:String, name:String, id:Int, params:Dynamic ):Entity
 	{
 		var button = new Entity( this, id, type, name );
+
+		for( filed in Reflect.fields( params ) )
+		{
+			
+		}
 		
 		return button;
 	}

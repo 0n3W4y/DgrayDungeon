@@ -7,7 +7,6 @@ class Scene extends Sprite
 	private var _parent:SceneSystem;
 	private var _id:Int;
 	private var _name:String;
-	private var _active:Bool = false;
 
 
 	private var _aliveEntities:Array<Entity> = new Array(); //copy from EntitySystem, for fast access;

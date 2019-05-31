@@ -21,17 +21,22 @@ class SceneSystem
 		this._scenesArray.push( scene );
 	}
 
-	private function _createStartScene( sceneName:String, id:Int ):Scene //startgame screen;
+	private function _createStartScene( sceneName:String ):Scene //startgame screen;
 	{
+		var id = this._createId();
 		var scene = new Scene( this, id, sceneName );
 		var value = null;
+		trace( this._config );
 		for( field in Reflect.fields( this._config) )
 		{
 			if( field == sceneName )
+			{
 				value = Reflect.getProperty( this._config, field );
-			else
-				trace( "Error in SceneSystem._screateStartScene, scenen name: " + sceneName + " not found in config containg." );
+				break;	
+			}
 		}
+		if( value == null )
+			trace( "Error in SceneSystem._screateStartScene, scene name: " + sceneName + " not found in config container." );
 		var config = value;
 		scene.setBackgroundImageURL( config.backgroundImageURL );
 
@@ -46,16 +51,18 @@ class SceneSystem
 		return scene;
 	}
 
-	private function _createCityScene( sceneName:String, id:Int ):Scene
+	private function _createCityScene( sceneName:String ):Scene
 	{
+		var id = this._createId();
 		var scene = new Scene( this, id, sceneName );
 		//CONFIG;
 		this._addScene( scene );
 		return scene;
 	}
 
-	private function _createDungeonChooseScene( sceneName:String, id:Int ):Scene
+	private function _createDungeonChooseScene( sceneName:String ):Scene
 	{
+		var id = this._createId();
 		var scene = new Scene( this, id, sceneName );
 		//CONFIG;
 		this._addScene( scene );
@@ -68,6 +75,7 @@ class SceneSystem
 	{
 		this._parent = parent;
 		this._scenesArray = [];
+		this._config = params;
 	}
 
 	public function createScene( sceneName:String ):Scene
@@ -91,13 +99,12 @@ class SceneSystem
 	{
 		if( this._activeScene != null )
 		{
-			this._parent.getMainSprite().removeChild( this._activeScene );
 			this._activeScene.unDraw();
+			this._activeScene = null;
 			
 		}
 
 		this._activeScene = scene;
-		this._parent.getMainSprite().addChild( this._activeScene );
 		this._activeScene.draw();
 	}
 

@@ -520,15 +520,6 @@
 	"buffers":
 	[
 		{
-			"file": "Source/Game.hx",
-			"settings":
-			{
-				"buffer_size": 2364,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
 			"file": "Source/Main.hx",
 			"settings":
 			{
@@ -541,7 +532,7 @@
 			"file": "Source/EntitySystem.hx",
 			"settings":
 			{
-				"buffer_size": 132,
+				"buffer_size": 1429,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -550,7 +541,34 @@
 			"file": "Source/SceneSystem.hx",
 			"settings":
 			{
-				"buffer_size": 847,
+				"buffer_size": 2590,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "Source/data.json",
+			"settings":
+			{
+				"buffer_size": 1137,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "Source/UserInterface.hx",
+			"settings":
+			{
+				"buffer_size": 684,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "Source/Graphics.hx",
+			"settings":
+			{
+				"buffer_size": 854,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -559,16 +577,7 @@
 			"file": "Source/Scene.hx",
 			"settings":
 			{
-				"buffer_size": 276,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "Source/EntityComponents/Component.hx",
-			"settings":
-			{
-				"buffer_size": 363,
+				"buffer_size": 1347,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -586,7 +595,7 @@
 			"file": "Source/GraphicsSystem.hx",
 			"settings":
 			{
-				"buffer_size": 129,
+				"buffer_size": 500,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -636,6 +645,8 @@
 	],
 	"file_history":
 	[
+		"/C/projects/DgrayDungeon/Source/Game.hx",
+		"/C/projects/DgrayDungeon/Source/EntityComponents/Component.hx",
 		"/C/projects/DieAnotherDay_v0.11/source/UserInterface.hx",
 		"/C/projects/DgrayDungeon/Source/Main.hx",
 		"/C/projects/DgrayDungeon/DgrayDungeon.hxproj",
@@ -761,9 +772,7 @@
 		"/C/Users/Admin/Desktop/shoot-them-all-master/main.js",
 		"/C/Users/Admin/Desktop/shoot-them-all-master/index.css",
 		"/C/Users/Admin/Desktop/Новый текстовый документ.html",
-		"/C/projects/webgl+three_js/Lets test it/js/classes.js",
-		"/C/Users/Admin/Desktop/generateName.html",
-		"/C/projects/DieAnotherDay_v0.11/source/EntitySystem.hx"
+		"/C/projects/webgl+three_js/Lets test it/js/classes.js"
 	],
 	"find":
 	{
@@ -869,41 +878,11 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "Source/Game.hx",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2364,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								278,
-								278
-							]
-						],
-						"settings":
-						{
-							"haxe-build-id": 0,
-							"syntax": "Packages/Haxe/Haxe.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
 					"file": "Source/Main.hx",
 					"semi_transient": false,
 					"settings":
@@ -929,53 +908,54 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 8,
 					"type": "text"
 				},
 				{
-					"buffer": 2,
+					"buffer": 1,
 					"file": "Source/EntitySystem.hx",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 132,
+						"buffer_size": 1429,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								489,
+								489
 							]
 						],
 						"settings":
 						{
 							"haxe-build-id": 0,
-							"syntax": "Packages/Haxe/Haxe.tmLanguage"
+							"syntax": "Packages/Haxe/Haxe.tmLanguage",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
+					"stack_index": 0,
 					"type": "text"
 				},
 				{
-					"buffer": 3,
+					"buffer": 2,
 					"file": "Source/SceneSystem.hx",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 847,
+						"buffer_size": 2590,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								528,
-								528
+								974,
+								988
 							]
 						],
 						"settings":
@@ -985,63 +965,32 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 222.0,
+						"translation.y": 330.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
-					"buffer": 4,
-					"file": "Source/Scene.hx",
+					"buffer": 3,
+					"file": "Source/data.json",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 276,
+						"buffer_size": 1137,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								159,
-								159
+								129,
+								129
 							]
 						],
 						"settings":
 						{
-							"haxe-build-id": 0,
-							"syntax": "Packages/Haxe/Haxe.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "Source/EntityComponents/Component.hx",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 363,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"haxe-build-id": 0,
-							"syntax": "Packages/Haxe/Haxe.tmLanguage",
+							"syntax": "Packages/JavaScript/JSON.sublime-syntax",
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
@@ -1052,7 +1001,97 @@
 					"type": "text"
 				},
 				{
+					"buffer": 4,
+					"file": "Source/UserInterface.hx",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 684,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								637,
+								637
+							]
+						],
+						"settings":
+						{
+							"haxe-build-id": 0,
+							"syntax": "Packages/Haxe/Haxe.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "Source/Graphics.hx",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 854,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								192,
+								192
+							]
+						],
+						"settings":
+						{
+							"haxe-build-id": 0,
+							"syntax": "Packages/Haxe/Haxe.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
 					"buffer": 6,
+					"file": "Source/Scene.hx",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1347,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1175,
+								1196
+							]
+						],
+						"settings":
+						{
+							"haxe-build-id": 0,
+							"syntax": "Packages/Haxe/Haxe.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 528.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
 					"file": "Source/TimeSystem.hx",
 					"semi_transient": false,
 					"settings":
@@ -1078,36 +1117,37 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 6,
+					"stack_index": 7,
 					"type": "text"
 				},
 				{
-					"buffer": 7,
+					"buffer": 8,
 					"file": "Source/GraphicsSystem.hx",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 129,
+						"buffer_size": 500,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								129,
-								129
+								234,
+								234
 							]
 						],
 						"settings":
 						{
 							"haxe-build-id": 0,
-							"syntax": "Packages/Haxe/Haxe.tmLanguage"
+							"syntax": "Packages/Haxe/Haxe.tmLanguage",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 4,
 					"type": "text"
 				}
 			]
@@ -1115,7 +1155,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 28.0
+		"height": 32.0
 	},
 	"input":
 	{
@@ -1156,7 +1196,7 @@
 	"project": "DgrayDungeon.sublime-project",
 	"replace":
 	{
-		"height": 52.0
+		"height": 60.0
 	},
 	"save_all_on_build": true,
 	"select_file":

@@ -19,27 +19,36 @@
 				},
 				"continueButton":
 				{
-					"url": "button_a",
-					"url2": "button_a_pushed.png",
-					"x": 0,
-					"y": 0,
-					"text": "Continue"
+					"graphics":
+					{
+						"url": "button_a",
+						"url2": "button_a_pushed.png",
+						"x": 0,
+						"y": 0,
+						"text": "Continue"
+					}
 				},
 				"optionButton": 
 				{
-					"url": "button_a",
-					"url2": "button_a_pushed.png",
-					"x": 0,
-					"y": 0,
-					"text": "Options"
+					"graphics":
+					{
+						"url": "button_a",
+						"url2": "button_a_pushed.png",
+						"x": 0,
+						"y": 0,
+						"text": "Options"
+					}
 				},
-				"autors":
+				"authorsButton":
 				{
-					"url": "button_a",
-					"url2": "button_a_pushed.png",
-					"x": 0,
-					"y": 0,
-					"text": "Autors"
+					"graphics":
+					{
+						"url": "button_a",
+						"url2": "button_a_pushed.png",
+						"x": 0,
+						"y": 0,
+						"text": "Authors"
+					}
 				}
 			}
 		},

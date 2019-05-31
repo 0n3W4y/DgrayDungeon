@@ -13,17 +13,15 @@ class GraphicsSystem
 		_parent = parent; 
 	}
 
-	public function addGraphicsForScene( scene:Scene ):Void
+	public function drawScene( scene:Scene ):Void
 	{
-		var sceneName = scene.getName();
-		switch( sceneName )
-		{
-			case "startScene": this._addGgraphicsForStartScene( scene );
-			default: trace( "Error in GraphicsSystem.addGraphicsForScene, scene name: " + sceneName + " not available or scene not defined." );
-		}
+		var backgroundURL = scene.getBackgroundImaheURL();
+		var backgroundBitmapData = new Bitmap( backgroundURL );
+		scene.addChild( backgroundBitmapData );
+		this._parent.getMainSprite().addChild( scene );
 	}
 
-	public function drawScene( scene:Scene ):Void
+	public function undrawScene( scene: Scene ):Void
 	{
 
 	}

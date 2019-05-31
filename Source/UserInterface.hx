@@ -24,8 +24,6 @@ class UserInterface extends Sprite
 		sprite.y = button.getComponent( "graphics" ).getCoordinates().y;
 		this._parent.getSystem( "event" ).addEventListener( sprite, "MOUSE_DOWN" );
 		addChild( sprite );
-		
-
 	}
 
 	public function addWindow():Void
