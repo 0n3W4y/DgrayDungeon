@@ -26,7 +26,7 @@ class SceneSystem
 		var id = this._createId();
 		var scene = new Scene( this, id, sceneName );
 		var value = null;
-		trace( this._config );
+
 		for( field in Reflect.fields( this._config) )
 		{
 			if( field == sceneName )
@@ -35,8 +35,10 @@ class SceneSystem
 				break;	
 			}
 		}
+
 		if( value == null )
 			trace( "Error in SceneSystem._screateStartScene, scene name: " + sceneName + " not found in config container." );
+		
 		var config = value;
 		scene.setBackgroundImageURL( config.backgroundImageURL );
 

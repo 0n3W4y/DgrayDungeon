@@ -894,9 +894,9 @@ ApplicationMain.create = function(config) {
 	ManifestResources.init(config);
 	var _this = app.meta;
 	if(__map_reserved["build"] != null) {
-		_this.setReserved("build","6");
+		_this.setReserved("build","7");
 	} else {
-		_this.h["build"] = "6";
+		_this.h["build"] = "7";
 	}
 	var _this1 = app.meta;
 	if(__map_reserved["company"] != null) {
@@ -4445,6 +4445,12 @@ EntitySystem.prototype = {
 	}
 	,_createButton: function(type,name,id,params) {
 		var button = new Entity(this,id,type,name);
+		var _g = 0;
+		var _g1 = Reflect.fields(params);
+		while(_g < _g1.length) {
+			var filed = _g1[_g];
+			++_g;
+		}
 		return button;
 	}
 	,createEntity: function(type,name,params) {
@@ -4452,7 +4458,7 @@ EntitySystem.prototype = {
 		if(type == "button") {
 			return this._createButton(type,name,id,params);
 		} else {
-			haxe_Log.trace("Error in EntitySystem.createEntity, can't find entity with type: " + type + ".",{ fileName : "EntitySystem.hx", lineNumber : 50, className : "EntitySystem", methodName : "createEntity"});
+			haxe_Log.trace("Error in EntitySystem.createEntity, can't find entity with type: " + type + ".",{ fileName : "EntitySystem.hx", lineNumber : 55, className : "EntitySystem", methodName : "createEntity"});
 		}
 		return null;
 	}
@@ -4554,7 +4560,7 @@ Game.prototype = {
 		}
 	}
 	,_parseData: function() {
-		var conf = { graphics : { }, entity : { }, scene : { optionsScene : { backgroundImageURL : "url"}, dungeonScene : { }, startScene : { backgroundImageURL : "assets/background_game.png", buttons : { autors : { url : "button_a", y : 0, x : 0, url2 : "button_a_pushed.png", text : "Autors"}, startButton : { graphics : { url : "button_a", y : 0, x : 0, url2 : "button_a_pushed.png", text : "Start game"}}, continueButton : { url : "button_a", y : 0, x : 0, url2 : "button_a_pushed.png", text : "Continue"}, optionButton : { url : "button_a", y : 0, x : 0, url2 : "button_a_pushed.png", text : "Options"}}}, cityScene : { backgroundImageURL : "url", tavern : { }, hospital : { }, inn : { }, monastery : { }}}};
+		var conf = { graphics : { }, entity : { }, scene : { optionsScene : { backgroundImageURL : "url"}, dungeonScene : { }, startScene : { backgroundImageURL : "assets/background_game.png", buttons : { authorsButton : { graphics : { url : "button_a", y : 0, x : 0, url2 : "button_a_pushed.png", text : "Authors"}}, startButton : { graphics : { url : "button_a", y : 0, x : 0, url2 : "button_a_pushed.png", text : "Start game"}}, continueButton : { graphics : { url : "button_a", y : 0, x : 0, url2 : "button_a_pushed.png", text : "Continue"}}, optionButton : { graphics : { url : "button_a", y : 0, x : 0, url2 : "button_a_pushed.png", text : "Options"}}}}, cityScene : { backgroundImageURL : "url", tavern : { }, hospital : { }, inn : { }, monastery : { }}}};
 		return conf;
 	}
 	,_startGame: function() {
@@ -4614,9 +4620,14 @@ GraphicsSystem.__name__ = ["GraphicsSystem"];
 GraphicsSystem.prototype = {
 	_parent: null
 	,drawScene: function(scene) {
-		var backgroundURL = scene.getBackgroundImaheURL();
-		var backgroundBitmapData = new openfl_display_Bitmap(null,openfl_display__$PixelSnapping_PixelSnapping_$Impl_$.fromString(backgroundURL));
-		scene.addChild(backgroundBitmapData);
+		if(scene.getGraphicsInstance() == null) {
+			var backgroundURL = scene.getBackgroundImageURL();
+			var bitmap = new openfl_display_Bitmap(openfl_utils_Assets.getBitmapData(backgroundURL));
+			scene.setGraphicsInstance(bitmap);
+			scene.addChild(bitmap);
+		} else {
+			scene.addChild(scene.getGraphicsInstance());
+		}
 		this._parent.getMainSprite().addChild(scene);
 	}
 	,undrawScene: function(scene) {
@@ -4856,6 +4867,7 @@ Scene.prototype = $extend(openfl_display_Sprite.prototype,{
 	,_objectEntities: null
 	,_uiEntities: null
 	,_backgroundImageURL: null
+	,_graphicsInstance: null
 	,draw: function() {
 		this._parent.getParent().getSystem("graphics").drawScene(this);
 	}
@@ -4867,7 +4879,7 @@ Scene.prototype = $extend(openfl_display_Sprite.prototype,{
 			this._uiEntities.push(entity);
 			break;
 		default:
-			haxe_Log.trace("Error in Scene.addEntity, can't add entity with type: " + type + ".",{ fileName : "Scene.hx", lineNumber : 41, className : "Scene", methodName : "addEntity"});
+			haxe_Log.trace("Error in Scene.addEntity, can't add entity with type: " + type + ".",{ fileName : "Scene.hx", lineNumber : 43, className : "Scene", methodName : "addEntity"});
 		}
 	}
 	,getId: function() {
@@ -4879,11 +4891,17 @@ Scene.prototype = $extend(openfl_display_Sprite.prototype,{
 	,getName: function() {
 		return this._name;
 	}
-	,getBackgroundImaheURL: function() {
+	,getBackgroundImageURL: function() {
 		return this._backgroundImageURL;
 	}
 	,setBackgroundImageURL: function(url) {
 		this._backgroundImageURL = url;
+	}
+	,setGraphicsInstance: function(instance) {
+		this._graphicsInstance = instance;
+	}
+	,getGraphicsInstance: function() {
+		return this._graphicsInstance;
 	}
 	,__class__: Scene
 });
@@ -4913,7 +4931,6 @@ SceneSystem.prototype = {
 		var id = this._createId();
 		var scene = new Scene(this,id,sceneName);
 		var value = null;
-		haxe_Log.trace(this._config,{ fileName : "SceneSystem.hx", lineNumber : 29, className : "SceneSystem", methodName : "_createStartScene"});
 		var _g = 0;
 		var _g1 = Reflect.fields(this._config);
 		while(_g < _g1.length) {
@@ -4921,10 +4938,22 @@ SceneSystem.prototype = {
 			++_g;
 			if(field == sceneName) {
 				value = Reflect.getProperty(this._config,field);
-			} else {
-				haxe_Log.trace("Error in SceneSystem._screateStartScene, scenen name: " + sceneName + " not found in config containg.",{ fileName : "SceneSystem.hx", lineNumber : 35, className : "SceneSystem", methodName : "_createStartScene"});
+				break;
 			}
-			haxe_Log.trace("Field: " + field + ", value: " + value,{ fileName : "SceneSystem.hx", lineNumber : 37, className : "SceneSystem", methodName : "_createStartScene"});
+		}
+		if(value == null) {
+			haxe_Log.trace("Error in SceneSystem._screateStartScene, scene name: " + sceneName + " not found in config container.",{ fileName : "SceneSystem.hx", lineNumber : 38, className : "SceneSystem", methodName : "_createStartScene"});
+		}
+		var config = value;
+		scene.setBackgroundImageURL(config.backgroundImageURL);
+		var _g2 = 0;
+		var _g11 = Reflect.fields(this._config.buttons);
+		while(_g2 < _g11.length) {
+			var key = _g11[_g2];
+			++_g2;
+			var configButton = Reflect.getProperty(this._config.buttons,key);
+			var button = this._parent.getSystem("entity").createEntity("button",key,configButton);
+			scene.addEntity("button",button);
 		}
 		this._addScene(scene);
 		return scene;
@@ -25896,7 +25925,7 @@ var lime_utils_AssetCache = function() {
 	this.audio = new haxe_ds_StringMap();
 	this.font = new haxe_ds_StringMap();
 	this.image = new haxe_ds_StringMap();
-	this.version = 255639;
+	this.version = 273855;
 };
 $hxClasses["lime.utils.AssetCache"] = lime_utils_AssetCache;
 lime_utils_AssetCache.__name__ = ["lime","utils","AssetCache"];

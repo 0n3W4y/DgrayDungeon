@@ -1,6 +1,7 @@
 package;
 
 import openfl.display.Sprite;
+import openfl.display.Bitmap;
 
 class Scene extends Sprite
 {
@@ -14,6 +15,7 @@ class Scene extends Sprite
 	private var _uiEntities:Array<Entity> = new Array(); // buttons, windows e.t.c
 
 	private var _backgroundImageURL:String;
+	private var _graphicsInstance:Bitmap;
 
 	public function new( parent:SceneSystem, id:Int, name:String ):Void
 	{
@@ -23,14 +25,24 @@ class Scene extends Sprite
 		this._name = name;
 	}
 
-	public function draw():Void
+	public function draw():Void //draw all scene( for options, starting );
 	{
 		this._parent.getParent().getSystem( "graphics" ).drawScene( this );
 	}
 
 	public function unDraw():Void
 	{
+		this._parent.getParent().getSystem( "graphics" ).undrawScene( this );
+	}
 
+	public function drawObject( object:Entity ):Void
+	{
+		this._parent.getParent().getSystem( "graphics" ).draw( this, object );
+	}
+
+	public function undrawObject( object:Entity ):Void
+	{
+		this._parent.getParent().getSystem( "graphics" ).undraw( this, object );
 	}
 
 	public function addEntity( type:String, entity:Entity ):Void
@@ -57,7 +69,7 @@ class Scene extends Sprite
 		return this._name;
 	}
 
-	public function getBackgroundImaheURL():String
+	public function getBackgroundImageURL():String
 	{
 		return this._backgroundImageURL;
 	}
@@ -65,5 +77,20 @@ class Scene extends Sprite
 	public function setBackgroundImageURL( url:String ):Void
 	{
 		this._backgroundImageURL = url;
+	}
+
+	public function setGraphicsInstance( instance:Bitmap ):Void
+	{
+		this._graphicsInstance = instance;
+	}
+
+	public function getGraphicsInstance():Bitmap
+	{
+		return this._graphicsInstance;
+	}
+
+	public function getUiEntities():Array<Entity>
+	{
+		return this._uiEntities;
 	}
 }
