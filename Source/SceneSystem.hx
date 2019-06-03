@@ -42,11 +42,11 @@ class SceneSystem
 		var config = value;
 		scene.setBackgroundImageURL( config.backgroundImageURL );
 
-		for( key in Reflect.fields( this._config.buttons ) )
+		for( key in Reflect.fields( this._config.windows ) )
 		{
-			var configButton = Reflect.getProperty( this._config.buttons, key );
-			var button = this._parent.getSystem( "entity" ).createEntity( "button", key, configButton );
-			scene.addEntity( "button", button );
+			var configWindow = Reflect.getProperty( this._config.windows, key );
+			var window = this._parent.getSystem( "entity" ).createEntity( "window", key, configWindow );
+			scene.addEntity( "window", window );
 		}
 
 		this._addScene( scene );

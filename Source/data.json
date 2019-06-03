@@ -4,50 +4,80 @@
 		"startScene": 
 		{
 			"backgroundImageURL": "assets/background_game.png",
-			"buttons":
+			"windows": 
 			{
-				"startButton": 
+				"startSceneButtonsWindow":
 				{
-					"graphics":
+					"graphics": 
 					{
-						"url": "button_a",
-						"url2": "button_a_pushed.png",
-						"x": 0,
-						"y": 0,
-						"text": "Start game"
-					}					
-				},
-				"continueButton":
-				{
-					"graphics":
+						"url": "assets/startSceneButtonsWindow.png",
+						"url2": "",
+						"x": 0.0,
+						"y": 0.0,
+						"text": "",
+						"tx": 0.0,
+						"ty": 0.0,
+						"addiction": "startSceneButtonsWindow",
+						"queue" : 1
+					},
+					"buttons":
 					{
-						"url": "button_a",
-						"url2": "button_a_pushed.png",
-						"x": 0,
-						"y": 0,
-						"text": "Continue"
-					}
-				},
-				"optionButton": 
-				{
-					"graphics":
-					{
-						"url": "button_a",
-						"url2": "button_a_pushed.png",
-						"x": 0,
-						"y": 0,
-						"text": "Options"
-					}
-				},
-				"authorsButton":
-				{
-					"graphics":
-					{
-						"url": "button_a",
-						"url2": "button_a_pushed.png",
-						"x": 0,
-						"y": 0,
-						"text": "Authors"
+						"startButton": 
+						{
+							"graphics": 
+							{
+								"url": "button_a",
+								"url2": "button_a_pushed.png",
+								"x": 0.0,
+								"y": 0.0,
+								"text": "Start game",
+								"tx": 0.0,
+								"ty": 0.0,
+								"addiction": "startSceneButtonsWindow"
+							}
+						},
+						"continueButton":
+						{
+							"graphics":
+							{
+								"url": "button_a",
+								"url2": "button_a_pushed.png",
+								"x": 0.0,
+								"y": 0.0,
+								"text": "Continue",
+								"tx": 0.0,
+								"ty": 0.0,
+								"addiction": "startSceneButtonsWindow"
+							}
+						},
+						"optionButton": 
+						{
+							"graphics":
+							{
+								"url": "button_a",
+								"url2": "button_a_pushed.png",
+								"x": 0.0,
+								"y": 0.0,
+								"text": "Options",
+								"tx": 0.0,
+								"ty": 0.0,
+								"addiction": "startSceneButtonsWindow"
+							}							
+						},
+						"authorsButton":
+						{
+							"graphics":
+							{
+								"url": "button_a",
+								"url2": "button_a_pushed.png",
+								"x": 0.0,
+								"y": 0.0,
+								"text": "Authors",
+								"tx": 0.0,
+								"ty": 0.0,
+								"addiction": "startSceneButtonsWindow"
+							}
+						}
 					}
 				}
 			}

@@ -25,7 +25,7 @@ class Entity
 			case "type": return this._type;
 			case "name": return this._name;
 			default: trace( "Error in Entity.get, type can't be: " + type + "." );
-		}
+		};
 		return null;
 	}
 
@@ -36,7 +36,7 @@ class Entity
 			var component = this._components[ i ];
 			if( component.getName() == name )
 				return component;
-		}
+		};
 
 		trace( "Error in Entity.getComponent, no component with name: " + name + "." );
 		return null;
@@ -47,6 +47,29 @@ class Entity
 		for( i in 0...this._components.length )
 		{
 			this._components[ i ].update( time );
-		}
+		};
+	}
+
+	public function setComponent( component:Component ):Void
+	{
+		this.removeComponent( component.getName() );
+		component.setParent( this );
+		this._components.push( component );
+	}
+
+	public function removeComponent( componentName:String ):Component
+	{
+		for( i in 0...this._components.length )
+		{
+			var newComponentName = this._components[ i ].getName();
+			if( componentName == newComponentName )
+			{
+				var oldComponent = this._components[ i ];
+				this._components.splice( i, 1 );
+				return oldComponent;
+			};
+
+		};
+		return null;
 	}
 }

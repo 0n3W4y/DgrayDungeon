@@ -29,4 +29,14 @@ class Component
 		return this._name;
 	}
 
+	public function getId():Int
+	{
+		return this._id;
+	}
+
+	public function setParent( parent:Entity ):Void
+	{
+		this._parent = parent;
+	}
+
 }

@@ -17,16 +17,26 @@ class EntitySystem
 		return id;
 	}
 
-	private function _createButton( type:String, name:String, id:Int, params:Dynamic ):Entity
+	private function _createButton( params:Dynamic, addiction:String ):Entity
 	{
-		var button = new Entity( this, id, type, name );
+		var newAddiction = addiction;
+		var button = new Entity();
+		return button;
+	}
+
+	private function _createWindow( type:String, name:String, id:Int, params:Dynamic ):Entity
+	{
+		var window = new Entity( this, id, type, name );
+		var component = this.createComponent( "graphics", params.graphics );
+		this.addComponentTo( component, window );
 
 		for( filed in Reflect.fields( params ) )
 		{
 			
-		}
+		};
 		
-		return button;
+		this._objectEntities.windows.push( window );
+		return window;
 	}
 
 	public function new( parent:Game, params:Dynamic ):Void
@@ -42,7 +52,7 @@ class EntitySystem
 
 		this._objectEntities = 
 		{
-			"buttons" : new Array()
+			"windows" : new Array()
 		};
 	}
 
@@ -51,15 +61,15 @@ class EntitySystem
 		var id = this._createId();
 		switch( type )
 		{
-			case "button" : return this._createButton( type, name, id, params );
+			case "window" : return this._createWindow( type, name, id, params );
 			default: trace( "Error in EntitySystem.createEntity, can't find entity with type: " + type + "." );
-		}
+		};
 		return null;
 	}
 
 	public function addComponentTo( component:Component, entity:Entity ):Void
 	{
-
+		entity.setComponent( component );
 	}
 
 	public function createComponent( componentName:String, params:Dynamic ):Component
@@ -72,7 +82,7 @@ class EntitySystem
 		else
 		{
 
-		}
+		};
 		return component;
 	}
 }
