@@ -5,6 +5,7 @@ import haxe.Timer;
 
 class Game
 {
+	private var _enterSprite:Sprite;
 	private var _mainSprite:Sprite;
 	private var _entitySystem:EntitySystem;
 	private var _sceneSystem:SceneSystem;
@@ -54,6 +55,7 @@ class Game
 		if( !this._onPause )
 		{
 			trace( "tick" );
+			//this._sceneSystem.update( time );
 		}
 	}
 
@@ -81,10 +83,16 @@ class Game
 		this._graphicsSystem = new GraphicsSystem( this );
 		this._userInterface = new UserInterface( this );
 		this._eventSystem = new EventSystem( this );
-		this._mainSprite = mainSprite;
+		this._enterSprite = mainSprite;
+
+		this._mainSprite = new Sprite();
+		mainSprite.addChild( this._mainSprite );
+		mainSprite.addChild( this._userInterface );
+
 		this._calculateDelta();
-		this._startGame();
 		this._gameStart = Date.now().getTime();
+		this._startGame();
+		
 		
 	}
 

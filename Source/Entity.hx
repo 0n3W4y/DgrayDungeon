@@ -3,12 +3,12 @@ package;
 class Entity
 {
 	private var _parent:EntitySystem;
-	private var _id:Int;
+	private var _id:String;
 	private var _type:String;
 	private var _name:String;
 	private var _components:Array<Component> = new Array();
 
-	public function new( parent:EntitySystem, id:Int, type:String, name:String ):Void
+	public function new( parent:EntitySystem, id:String, type:String, name:String ):Void
 	{
 		this._parent = parent;
 		this._id = id;
@@ -50,9 +50,9 @@ class Entity
 		};
 	}
 
-	public function setComponent( component:Component ):Void
+	public function addComponent( component:Component ):Void
 	{
-		this.removeComponent( component.getName() );
+		this.removeComponent( component.getName() ); //check if component exist. Remove it if need;
 		component.setParent( this );
 		this._components.push( component );
 	}

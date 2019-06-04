@@ -20,8 +20,8 @@ class EventSystem
 		switch( type )
 		{
 			case "MOUSE_DOWN": object.addEventListener( MouseEvent.MOUSE_DOWN, this.eventListenerMouseDown );
-			case "MOUSE_UP": object.addEventListener( MouseEvent.MOUSE_UP, this.eventListenerMouseDown );
-			case "MOUSE_CLIKC": object.addEventListener( MouseEvent.CLICK, this.eventListenerMouseDown );
+			case "MOUSE_UP": object.addEventListener( MouseEvent.MOUSE_UP, this.eventListenerMouseUp );
+			case "MOUSE_CLIKC": object.addEventListener( MouseEvent.CLICK, this.eventListenerMouseClick );
 			default: trace( "Error in EventSystem.addEventListener, type of event can't be: " + type + "." );
 		}
 		

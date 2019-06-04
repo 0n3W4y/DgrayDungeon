@@ -4,88 +4,110 @@
 		"startScene": 
 		{
 			"backgroundImageURL": "assets/background_game.png",
-			"windows": 
+			"windows":
 			{
-				"startSceneButtonsWindow":
+				"sceneButtonWindow":
 				{
 					"graphics": 
 					{
 						"url": "assets/startSceneButtonsWindow.png",
 						"url2": "",
-						"x": 0.0,
-						"y": 0.0,
-						"text": "",
-						"tx": 0.0,
-						"ty": 0.0,
+						"x": 1300.0,
+						"y": 450.0,
+						"text" : null,
 						"addiction": "startSceneButtonsWindow",
 						"queue" : 1
-					},
-					"buttons":
+					}
+				}
+			},
+					
+			"buttons":
+			{
+				"startButton": 
+				{
+					"graphics": 
 					{
-						"startButton": 
+						"url": "assets/button_a.png",
+						"url2": "assets/button_a_pushed.png",
+						"x": 1365.0,
+						"y": 485.0,
+						"text":
 						{
-							"graphics": 
+							"text1": 
 							{
-								"url": "button_a",
-								"url2": "button_a_pushed.png",
-								"x": 0.0,
-								"y": 0.0,
 								"text": "Start game",
 								"tx": 0.0,
-								"ty": 0.0,
-								"addiction": "startSceneButtonsWindow"
-							}
+								"ty": 0.0
+							}								
 						},
-						"continueButton":
+						"addiction": "startSceneButtonsWindow",
+						"queue": 1
+					}
+				},
+				"continueButton":
+				{
+					"graphics":
+					{
+						"url": "assets/button_a.png",
+						"url2": "assets/button_a_pushed.png",
+						"x": 1365.0,
+						"y": 605.0,
+						"text":
 						{
-							"graphics":
+							"text1": 
 							{
-								"url": "button_a",
-								"url2": "button_a_pushed.png",
-								"x": 0.0,
-								"y": 0.0,
 								"text": "Continue",
 								"tx": 0.0,
-								"ty": 0.0,
-								"addiction": "startSceneButtonsWindow"
-							}
+								"ty": 0.0
+							}								
 						},
-						"optionButton": 
+						"addiction": "startSceneButtonsWindow",
+						"queue": 2
+					}
+				},
+				"optionButton": 
+				{
+					"graphics":
+					{
+						"url": "assets/button_a.png",
+						"url2": "assets/button_a_pushed.png",
+						"x": 1365.0,
+						"y": 725.0,
+						"text":
 						{
-							"graphics":
+							"text1": 
 							{
-								"url": "button_a",
-								"url2": "button_a_pushed.png",
-								"x": 0.0,
-								"y": 0.0,
 								"text": "Options",
 								"tx": 0.0,
-								"ty": 0.0,
-								"addiction": "startSceneButtonsWindow"
-							}							
+								"ty": 0.0
+							}								
 						},
-						"authorsButton":
+						"addiction": "startSceneButtonsWindow",
+						"queue": 3
+					}							
+				},
+				"authorsButton":
+				{
+					"graphics":
+					{
+						"url": "assets/button_a.png",
+						"url2": "assets/button_a_pushed.png",
+						"x": 1365.0,
+						"y": 845.0,
+						"text":
 						{
-							"graphics":
+							"text1": 
 							{
-								"url": "button_a",
-								"url2": "button_a_pushed.png",
-								"x": 0.0,
-								"y": 0.0,
 								"text": "Authors",
 								"tx": 0.0,
-								"ty": 0.0,
-								"addiction": "startSceneButtonsWindow"
-							}
-						}
+								"ty": 0.0
+							}								
+						},
+						"addiction": "startSceneButtonsWindow",
+						"queue": 4
 					}
 				}
 			}
-		},
-
-		"optionsScene":
-		{
-			"backgroundImageURL": "url"
 		},
 
 		"cityScene": 

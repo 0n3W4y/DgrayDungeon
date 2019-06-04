@@ -9,10 +9,10 @@ class SceneSystem
 
 	private var _nextId:Int = 0;
 
-	private function _createId():Int
+	private function _createId():String
 	{
-		var id = _nextId;
-		_nextId++;
+		var id = this._nextId + "";
+		this._nextId++;
 		return id;
 	}
 
@@ -27,7 +27,7 @@ class SceneSystem
 		var scene = new Scene( this, id, sceneName );
 		var value = null;
 
-		for( field in Reflect.fields( this._config) )
+		for( field in Reflect.fields( this._config ) )
 		{
 			if( field == sceneName )
 			{
@@ -39,16 +39,21 @@ class SceneSystem
 		if( value == null )
 			trace( "Error in SceneSystem._screateStartScene, scene name: " + sceneName + " not found in config container." );
 		
-		var config = value;
-		scene.setBackgroundImageURL( config.backgroundImageURL );
-
-		for( key in Reflect.fields( this._config.windows ) )
+		scene.setBackgroundImageURL( value.backgroundImageURL );
+		
+		for( key in Reflect.fields( value.windows ) )
 		{
-			var configWindow = Reflect.getProperty( this._config.windows, key );
+			var configWindow = Reflect.getProperty( value.windows, key );
 			var window = this._parent.getSystem( "entity" ).createEntity( "window", key, configWindow );
-			scene.addEntity( "window", window );
+			scene.addEntity( window );
 		}
 
+		for( field in Reflect.fields( value.buttons ) )
+		{
+			var configButton = Reflect.getProperty( value.buttons, field );
+			var button = this._parent.getSystem( "entity" ).createEntity( "button", field, configButton );
+			scene.addEntity( button );
+		}
 		this._addScene( scene );
 		return scene;
 	}
@@ -72,11 +77,18 @@ class SceneSystem
 	}
 
 
+	public function update( time:Float ):Void
+	{
+		for( key in Reflect.fields( this._scenesArray ) )
+		{
+			Reflect.getProperty( this._scenesArray, key ).update( time );
+		}
+	}
 
 	public function new( parent:Game, params:Dynamic ):Void
 	{
 		this._parent = parent;
-		this._scenesArray = [];
+		this._scenesArray = new Array<Scene>();
 		this._config = params;
 	}
 

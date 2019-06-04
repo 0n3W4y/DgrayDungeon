@@ -6,26 +6,57 @@ import openfl.display.Bitmap;
 class Scene extends Sprite
 {
 	private var _parent:SceneSystem;
-	private var _id:Int;
+	private var _id:String;
 	private var _name:String;
 
-
-	private var _aliveEntities:Array<Entity> = new Array(); //copy from EntitySystem, for fast access;
-	private var _objectEntities:Array<Entity> = new Array();
-	private var _uiEntities:Array<Entity> = new Array(); // buttons, windows e.t.c
+	private var _aliveEntities:Dynamic;
+	private var _objectEntities:Dynamic;
+	private var _uiEntities:Dynamic;
 
 	private var _backgroundImageURL:String;
 	private var _graphicsInstance:Bitmap;
 
-	public function new( parent:SceneSystem, id:Int, name:String ):Void
+	public function new( parent:SceneSystem, id:String, name:String ):Void
 	{
 		super();
 		this._parent = parent;
 		this._id = id;
 		this._name = name;
+
+		this._aliveEntities = 
+		{
+			"playerTeam": new Array<Entity>(),
+			"enemyTeam": new Array<Entity>()
+		};
+		this._objectEntities = 
+		{
+			"houses": new Array<Entity>(),
+			"treasures": new Array<Entity>()
+		};
+		this._uiEntities = 
+		{
+			"windows": new Array<Entity>(),
+			"buttons": new Array<Entity>()
+		};
 	}
 
-	public function draw():Void //draw all scene( for options, starting );
+	public function update( time:Float ):Void
+	{
+		trace( "update scene id: " + this._id + ", delta: " + time + "." );
+	}
+
+	public function addEntity( entity:Entity ):Void
+	{
+		var type = entity.get( "type" );
+		switch( type )
+		{
+			case "window": this._uiEntities.windows.push( entity );
+			case "button": this._uiEntities.buttons.push( entity );
+			default: trace( "Error in Scene.addEntity, can't add entity with id: " + entity.get( "id" ) + ", and type: " + type + "." );
+		}
+	}
+
+	public function draw():Void //draw all scene
 	{
 		this._parent.getParent().getSystem( "graphics" ).drawScene( this );
 	}
@@ -35,26 +66,17 @@ class Scene extends Sprite
 		this._parent.getParent().getSystem( "graphics" ).undrawScene( this );
 	}
 
-	public function drawObject( object:Entity ):Void
+	public function drawUi( uiName:String ):Void
 	{
-		this._parent.getParent().getSystem( "graphics" ).draw( this, object );
+		this._parent.getParent().getSystem( "graphics" ).drawSceneUi( this, uiName );
 	}
 
-	public function undrawObject( object:Entity ):Void
+	public function undrawUi( uiName:String ):Void
 	{
-		this._parent.getParent().getSystem( "graphics" ).undraw( this, object );
+		this._parent.getParent().getSystem( "graphics" ).undrawSceneUi( this, uiName );
 	}
 
-	public function addEntity( type:String, entity:Entity ):Void
-	{	
-		switch( type )
-		{
-			case "button", "window" : this._uiEntities.push( entity );
-			default: trace( "Error in Scene.addEntity, can't add entity with type: " + type + "." );
-		}
-	}
-
-	public function getId():Int
+	public function getId():String
 	{
 		return _id;
 	}
@@ -89,7 +111,7 @@ class Scene extends Sprite
 		return this._graphicsInstance;
 	}
 
-	public function getUiEntities():Array<Entity>
+	public function getUiEntities():Dynamic
 	{
 		return this._uiEntities;
 	}

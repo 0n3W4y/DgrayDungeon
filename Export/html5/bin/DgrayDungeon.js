@@ -894,9 +894,9 @@ ApplicationMain.create = function(config) {
 	ManifestResources.init(config);
 	var _this = app.meta;
 	if(__map_reserved["build"] != null) {
-		_this.setReserved("build","7");
+		_this.setReserved("build","93");
 	} else {
-		_this.h["build"] = "7";
+		_this.h["build"] = "93";
 	}
 	var _this1 = app.meta;
 	if(__map_reserved["company"] != null) {
@@ -4228,7 +4228,7 @@ var Main = function() {
 	this._height = 1080;
 	this._width = 1920;
 	openfl_display_Sprite.call(this);
-	this._createGame();
+	this._game = new Game(this._width,this._height,this._fps,this);
 };
 $hxClasses["Main"] = Main;
 Main.__name__ = ["Main"];
@@ -4238,9 +4238,6 @@ Main.prototype = $extend(openfl_display_Sprite.prototype,{
 	,_width: null
 	,_height: null
 	,_fps: null
-	,_createGame: function() {
-		this._game = new Game(this._width,this._height,this._fps,this);
-	}
 	,__class__: Main
 });
 var DocumentClass = function(current) {
@@ -4272,6 +4269,12 @@ Component.prototype = {
 	}
 	,getName: function() {
 		return this._name;
+	}
+	,getId: function() {
+		return this._id;
+	}
+	,setParent: function(parent) {
+		this._parent = parent;
 	}
 	,__class__: Component
 };
@@ -4421,14 +4424,31 @@ Entity.prototype = {
 			this._components[i].update(time);
 		}
 	}
+	,addComponent: function(component) {
+		this.removeComponent(component.getName());
+		component.setParent(this);
+		this._components.push(component);
+	}
+	,removeComponent: function(componentName) {
+		var _g1 = 0;
+		var _g = this._components.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			var newComponentName = this._components[i].getName();
+			if(componentName == newComponentName) {
+				var oldComponent = this._components[i];
+				this._components.splice(i,1);
+				return oldComponent;
+			}
+		}
+		return null;
+	}
 	,__class__: Entity
 };
 var EntitySystem = function(parent,params) {
 	this._nextId = 0;
 	this._parent = parent;
 	this._config = params;
-	this._aliveEntities = { "playerTeam" : [], "enemyTeam" : [], "neutralTeam" : []};
-	this._objectEntities = { "buttons" : []};
 };
 $hxClasses["EntitySystem"] = EntitySystem;
 EntitySystem.__name__ = ["EntitySystem"];
@@ -4436,37 +4456,46 @@ EntitySystem.prototype = {
 	_parent: null
 	,_nextId: null
 	,_config: null
-	,_aliveEntities: null
-	,_objectEntities: null
 	,_createId: function() {
-		var id = this._nextId;
+		var id = "" + this._nextId;
 		this._nextId++;
 		return id;
 	}
 	,_createButton: function(type,name,id,params) {
 		var button = new Entity(this,id,type,name);
-		var _g = 0;
-		var _g1 = Reflect.fields(params);
-		while(_g < _g1.length) {
-			var filed = _g1[_g];
-			++_g;
-		}
+		var component = this.createComponent("graphics",params.graphics);
+		this.addComponentTo(component,button);
 		return button;
+	}
+	,_createWindow: function(type,name,id,params) {
+		var $window = new Entity(this,id,type,name);
+		var component = this.createComponent("graphics",params.graphics);
+		this.addComponentTo(component,$window);
+		return $window;
 	}
 	,createEntity: function(type,name,params) {
 		var id = this._createId();
-		if(type == "button") {
+		switch(type) {
+		case "button":
 			return this._createButton(type,name,id,params);
-		} else {
-			haxe_Log.trace("Error in EntitySystem.createEntity, can't find entity with type: " + type + ".",{ fileName : "EntitySystem.hx", lineNumber : 55, className : "EntitySystem", methodName : "createEntity"});
+		case "window":
+			return this._createWindow(type,name,id,params);
+		default:
+			haxe_Log.trace("Error in EntitySystem.createEntity, can't find entity with type: " + type + ".",{ fileName : "EntitySystem.hx", lineNumber : 46, className : "EntitySystem", methodName : "createEntity"});
 		}
 		return null;
 	}
 	,addComponentTo: function(component,entity) {
+		entity.addComponent(component);
 	}
 	,createComponent: function(componentName,params) {
+		var id = this._createId();
 		var component = null;
-		var tmp = params != null;
+		if(componentName == "graphics") {
+			component = new Graphics(null,id,params);
+		} else {
+			haxe_Log.trace("Error in EntitySystem.createComponent, component with name: '" + componentName + "' does not exist.",{ fileName : "EntitySystem.hx", lineNumber : 63, className : "EntitySystem", methodName : "createComponent"});
+		}
 		return component;
 	}
 	,__class__: EntitySystem
@@ -4514,15 +4543,19 @@ var Game = function(width,height,fps,mainSprite) {
 	this._graphicsSystem = new GraphicsSystem(this);
 	this._userInterface = new UserInterface(this);
 	this._eventSystem = new EventSystem(this);
-	this._mainSprite = mainSprite;
+	this._enterSprite = mainSprite;
+	this._mainSprite = new openfl_display_Sprite();
+	mainSprite.addChild(this._mainSprite);
+	mainSprite.addChild(this._userInterface);
 	this._calculateDelta();
-	this._startGame();
 	this._gameStart = new Date().getTime();
+	this._startGame();
 };
 $hxClasses["Game"] = Game;
 Game.__name__ = ["Game"];
 Game.prototype = {
-	_mainSprite: null
+	_enterSprite: null
+	,_mainSprite: null
 	,_entitySystem: null
 	,_sceneSystem: null
 	,_graphicsSystem: null
@@ -4556,11 +4589,11 @@ Game.prototype = {
 	}
 	,_update: function(time) {
 		if(!this._onPause) {
-			haxe_Log.trace("tick",{ fileName : "Game.hx", lineNumber : 56, className : "Game", methodName : "_update"});
+			haxe_Log.trace("tick",{ fileName : "Game.hx", lineNumber : 57, className : "Game", methodName : "_update"});
 		}
 	}
 	,_parseData: function() {
-		var conf = { graphics : { }, entity : { }, scene : { optionsScene : { backgroundImageURL : "url"}, dungeonScene : { }, startScene : { backgroundImageURL : "assets/background_game.png", buttons : { authorsButton : { graphics : { url : "button_a", y : 0, x : 0, url2 : "button_a_pushed.png", text : "Authors"}}, startButton : { graphics : { url : "button_a", y : 0, x : 0, url2 : "button_a_pushed.png", text : "Start game"}}, continueButton : { graphics : { url : "button_a", y : 0, x : 0, url2 : "button_a_pushed.png", text : "Continue"}}, optionButton : { graphics : { url : "button_a", y : 0, x : 0, url2 : "button_a_pushed.png", text : "Options"}}}}, cityScene : { backgroundImageURL : "url", tavern : { }, hospital : { }, inn : { }, monastery : { }}}};
+		var conf = { graphics : { }, entity : { }, scene : { dungeonScene : { }, startScene : { backgroundImageURL : "assets/background_game.png", windows : { sceneButtonWindow : { graphics : { url : "assets/startSceneButtonsWindow.png", y : 450, x : 1300, queue : 1, url2 : "", text : null, addiction : "startSceneButtonsWindow"}}}, buttons : { authorsButton : { graphics : { url : "assets/button_a.png", y : 850, x : 1365, queue : 4, url2 : "assets/button_a_pushed.png", text : { text1 : { ty : 0, tx : 0, text : "Authors"}}, addiction : "startSceneButtonsWindow"}}, startButton : { graphics : { url : "assets/button_a.png", y : 490, x : 1365, queue : 1, url2 : "assets/button_a_pushed.png", text : { text1 : { ty : 0, tx : 0, text : "Start game"}}, addiction : "startSceneButtonsWindow"}}, continueButton : { graphics : { url : "assets/button_a.png", y : 610, x : 1365, queue : 2, url2 : "assets/button_a_pushed.png", text : { text1 : { ty : 0, tx : 0, text : "Continue"}}, addiction : "startSceneButtonsWindow"}}, optionButton : { graphics : { url : "assets/button_a.png", y : 730, x : 1365, queue : 3, url2 : "assets/button_a_pushed.png", text : { text1 : { ty : 0, tx : 0, text : "Options"}}, addiction : "startSceneButtonsWindow"}}}}, cityScene : { backgroundImageURL : "url", tavern : { }, hospital : { }, inn : { }, monastery : { }}}};
 		return conf;
 	}
 	,_startGame: function() {
@@ -4603,7 +4636,7 @@ Game.prototype = {
 		case "ui":
 			return this._userInterface;
 		default:
-			haxe_Log.trace("error in Game.getSystem; system can't be: " + system + ".",{ fileName : "Game.hx", lineNumber : 130, className : "Game", methodName : "getSystem"});
+			haxe_Log.trace("error in Game.getSystem; system can't be: " + system + ".",{ fileName : "Game.hx", lineNumber : 138, className : "Game", methodName : "getSystem"});
 		}
 		return null;
 	}
@@ -4612,6 +4645,69 @@ Game.prototype = {
 	}
 	,__class__: Game
 };
+var Graphics = function(parent,id,params) {
+	Component.call(this,parent,id,"graphics");
+	this._url = params.url;
+	this._url2 = params.url2;
+	this._x = params.x;
+	this._y = params.y;
+	this._text = params.text;
+	this._addiction = params.addiciton;
+	this._queue = params.queue;
+};
+$hxClasses["Graphics"] = Graphics;
+Graphics.__name__ = ["Graphics"];
+Graphics.__super__ = Component;
+Graphics.prototype = $extend(Component.prototype,{
+	_url: null
+	,_url2: null
+	,_x: null
+	,_y: null
+	,_text: null
+	,_addiction: null
+	,_queue: null
+	,_graphicsInstance: null
+	,getUrl: function(value) {
+		if(value == 0) {
+			return this._url;
+		} else {
+			return this._url2;
+		}
+	}
+	,setUrl: function(url,value) {
+		if(url == 0) {
+			this._url = value;
+		} else {
+			this._url2 = value;
+		}
+	}
+	,getText: function() {
+		return this._text;
+	}
+	,setText: function(value) {
+		this._text = value;
+	}
+	,getCoordinates: function() {
+		return { "x" : this._x, "y" : this._y};
+	}
+	,setCoordinates: function(x,y) {
+		this._x = x;
+		this._y = y;
+	}
+	,getGraphicsInstance: function() {
+		return this._graphicsInstance;
+	}
+	,setGraphicsInstance: function(gi) {
+		this._graphicsInstance = gi;
+	}
+	,getAddiction: function() {
+		return this._addiction;
+	}
+	,getQueue: function() {
+		return this._queue;
+	}
+	,__class__: Graphics
+});
 var GraphicsSystem = function(parent) {
 	this._parent = parent;
 };
@@ -4619,7 +4715,7 @@ $hxClasses["GraphicsSystem"] = GraphicsSystem;
 GraphicsSystem.__name__ = ["GraphicsSystem"];
 GraphicsSystem.prototype = {
 	_parent: null
-	,drawScene: function(scene) {
+	,_drawStartScene: function(scene) {
 		if(scene.getGraphicsInstance() == null) {
 			var backgroundURL = scene.getBackgroundImageURL();
 			var bitmap = new openfl_display_Bitmap(openfl_utils_Assets.getBitmapData(backgroundURL));
@@ -4628,9 +4724,53 @@ GraphicsSystem.prototype = {
 		} else {
 			scene.addChild(scene.getGraphicsInstance());
 		}
+		var sortFunction = function(a,b) {
+			if(a.getComponent("graphics").getQueue() > b.getComponent("graphics").getQueue()) {
+				return 1;
+			} else if(a.getComponent("graphics").getQueue() < b.getComponent("graphics").getQueue()) {
+				return -1;
+			} else {
+				return 0;
+			}
+		};
+		var sceneUiEntities = scene.getUiEntities();
+		var windowsContainer = sceneUiEntities.windows;
+		var buttonsContainer = sceneUiEntities.buttons;
+		windowsContainer.sort(sortFunction);
+		buttonsContainer.sort(sortFunction);
+		var _g1 = 0;
+		var _g = windowsContainer.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			var $window = windowsContainer[i];
+			this._parent.getSystem("ui").addWindow($window);
+		}
+		var _g11 = 0;
+		var _g2 = buttonsContainer.length;
+		while(_g11 < _g2) {
+			var j = _g11++;
+			var button = buttonsContainer[j];
+			this._parent.getSystem("ui").addButton(button);
+		}
 		this._parent.getMainSprite().addChild(scene);
 	}
+	,drawScene: function(scene) {
+		var sceneName = scene.getName();
+		if(sceneName == "startScene") {
+			this._drawStartScene(scene);
+		} else {
+			haxe_Log.trace("Can't sraw scene with name: " + sceneName + ".",{ fileName : "GraphicsSystem.hx", lineNumber : 98, className : "GraphicsSystem", methodName : "drawScene"});
+		}
+	}
 	,undrawScene: function(scene) {
+	}
+	,drawObject: function(scene,object) {
+	}
+	,undrawObject: function(object) {
+	}
+	,drawSceneUi: function(addicition) {
+	}
+	,undrawSceneUi: function(addiction) {
 	}
 	,__class__: GraphicsSystem
 };
@@ -4751,7 +4891,7 @@ ManifestResources.init = function(config) {
 	var data;
 	var manifest;
 	var library;
-	data = "{\"name\":null,\"assets\":\"aoy4:pathy28:assets%2Fbackground_game.pngy4:sizei1860870y4:typey5:IMAGEy2:idR1y7:preloadtgoR0y21:assets%2Fbutton_a.pngR2i1941R3R4R5R7R6tgoR0y28:assets%2Fbutton_a_pushed.pngR2i2723R3R4R5R8R6tgh\",\"rootPath\":null,\"version\":2,\"libraryArgs\":[],\"libraryType\":null}";
+	data = "{\"name\":null,\"assets\":\"aoy4:pathy28:assets%2Fbackground_game.pngy4:sizei1897994y4:typey5:IMAGEy2:idR1y7:preloadtgoR0y21:assets%2Fbutton_a.pngR2i1941R3R4R5R7R6tgoR0y28:assets%2Fbutton_a_pushed.pngR2i2723R3R4R5R8R6tgoR0y36:assets%2FstartSceneButtonsWindow.pngR2i7836R3R4R5R9R6tgh\",\"rootPath\":null,\"version\":2,\"libraryArgs\":[],\"libraryType\":null}";
 	manifest = lime_utils_AssetManifest.parse(data,ManifestResources.rootPath);
 	library = lime_utils_AssetLibrary.fromManifest(manifest);
 	lime_utils_Assets.registerLibrary("default",library);
@@ -4848,13 +4988,13 @@ Reflect.makeVarArgs = function(f) {
 	};
 };
 var Scene = function(parent,id,name) {
-	this._uiEntities = [];
-	this._objectEntities = [];
-	this._aliveEntities = [];
 	openfl_display_Sprite.call(this);
 	this._parent = parent;
 	this._id = id;
 	this._name = name;
+	this._aliveEntities = { "playerTeam" : [], "enemyTeam" : []};
+	this._objectEntities = { "houses" : [], "treasures" : []};
+	this._uiEntities = { "windows" : [], "buttons" : []};
 };
 $hxClasses["Scene"] = Scene;
 Scene.__name__ = ["Scene"];
@@ -4868,19 +5008,33 @@ Scene.prototype = $extend(openfl_display_Sprite.prototype,{
 	,_uiEntities: null
 	,_backgroundImageURL: null
 	,_graphicsInstance: null
+	,update: function(time) {
+		haxe_Log.trace("update scene id: " + this._id + ", delta: " + time + ".",{ fileName : "Scene.hx", lineNumber : 45, className : "Scene", methodName : "update"});
+	}
+	,addEntity: function(entity) {
+		var type = entity.get("type");
+		switch(type) {
+		case "button":
+			this._uiEntities.buttons.push(entity);
+			break;
+		case "window":
+			this._uiEntities.windows.push(entity);
+			break;
+		default:
+			haxe_Log.trace("Error in Scene.addEntity, can't add entity with id: " + Std.string(entity.get("id")) + ", and type: " + type + ".",{ fileName : "Scene.hx", lineNumber : 55, className : "Scene", methodName : "addEntity"});
+		}
+	}
 	,draw: function() {
 		this._parent.getParent().getSystem("graphics").drawScene(this);
 	}
 	,unDraw: function() {
+		this._parent.getParent().getSystem("graphics").undrawScene(this);
 	}
-	,addEntity: function(type,entity) {
-		switch(type) {
-		case "button":case "window":
-			this._uiEntities.push(entity);
-			break;
-		default:
-			haxe_Log.trace("Error in Scene.addEntity, can't add entity with type: " + type + ".",{ fileName : "Scene.hx", lineNumber : 43, className : "Scene", methodName : "addEntity"});
-		}
+	,drawUi: function(uiName) {
+		this._parent.getParent().getSystem("graphics").drawSceneUi(this,uiName);
+	}
+	,undrawUi: function(uiName) {
+		this._parent.getParent().getSystem("graphics").undrawSceneUi(this,uiName);
 	}
 	,getId: function() {
 		return this._id;
@@ -4903,6 +5057,9 @@ Scene.prototype = $extend(openfl_display_Sprite.prototype,{
 	,getGraphicsInstance: function() {
 		return this._graphicsInstance;
 	}
+	,getUiEntities: function() {
+		return this._uiEntities;
+	}
 	,__class__: Scene
 });
 var SceneSystem = function(parent,params) {
@@ -4920,7 +5077,7 @@ SceneSystem.prototype = {
 	,_config: null
 	,_nextId: null
 	,_createId: function() {
-		var id = this._nextId;
+		var id = this._nextId + "";
 		this._nextId++;
 		return id;
 	}
@@ -4942,18 +5099,26 @@ SceneSystem.prototype = {
 			}
 		}
 		if(value == null) {
-			haxe_Log.trace("Error in SceneSystem._screateStartScene, scene name: " + sceneName + " not found in config container.",{ fileName : "SceneSystem.hx", lineNumber : 38, className : "SceneSystem", methodName : "_createStartScene"});
+			haxe_Log.trace("Error in SceneSystem._screateStartScene, scene name: " + sceneName + " not found in config container.",{ fileName : "SceneSystem.hx", lineNumber : 40, className : "SceneSystem", methodName : "_createStartScene"});
 		}
-		var config = value;
-		scene.setBackgroundImageURL(config.backgroundImageURL);
+		scene.setBackgroundImageURL(value.backgroundImageURL);
 		var _g2 = 0;
-		var _g11 = Reflect.fields(this._config.buttons);
+		var _g11 = Reflect.fields(value.windows);
 		while(_g2 < _g11.length) {
 			var key = _g11[_g2];
 			++_g2;
-			var configButton = Reflect.getProperty(this._config.buttons,key);
-			var button = this._parent.getSystem("entity").createEntity("button",key,configButton);
-			scene.addEntity("button",button);
+			var configWindow = Reflect.getProperty(value.windows,key);
+			var $window = this._parent.getSystem("entity").createEntity("window",key,configWindow);
+			scene.addEntity($window);
+		}
+		var _g3 = 0;
+		var _g12 = Reflect.fields(value.buttons);
+		while(_g3 < _g12.length) {
+			var field1 = _g12[_g3];
+			++_g3;
+			var configButton = Reflect.getProperty(value.buttons,field1);
+			var button = this._parent.getSystem("entity").createEntity("button",field1,configButton);
+			scene.addEntity(button);
 		}
 		this._addScene(scene);
 		return scene;
@@ -4970,6 +5135,15 @@ SceneSystem.prototype = {
 		this._addScene(scene);
 		return scene;
 	}
+	,update: function(time) {
+		var _g = 0;
+		var _g1 = Reflect.fields(this._scenesArray);
+		while(_g < _g1.length) {
+			var key = _g1[_g];
+			++_g;
+			Reflect.getProperty(this._scenesArray,key).update(time);
+		}
+	}
 	,createScene: function(sceneName) {
 		switch(sceneName) {
 		case "cityScene":
@@ -4979,7 +5153,7 @@ SceneSystem.prototype = {
 		case "startScene":
 			return this._createStartScene(sceneName);
 		default:
-			haxe_Log.trace("Error in SceneSystem.createScene, scene name can't be: " + sceneName + ".",{ fileName : "SceneSystem.hx", lineNumber : 87, className : "SceneSystem", methodName : "createScene"});
+			haxe_Log.trace("Error in SceneSystem.createScene, scene name can't be: " + sceneName + ".",{ fileName : "SceneSystem.hx", lineNumber : 102, className : "SceneSystem", methodName : "createScene"});
 		}
 		return null;
 	}
@@ -5277,22 +5451,36 @@ _$UInt_UInt_$Impl_$.toFloat = function(this1) {
 var UserInterface = function(parent) {
 	openfl_display_Sprite.call(this);
 	this._parent = parent;
+	this._objectsOnUi = { "widnows" : [], "buttons" : []};
 };
 $hxClasses["UserInterface"] = UserInterface;
 UserInterface.__name__ = ["UserInterface"];
 UserInterface.__super__ = openfl_display_Sprite;
 UserInterface.prototype = $extend(openfl_display_Sprite.prototype,{
 	_parent: null
+	,_objectsOnUi: null
 	,addButton: function(button) {
-		var data = new openfl_display_Bitmap(button.getComponent("graphics").getUrl(0));
+		var data = new openfl_display_Bitmap(openfl_utils_Assets.getBitmapData(button.getComponent("graphics").getUrl(0)));
 		var sprite = new openfl_display_Sprite();
 		sprite.addChild(data);
-		sprite.set_x(button.getComponent("graphics").getCoordinates().x);
-		sprite.set_y(button.getComponent("graphics").getCoordinates().y);
-		this._parent.getSystem("event").addEventListener(sprite,"MOUSE_DOWN");
+		var coords = button.getComponent("graphics").getCoordinates();
+		sprite.set_x(coords.x);
+		sprite.set_y(coords.y);
+		this._parent.getSystem("event").addEventListener(sprite,"MOUSE_CLIKC");
 		this.addChild(sprite);
 	}
-	,addWindow: function() {
+	,addWindow: function(window) {
+		var data = new openfl_display_Bitmap(openfl_utils_Assets.getBitmapData(window.getComponent("graphics").getUrl(0)));
+		var sprite = new openfl_display_Sprite();
+		sprite.addChild(data);
+		var coords = window.getComponent("graphics").getCoordinates();
+		sprite.set_x(coords.x);
+		sprite.set_y(coords.y);
+		this.addChild(sprite);
+	}
+	,removeWindow: function(window) {
+	}
+	,removeButton: function(window) {
 	}
 	,__class__: UserInterface
 });
@@ -25925,7 +26113,7 @@ var lime_utils_AssetCache = function() {
 	this.audio = new haxe_ds_StringMap();
 	this.font = new haxe_ds_StringMap();
 	this.image = new haxe_ds_StringMap();
-	this.version = 273855;
+	this.version = 93018;
 };
 $hxClasses["lime.utils.AssetCache"] = lime_utils_AssetCache;
 lime_utils_AssetCache.__name__ = ["lime","utils","AssetCache"];

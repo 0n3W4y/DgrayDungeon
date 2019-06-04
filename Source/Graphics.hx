@@ -4,26 +4,28 @@ import openfl.display.Bitmap;
 
 class Graphics extends Component
 {
-	private var _url:String;
-	private var _url2:String;
+	private var _url:String; // for buttons unpushed;
+	private var _url2:String; // for buttons pushed;
 	private var _x:Float;
 	private var _y:Float;
-	private var _text:String;
-	private var _tx:Float;
-	private var _ty:Float;
+	private var _text:Dynamic; // { 'text1': { "text": "yuppei",x: 1, y:2 }, 'text2': { "text": "yuppieey", x: 1, y:2 } };
+	private var _addiction:String;
+	private var _queue:Int;
+
 	private var _graphicsInstance:Bitmap;
 
-	private var _addiction:String;
 
-	private function _init( params:Dynamic ):Void
-	{
-		
-	}
 
-	public function new( parent:Entity, id:Int, params ):Void
+	public function new( parent:Entity, id:String, params:Dynamic ):Void
 	{
 		super( parent, id, "graphics" );
-		this._init( params );
+		this._url = params.url;
+		this._url2 = params.url2;
+		this._x = params.x;
+		this._y = params.y;
+		this._text = params.text;
+		this._addiction = params.addiciton;
+		this._queue = params.queue;
 	}
 
 	public function getUrl( value:Int ):String
@@ -34,7 +36,7 @@ class Graphics extends Component
 			return this._url2;
 	}
 
-	public function setUrl( url:Int value:String ):Void
+	public function setUrl( url:Int, value:String ):Void
 	{
 		if( url == 0 )
 			this._url = value;
@@ -42,14 +44,14 @@ class Graphics extends Component
 			this._url2 = value;
 	}
 
-	public function getText():String
+	public function getText():Dynamic
 	{
 		return this._text;
 	}
 
-	public function setText( value:String ):Void
+	public function setText( value:Dynamic ):Void
 	{
-		this._text = text;
+		this._text = value;
 	}
 
 	public function getCoordinates():Dynamic
@@ -57,19 +59,10 @@ class Graphics extends Component
 		return { "x": this._x, "y": this._y };
 	}
 
-	public function setCoordinates( obj:String, x:Float, y:Float ):Void
+	public function setCoordinates( x:Float, y:Float ):Void
 	{
-		if( obj == "img" )
-		{
-			this._x = x;
-			this._y = y;
-		}
-		else
-		{
-			this._tx = x;
-			this._ty = y;
-		}
-		
+		this._x = x;
+		this._y = y;		
 	}
 
 	public function getGraphicsInstance():Bitmap
@@ -77,18 +70,18 @@ class Graphics extends Component
 		return this._graphicsInstance;
 	}
 
-	public function setGraphicsInstance( gi: Bitmap ):Void
+	public function setGraphicsInstance( gi:Bitmap ):Void
 	{
 		this._graphicsInstance = gi;
 	}
 
-	public function setAddiction( value:String ):Void
-	{
-		this._addiction = value;
-	}
-
-	public function getAddiction():Void
+	public function getAddiction():String
 	{
 		return this._addiction;
+	}
+
+	public function getQueue():Int
+	{
+		return this._queue;
 	}
 }

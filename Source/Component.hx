@@ -3,11 +3,11 @@ package;
 class Component 
 {
 	private var _name:String;
-	private var _id:Int;
+	private var _id:String;
 
 	private var _parent:Entity;
 
-	public function new( parent:Entity, id:Int, name:String ):Void
+	public function new( parent:Entity, id:String, name:String ):Void
 	{
 		this._name = name;
 		this._id = id;
@@ -29,7 +29,7 @@ class Component
 		return this._name;
 	}
 
-	public function getId():Int
+	public function getId():String
 	{
 		return this._id;
 	}

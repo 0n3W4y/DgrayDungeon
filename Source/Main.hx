@@ -9,14 +9,9 @@ class Main extends Sprite
 	private var _height:Int = 1080;
 	private var _fps:Int = 60;
 
-	private function _createGame():Void
-	{
-		this._game = new Game( _width, _height, _fps, this );
-	}
-
 	public function new():Void
 	{
 		super();
-		this._createGame();
+		this._game = new Game( this._width, this._height, this._fps, this );
 	}
 }
