@@ -16,7 +16,8 @@
 						"y": 450.0,
 						"text" : null,
 						"addiction": "startSceneButtonsWindow",
-						"queue" : 1
+						"queue" : 1,
+						"graphicsInstance": null
 					}
 				}
 			},
@@ -27,84 +28,56 @@
 				{
 					"graphics": 
 					{
-						"url": "assets/button_a.png",
-						"url2": "assets/button_a_pushed.png",
+						"url": "assets/startGameButton.png",
+						"url2": "assets/startGameButton_p.png",
 						"x": 1365.0,
-						"y": 485.0,
-						"text":
-						{
-							"text1": 
-							{
-								"text": "Start game",
-								"tx": 0.0,
-								"ty": 0.0
-							}								
-						},
+						"y": 600.0,
+						"text": null,
 						"addiction": "startSceneButtonsWindow",
-						"queue": 1
+						"queue": 2,
+						"graphicsInstance": null
 					}
 				},
 				"continueButton":
 				{
 					"graphics":
 					{
-						"url": "assets/button_a.png",
-						"url2": "assets/button_a_pushed.png",
+						"url": "assets/continueGameButton.png",
+						"url2": "assets/continueGameButton_p.png",
 						"x": 1365.0,
-						"y": 605.0,
-						"text":
-						{
-							"text1": 
-							{
-								"text": "Continue",
-								"tx": 0.0,
-								"ty": 0.0
-							}								
-						},
+						"y": 480.0,
+						"text": null,
 						"addiction": "startSceneButtonsWindow",
-						"queue": 2
+						"queue": 1,
+						"graphicsInstance": null
 					}
 				},
 				"optionButton": 
 				{
 					"graphics":
 					{
-						"url": "assets/button_a.png",
-						"url2": "assets/button_a_pushed.png",
+						"url": "assets/optionsGameButton.png",
+						"url2": "assets/optionsGameButton_p.png",
 						"x": 1365.0,
-						"y": 725.0,
-						"text":
-						{
-							"text1": 
-							{
-								"text": "Options",
-								"tx": 0.0,
-								"ty": 0.0
-							}								
-						},
+						"y": 720.0,
+						"text": null,
 						"addiction": "startSceneButtonsWindow",
-						"queue": 3
+						"queue": 3,
+						"graphicsInstance": null
 					}							
 				},
 				"authorsButton":
 				{
 					"graphics":
 					{
-						"url": "assets/button_a.png",
-						"url2": "assets/button_a_pushed.png",
+						"url": "assets/authorsGameButton.png",
+						"url2": "assets/authorsGameButton_p.png",
 						"x": 1365.0,
-						"y": 845.0,
-						"text":
-						{
-							"text1": 
-							{
-								"text": "Authors",
-								"tx": 0.0,
-								"ty": 0.0
-							}								
-						},
+						"y": 840.0,
+						"text": null,
 						"addiction": "startSceneButtonsWindow",
-						"queue": 4
+						"queue": 4,
+						"graphicsInstance": null
 					}
 				}
 			}

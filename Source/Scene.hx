@@ -76,14 +76,24 @@ class Scene extends Sprite
 		this._parent.getParent().getSystem( "graphics" ).undrawSceneUi( this, uiName );
 	}
 
+	public function show():Void
+	{
+		this._parent.getParent().getSystem( "graphics" ).showScene( this );
+	}
+
+	public function hide():Void
+	{
+		this._parent.getParent().getSystem( "graphics" ).hideScene( this );
+	}
+
 	public function getId():String
 	{
-		return _id;
+		return this._id;
 	}
 
 	public function getParent():SceneSystem
 	{
-		return _parent;
+		return this._parent;
 	}
 
 	public function getName():String

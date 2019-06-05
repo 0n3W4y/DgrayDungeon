@@ -1,6 +1,6 @@
 package;
 
-import openfl.display.Bitmap;
+import openfl.display.Sprite;
 
 class Graphics extends Component
 {
@@ -12,7 +12,7 @@ class Graphics extends Component
 	private var _addiction:String;
 	private var _queue:Int;
 
-	private var _graphicsInstance:Bitmap;
+	private var _graphicsInstance:Sprite;
 
 
 
@@ -26,6 +26,7 @@ class Graphics extends Component
 		this._text = params.text;
 		this._addiction = params.addiciton;
 		this._queue = params.queue;
+		this._graphicsInstance = params.graphicsInstance;
 	}
 
 	public function getUrl( value:Int ):String
@@ -65,12 +66,12 @@ class Graphics extends Component
 		this._y = y;		
 	}
 
-	public function getGraphicsInstance():Bitmap
+	public function getGraphicsInstance():Sprite
 	{
 		return this._graphicsInstance;
 	}
 
-	public function setGraphicsInstance( gi:Bitmap ):Void
+	public function setGraphicsInstance( gi:Sprite ):Void
 	{
 		this._graphicsInstance = gi;
 	}

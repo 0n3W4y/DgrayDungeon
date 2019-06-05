@@ -81,7 +81,7 @@ class SceneSystem
 	{
 		for( key in Reflect.fields( this._scenesArray ) )
 		{
-			Reflect.getProperty( this._scenesArray, key ).update( time );
+			Reflect.getProperty( this._scenesArray, key ).update( time ); // update all scenes;
 		}
 	}
 
@@ -106,20 +106,43 @@ class SceneSystem
 
 	public function removeScene( scene:Scene ):Void
 	{
-
+		var sceneId = scene.getId();
+		for( i in 0...this._scenesArray.length )
+		{
+			if( this._scenesArray[ i ].getId() == sceneId )
+			{
+				this._scenesArray.splice( i, 1 );
+				break;
+			}
+		}
 	}
 
-	public function doActiveScene( scene:Scene ):Void
+	public function doActiveScene( scene:Scene ):Void // kill active scene;
 	{
 		if( this._activeScene != null )
 		{
-			this._activeScene.unDraw();
+			this._activeScene.unDraw(); //remove scene;
+			this.removeScene( this._activeScene );
 			this._activeScene = null;
 			
 		}
 
 		this._activeScene = scene;
 		this._activeScene.draw();
+	}
+
+	public function switchScene( scene:Scene ):Void // this only hide active scene.
+	{
+		if( this._activeScene != null )
+		{
+			this._activeScene.hide(); //hide scene;
+			this._activeScene = null;
+		}
+
+		if( scene.getGraphicsInstance() != null )
+			scene.show();
+
+		this._activeScene = scene;
 	}
 
 	public function getParent():Game

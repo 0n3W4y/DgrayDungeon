@@ -894,9 +894,9 @@ ApplicationMain.create = function(config) {
 	ManifestResources.init(config);
 	var _this = app.meta;
 	if(__map_reserved["build"] != null) {
-		_this.setReserved("build","93");
+		_this.setReserved("build","133");
 	} else {
-		_this.h["build"] = "93";
+		_this.h["build"] = "133";
 	}
 	var _this1 = app.meta;
 	if(__map_reserved["company"] != null) {
@@ -4507,31 +4507,47 @@ $hxClasses["EventSystem"] = EventSystem;
 EventSystem.__name__ = ["EventSystem"];
 EventSystem.prototype = {
 	_parent: null
-	,addEventListener: function(object,type) {
-		switch(type) {
-		case "MOUSE_CLIKC":
-			object.addEventListener("click",$bind(this,this.eventListenerMouseDown));
+	,_addStartSceneButton: function(name,object) {
+		switch(name) {
+		case "authorsButton":
+			object.addEventListener("click",$bind(this,this._eventAuthorsButtonClick));
 			break;
-		case "MOUSE_DOWN":
-			object.addEventListener("mouseDown",$bind(this,this.eventListenerMouseDown));
+		case "continueButton":
+			object.addEventListener("click",$bind(this,this._eventContinueButtonClick));
 			break;
-		case "MOUSE_UP":
-			object.addEventListener("mouseUp",$bind(this,this.eventListenerMouseDown));
+		case "optionButton":
+			object.addEventListener("click",$bind(this,this._eventOptionButtonClick));
+			break;
+		case "startButton":
+			object.addEventListener("click",$bind(this,this._eventStartButtonClick));
 			break;
 		default:
-			haxe_Log.trace("Error in EventSystem.addEventListener, type of event can't be: " + type + ".",{ fileName : "EventSystem.hx", lineNumber : 25, className : "EventSystem", methodName : "addEventListener"});
+			haxe_Log.trace("Error in EventSystem._addStartSceneButton, button with name " + name + ", does not exist in case.",{ fileName : "EventSystem.hx", lineNumber : 21, className : "EventSystem", methodName : "_addStartSceneButton"});
 		}
 	}
-	,eventListenerMouseDown: function(e) {
-		haxe_Log.trace("Mouse down",{ fileName : "EventSystem.hx", lineNumber : 32, className : "EventSystem", methodName : "eventListenerMouseDown"});
+	,_eventStartButtonClick: function(e) {
+		var newScene = this._parent.getSystem("scene").createScene("cityScene");
+		this._parent.getSystem("scene").doActiveScene(newScene);
 	}
-	,eventListenerMouseUp: function(e) {
-		haxe_Log.trace("Mouse up",{ fileName : "EventSystem.hx", lineNumber : 38, className : "EventSystem", methodName : "eventListenerMouseUp"});
+	,_eventContinueButtonClick: function(e) {
+		haxe_Log.trace(" continue ... load saved game from file??? ",{ fileName : "EventSystem.hx", lineNumber : 36, className : "EventSystem", methodName : "_eventContinueButtonClick"});
 	}
-	,eventListenerMouseClick: function(e) {
-		haxe_Log.trace("mouse click",{ fileName : "EventSystem.hx", lineNumber : 43, className : "EventSystem", methodName : "eventListenerMouseClick"});
+	,_eventOptionButtonClick: function(e) {
+		haxe_Log.trace(" Options window ",{ fileName : "EventSystem.hx", lineNumber : 42, className : "EventSystem", methodName : "_eventOptionButtonClick"});
 	}
-	,removeEventListener: function(object,type) {
+	,_eventAuthorsButtonClick: function(e) {
+		haxe_Log.trace(" Authors window ",{ fileName : "EventSystem.hx", lineNumber : 48, className : "EventSystem", methodName : "_eventAuthorsButtonClick"});
+	}
+	,addEvent: function(name,object) {
+		switch(name) {
+		case "authorsButton":case "continueButton":case "optionButton":case "startButton":
+			this._addStartSceneButton(name,object);
+			break;
+		default:
+			haxe_Log.trace("Error in EventSystem.addEvent, type of event can't be: " + name + ".",{ fileName : "EventSystem.hx", lineNumber : 63, className : "EventSystem", methodName : "addEvent"});
+		}
+	}
+	,removeEvent: function(object,type) {
 	}
 	,__class__: EventSystem
 };
@@ -4593,7 +4609,7 @@ Game.prototype = {
 		}
 	}
 	,_parseData: function() {
-		var conf = { graphics : { }, entity : { }, scene : { dungeonScene : { }, startScene : { backgroundImageURL : "assets/background_game.png", windows : { sceneButtonWindow : { graphics : { url : "assets/startSceneButtonsWindow.png", y : 450, x : 1300, queue : 1, url2 : "", text : null, addiction : "startSceneButtonsWindow"}}}, buttons : { authorsButton : { graphics : { url : "assets/button_a.png", y : 850, x : 1365, queue : 4, url2 : "assets/button_a_pushed.png", text : { text1 : { ty : 0, tx : 0, text : "Authors"}}, addiction : "startSceneButtonsWindow"}}, startButton : { graphics : { url : "assets/button_a.png", y : 490, x : 1365, queue : 1, url2 : "assets/button_a_pushed.png", text : { text1 : { ty : 0, tx : 0, text : "Start game"}}, addiction : "startSceneButtonsWindow"}}, continueButton : { graphics : { url : "assets/button_a.png", y : 610, x : 1365, queue : 2, url2 : "assets/button_a_pushed.png", text : { text1 : { ty : 0, tx : 0, text : "Continue"}}, addiction : "startSceneButtonsWindow"}}, optionButton : { graphics : { url : "assets/button_a.png", y : 730, x : 1365, queue : 3, url2 : "assets/button_a_pushed.png", text : { text1 : { ty : 0, tx : 0, text : "Options"}}, addiction : "startSceneButtonsWindow"}}}}, cityScene : { backgroundImageURL : "url", tavern : { }, hospital : { }, inn : { }, monastery : { }}}};
+		var conf = { graphics : { }, entity : { }, scene : { dungeonScene : { }, startScene : { backgroundImageURL : "assets/background_game.png", windows : { sceneButtonWindow : { graphics : { graphicsInstance : null, url : "assets/startSceneButtonsWindow.png", y : 450, x : 1300, queue : 1, url2 : "", text : null, addiction : "startSceneButtonsWindow"}}}, buttons : { authorsButton : { graphics : { graphicsInstance : null, url : "assets/authorsGameButton.png", y : 840, x : 1365, queue : 4, url2 : "assets/authorsGameButton_p.png", text : null, addiction : "startSceneButtonsWindow"}}, startButton : { graphics : { graphicsInstance : null, url : "assets/startGameButton.png", y : 600, x : 1365, queue : 2, url2 : "assets/startGameButton_p.png", text : null, addiction : "startSceneButtonsWindow"}}, continueButton : { graphics : { graphicsInstance : null, url : "assets/continueGameButton.png", y : 480, x : 1365, queue : 1, url2 : "assets/continueGameButton_p.png", text : null, addiction : "startSceneButtonsWindow"}}, optionButton : { graphics : { graphicsInstance : null, url : "assets/optionsGameButton.png", y : 720, x : 1365, queue : 3, url2 : "assets/optionsGameButton_p.png", text : null, addiction : "startSceneButtonsWindow"}}}}, cityScene : { backgroundImageURL : "url", tavern : { }, hospital : { }, inn : { }, monastery : { }}}};
 		return conf;
 	}
 	,_startGame: function() {
@@ -4654,6 +4670,7 @@ var Graphics = function(parent,id,params) {
 	this._text = params.text;
 	this._addiction = params.addiciton;
 	this._queue = params.queue;
+	this._graphicsInstance = params.graphicsInstance;
 };
 $hxClasses["Graphics"] = Graphics;
 Graphics.__name__ = ["Graphics"];
@@ -4754,23 +4771,61 @@ GraphicsSystem.prototype = {
 		}
 		this._parent.getMainSprite().addChild(scene);
 	}
+	,_undrawStartScene: function(scene) {
+		var sceneUiEntities = scene.getUiEntities();
+		var windowsContainer = sceneUiEntities.windows;
+		var buttonsContainer = sceneUiEntities.buttons;
+		var _g1 = 0;
+		var _g = windowsContainer.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			var $window = windowsContainer[i];
+			this._parent.getSystem("ui").removeUiObject($window);
+		}
+		var _g11 = 0;
+		var _g2 = buttonsContainer.length;
+		while(_g11 < _g2) {
+			var j = _g11++;
+			var button = buttonsContainer[j];
+			this._parent.getSystem("ui").removeUiObject(button);
+		}
+		this._parent.getMainSprite().removeChild(scene);
+	}
+	,_drawCityScene: function(scene) {
+	}
+	,_undrawCityScene: function(scene) {
+	}
 	,drawScene: function(scene) {
 		var sceneName = scene.getName();
-		if(sceneName == "startScene") {
+		switch(sceneName) {
+		case "cutyScene":
+			this._drawCityScene(scene);
+			break;
+		case "startScene":
 			this._drawStartScene(scene);
-		} else {
-			haxe_Log.trace("Can't sraw scene with name: " + sceneName + ".",{ fileName : "GraphicsSystem.hx", lineNumber : 98, className : "GraphicsSystem", methodName : "drawScene"});
+			break;
+		default:
+			haxe_Log.trace("Can't sraw scene with name: " + sceneName + ".",{ fileName : "GraphicsSystem.hx", lineNumber : 110, className : "GraphicsSystem", methodName : "drawScene"});
 		}
 	}
 	,undrawScene: function(scene) {
+		var sceneName = scene.getName();
+		switch(sceneName) {
+		case "cityScene":
+			this._undrawCityScene(scene);
+			break;
+		case "startScene":
+			this._undrawStartScene(scene);
+			break;
+		default:
+			haxe_Log.trace("Can't sraw scene with name: " + sceneName + ".",{ fileName : "GraphicsSystem.hx", lineNumber : 121, className : "GraphicsSystem", methodName : "undrawScene"});
+		}
 	}
-	,drawObject: function(scene,object) {
+	,hideScene: function(scene) {
+		scene.set_visible(false);
 	}
-	,undrawObject: function(object) {
-	}
-	,drawSceneUi: function(addicition) {
-	}
-	,undrawSceneUi: function(addiction) {
+	,showScene: function(scene) {
+		scene.set_visible(true);
 	}
 	,__class__: GraphicsSystem
 };
@@ -4891,7 +4946,7 @@ ManifestResources.init = function(config) {
 	var data;
 	var manifest;
 	var library;
-	data = "{\"name\":null,\"assets\":\"aoy4:pathy28:assets%2Fbackground_game.pngy4:sizei1897994y4:typey5:IMAGEy2:idR1y7:preloadtgoR0y21:assets%2Fbutton_a.pngR2i1941R3R4R5R7R6tgoR0y28:assets%2Fbutton_a_pushed.pngR2i2723R3R4R5R8R6tgoR0y36:assets%2FstartSceneButtonsWindow.pngR2i7836R3R4R5R9R6tgh\",\"rootPath\":null,\"version\":2,\"libraryArgs\":[],\"libraryType\":null}";
+	data = "{\"name\":null,\"assets\":\"aoy4:pathy30:assets%2FauthorsGameButton.pngy4:sizei22092y4:typey5:IMAGEy2:idR1y7:preloadtgoR0y32:assets%2FauthorsGameButton_p.pngR2i22582R3R4R5R7R6tgoR0y28:assets%2Fbackground_game.pngR2i1897994R3R4R5R8R6tgoR0y21:assets%2Fbutton_a.pngR2i1941R3R4R5R9R6tgoR0y28:assets%2Fbutton_a_pushed.pngR2i2723R3R4R5R10R6tgoR0y31:assets%2FcontinueGameButton.pngR2i20523R3R4R5R11R6tgoR0y33:assets%2FcontinueGameButton_p.pngR2i21263R3R4R5R12R6tgoR0y30:assets%2FoptionsGameButton.pngR2i21835R3R4R5R13R6tgoR0y32:assets%2FoptionsGameButton_p.pngR2i22337R3R4R5R14R6tgoR0y28:assets%2FstartGameButton.pngR2i24067R3R4R5R15R6tgoR0y30:assets%2FstartGameButton_p.pngR2i24386R3R4R5R16R6tgoR0y36:assets%2FstartSceneButtonsWindow.pngR2i7836R3R4R5R17R6tgh\",\"rootPath\":null,\"version\":2,\"libraryArgs\":[],\"libraryType\":null}";
 	manifest = lime_utils_AssetManifest.parse(data,ManifestResources.rootPath);
 	library = lime_utils_AssetLibrary.fromManifest(manifest);
 	lime_utils_Assets.registerLibrary("default",library);
@@ -5036,6 +5091,12 @@ Scene.prototype = $extend(openfl_display_Sprite.prototype,{
 	,undrawUi: function(uiName) {
 		this._parent.getParent().getSystem("graphics").undrawSceneUi(this,uiName);
 	}
+	,show: function() {
+		this._parent.getParent().getSystem("graphics").showScene(this);
+	}
+	,hide: function() {
+		this._parent.getParent().getSystem("graphics").hideScene(this);
+	}
 	,getId: function() {
 		return this._id;
 	}
@@ -5158,14 +5219,36 @@ SceneSystem.prototype = {
 		return null;
 	}
 	,removeScene: function(scene) {
+		haxe_Log.trace(this._scenesArray,{ fileName : "SceneSystem.hx", lineNumber : 109, className : "SceneSystem", methodName : "removeScene"});
+		var sceneId = scene.getId();
+		var _g1 = 0;
+		var _g = this._scenesArray.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			if(this._scenesArray[i].getId() == sceneId) {
+				this._scenesArray.splice(i,1);
+				break;
+			}
+		}
 	}
 	,doActiveScene: function(scene) {
 		if(this._activeScene != null) {
 			this._activeScene.unDraw();
+			this.removeScene(this._activeScene);
 			this._activeScene = null;
 		}
 		this._activeScene = scene;
 		this._activeScene.draw();
+	}
+	,switchScene: function(scene) {
+		if(this._activeScene != null) {
+			this._activeScene.hide();
+			this._activeScene = null;
+		}
+		if(scene.getGraphicsInstance() != null) {
+			scene.show();
+		}
+		this._activeScene = scene;
 	}
 	,getParent: function() {
 		return this._parent;
@@ -5459,28 +5542,52 @@ UserInterface.__super__ = openfl_display_Sprite;
 UserInterface.prototype = $extend(openfl_display_Sprite.prototype,{
 	_parent: null
 	,_objectsOnUi: null
+	,_createText: function(text) {
+		var textField = new openfl_text_TextField();
+		return textField;
+	}
 	,addButton: function(button) {
-		var data = new openfl_display_Bitmap(openfl_utils_Assets.getBitmapData(button.getComponent("graphics").getUrl(0)));
+		var buttonGraphics = button.getComponent("graphics");
+		var data = new openfl_display_Bitmap(openfl_utils_Assets.getBitmapData(buttonGraphics.getUrl(0)));
+		var data2 = new openfl_display_Bitmap(openfl_utils_Assets.getBitmapData(buttonGraphics.getUrl(1)));
+		var newButton = new openfl_display_SimpleButton(data,data,data2,data2);
 		var sprite = new openfl_display_Sprite();
-		sprite.addChild(data);
-		var coords = button.getComponent("graphics").getCoordinates();
+		if(button.get("name") == "continueButton") {
+			newButton.enabled = false;
+		}
+		var coords = buttonGraphics.getCoordinates();
 		sprite.set_x(coords.x);
 		sprite.set_y(coords.y);
-		this._parent.getSystem("event").addEventListener(sprite,"MOUSE_CLIKC");
+		this._parent.getSystem("event").addEvent(button.get("name"),sprite);
+		buttonGraphics.setGraphicsInstance(sprite);
+		sprite.addChild(newButton);
 		this.addChild(sprite);
 	}
 	,addWindow: function(window) {
-		var data = new openfl_display_Bitmap(openfl_utils_Assets.getBitmapData(window.getComponent("graphics").getUrl(0)));
+		var windowGraphics = window.getComponent("graphics");
+		var data = new openfl_display_Bitmap(openfl_utils_Assets.getBitmapData(windowGraphics.getUrl(0)));
 		var sprite = new openfl_display_Sprite();
 		sprite.addChild(data);
-		var coords = window.getComponent("graphics").getCoordinates();
+		var coords = windowGraphics.getCoordinates();
 		sprite.set_x(coords.x);
 		sprite.set_y(coords.y);
+		var text = windowGraphics.getText();
+		if(text != null) {
+			var textSprite = this._createText(text);
+			sprite.addChild(textSprite);
+		}
+		windowGraphics.setGraphicsInstance(sprite);
 		this.addChild(sprite);
 	}
-	,removeWindow: function(window) {
+	,removeUiObject: function(object) {
+		var sprite = object.getComponent("graphics").getGraphicsInstance();
+		this.removeChild(sprite);
 	}
-	,removeButton: function(window) {
+	,showUiObject: function(object) {
+		object.getComponent("graphics").getGraphicsInstance().visible = true;
+	}
+	,hideWindow: function(object) {
+		object.getComponent("graphics").getGraphicsInstance().visible = false;
 	}
 	,__class__: UserInterface
 });
@@ -26113,7 +26220,7 @@ var lime_utils_AssetCache = function() {
 	this.audio = new haxe_ds_StringMap();
 	this.font = new haxe_ds_StringMap();
 	this.image = new haxe_ds_StringMap();
-	this.version = 93018;
+	this.version = 178669;
 };
 $hxClasses["lime.utils.AssetCache"] = lime_utils_AssetCache;
 lime_utils_AssetCache.__name__ = ["lime","utils","AssetCache"];

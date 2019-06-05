@@ -101,7 +101,7 @@ class Game
 		var time = Std.int( Math.ffloor( this._delta ) );
 
 		this._mainLoop = new Timer( time );
-		this._mainLoop.run = _tick;
+		this._mainLoop.run = this._tick;
 		this._lastTime = Date.now().getTime();
 	}
 

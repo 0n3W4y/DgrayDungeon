@@ -4,6 +4,7 @@ import openfl.display.Sprite;
 import openfl.display.Bitmap;
 import openfl.Assets;
 import flash.text.TextField;
+import openfl.display.SimpleButton;
 
 class UserInterface extends Sprite
 {
@@ -11,48 +12,10 @@ class UserInterface extends Sprite
 	private var _objectsOnUi:Dynamic; //store all sprites / bitmaps for fast remove;
 
 
-	public function new( parent:Game ):Void
+	private function _createText( text:Dynamic ):TextField //text = { "text1": { text:" bal-bla", "x": 0.0, "y": 0,0 } , "text2": { text: "bla-bla-bla", "x": 0.0, "y": 0.0 } };
 	{
-		super();
-		this._parent = parent;
-		this._objectsOnUi = 
-		{
-			"widnows": new Array<Dynamic>(),
-			"buttons": new Array<Dynamic>()
-		};
-		//this.alpha = 0.0;
-	}
-
-	public function addButton( button:Entity ):Void
-	{
-		var data = new Bitmap( Assets.getBitmapData( button.getComponent( "graphics" ).getUrl( 0 ) ) );
-		var sprite = new Sprite();
-		sprite.addChild( data );
-
-		var coords = button.getComponent( "graphics" ).getCoordinates();
-		sprite.x = coords.x;
-		sprite.y = coords.y;
-		this._parent.getSystem( "event" ).addEventListener( sprite, "MOUSE_CLIKC" );
-		this._parent.getSystem( "event" ).addEventListener( sprite, "MOUSE_UP" );
-		this._parent.getSystem( "event" ).addEventListener( sprite, "MOUSE_DOWN" );
-		addChild( sprite );
-	}
-
-	public function addWindow( window:Entity ):Void
-	{
-		var data = new Bitmap( Assets.getBitmapData( window.getComponent( "graphics" ).getUrl( 0 ) ) );
-		var sprite = new Sprite();
-		sprite.addChild( data );
-
-		var coords = window.getComponent( "graphics" ).getCoordinates();
-		sprite.x = coords.x;
-		sprite.y = coords.y;
-		addChild( sprite );
-	}
-
-	public function addText( text:Dynamic ):Void //text = { "text1": { text:" bal-bla", "x": 0.0, "y": 0,0 } , "text2": { text: "bla-bla-bla", "x": 0.0, "y": 0.0 } };
-	{
-
+		var textField = new TextField();
+		return textField;
 		/*
 		var sp:Sprite = new Sprite();
         txt1 = new TextField();
@@ -70,16 +33,99 @@ class UserInterface extends Sprite
         txt1.text = tabConcat[i];
         sp.addChild    (txt1);
         addChild(sp);
-		*/
+		
+		var exitGameButtonTextFormat:TextFormat = new TextFormat("Verdana", 28, 0xffffff, true);
+        exitGameButtonTextFormat.align = TextFormatAlign.CENTER;
+
+        var exitGameButtonText = new TextField();
+        exitGameButtonText.width = 180;
+        exitGameButtonText.height = 40;
+        exitGameButtonText.defaultTextFormat = exitGameButtonTextFormat;
+        exitGameButtonText.text = "Exit";
+        exitGameButtonText.selectable = false;
+        addChild(exitGameButtonText);
+
+         exitGameButtonText.addEventListener( MouseEvent.CLICK, onClickExitButton );
+         exitGameButtonText.addEventListener( MouseEvent.MOUSE_OVER, mouseOverExitButton );
+         exitGameButtonText.addEventListener( MouseEvent.MOUSE_OUT, mouseOutExitButton );
+
+        exitGameButtonText.x = (Lib.current.stage.stageWidth - exitGameButtonText.width) / 2 + 400;
+        exitGameButtonText.y = (Lib.current.stage.stageHeight - exitGameButtonText.height) / 2 + 300;
+        */
 	}
 
-	public function removeWindow( window:Entity ):Void
-	{
 
+	public function new( parent:Game ):Void
+	{
+		super();
+		this._parent = parent;
+		this._objectsOnUi = 
+		{
+			"widnows": new Array<Dynamic>(),
+			"buttons": new Array<Dynamic>()
+		};
+		//this.alpha = 0.0;
 	}
 
-	public function removeButton( window:Entity ):Void
+	public function addButton( button:Entity ):Void
 	{
+		var buttonGraphics = button.getComponent( "graphics" );
 
+		var data = new Bitmap( Assets.getBitmapData( buttonGraphics.getUrl( 0 ) ) );
+		var data2 = new Bitmap( Assets.getBitmapData( buttonGraphics.getUrl( 1 ) ) );
+
+		var newButton = new SimpleButton(data, data, data2, data2 );
+		var sprite = new Sprite();
+
+		if ( button.get( "name" ) == "continueButton" )
+			newButton.enabled = false;
+
+		var coords = buttonGraphics.getCoordinates();
+		sprite.x = coords.x;
+		sprite.y = coords.y;
+		this._parent.getSystem( "event" ).addEvent( button.get( "name" ), sprite );
+
+		buttonGraphics.setGraphicsInstance( sprite );
+		sprite.addChild( newButton );
+		this.addChild( sprite );
+	}
+
+	public function addWindow( window:Entity ):Void
+	{
+		var windowGraphics = window.getComponent( "graphics" );
+
+		var data = new Bitmap( Assets.getBitmapData( windowGraphics.getUrl( 0 ) ) );
+		var sprite = new Sprite();
+		sprite.addChild( data );
+
+		var coords = windowGraphics.getCoordinates();
+		sprite.x = coords.x;
+		sprite.y = coords.y;
+
+		var text = windowGraphics.getText();
+		if( text != null )
+		{
+			var textSprite = this._createText( text );
+			sprite.addChild( textSprite );
+		}
+
+		windowGraphics.setGraphicsInstance( sprite );
+		this.addChild( sprite );
+	}
+
+	public function removeUiObject( object:Entity ):Void
+	{
+		var sprite = object.getComponent( "graphics" ).getGraphicsInstance();
+		this.removeChild( sprite );
+	}
+
+	public function showUiObject( object:Entity ):Void
+	{
+		object.getComponent( "graphics" ).getGraphicsInstance().visible = true;
+	}
+
+	public function hideWindow( object:Entity ):Void
+	{
+		object.getComponent( "graphics" ).getGraphicsInstance().visible = false;
 	}
 }

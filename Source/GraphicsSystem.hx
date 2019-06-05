@@ -49,9 +49,6 @@ class GraphicsSystem
 		{
 			var window = windowsContainer[ i ];
 			this._parent.getSystem( "ui" ).addWindow( window );
-			var text = window.getComponent( "graphics" ).getText();
-			if( text != null )
-				this._parent.getSystem( "ui" ).addText( text );
 		}
 
 		//second draw buttons;
@@ -59,12 +56,42 @@ class GraphicsSystem
 		{
 			var button = buttonsContainer[ j ];
 			this._parent.getSystem( "ui" ).addButton( button );
-			var text = button.getComponent( "graphics" ).getText();
-			if( text != null )
-				this._parent.getSystem( "ui" ).addText( text );
 		}
 		
 		this._parent.getMainSprite().addChild( scene );
+	}
+
+	private function _undrawStartScene( scene:Scene ):Void
+	{
+		// when we goto CityScene - we no need this scene on this game.
+		var sceneUiEntities:Dynamic = scene.getUiEntities();
+		var windowsContainer:Array<Entity> = sceneUiEntities.windows;
+		var buttonsContainer:Array<Entity> = sceneUiEntities.buttons;
+
+		for( i in 0...windowsContainer.length )
+		{
+			var window = windowsContainer[ i ];
+			this._parent.getSystem( "ui" ).removeUiObject( window );
+		}
+
+		//second draw buttons;
+		for( j in 0...buttonsContainer.length )
+		{
+			var button = buttonsContainer[ j ];
+			this._parent.getSystem( "ui" ).removeUiObject( button );
+		}
+
+		this._parent.getMainSprite().removeChild( scene );
+	}
+
+	private function _drawCityScene( scene:Scene ):Void
+	{
+
+	}
+
+	private function _undrawCityScene( scene:Scene ):Void
+	{
+
 	}
 	
 
@@ -79,32 +106,29 @@ class GraphicsSystem
 		switch( sceneName )
 		{
 			case "startScene": this._drawStartScene( scene );
-			default: trace( "Can't sraw scene with name: " + sceneName + "." );
+			case "cityScene": this._drawCityScene( scene );
+			default: trace( "Can't draw scene with name: " + sceneName + "." );
 		}
 	}
 
 	public function undrawScene( scene: Scene ):Void
 	{
-
+		var sceneName = scene.getName();
+		switch( sceneName )
+		{
+			case "startScene": this._undrawStartScene( scene );
+			case "cityScene": this._undrawCityScene( scene );
+			default: trace( "Can't sraw scene with name: " + sceneName + "." );
+		}
 	}
 
-	public function drawObject( scene:Scene, object:Entity ):Void
+	public function hideScene( scene:Scene ):Void
 	{
-
+		scene.visible = false;
 	}
 
-	public function undrawObject( object:Entity ):Void
+	public function showScene( scene:Scene ):Void
 	{
-
-	}
-
-	public function drawSceneUi( addicition:String ):Void
-	{
-
-	}
-
-	public function undrawSceneUi( addiction:String ):Void
-	{
-		//startSceneButtonsWindow
+		scene.visible = true;
 	}
 }
