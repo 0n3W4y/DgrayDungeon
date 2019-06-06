@@ -3,15 +3,15 @@
 	{
 		"startScene": 
 		{
-			"backgroundImageURL": "assets/background_game.png",
+			"backgroundImageURL": "assets/images/background_game.png",
 			"windows":
 			{
 				"sceneButtonWindow":
 				{
 					"graphics": 
 					{
-						"url": "assets/startSceneButtonsWindow.png",
-						"url2": "",
+						"url": "assets/images/startSceneButtonsWindow.png",
+						"url2": null,
 						"x": 1300.0,
 						"y": 450.0,
 						"text" : null,
@@ -28,8 +28,8 @@
 				{
 					"graphics": 
 					{
-						"url": "assets/startGameButton.png",
-						"url2": "assets/startGameButton_p.png",
+						"url": "assets/images/startGameButton.png",
+						"url2": "assets/images/startGameButton_p.png",
 						"x": 1365.0,
 						"y": 600.0,
 						"text": null,
@@ -42,8 +42,8 @@
 				{
 					"graphics":
 					{
-						"url": "assets/continueGameButton.png",
-						"url2": "assets/continueGameButton_p.png",
+						"url": "assets/images/continueGameButton.png",
+						"url2": "assets/images/continueGameButton_p.png",
 						"x": 1365.0,
 						"y": 480.0,
 						"text": null,
@@ -56,8 +56,8 @@
 				{
 					"graphics":
 					{
-						"url": "assets/optionsGameButton.png",
-						"url2": "assets/optionsGameButton_p.png",
+						"url": "assets/images/optionsGameButton.png",
+						"url2": "assets/iamges/optionsGameButton_p.png",
 						"x": 1365.0,
 						"y": 720.0,
 						"text": null,
@@ -70,8 +70,8 @@
 				{
 					"graphics":
 					{
-						"url": "assets/authorsGameButton.png",
-						"url2": "assets/authorsGameButton_p.png",
+						"url": "assets/images/authorsGameButton.png",
+						"url2": "assets/iamges/authorsGameButton_p.png",
 						"x": 1365.0,
 						"y": 840.0,
 						"text": null,
@@ -86,13 +86,171 @@
 		"cityScene": 
 		{
 			"backgroundImageURL": "url",
+			"windows":
+			{
+				"innWindow":
+				{
+					"graphics": 
+					{
+						"url": "assets/images/innWindow.png",
+						"url2": null,
+						"x": 0.0,
+						"y": 0.0,
+						"text" : 
+						{
+							"nameWindow":
+							{
+								"text": "Inn",
+								"x":0.0,
+								"y":0.0
+							},
+							"quantityHeroes":
+							{
+								"text": "0/0",
+								"x":0.0,
+								"y":0.0
+							}
+						},
+						"addiction": "innWindow",
+						"queue" : 1,
+						"graphicsInstance": null
+					}
+				},
+				"innWindowHeroWindow":
+				{
+					"graphics": 
+					{
+						"url": "assets/images/innWindowHeroWindow.png",
+						"url2": null,
+						"x": 0.0,
+						"y": 0.0,
+						"text" : 
+						{
+							"nameWindow":
+							{
+								"text": "Empty",
+								"x":0.0,
+								"y":0.0
+							},
+							"lvl":
+							{
+								"text": "1",
+								"x":0.0,
+								"y":0.0
+							},
+							"armorPower":
+							{
+								"text": "0",
+								"x":0.0,
+								"y":0.0
+							},
+							"attackPower":
+							{
+								"text": "0",
+								"x":0.0,
+								"y":0.0
+							}
+						},
+						"addiction": "innWindow",
+						"queue" : 2,
+						"graphicsInstance": null
+					}
+				},
+				"innWindowCharacterInfo":
+				{
+					"graphics":
+					{
+						"url": "assets/images/innWindowHeroWindow.png",
+						"url2": null,
+						"x": 0.0,
+						"y": 0.0,
+						"text" : 
+						{
+							"nameWindow":
+							{
+								"text": "Empty",
+								"x":0.0,
+								"y":0.0
+							}
+						},
+						"addiction": "innWindowCharacterInfo",
+						"queue" : 1,
+						"graphicsInstance": null
+					}
+				}
+			},
+			"buttons":
+			{
+				"innWindowButtonHeroListUp":
+				{
+					"graphics": 
+					{
+						"url": "assets/images/innWindowButtonHeroListUp.png",
+						"url2": null,
+						"x": 0.0,
+						"y": 0.0,
+						"text" : null,
+						"addiction": "innWindow",
+						"queue" : 1,
+						"graphicsInstance": null
+					}
+				},
+				"innWindowButtonHeroListDown":
+				{
+					"graphics": 
+					{
+						"url": "assets/images/innWindowButtonHeroListDown.png",
+						"url2": null,
+						"x": 0.0,
+						"y": 0.0,
+						"text" : null,
+						"addiction": "innWindow",
+						"queue" : 1,
+						"graphicsInstance": null
+					}
+				}
+			}
+			
+		},
+
+		"dungeonScene":
+		{
+			"backgroundImageURL": "url",
+			"windows":{},
+			"buttons":{}
+		}
+	},
+
+	"entity":
+	{
+		"buildings":{
 			"hospital":
 			{
-
+				"graphics":
+				{
+					"url": null,
+					"url2": null,
+					"x": 0.0,
+					"y": 0.0,
+					"text": null,
+					"addiction": null,
+					"queue": 0,
+					"graphicsInstance": null
+				}
 			},
 			"tavern":
 			{
-
+				"graphics":
+				{
+					"url": null,
+					"url2": null,
+					"x": 0.0,
+					"y": 0.0,
+					"text": null,
+					"addiction": null,
+					"queue": 0,
+					"graphicsInstance": null
+				}
 			},
 			"inn":
 			{
@@ -100,23 +258,60 @@
 			},
 			"monastery":
 			{
-
+				"graphics":
+				{
+					"url": null,
+					"url2": null,
+					"x": 0.0,
+					"y": 0.0,
+					"text": null,
+					"addiction": null,
+					"queue": 0,
+					"graphicsInstance": null
+				}
+			},
+			"recruits":
+			{
+				"graphics":
+				{
+					"url": null,
+					"url2": null,
+					"x": 0.0,
+					"y": 0.0,
+					"text": null,
+					"addiction": null,
+					"queue": 0,
+					"graphicsInstance": null
+				}
+			},
+			"blacksmith":
+			{
+				"graphics":
+				{
+					"url": null,
+					"url2": null,
+					"x": 0.0,
+					"y": 0.0,
+					"text": null,
+					"addiction": null,
+					"queue": 0,
+					"graphicsInstance": null
+				}
+			},
+			"merchant":
+			{
+				"graphics":
+				{
+					"url": null,
+					"url2": null,
+					"x": 0.0,
+					"y": 0.0,
+					"text": null,
+					"addiction": null,
+					"queue": 0,
+					"graphicsInstance": null
+				}
 			}
-		},
-
-		"dungeonScene":
-		{
-
 		}
 	},
-
-	"entity":
-	{
-
-	},
-
-	"graphics":
-	{
-
-	}
 }
