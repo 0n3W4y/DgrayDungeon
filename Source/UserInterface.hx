@@ -77,6 +77,7 @@ class UserInterface extends Sprite
 		var newButton = new SimpleButton(data, data, data2, data2 );
 		var sprite = new Sprite();
 
+		// function to check buttons when it added to UI;
 		if ( button.get( "name" ) == "continueButton" )
 			newButton.enabled = false;
 
@@ -124,7 +125,7 @@ class UserInterface extends Sprite
 		object.getComponent( "graphics" ).getGraphicsInstance().visible = true;
 	}
 
-	public function hideWindow( object:Entity ):Void
+	public function hideUiObject( object:Entity ):Void
 	{
 		object.getComponent( "graphics" ).getGraphicsInstance().visible = false;
 	}
