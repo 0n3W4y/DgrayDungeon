@@ -3,12 +3,18 @@
 	{
 		"startScene": 
 		{
-			"backgroundImageURL": "assets/images/background_game.png"
+			"backgroundImageURL": "assets/images/background_game.png",
+			"windows":[ "sceneButtonWindow" ],
+			"buttons":[ "startButton", "optionButton", "continueButton", "authorsButton" ]
 		},
 
 		"cityScene": 
 		{
-			"backgroundImageURL": "assets/images/citySceneBackround.png"		
+			"backgroundImageURL": "assets/images/citySceneBackround.png",
+			"windows": [ "innWindow", "innWindowHeroWindow" ],
+			"buttons": [ "innWindowButtonHeroListUp", "innWindowButtonHeroListDown" ],
+			"buildings": [ "hospital", "academy", "hermit", "merchant", "storage", "graveyard", "recruits",
+			"questman", "fontain", "blacksmith", "tavern" ]
 		},
 
 		"chooseDungeonScene":
@@ -83,7 +89,8 @@
 			},
 			"inn":
 			{
-				},
+
+			},
 			"storage":
 			{
 				"graphics":
@@ -386,7 +393,7 @@
 						"text": null,
 						"addiction": "startSceneButtonsWindow",
 						"queue": 0,
-						"graphicsInstance": null,
+						"graphicsInstance": null
 					}				
 				}
 			},

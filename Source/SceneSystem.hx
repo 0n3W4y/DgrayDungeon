@@ -40,6 +40,15 @@ class SceneSystem
 			trace( "Error in SceneSystem._screateStartScene, scene name: " + sceneName + " not found in config container." );
 		
 		scene.setBackgroundImageURL( value.backgroundImageURL );
+
+		var entitySystem = this._parent.getSystem( "entity" );
+
+		for( i in 0...value.windows.length )
+		{
+			var windowName = value.windows[ i ];
+			var window = entitySystem.createEntity( "window", windowName );
+			this.addEntityToScene( window, scene );
+		}
 		
 		for( key in Reflect.fields( value.windows ) )
 		{
@@ -180,6 +189,21 @@ class SceneSystem
 			scene.show();
 
 		this._activeScene = scene;
+	}
+
+	public function addEntityToScene( entity:Entity, scene:Scene ):Void
+	{
+		var type = entity.get( "type" );
+		var container = null;
+		switch( type )
+		{
+			case "window": container = scene.getEntities( "ui" ).windows;
+			case "button": container = scene.getEntities( "ui" ).buttons;
+			case "building": container = scene.getEntities( "object" ).buildings;
+			default: trace( "Error in Scene.addEntity, can't add entity with id: " + entity.get( "id" ) + ", and type: " + type + "." );
+		}
+		container.push( entity );
+
 	}
 
 	public function getParent():Game

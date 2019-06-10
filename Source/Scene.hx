@@ -45,18 +45,6 @@ class Scene extends Sprite
 		trace( "update scene id: " + this._id + ", delta: " + time + "." );
 	}
 
-	public function addEntity( entity:Entity ):Void
-	{
-		var type = entity.get( "type" );
-		switch( type )
-		{
-			case "window": this._uiEntities.windows.push( entity );
-			case "button": this._uiEntities.buttons.push( entity );
-			case "building": this._objectEntities.buildings.push( entity );
-			default: trace( "Error in Scene.addEntity, can't add entity with id: " + entity.get( "id" ) + ", and type: " + type + "." );
-		}
-	}
-
 	public function draw():Void //draw all scene
 	{
 		this._parent.getParent().getSystem( "graphics" ).drawScene( this );
@@ -125,5 +113,15 @@ class Scene extends Sprite
 	public function getUiEntities():Dynamic
 	{
 		return this._uiEntities;
+	}
+	public function getEntities( type:String ):Dynamic
+	{
+		switch( type )
+		{
+			case "ui": return this._uiEntities;
+			case "alive": return this._aliveEntities;
+			case "object": return this._objectEntities;
+			default: trace( "Error in Scene.getEntites, can't get array with type: " + type + "." );
+		}
 	}
 }
