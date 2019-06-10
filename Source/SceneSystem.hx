@@ -62,7 +62,44 @@ class SceneSystem
 	{
 		var id = this._createId();
 		var scene = new Scene( this, id, sceneName );
-		//CONFIG;
+		var value = null;
+		var entitySystem = this._parent.getSystem( "entity" );
+
+		for( field in Reflect.fields( this._config ) )
+		{
+			if( field == sceneName )
+			{
+				value = Reflect.getProperty( this._config, field );
+				break;	
+			}
+		}
+
+		if( value == null )
+			trace( "Error in SceneSystem._screateStartScene, scene name: " + sceneName + " not found in config container." );
+
+		scene.setBackgroundImageURL( value.backgroundImageURL );
+
+		for( key in Reflect.fields( value.windows ) )
+		{
+			var configWindow = Reflect.getProperty( value.windows, key );
+			var window = entitySystem.createEntity( "window", key, configWindow );
+			scene.addEntity( window );
+		}
+
+		for( field in Reflect.fields( value.buttons ) )
+		{
+			var configButton = Reflect.getProperty( value.buttons, field );
+			var button = entitySystem.createEntity( "button", field, configButton );
+			scene.addEntity( button );
+		}
+
+		for( object in Reflect.fields( value.buildings ) )
+		{
+			var buildingName = Reflect.getProperty( value.buildings, object );
+			var building = entitySystem.createEntity( "building", object, buildingName );
+			scene.addEntity( building );
+		}
+
 		this._addScene( scene );
 		return scene;
 	}

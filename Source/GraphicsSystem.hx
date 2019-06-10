@@ -86,6 +86,19 @@ class GraphicsSystem
 
 	private function _drawCityScene( scene:Scene ):Void
 	{
+		if( scene.getGraphicsInstance() == null )
+		{
+			var backgroundURL = scene.getBackgroundImageURL();
+			var bitmap = new Bitmap( Assets.getBitmapData ( backgroundURL ) );
+			scene.setGraphicsInstance( bitmap );
+			scene.addChild( bitmap );
+		}
+		else
+		{
+			scene.addChild( scene.getGraphicsInstance() );
+		}
+
+		this._parent.getMainSprite().addChild( scene );
 
 	}
 
@@ -106,7 +119,7 @@ class GraphicsSystem
 		switch( sceneName )
 		{
 			case "startScene": this._drawStartScene( scene );
-			case "cityScene": this._drawCityScene( scene );
+			case "cityScene": this._drawStartScene( scene );
 			default: trace( "Can't draw scene with name: " + sceneName + "." );
 		}
 	}

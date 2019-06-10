@@ -14,20 +14,24 @@ class EntitySystem
 		return id ;
 	}
 
-	private function _createButton( type:String, name:String, id:String, params:Dynamic ):Entity
+	private function _createUiType( type:String, name:String, id:String, params:Dynamic ):Entity
 	{
-		var button = new Entity( this, id, type, name );
+		var uiObject = new Entity( this, id, type, name );
 		var component = this.createComponent( "graphics", params.graphics );
-		this.addComponentTo( component, button );
-		return button;
+		this.addComponentTo( component, uiObject );
+		return uiObject;
 	}
 
-	private function _createWindow( type:String, name:String, id:String, params:Dynamic ):Entity
+	private function _createBuilding( type:String, name:String, id:String, params:Dynamic ):Entity
 	{
-		var window = new Entity( this, id, type, name );
-		var component = this.createComponent( "graphics", params.graphics );
-		this.addComponentTo( component, window );
-		return window;
+		var building = new Entity( this, id, type, name );
+		for( key in Reflect.fields( params ) )
+		{
+			var value = Reflect.getProperty( params, key );
+			var component = this.createComponent( key, value );
+			this.addComponentTo( component, building );
+		}
+		return building;
 	}
 
 	public function new( parent:Game, params:Dynamic ):Void
@@ -41,8 +45,8 @@ class EntitySystem
 		var id = this._createId();
 		switch( type )
 		{
-			case "window" : return this._createWindow( type, name, id, params );
-			case "button" : return this._createButton( type, name, id, params );
+			case "window", "button" : return this._createUiType( type, name, id, params );
+			case "building" : return this._createBuilding( type, name, id, params );
 			default: trace( "Error in EntitySystem.createEntity, can't find entity with type: " + type + "." );
 		};
 		return null;

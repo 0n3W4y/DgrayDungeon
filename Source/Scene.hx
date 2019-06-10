@@ -30,7 +30,7 @@ class Scene extends Sprite
 		};
 		this._objectEntities = 
 		{
-			"houses": new Array<Entity>(),
+			"buildings": new Array<Entity>(),
 			"treasures": new Array<Entity>()
 		};
 		this._uiEntities = 
@@ -52,6 +52,7 @@ class Scene extends Sprite
 		{
 			case "window": this._uiEntities.windows.push( entity );
 			case "button": this._uiEntities.buttons.push( entity );
+			case "building": this._objectEntities.buildings.push( entity );
 			default: trace( "Error in Scene.addEntity, can't add entity with id: " + entity.get( "id" ) + ", and type: " + type + "." );
 		}
 	}

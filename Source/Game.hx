@@ -67,8 +67,8 @@ class Game
 
 	private function _startGame():Void
 	{
-		var scene = this._sceneSystem.createScene( "startScene" );
-		this._sceneSystem.doActiveScene( scene );
+		//var scene = this._sceneSystem.createScene( "startScene" );
+		//this._sceneSystem.doActiveScene( scene );
 		this.start();
 	}
 
@@ -101,8 +101,21 @@ class Game
 		var time = Std.int( Math.ffloor( this._delta ) );
 
 		this._mainLoop = new Timer( time );
-		this._mainLoop.run = this._tick;
-		this._lastTime = Date.now().getTime();
+		this._mainLoop.run = function()
+		{
+			this._currentTime = Date.now().getTime();
+			var delta = this._currentTime - this._lastTime;
+
+			if ( delta >= this._delta )
+			{
+				if( delta >= this._doubleDelta )
+					delta = this._doubleDelta;
+
+			this._update( delta );
+			this._lastTime = this._currentTime;
+			};
+			this._lastTime = Date.now().getTime();
+		};
 	}
 
 	public function stop():Void
