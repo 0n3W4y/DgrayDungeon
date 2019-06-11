@@ -14,12 +14,17 @@ class EventSystem
 	{
 		switch( name )
 		{
-			case "startButton": object.addEventListener( MouseEvent.CLICK, this._eventStartButtonClick );
-			case "continueButton": object.addEventListener( MouseEvent.CLICK, this._eventContinueButtonClick );
-			case "optionButton": object.addEventListener( MouseEvent.CLICK, this._eventOptionButtonClick );
-			case "authorsButton": object.addEventListener( MouseEvent.CLICK, this._eventAuthorsButtonClick );
+			case "startSceneStartButton": object.addEventListener( MouseEvent.CLICK, this._eventStartButtonClick );
+			case "startSceneContinueButton": object.addEventListener( MouseEvent.CLICK, this._eventContinueButtonClick );
+			case "startSceneOptionsButton": object.addEventListener( MouseEvent.CLICK, this._eventOptionButtonClick );
+			case "startSceneAuthorsButton": object.addEventListener( MouseEvent.CLICK, this._eventAuthorsButtonClick );
 			default: trace( "Error in EventSystem._addStartSceneButton, button with name " + name +", does not exist in case." );
 		}
+
+		object.addEventListener( MouseEvent.MOUSE_OVER, this._eventMouseOverButton );
+		object.addEventListener( MouseEvent.MOUSE_OUT, this._eventMouseOutButton );
+		object.addEventListener( MouseEvent.MOUSE_DOWN, this._eventMouseDownButton );
+		object.addEventListener( MouseEvent.MOUSE_UP, this._eventMouseUpButton );
 		
 	}
 
@@ -59,6 +64,30 @@ class EventSystem
 		trace( " Authors window ");
 	}
 
+	private function _eventMouseOverButton( e:MouseEvent ):Void
+	{
+		var sprite:Sprite = e.target;
+		sprite.parent.getChildAt( 2 ).visible = true;
+	}
+
+	private function _eventMouseOutButton( e:MouseEvent ):Void
+	{
+		var sprite:Sprite = e.target;
+		sprite.parent.getChildAt( 2 ).visible = false;
+	}
+
+	private function _eventMouseDownButton( e:MouseEvent ):Void
+	{
+		var sprite:Sprite = e.target;
+		sprite.parent.getChildAt( 1 ).visible = true;
+	}
+
+	private function _eventMouseUpButton( e:MouseEvent ):Void
+	{
+		var sprite:Sprite = e.target;
+		sprite.parent.getChildAt( 1 ).visible = false;
+	}
+
 	private function _eventMouseOverBuilding( e:MouseEvent ):Void
 	{
 		var sprite:Sprite = e.target;
@@ -75,7 +104,8 @@ class EventSystem
 
 	private function _eventMouseClickBuilding( e:MouseEvent ):Void
 	{
-
+		var sprite:Sprite = e.target;
+		trace( "Click: " + sprite.name );
 	}
 
 
@@ -89,7 +119,7 @@ class EventSystem
 	{
 		switch( name )
 		{
-			case "startButton", "continueButton", "optionButton", "authorsButton" : this._addStartSceneButton( name, object );
+			case "startSceneStartButton", "startSceneContinueButton", "startSceneOptionsButton", "startSceneAuthorsButton" : this._addStartSceneButton( name, object );
 			case "hospital" : this._addBuildingsScene( name, object );
 			default: trace( "Error in EventSystem.addEvent, type of event can't be: " + name + "." );
 		}

@@ -45,14 +45,24 @@
 						"name":
 						{
 							"text": "Hospital",
-							"x":0.0,
-							"y":0.0
+							"x": 0.0,
+							"y": 0.0,
+							"font": "Verdana",
+							"size": 64,
+							"color": "0x000000",
+							"visible": true,
+							"selectable": false
 						},
 						"hint":
 						{
-							"text": "Make a new health :D",
+							"text": "Make a health",
 							"x": 0.0,
-							"y": 0.0
+							"y": 0.0,
+							"font": "Verdana",
+							"size": 64,
+							"color": "0x000000",
+							"visible": true,
+							"selectable": false
 						}
 					},
 					"addiction": null,
@@ -73,14 +83,24 @@
 						"name":
 						{
 							"text": "Tavern",
-							"x":0.0,
-							"y":0.0
+							"x": 0.0,
+							"y": 0.0,
+							"font": "Verdana",
+							"size": 64,
+							"color": "0x000000",
+							"visible": true,
+							"selectable": false
 						},
 						"hint":
 						{
-							"text": "Make a new drink :D",
+							"text": "Make a drink",
 							"x": 0.0,
-							"y": 0.0
+							"y": 0.0,
+							"font": "Verdana",
+							"size": 64,
+							"color": "0x000000",
+							"visible": true,
+							"selectable": false
 						}
 					},
 					"addiction": null,
@@ -105,14 +125,24 @@
 						"name":
 						{
 							"text": "Storage",
-							"x":0.0,
-							"y":0.0
+							"x": 0.0,
+							"y": 0.0,
+							"font": "Verdana",
+							"size": 64,
+							"color": "0x000000",
+							"visible": true,
+							"selectable": false
 						},
 						"hint":
 						{
 							"text": "Open your inventory",
 							"x": 0.0,
-							"y": 0.0
+							"y": 0.0,
+							"font": "Verdana",
+							"size": 64,
+							"color": "0x000000",
+							"visible": true,
+							"selectable": false
 						}
 					},
 					"addiction": null,
@@ -133,14 +163,24 @@
 						"name":
 						{
 							"text": "Recruit Coach",
-							"x":0.0,
-							"y":0.0
+							"x": 0.0,
+							"y": 0.0,
+							"font": "Verdana",
+							"size": 64,
+							"color": "0x000000",
+							"visible": true,
+							"selectable": false
 						},
 						"hint":
-					{
-							"text": "Make a new recruits :D",
+						{
+							"text": "Train a new recruits",
 							"x": 0.0,
-							"y": 0.0
+							"y": 0.0,
+							"font": "Verdana",
+							"size": 64,
+							"color": "0x000000",
+							"visible": true,
+							"selectable": false
 						}
 					},
 					"addiction": null,
@@ -160,15 +200,25 @@
 					"text": {
 						"name":
 						{
-							"text": "Blacksmith",
-							"x":0.0,
-							"y":0.0
+							"text": "BlackSmith",
+							"x": 0.0,
+							"y": 0.0,
+							"font": "Verdana",
+							"size": 64,
+							"color": "0x000000",
+							"visible": true,
+							"selectable": false
 						},
 						"hint":
 						{
-							"text": "Make a new weapon :D",
+							"text": "Make a new weapon",
 							"x": 0.0,
-							"y": 0.0
+							"y": 0.0,
+							"font": "Verdana",
+							"size": 64,
+							"color": "0x000000",
+							"visible": true,
+							"selectable": false
 						}
 					},
 					"addiction": null,
@@ -188,15 +238,25 @@
 					"text": {
 						"name":
 						{
-							"text": "Humble Shop",
-							"x":0.0,
-							"y":0.0
+							"text": "Humble shop",
+							"x": 0.0,
+							"y": 0.0,
+							"font": "Verdana",
+							"size": 64,
+							"color": "0x000000",
+							"visible": true,
+							"selectable": false
 						},
 						"hint":
 						{
-							"text": "Buy something new :D",
+							"text": "Buy new stuff",
 							"x": 0.0,
-							"y": 0.0
+							"y": 0.0,
+							"font": "Verdana",
+							"size": 64,
+							"color": "0x000000",
+							"visible": true,
+							"selectable": false
 						}
 					},
 					"addiction": null,
@@ -217,14 +277,24 @@
 						"name":
 						{
 							"text": "Graveyard",
-							"x":0.0,
-							"y":0.0
+							"x": 0.0,
+							"y": 0.0,
+							"font": "Verdana",
+							"size": 64,
+							"color": "0x000000",
+							"visible": true,
+							"selectable": false
 						},
 						"hint":
 						{
-							"text": "R.I.P",
+							"text": "R.I.P.",
 							"x": 0.0,
-							"y": 0.0
+							"y": 0.0,
+							"font": "Verdana",
+							"size": 64,
+							"color": "0x000000",
+							"visible": true,
+							"selectable": false
 						}
 					},
 					"addiction": null,
@@ -244,15 +314,25 @@
 					"text": {
 						"name":
 						{
-							"text": "Skill Academy",
-							"x":0.0,
-							"y":0.0
+							"text": "Skill academy",
+							"x": 0.0,
+							"y": 0.0,
+							"font": "Verdana",
+							"size": 64,
+							"color": "0x000000",
+							"visible": true,
+							"selectable": false
 						},
 						"hint":
 						{
-							"text": "Teach me master(c)",
+							"text": "Learn new skills",
 							"x": 0.0,
-							"y": 0.0
+							"y": 0.0,
+							"font": "Verdana",
+							"size": 64,
+							"color": "0x000000",
+							"visible": true,
+							"selectable": false
 						}
 					},
 					"addiction": null,
@@ -273,14 +353,24 @@
 						"name":
 						{
 							"text": "Hermit",
-							"x":0.0,
-							"y":0.0
+							"x": 0.0,
+							"y": 0.0,
+							"font": "Verdana",
+							"size": 64,
+							"color": "0x000000",
+							"visible": true,
+							"selectable": false
 						},
 						"hint":
 						{
-							"text": "Teach some surviving skills",
+							"text": "Teach surviving",
 							"x": 0.0,
-							"y": 0.0
+							"y": 0.0,
+							"font": "Verdana",
+							"size": 64,
+							"color": "0x000000",
+							"visible": true,
+							"selectable": false
 						}
 					},
 					"addiction": null,
@@ -301,14 +391,24 @@
 						"name":
 						{
 							"text": "Strange person",
-							"x":0.0,
-							"y":0.0
+							"x": 0.0,
+							"y": 0.0,
+							"font": "Verdana",
+							"size": 64,
+							"color": "0x000000",
+							"visible": true,
+							"selectable": false
 						},
 						"hint":
 						{
 							"text": "Collect new quests",
 							"x": 0.0,
-							"y": 0.0
+							"y": 0.0,
+							"font": "Verdana",
+							"size": 64,
+							"color": "0x000000",
+							"visible": true,
+							"selectable": false
 						}
 					},
 					"addiction": null,
@@ -329,14 +429,24 @@
 						"name":
 						{
 							"text": "Fontain",
-							"x":0.0,
-							"y":0.0
+							"x": 0.0,
+							"y": 0.0,
+							"font": "Verdana",
+							"size": 48,
+							"color": "0xffffff",
+							"visible": true,
+							"selectable": false
 						},
 						"hint":
 						{
 							"text": "Learn more",
 							"x": 0.0,
-							"y": 0.0
+							"y": 30.0,
+							"font": "Verdana",
+							"size": 32,
+							"color": "0xffffff",
+							"visible": true,
+							"selectable": false
 						}
 					},
 					"addiction": null,
@@ -355,15 +465,20 @@
 					"url": "assets/images/button_b.png",
 					"url2": "assets/images/button_b_push.png",
 					"url3": "assets/images/button_b_hover.png",
-					"x": 1365.0,
-					"y": 600.0,
+					"x": 75.0,
+					"y": 145.0,
 					"text": 
 					{
-						"buttonName":
+						"buttonText":
 						{
 							"text": "New game",
-							"x": 1365.0,
-							"y": 600.0
+							"x": 0.0,
+							"y": 0.0,
+							"font": "Verdana",
+							"size": 58,
+							"color": "0x000000",
+							"visible": true,
+							"selectable": false
 						}
 					},
 					"addiction": "startSceneButtonsWindow",
@@ -378,9 +493,22 @@
 					"url": "assets/images/button_b.png",
 					"url2": "assets/images/button_b_push.png",
 					"url3": "assets/images/button_b_hover.png",
-					"x": 1365.0,
-					"y": 480.0,
-					"text": null,
+					"x": 75.0,
+					"y": 25.0,
+					"text": 
+					{
+						"buttonText":
+						{
+							"text": "Continue",
+							"x": 0.0,
+							"y": 0.0,
+							"font": "Verdana",
+							"size": 64,
+							"color": "0x000000",
+							"visible": true,
+							"selectable": false
+						}
+					},
 					"addiction": "startSceneButtonsWindow",
 					"queue": 0,
 					"graphicsInstance": null
@@ -393,9 +521,22 @@
 					"url": "assets/images/button_b.png",
 					"url2": "assets/images/button_b_push.png",
 					"url3": "assets/images/button_b_hover.png",
-					"x": 1365.0,
-					"y": 720.0,
-					"text": null,
+					"x": 75.0,
+					"y": 265.0,
+					"text": 
+					{
+						"buttonText":
+						{
+							"text": "Options",
+							"x": 0.0,
+							"y": 0.0,
+							"font": "Verdana",
+							"size": 64,
+							"color": "0x000000",
+							"visible": true,
+							"selectable": false
+						}
+					},
 					"addiction": "startSceneButtonsWindow",
 					"queue": 0,
 					"graphicsInstance": null	
@@ -408,9 +549,21 @@
 					"url": "assets/images/button_b.png",
 					"url2": "assets/images/button_b_push.png",
 					"url3": "assets/images/button_b_hover.png",
-					"x": 1365.0,
-					"y": 840.0,
-					"text": null,
+					"x": 75.0,
+					"y": 385.0,
+					"text": {
+						"buttonText":
+						{
+							"text": "Authors",
+							"x": 0.0,
+							"y": 0.0,
+							"font": "Verdana",
+							"size": 64,
+							"color": "0x000000",
+							"visible": true,
+							"selectable": false
+						}
+					},
 					"addiction": "startSceneButtonsWindow",
 					"queue": 0,
 					"graphicsInstance": null
@@ -531,7 +684,7 @@
 							"y":0.0
 						}
 					},
-					"addiction": "innWindow",
+					"addiction": "innWindowHeroWindow",
 					"queue" : 2,
 					"graphicsInstance": null
 				}

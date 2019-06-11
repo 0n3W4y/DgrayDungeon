@@ -6,6 +6,7 @@ class Graphics extends Component
 {
 	private var _url:String; // for buttons unpushed;
 	private var _url2:String; // for buttons pushed;
+	private var _url3:String;
 	private var _x:Float;
 	private var _y:Float;
 	private var _text:Dynamic; // { 'text1': { "text": "yuppei",x: 1, y:2 }, 'text2': { "text": "yuppieey", x: 1, y:2 } };
@@ -21,10 +22,11 @@ class Graphics extends Component
 		super( parent, id, "graphics" );
 		this._url = params.url;
 		this._url2 = params.url2;
+		this._url3 = params.url3;
 		this._x = params.x;
 		this._y = params.y;
 		this._text = params.text;
-		this._addiction = params.addiciton;
+		this._addiction = params.addiction;
 		this._queue = params.queue;
 		this._graphicsInstance = params.graphicsInstance;
 	}
@@ -33,16 +35,20 @@ class Graphics extends Component
 	{
 		if( value == 0 )
 			return this._url;
-		else
+		else if( value == 1 )
 			return this._url2;
+		else
+			return this._url3;
 	}
 
 	public function setUrl( url:Int, value:String ):Void
 	{
 		if( url == 0 )
 			this._url = value;
-		else
+		else if( url == 1 )
 			this._url2 = value;
+		else
+			this._url3 = value;
 	}
 
 	public function getText():Dynamic

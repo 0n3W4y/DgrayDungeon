@@ -75,7 +75,8 @@ class EntitySystem
 		var container = null;
 		switch( type )
 		{
-			case "window", "button": scene.getEntities( "ui" ).windows.push( entity );
+			case "window": scene.getEntities( "ui" ).windows.push( entity );
+			case "button": scene.getEntities( "ui" ).buttons.push( entity );
 			case "building": container = scene.getEntities( "object" ).buildings.push( entity );
 			default: trace( "Error in Scene.addEntity, can't add entity with name: " + entity.get( "name" ) + ", and type: " + type + "." );
 		}
