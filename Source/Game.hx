@@ -103,18 +103,7 @@ class Game
 		this._mainLoop = new Timer( time );
 		this._mainLoop.run = function()
 		{
-			this._currentTime = Date.now().getTime();
-			var delta = this._currentTime - this._lastTime;
-
-			if ( delta >= this._delta )
-			{
-				if( delta >= this._doubleDelta )
-					delta = this._doubleDelta;
-
-			this._update( delta );
-			this._lastTime = this._currentTime;
-			};
-			this._lastTime = Date.now().getTime();
+			//this._update( 10.0 );
 		};
 	}
 

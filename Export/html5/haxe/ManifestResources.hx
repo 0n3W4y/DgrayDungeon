@@ -68,7 +68,7 @@ import sys.FileSystem;
 
 		#else
 
-		data = '{"name":null,"assets":"aoy4:pathy29:assets%2Fimages%2Facademy.pngy4:sizei409445y4:typey5:IMAGEy2:idR1y7:preloadtgoR0y31:assets%2Fimages%2Facademy_m.pngR2i413561R3R4R5R7R6tgoR0y39:assets%2Fimages%2FauthorsGameButton.pngR2i22092R3R4R5R8R6tgoR0y41:assets%2Fimages%2FauthorsGameButton_p.pngR2i22582R3R4R5R9R6tgoR0y37:assets%2Fimages%2Fbackground_game.pngR2i1897994R3R4R5R10R6tgoR0y40:assets%2Fimages%2FcitySceneBackround.pngR2i2043474R3R4R5R11R6tgoR0y40:assets%2Fimages%2FcontinueGameButton.pngR2i20523R3R4R5R12R6tgoR0y42:assets%2Fimages%2FcontinueGameButton_p.pngR2i21263R3R4R5R13R6tgoR0y29:assets%2Fimages%2Ffontain.pngR2i185396R3R4R5R14R6tgoR0y31:assets%2Fimages%2Ffontain_m.pngR2i194684R3R4R5R15R6tgoR0y31:assets%2Fimages%2Fgraveyard.pngR2i172698R3R4R5R16R6tgoR0y33:assets%2Fimages%2Fgraveyard_m.pngR2i176786R3R4R5R17R6tgoR0y28:assets%2Fimages%2Fhermit.pngR2i198769R3R4R5R18R6tgoR0y30:assets%2Fimages%2Fhermit_m.pngR2i207348R3R4R5R19R6tgoR0y30:assets%2Fimages%2Fhospital.pngR2i306480R3R4R5R20R6tgoR0y32:assets%2Fimages%2Fhospital_m.pngR2i321808R3R4R5R21R6tgoR0y31:assets%2Fimages%2FinnWindow.pngR2i11509R3R4R5R22R6tgoR0y49:assets%2Fimages%2FinnWindowButtonHeroListDown.pngR2i4829R3R4R5R23R6tgoR0y47:assets%2Fimages%2FinnWindowButtonHeroListUp.pngR2i4148R3R4R5R24R6tgoR0y41:assets%2Fimages%2FinnWindowHeroWindow.pngR2i6013R3R4R5R25R6tgoR0y39:assets%2Fimages%2FoptionsGameButton.pngR2i21835R3R4R5R26R6tgoR0y41:assets%2Fimages%2FoptionsGameButton_p.pngR2i22337R3R4R5R27R6tgoR0y30:assets%2Fimages%2FquestMan.pngR2i49162R3R4R5R28R6tgoR0y32:assets%2Fimages%2FquestMan_m.pngR2i43455R3R4R5R29R6tgoR0y30:assets%2Fimages%2Frecruits.pngR2i339084R3R4R5R30R6tgoR0y32:assets%2Fimages%2Frecruits_m.pngR2i339084R3R4R5R31R6tgoR0y26:assets%2Fimages%2Fshop.pngR2i396984R3R4R5R32R6tgoR0y28:assets%2Fimages%2Fshop_m.pngR2i399153R3R4R5R33R6tgoR0y37:assets%2Fimages%2FstartGameButton.pngR2i24067R3R4R5R34R6tgoR0y39:assets%2Fimages%2FstartGameButton_p.pngR2i24386R3R4R5R35R6tgoR0y45:assets%2Fimages%2FstartSceneButtonsWindow.pngR2i7836R3R4R5R36R6tgoR0y29:assets%2Fimages%2Fstorage.pngR2i358167R3R4R5R37R6tgoR0y31:assets%2Fimages%2Fstorage_m.pngR2i371206R3R4R5R38R6tgoR0y28:assets%2Fimages%2Ftavern.pngR2i505790R3R4R5R39R6tgoR0y30:assets%2Fimages%2Ftavern_m.pngR2i507144R3R4R5R40R6tgh","rootPath":null,"version":2,"libraryArgs":[],"libraryType":null}';
+		data = '{"name":null,"assets":"aoy4:pathy29:assets%2Fimages%2Facademy.pngy4:sizei409445y4:typey5:IMAGEy2:idR1y7:preloadtgoR0y31:assets%2Fimages%2Facademy_m.pngR2i413561R3R4R5R7R6tgoR0y37:assets%2Fimages%2Fbackground_game.pngR2i1897994R3R4R5R8R6tgoR0y30:assets%2Fimages%2Fbutton_b.pngR2i1941R3R4R5R9R6tgoR0y36:assets%2Fimages%2Fbutton_b_hover.pngR2i1948R3R4R5R10R6tgoR0y35:assets%2Fimages%2Fbutton_b_push.pngR2i2723R3R4R5R11R6tgoR0y30:assets%2Fimages%2Fbutton_c.pngR2i4148R3R4R5R12R6tgoR0y36:assets%2Fimages%2Fbutton_c_hover.pngR2i4148R3R4R5R13R6tgoR0y35:assets%2Fimages%2Fbutton_c_push.pngR2i4148R3R4R5R14R6tgoR0y30:assets%2Fimages%2Fbutton_d.pngR2i4829R3R4R5R15R6tgoR0y36:assets%2Fimages%2Fbutton_d_hover.pngR2i4829R3R4R5R16R6tgoR0y35:assets%2Fimages%2Fbutton_d_push.pngR2i4829R3R4R5R17R6tgoR0y40:assets%2Fimages%2FcitySceneBackround.pngR2i2043474R3R4R5R18R6tgoR0y29:assets%2Fimages%2Ffontain.pngR2i185396R3R4R5R19R6tgoR0y31:assets%2Fimages%2Ffontain_m.pngR2i194684R3R4R5R20R6tgoR0y31:assets%2Fimages%2Fgraveyard.pngR2i172698R3R4R5R21R6tgoR0y33:assets%2Fimages%2Fgraveyard_m.pngR2i176786R3R4R5R22R6tgoR0y28:assets%2Fimages%2Fhermit.pngR2i198769R3R4R5R23R6tgoR0y30:assets%2Fimages%2Fhermit_m.pngR2i207348R3R4R5R24R6tgoR0y30:assets%2Fimages%2Fhospital.pngR2i306480R3R4R5R25R6tgoR0y32:assets%2Fimages%2Fhospital_m.pngR2i321808R3R4R5R26R6tgoR0y31:assets%2Fimages%2FinnWindow.pngR2i11509R3R4R5R27R6tgoR0y41:assets%2Fimages%2FinnWindowHeroWindow.pngR2i6013R3R4R5R28R6tgoR0y30:assets%2Fimages%2FquestMan.pngR2i49162R3R4R5R29R6tgoR0y32:assets%2Fimages%2FquestMan_m.pngR2i43455R3R4R5R30R6tgoR0y30:assets%2Fimages%2Frecruits.pngR2i339084R3R4R5R31R6tgoR0y32:assets%2Fimages%2Frecruits_m.pngR2i339084R3R4R5R32R6tgoR0y26:assets%2Fimages%2Fshop.pngR2i396984R3R4R5R33R6tgoR0y28:assets%2Fimages%2Fshop_m.pngR2i399153R3R4R5R34R6tgoR0y45:assets%2Fimages%2FstartSceneButtonsWindow.pngR2i7836R3R4R5R35R6tgoR0y29:assets%2Fimages%2Fstorage.pngR2i358167R3R4R5R36R6tgoR0y31:assets%2Fimages%2Fstorage_m.pngR2i371206R3R4R5R37R6tgoR0y28:assets%2Fimages%2Ftavern.pngR2i505790R3R4R5R38R6tgh","rootPath":null,"version":2,"libraryArgs":[],"libraryType":null}';
 		manifest = AssetManifest.parse (data, rootPath);
 		library = AssetLibrary.fromManifest (manifest);
 		Assets.registerLibrary ("default", library);
@@ -98,12 +98,17 @@ null
 
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_academy_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_academy_m_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
-@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_authorsgamebutton_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
-@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_authorsgamebutton_p_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_background_game_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_button_b_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_button_b_hover_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_button_b_push_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_button_c_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_button_c_hover_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_button_c_push_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_button_d_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_button_d_hover_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_button_d_push_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_cityscenebackround_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
-@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_continuegamebutton_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
-@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_continuegamebutton_p_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_fontain_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_fontain_m_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_graveyard_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
@@ -113,24 +118,17 @@ null
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_hospital_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_hospital_m_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_innwindow_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
-@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_innwindowbuttonherolistdown_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
-@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_innwindowbuttonherolistup_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_innwindowherowindow_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
-@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_optionsgamebutton_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
-@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_optionsgamebutton_p_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_questman_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_questman_m_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_recruits_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_recruits_m_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_shop_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_shop_m_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
-@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_startgamebutton_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
-@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_startgamebutton_p_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_startscenebuttonswindow_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_storage_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_storage_m_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_tavern_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
-@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_tavern_m_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__manifest_default_json extends null { }
 
 
@@ -138,12 +136,17 @@ null
 
 @:keep @:image("Assets/images/academy.png") @:noCompletion #if display private #end class __ASSET__assets_images_academy_png extends lime.graphics.Image {}
 @:keep @:image("Assets/images/academy_m.png") @:noCompletion #if display private #end class __ASSET__assets_images_academy_m_png extends lime.graphics.Image {}
-@:keep @:image("Assets/images/authorsGameButton.png") @:noCompletion #if display private #end class __ASSET__assets_images_authorsgamebutton_png extends lime.graphics.Image {}
-@:keep @:image("Assets/images/authorsGameButton_p.png") @:noCompletion #if display private #end class __ASSET__assets_images_authorsgamebutton_p_png extends lime.graphics.Image {}
 @:keep @:image("Assets/images/background_game.png") @:noCompletion #if display private #end class __ASSET__assets_images_background_game_png extends lime.graphics.Image {}
+@:keep @:image("Assets/images/button_b.png") @:noCompletion #if display private #end class __ASSET__assets_images_button_b_png extends lime.graphics.Image {}
+@:keep @:image("Assets/images/button_b_hover.png") @:noCompletion #if display private #end class __ASSET__assets_images_button_b_hover_png extends lime.graphics.Image {}
+@:keep @:image("Assets/images/button_b_push.png") @:noCompletion #if display private #end class __ASSET__assets_images_button_b_push_png extends lime.graphics.Image {}
+@:keep @:image("Assets/images/button_c.png") @:noCompletion #if display private #end class __ASSET__assets_images_button_c_png extends lime.graphics.Image {}
+@:keep @:image("Assets/images/button_c_hover.png") @:noCompletion #if display private #end class __ASSET__assets_images_button_c_hover_png extends lime.graphics.Image {}
+@:keep @:image("Assets/images/button_c_push.png") @:noCompletion #if display private #end class __ASSET__assets_images_button_c_push_png extends lime.graphics.Image {}
+@:keep @:image("Assets/images/button_d.png") @:noCompletion #if display private #end class __ASSET__assets_images_button_d_png extends lime.graphics.Image {}
+@:keep @:image("Assets/images/button_d_hover.png") @:noCompletion #if display private #end class __ASSET__assets_images_button_d_hover_png extends lime.graphics.Image {}
+@:keep @:image("Assets/images/button_d_push.png") @:noCompletion #if display private #end class __ASSET__assets_images_button_d_push_png extends lime.graphics.Image {}
 @:keep @:image("Assets/images/citySceneBackround.png") @:noCompletion #if display private #end class __ASSET__assets_images_cityscenebackround_png extends lime.graphics.Image {}
-@:keep @:image("Assets/images/continueGameButton.png") @:noCompletion #if display private #end class __ASSET__assets_images_continuegamebutton_png extends lime.graphics.Image {}
-@:keep @:image("Assets/images/continueGameButton_p.png") @:noCompletion #if display private #end class __ASSET__assets_images_continuegamebutton_p_png extends lime.graphics.Image {}
 @:keep @:image("Assets/images/fontain.png") @:noCompletion #if display private #end class __ASSET__assets_images_fontain_png extends lime.graphics.Image {}
 @:keep @:image("Assets/images/fontain_m.png") @:noCompletion #if display private #end class __ASSET__assets_images_fontain_m_png extends lime.graphics.Image {}
 @:keep @:image("Assets/images/graveyard.png") @:noCompletion #if display private #end class __ASSET__assets_images_graveyard_png extends lime.graphics.Image {}
@@ -153,24 +156,17 @@ null
 @:keep @:image("Assets/images/hospital.png") @:noCompletion #if display private #end class __ASSET__assets_images_hospital_png extends lime.graphics.Image {}
 @:keep @:image("Assets/images/hospital_m.png") @:noCompletion #if display private #end class __ASSET__assets_images_hospital_m_png extends lime.graphics.Image {}
 @:keep @:image("Assets/images/innWindow.png") @:noCompletion #if display private #end class __ASSET__assets_images_innwindow_png extends lime.graphics.Image {}
-@:keep @:image("Assets/images/innWindowButtonHeroListDown.png") @:noCompletion #if display private #end class __ASSET__assets_images_innwindowbuttonherolistdown_png extends lime.graphics.Image {}
-@:keep @:image("Assets/images/innWindowButtonHeroListUp.png") @:noCompletion #if display private #end class __ASSET__assets_images_innwindowbuttonherolistup_png extends lime.graphics.Image {}
 @:keep @:image("Assets/images/innWindowHeroWindow.png") @:noCompletion #if display private #end class __ASSET__assets_images_innwindowherowindow_png extends lime.graphics.Image {}
-@:keep @:image("Assets/images/optionsGameButton.png") @:noCompletion #if display private #end class __ASSET__assets_images_optionsgamebutton_png extends lime.graphics.Image {}
-@:keep @:image("Assets/images/optionsGameButton_p.png") @:noCompletion #if display private #end class __ASSET__assets_images_optionsgamebutton_p_png extends lime.graphics.Image {}
 @:keep @:image("Assets/images/questMan.png") @:noCompletion #if display private #end class __ASSET__assets_images_questman_png extends lime.graphics.Image {}
 @:keep @:image("Assets/images/questMan_m.png") @:noCompletion #if display private #end class __ASSET__assets_images_questman_m_png extends lime.graphics.Image {}
 @:keep @:image("Assets/images/recruits.png") @:noCompletion #if display private #end class __ASSET__assets_images_recruits_png extends lime.graphics.Image {}
 @:keep @:image("Assets/images/recruits_m.png") @:noCompletion #if display private #end class __ASSET__assets_images_recruits_m_png extends lime.graphics.Image {}
 @:keep @:image("Assets/images/shop.png") @:noCompletion #if display private #end class __ASSET__assets_images_shop_png extends lime.graphics.Image {}
 @:keep @:image("Assets/images/shop_m.png") @:noCompletion #if display private #end class __ASSET__assets_images_shop_m_png extends lime.graphics.Image {}
-@:keep @:image("Assets/images/startGameButton.png") @:noCompletion #if display private #end class __ASSET__assets_images_startgamebutton_png extends lime.graphics.Image {}
-@:keep @:image("Assets/images/startGameButton_p.png") @:noCompletion #if display private #end class __ASSET__assets_images_startgamebutton_p_png extends lime.graphics.Image {}
 @:keep @:image("Assets/images/startSceneButtonsWindow.png") @:noCompletion #if display private #end class __ASSET__assets_images_startscenebuttonswindow_png extends lime.graphics.Image {}
 @:keep @:image("Assets/images/storage.png") @:noCompletion #if display private #end class __ASSET__assets_images_storage_png extends lime.graphics.Image {}
 @:keep @:image("Assets/images/storage_m.png") @:noCompletion #if display private #end class __ASSET__assets_images_storage_m_png extends lime.graphics.Image {}
 @:keep @:image("Assets/images/tavern.png") @:noCompletion #if display private #end class __ASSET__assets_images_tavern_png extends lime.graphics.Image {}
-@:keep @:image("Assets/images/tavern_m.png") @:noCompletion #if display private #end class __ASSET__assets_images_tavern_m_png extends lime.graphics.Image {}
 @:keep @:file("") @:noCompletion #if display private #end class __ASSET__manifest_default_json extends haxe.io.Bytes {}
 
 

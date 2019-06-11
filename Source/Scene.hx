@@ -1,7 +1,6 @@
 package;
 
 import openfl.display.Sprite;
-import openfl.display.Bitmap;
 
 class Scene extends Sprite
 {
@@ -14,7 +13,6 @@ class Scene extends Sprite
 	private var _uiEntities:Dynamic;
 
 	private var _backgroundImageURL:String;
-	private var _graphicsInstance:Bitmap;
 
 	public function new( parent:SceneSystem, id:String, name:String ):Void
 	{
@@ -55,14 +53,14 @@ class Scene extends Sprite
 		this._parent.getParent().getSystem( "graphics" ).undrawScene( this );
 	}
 
-	public function drawUi( uiName:String ):Void
+	public function showUi( uiName:String ):Void
 	{
-		this._parent.getParent().getSystem( "graphics" ).drawSceneUi( this, uiName );
+		this._parent.getParent().getSystem( "graphics" ).showUiObject( this, uiName );
 	}
 
-	public function undrawUi( uiName:String ):Void
+	public function hideUi( uiName:String ):Void
 	{
-		this._parent.getParent().getSystem( "graphics" ).undrawSceneUi( this, uiName );
+		this._parent.getParent().getSystem( "graphics" ).hideUiObject( this, uiName );
 	}
 
 	public function show():Void
@@ -100,20 +98,6 @@ class Scene extends Sprite
 		this._backgroundImageURL = url;
 	}
 
-	public function setGraphicsInstance( instance:Bitmap ):Void
-	{
-		this._graphicsInstance = instance;
-	}
-
-	public function getGraphicsInstance():Bitmap
-	{
-		return this._graphicsInstance;
-	}
-
-	public function getUiEntities():Dynamic
-	{
-		return this._uiEntities;
-	}
 	public function getEntities( type:String ):Dynamic
 	{
 		switch( type )
@@ -123,5 +107,7 @@ class Scene extends Sprite
 			case "object": return this._objectEntities;
 			default: trace( "Error in Scene.getEntites, can't get array with type: " + type + "." );
 		}
+
+		return null;
 	}
 }

@@ -13,58 +13,20 @@ class GraphicsSystem
 	private function _drawStartScene( scene:Scene ):Void
 	{
 		//add bacground on scene;
-		if( scene.getGraphicsInstance() == null )
-		{
-			var backgroundURL = scene.getBackgroundImageURL();
-			var bitmap = new Bitmap( Assets.getBitmapData ( backgroundURL ) );
-			scene.setGraphicsInstance( bitmap );
-			scene.addChild( bitmap );
-		}
-		else
-		{
-			scene.addChild( scene.getGraphicsInstance() );
-		}
+		var backgroundURL = scene.getBackgroundImageURL();
+		var bitmap = new Bitmap( Assets.getBitmapData ( backgroundURL ) );
+		scene.addChild( bitmap );
 
 		//add UI objects to ui;
-
-		var sortFunction = function( a, b )
-		{
-			if( a.getComponent( "graphics" ).getQueue() > b.getComponent( "graphics" ).getQueue() )
-				return 1;
-			else if( a.getComponent( "graphics" ).getQueue() < b.getComponent( "graphics" ).getQueue() )
-				return -1;
-			else
-				return 0;
-		}
-
-		var sceneUiEntities:Dynamic = scene.getUiEntities();
-		var windowsContainer:Array<Entity> = sceneUiEntities.windows;
-		var buttonsContainer:Array<Entity> = sceneUiEntities.buttons;
-		// sort this to add childs into right queue;
-		windowsContainer.sort( sortFunction );
-		buttonsContainer.sort( sortFunction );
-
-		//first draw windows;
-		for( i in 0...windowsContainer.length )
-		{
-			var window = windowsContainer[ i ];
-			this._parent.getSystem( "ui" ).addWindow( window );
-		}
-
-		//second draw buttons;
-		for( j in 0...buttonsContainer.length )
-		{
-			var button = buttonsContainer[ j ];
-			this._parent.getSystem( "ui" ).addButton( button );
-		}
-		
+		var sceneUiEntities:Dynamic = scene.getEntities( "ui" );
+		this._parent.getSystem( "ui" ).createUiObject( "startSceneButtonsWindow", sceneUiEntities );
 		this._parent.getMainSprite().addChild( scene );
 	}
 
 	private function _undrawStartScene( scene:Scene ):Void
 	{
 		// when we goto CityScene - we no need this scene on this game.
-		var sceneUiEntities:Dynamic = scene.getUiEntities();
+		var sceneUiEntities:Dynamic = scene.getEntities( "ui" );
 		var windowsContainer:Array<Entity> = sceneUiEntities.windows;
 		var buttonsContainer:Array<Entity> = sceneUiEntities.buttons;
 
@@ -86,20 +48,11 @@ class GraphicsSystem
 
 	private function _drawCityScene( scene:Scene ):Void
 	{
-		if( scene.getGraphicsInstance() == null )
-		{
-			var backgroundURL = scene.getBackgroundImageURL();
-			var bitmap = new Bitmap( Assets.getBitmapData ( backgroundURL ) );
-			scene.setGraphicsInstance( bitmap );
-			scene.addChild( bitmap );
-		}
-		else
-		{
-			scene.addChild( scene.getGraphicsInstance() );
-		}
+		var backgroundURL = scene.getBackgroundImageURL();
+		var bitmap = new Bitmap( Assets.getBitmapData ( backgroundURL ) );
+		scene.addChild( bitmap );
 
 		this._parent.getMainSprite().addChild( scene );
-
 	}
 
 	private function _undrawCityScene( scene:Scene ):Void

@@ -43,72 +43,16 @@ class SceneSystem
 
 		var entitySystem = this._parent.getSystem( "entity" );
 
-		for( i in 0...value.windows.length )
+
+		for( key in Reflect.fields( value ) )
 		{
-			var windowName = value.windows[ i ];
-			var window = entitySystem.createEntity( "window", windowName );
-			this.addEntityToScene( window, scene );
-		}
-		
-		for( key in Reflect.fields( value.windows ) )
-		{
-			var configWindow = Reflect.getProperty( value.windows, key );
-			var window = this._parent.getSystem( "entity" ).createEntity( "window", key, configWindow );
-			scene.addEntity( window );
-		}
+			if( key == "backgroundImageURL" )
+				continue;
 
-		for( field in Reflect.fields( value.buttons ) )
-		{
-			var configButton = Reflect.getProperty( value.buttons, field );
-			var button = this._parent.getSystem( "entity" ).createEntity( "button", field, configButton );
-			scene.addEntity( button );
-		}
-		this._addScene( scene );
-		return scene;
-	}
-
-	private function _createCityScene( sceneName:String ):Scene
-	{
-		var id = this._createId();
-		var scene = new Scene( this, id, sceneName );
-		var value = null;
-		var entitySystem = this._parent.getSystem( "entity" );
-
-		for( field in Reflect.fields( this._config ) )
-		{
-			if( field == sceneName )
-			{
-				value = Reflect.getProperty( this._config, field );
-				break;	
-			}
-		}
-
-		if( value == null )
-			trace( "Error in SceneSystem._screateStartScene, scene name: " + sceneName + " not found in config container." );
-
-		scene.setBackgroundImageURL( value.backgroundImageURL );
-
-		for( key in Reflect.fields( value.windows ) )
-		{
-			var configWindow = Reflect.getProperty( value.windows, key );
-			var window = entitySystem.createEntity( "window", key, configWindow );
-			scene.addEntity( window );
-		}
-
-		for( field in Reflect.fields( value.buttons ) )
-		{
-			var configButton = Reflect.getProperty( value.buttons, field );
-			var button = entitySystem.createEntity( "button", field, configButton );
-			scene.addEntity( button );
-		}
-
-		for( object in Reflect.fields( value.buildings ) )
-		{
-			var buildingName = Reflect.getProperty( value.buildings, object );
-			var building = entitySystem.createEntity( "building", object, buildingName );
-			scene.addEntity( building );
-		}
-
+			var listEntities = Reflect.getProperty( value, key );
+			this._parent.getSystem( "entity" ).createEntitiesForScene(  scene, key, listEntities );
+		};
+				
 		this._addScene( scene );
 		return scene;
 	}
@@ -125,6 +69,7 @@ class SceneSystem
 
 	public function update( time:Float ):Void
 	{
+		//we can add scenes to array , who need to update, and remove them if don't need to update;
 		for( key in Reflect.fields( this._scenesArray ) )
 		{
 			Reflect.getProperty( this._scenesArray, key ).update( time ); // update all scenes;
@@ -142,9 +87,7 @@ class SceneSystem
 	{
 		switch( sceneName )
 		{
-			case "startScene": return this._createStartScene( sceneName );
-			case "cityScene": return this._createCityScene( sceneName );
-			case "dungeonChooseScene": return this._createDungeonChooseScene( sceneName );
+			case "startScene", "cityScene", "dungeonChooseScene": return this._createStartScene( sceneName );
 			default: trace( "Error in SceneSystem.createScene, scene name can't be: " + sceneName + "." );
 		}
 		return null;
@@ -185,25 +128,8 @@ class SceneSystem
 			this._activeScene = null;
 		}
 
-		if( scene.getGraphicsInstance() != null )
-			scene.show();
-
 		this._activeScene = scene;
-	}
-
-	public function addEntityToScene( entity:Entity, scene:Scene ):Void
-	{
-		var type = entity.get( "type" );
-		var container = null;
-		switch( type )
-		{
-			case "window": container = scene.getEntities( "ui" ).windows;
-			case "button": container = scene.getEntities( "ui" ).buttons;
-			case "building": container = scene.getEntities( "object" ).buildings;
-			default: trace( "Error in Scene.addEntity, can't add entity with id: " + entity.get( "id" ) + ", and type: " + type + "." );
-		}
-		container.push( entity );
-
+		this._activeScene.show();
 	}
 
 	public function getParent():Game

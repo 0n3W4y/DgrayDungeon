@@ -68,4 +68,31 @@ class EntitySystem
 		}
 		return component;
 	}
+
+	public function addEntityToScene( entity:Entity, scene:Scene ):Void
+	{
+		var type = entity.get( "type" );
+		var container = null;
+		switch( type )
+		{
+			case "window", "button": scene.getEntities( "ui" ).windows.push( entity );
+			case "building": container = scene.getEntities( "object" ).buildings.push( entity );
+			default: trace( "Error in Scene.addEntity, can't add entity with name: " + entity.get( "name" ) + ", and type: " + type + "." );
+		}
+	}
+
+	public function createEntitiesForScene( scene:Scene, type:String, list:Array<String> )
+	{
+		var paramsContainer = Reflect.getProperty( this._config, type );
+		if(  paramsContainer == null )
+			trace( "Error in EntitySystem.createEntitiesForScene, can't find type: " + type + " into config container!" );
+		for( i in 0...list.length )
+		{	
+			var params = Reflect.getProperty( paramsContainer, list[ i ] );
+			if( params == null )
+				trace( "Error in EntitySystem.createEntitiesForScene, can't find name: " + list[ i ] + " into config container with type: " + type + "." );
+			var object = this.createEntity( type, list[ i ], params );
+			this.addEntityToScene( object, scene );
+		}
+	}
 }

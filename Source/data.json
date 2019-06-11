@@ -4,17 +4,16 @@
 		"startScene": 
 		{
 			"backgroundImageURL": "assets/images/background_game.png",
-			"windows":[ "sceneButtonWindow" ],
-			"buttons":[ "startButton", "optionButton", "continueButton", "authorsButton" ]
+			"window":[ "startSceneButtonsWindow" ],
+			"button":[ "startSceneStartButton", "startSceneOptionsButton", "startSceneContinueButton", "startSceneAuthorsButton" ]
 		},
 
 		"cityScene": 
 		{
 			"backgroundImageURL": "assets/images/citySceneBackround.png",
-			"windows": [ "innWindow", "innWindowHeroWindow" ],
-			"buttons": [ "innWindowButtonHeroListUp", "innWindowButtonHeroListDown" ],
-			"buildings": [ "hospital", "academy", "hermit", "merchant", "storage", "graveyard", "recruits",
-			"questman", "fontain", "blacksmith", "tavern" ]
+			"window": [ "innWindow", "innWindowHeroWindow" ],
+			"button": [ "innWindowButtonHeroListUp", "innWindowButtonHeroListDown" ],
+			"building": [ "hospital", "academy", "hermit", "merchant", "storage", "graveyard", "recruits", "questman", "fontain", "blacksmith", "tavern" ]
 		},
 
 		"chooseDungeonScene":
@@ -30,7 +29,7 @@
 
 	"entity":
 	{
-		"buildings":
+		"building":
 		{
 			"hospital":
 			{
@@ -38,6 +37,7 @@
 				{
 					"url": "assets/images/hospital.png",
 					"url2": "assets/images/hospital_m.png",
+					"url3": null,
 					"x": 0.0,
 					"y": 0.0,
 					"text": 
@@ -66,6 +66,7 @@
 				{
 					"url": "assets/images/tavern.png",
 					"url2": "assets/images/tavern_m.png",
+					"url3": null,
 					"x": 0.0,
 					"y": 0.0,
 					"text": {
@@ -97,6 +98,7 @@
 				{
 					"url": "assets/images/storage.png",
 					"url2": "assets/images/storage_m.png",
+					"url3": null,
 					"x": 0.0,
 					"y": 0.0,
 					"text": {
@@ -124,6 +126,7 @@
 				{
 					"url": "assets/images/recruits.png",
 					"url2": "assets/images/recruits_m.png",
+					"url3": null,
 					"x": 0.0,
 					"y": 0.0,
 					"text": {
@@ -151,6 +154,7 @@
 				{
 					"url": "assets/images/blacksmith.png",
 					"url2": "assets/images/blacksmith_m.png",
+					"url3": null,
 					"x": 0.0,
 					"y": 0.0,
 					"text": {
@@ -178,6 +182,7 @@
 				{
 					"url": "assets/images/merchant.png",
 					"url2": "assets/images/merchant_m.png",
+					"url3": null,
 					"x": 0.0,
 					"y": 0.0,
 					"text": {
@@ -205,6 +210,7 @@
 				{
 					"url": "assets/images/graveyard.png",
 					"url2": "assets/images/graveyard_m.png",
+					"url3": null,
 					"x": 0.0,
 					"y": 0.0,
 					"text": {
@@ -232,6 +238,7 @@
 				{
 					"url": "assets/images/academy.png",
 					"url2": "assets/images/academy_m.png",
+					"url3": null,
 					"x": 0.0,
 					"y": 0.0,
 					"text": {
@@ -259,6 +266,7 @@
 				{
 					"url": "assets/images/hermit.png",
 					"url2": "assets/images/hermit_m.png",
+					"url3": null,
 					"x": 0.0,
 					"y": 0.0,
 					"text": {
@@ -286,6 +294,7 @@
 				{
 					"url": "assets/images/questman.png",
 					"url2": "assets/images/questman_m.png",
+					"url3": null,
 					"x": 0.0,
 					"y": 0.0,
 					"text": {
@@ -313,6 +322,7 @@
 				{
 					"url": "assets/images/fontain.png",
 					"url2": "assets/images/fontain_m.png",
+					"url3": null,
 					"x": 0.0,
 					"y": 0.0,
 					"text": {
@@ -336,192 +346,197 @@
 			}
 		},
 
-		"buttons":
+		"button":
 		{
-			"startingScene":
+			"startSceneStartButton": 
 			{
-				"startButton": 
+				"graphics":
 				{
-					"graphics":
+					"url": "assets/images/button_b.png",
+					"url2": "assets/images/button_b_push.png",
+					"url3": "assets/images/button_b_hover.png",
+					"x": 1365.0,
+					"y": 600.0,
+					"text": 
 					{
-						"url": "assets/images/startGameButton.png",
-						"url2": "assets/images/startGameButton_p.png",
-						"x": 1365.0,
-						"y": 600.0,
-						"text": null,
-						"addiction": "startSceneButtonsWindow",
-						"queue": 1,
-						"graphicsInstance": null
-					}				
-				},
-				"continueButton":
-				{
-					"graphics":
-					{
-						"url": "assets/images/continueGameButton.png",
-						"url2": "assets/images/continueGameButton_p.png",
-						"x": 1365.0,
-						"y": 480.0,
-						"text": null,
-						"addiction": "startSceneButtonsWindow",
-						"queue": 0,
-						"graphicsInstance": null
-					}				
-				},
-				"optionButton": 
-				{
-					"graphics":
-					{
-						"url": "assets/images/optionsGameButton.png",
-						"url2": "assets/images/optionsGameButton_p.png",
-						"x": 1365.0,
-						"y": 720.0,
-						"text": null,
-						"addiction": "startSceneButtonsWindow",
-						"queue": 0,
-						"graphicsInstance": null	
-					}									
-				},
-				"authorsButton":
-				{
-					"graphics":
-					{
-						"url": "assets/images/authorsGameButton.png",
-						"url2": "assets/images/authorsGameButton_p.png",
-						"x": 1365.0,
-						"y": 840.0,
-						"text": null,
-						"addiction": "startSceneButtonsWindow",
-						"queue": 0,
-						"graphicsInstance": null
-					}				
-				}
+						"buttonName":
+						{
+							"text": "New game",
+							"x": 1365.0,
+							"y": 600.0
+						}
+					},
+					"addiction": "startSceneButtonsWindow",
+					"queue": 1,
+					"graphicsInstance": null
+				}				
 			},
-
-			"cityScene":
+			"startSceneContinueButton":
 			{
-				"innWindowButtonHeroListUp":
+				"graphics":
 				{
-					"graphics":
-					{
-						"url": "assets/images/innWindowButtonHeroListUp.png",
-						"url2": "assets/images/innWindowButtonHeroListUp.png",
-						"x": 0.0,
-						"y": 0.0,
-						"text" : null,
-						"addiction": "innWindow",
-						"queue" : 0,
-						"graphicsInstance": null
-					}				
-				},
-				"innWindowButtonHeroListDown":
+					"url": "assets/images/button_b.png",
+					"url2": "assets/images/button_b_push.png",
+					"url3": "assets/images/button_b_hover.png",
+					"x": 1365.0,
+					"y": 480.0,
+					"text": null,
+					"addiction": "startSceneButtonsWindow",
+					"queue": 0,
+					"graphicsInstance": null
+				}				
+			},
+			"startSceneOptionsButton": 
+			{
+				"graphics":
 				{
-					"graphics":
-					{
-						"url": "assets/images/innWindowButtonHeroListDown.png",
-						"url2": "assets/images/innWindowButtonHeroListDown.png",
-						"x": 0.0,
-						"y": 0.0,
-						"text" : null,
-						"addiction": "innWindow",
-						"queue" : 0,
-						"graphicsInstance": null
-					}			
-				}
+					"url": "assets/images/button_b.png",
+					"url2": "assets/images/button_b_push.png",
+					"url3": "assets/images/button_b_hover.png",
+					"x": 1365.0,
+					"y": 720.0,
+					"text": null,
+					"addiction": "startSceneButtonsWindow",
+					"queue": 0,
+					"graphicsInstance": null	
+				}									
+			},
+			"startSceneAuthorsButton":
+			{
+				"graphics":
+				{
+					"url": "assets/images/button_b.png",
+					"url2": "assets/images/button_b_push.png",
+					"url3": "assets/images/button_b_hover.png",
+					"x": 1365.0,
+					"y": 840.0,
+					"text": null,
+					"addiction": "startSceneButtonsWindow",
+					"queue": 0,
+					"graphicsInstance": null
+				}				
+			},
+			"innWindowButtonHeroListUp":
+			{
+				"graphics":
+				{
+					"url": "assets/images/button_c.png",
+					"url2": "assets/images/button_c_push.png",
+					"url3": "assets/images/button_c_hover.png",
+					"x": 0.0,
+					"y": 0.0,
+					"text" : null,
+					"addiction": "innWindow",
+					"queue" : 0,
+					"graphicsInstance": null
+				}				
+			},
+			"innWindowButtonHeroListDown":
+			{
+				"graphics":
+				{
+					"url": "assets/images/button_d.png",
+					"url2": "assets/images/button_d_push.png",
+					"url3": "assets/images/button_d_hover.png",
+					"x": 0.0,
+					"y": 0.0,
+					"text" : null,
+					"addiction": "innWindow",
+					"queue" : 0,
+					"graphicsInstance": null
+				}			
 			}
 		},
 		
-		"windows":
+		"window":
 		{
-			"startingScene":
+			"startSceneButtonsWindow":
 			{
-				"sceneButtonWindow":
+				"graphics":
 				{
-					"graphics":
-					{
-						"url": "assets/images/startSceneButtonsWindow.png",
-						"url2": null,
-						"x": 1300.0,
-						"y": 450.0,
-						"text" : null,
-						"addiction": "startSceneButtonsWindow",
-						"queue" : 1,
-						"graphicsInstance": null
-					}				
-				}
+					"url": "assets/images/startSceneButtonsWindow.png",
+					"url2": null,
+					"url3": null,
+					"x": 1300.0,
+					"y": 450.0,
+					"text" : null,
+					"addiction": "startSceneButtonsWindow",
+					"queue" : 1,
+					"graphicsInstance": null
+				}				
 			},
-			"cityScene":
+			"innWindow":
 			{
-				"innWindow":
+				"graphics":
 				{
-					"graphics":
+					"url": "assets/images/innWindow.png",
+					"url2": null,
+					"url3": null,
+					"x": 0.0,
+					"y": 0.0,
+					"text" : 
 					{
-						"url": "assets/images/innWindow.png",
-						"url2": null,
-						"x": 0.0,
-						"y": 0.0,
-						"text" : 
+						"nameWindow":
 						{
-							"nameWindow":
-							{
-								"text": "Inn",
-								"x":0.0,
-								"y":0.0
-							},
-							"quantityHeroes":
-							{
-								"text": "0/0",
-								"x":0.0,
-								"y":0.0
-							}
+							"text": "Inn",
+							"x":0.0,
+							"y":0.0
 						},
-						"addiction": "innWindow",
-						"queue" : 1,
-						"graphicsInstance": null
-					}				
-				},
-				
-				"innWindowHeroWindow":
+						"quantityHeroes":
+						{
+							"text": "0/0",
+						"x":0.0,
+							"y":0.0
+						}
+					},
+					"addiction": "innWindow",
+					"queue" : 1,
+					"graphicsInstance": null
+				}				
+			},
+			
+			"innWindowHeroWindow":
+			{
+				"graphics":
 				{
-					"graphics":
+					"url": "assets/images/innWindowHeroWindow.png",
+					"url2": null,
+					"url3": null,
+					"x": 0.0,
+					"y": 0.0,
+					"text" : 
 					{
-						"url": "assets/images/innWindowHeroWindow.png",
-						"url2": null,
-						"x": 0.0,
-						"y": 0.0,
-						"text" : 
+						"nameWindow":
 						{
-							"nameWindow":
-							{
-								"text": "Empty",
-								"x":0.0,
-								"y":0.0
-							},
-							"lvl":
-							{
-								"text": "1",
-								"x":0.0,
-								"y":0.0
-							},
-							"armorPower":
-							{
-								"text": "0",
-								"x":0.0,
-								"y":0.0
-							},
-							"attackPower":
-							{
-								"text": "0",
-								"x":0.0,
-								"y":0.0
-							}
+							"text": "Empty",
+							"x":0.0,
+							"y":0.0
 						},
-						"addiction": "innWindow",
-						"queue" : 2,
-						"graphicsInstance": null
-					}
+						"lvl":
+						{
+							"text": "1",
+							"x":0.0,
+							"y":0.0
+						},
+						"armorPower":
+						{
+							"text": "0",
+							"x":0.0,
+							"y":0.0
+						},
+						"attackPower":
+						{
+							"text": "0",
+							"x":0.0,
+							"y":0.0
+						}
+					},
+					"addiction": "innWindow",
+					"queue" : 2,
+					"graphicsInstance": null
 				}
 			}
+			
 		}
 	}
 }
