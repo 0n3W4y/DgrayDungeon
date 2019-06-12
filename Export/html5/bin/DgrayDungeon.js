@@ -894,9 +894,9 @@ ApplicationMain.create = function(config) {
 	ManifestResources.init(config);
 	var _this = app.meta;
 	if(__map_reserved["build"] != null) {
-		_this.setReserved("build","16");
+		_this.setReserved("build","17");
 	} else {
-		_this.h["build"] = "16";
+		_this.h["build"] = "17";
 	}
 	var _this1 = app.meta;
 	if(__map_reserved["company"] != null) {
@@ -4543,32 +4543,45 @@ EntitySystem.prototype = {
 };
 var EventSystem = function(parent) {
 	this._parent = parent;
+	this._eventListeners = [];
 };
 $hxClasses["EventSystem"] = EventSystem;
 EventSystem.__name__ = ["EventSystem"];
 EventSystem.prototype = {
 	_parent: null
+	,_eventListeners: null
 	,_addStartSceneButton: function(name,object) {
+		var arrayOfEvents = [];
 		switch(name) {
 		case "startSceneAuthorsButton":
 			object.addEventListener("click",$bind(this,this._eventAuthorsButtonClick));
+			arrayOfEvents.push({ "event" : "click", "eventFunction" : $bind(this,this._eventAuthorsButtonClick)});
 			break;
 		case "startSceneContinueButton":
 			object.addEventListener("click",$bind(this,this._eventContinueButtonClick));
+			arrayOfEvents.push({ "event" : "click", "eventFunction" : $bind(this,this._eventContinueButtonClick)});
 			break;
 		case "startSceneOptionsButton":
 			object.addEventListener("click",$bind(this,this._eventOptionButtonClick));
+			arrayOfEvents.push({ "event" : "click", "eventFunction" : $bind(this,this._eventOptionButtonClick)});
 			break;
 		case "startSceneStartButton":
 			object.addEventListener("click",$bind(this,this._eventStartButtonClick));
+			arrayOfEvents.push({ "event" : "click", "eventFunction" : $bind(this,this._eventStartButtonClick)});
 			break;
 		default:
-			haxe_Log.trace("Error in EventSystem._addStartSceneButton, button with name " + name + ", does not exist in case.",{ fileName : "EventSystem.hx", lineNumber : 21, className : "EventSystem", methodName : "_addStartSceneButton"});
+			haxe_Log.trace("Error in EventSystem._addStartSceneButton, button with name " + name + ", does not exist in case.",{ fileName : "EventSystem.hx", lineNumber : 39, className : "EventSystem", methodName : "_addStartSceneButton"});
 		}
 		object.addEventListener("mouseOver",$bind(this,this._eventMouseOverButton));
+		arrayOfEvents.push({ "event" : "mouseOver", "eventFunction" : $bind(this,this._eventMouseOverButton)});
 		object.addEventListener("mouseOut",$bind(this,this._eventMouseOutButton));
+		arrayOfEvents.push({ "event" : "mouseOut", "eventFunction" : $bind(this,this._eventMouseOutButton)});
 		object.addEventListener("mouseDown",$bind(this,this._eventMouseDownButton));
+		arrayOfEvents.push({ "event" : "mouseDown", "eventFunction" : $bind(this,this._eventMouseDownButton)});
 		object.addEventListener("mouseUp",$bind(this,this._eventMouseUpButton));
+		arrayOfEvents.push({ "event" : "mouseUp", "eventFunction" : $bind(this,this._eventMouseUpButton)});
+		var listener = { "name" : name, "events" : arrayOfEvents};
+		this._eventListeners.push(listener);
 	}
 	,_addBuildingsScene: function(name,object) {
 		switch(name) {
@@ -4576,7 +4589,7 @@ EventSystem.prototype = {
 			object.addEventListener("click",$bind(this,this._eventMouseClickBuilding));
 			break;
 		default:
-			haxe_Log.trace("Error in EventSystem._addBuildingsScene, bulding with name " + name + ", does not exist in case.",{ fileName : "EventSystem.hx", lineNumber : 36, className : "EventSystem", methodName : "_addBuildingsScene"});
+			haxe_Log.trace("Error in EventSystem._addBuildingsScene, bulding with name " + name + ", does not exist in case.",{ fileName : "EventSystem.hx", lineNumber : 64, className : "EventSystem", methodName : "_addBuildingsScene"});
 		}
 		object.addEventListener("mouseOver",$bind(this,this._eventMouseOverBuilding));
 		object.addEventListener("mouseOut",$bind(this,this._eventMouseOutBuilding));
@@ -4586,13 +4599,13 @@ EventSystem.prototype = {
 		this._parent.getSystem("scene").doActiveScene(newScene);
 	}
 	,_eventContinueButtonClick: function(e) {
-		haxe_Log.trace(" continue ... load saved game from file??? ",{ fileName : "EventSystem.hx", lineNumber : 52, className : "EventSystem", methodName : "_eventContinueButtonClick"});
+		haxe_Log.trace(" continue ... load saved game from file??? ",{ fileName : "EventSystem.hx", lineNumber : 80, className : "EventSystem", methodName : "_eventContinueButtonClick"});
 	}
 	,_eventOptionButtonClick: function(e) {
-		haxe_Log.trace(" Options window ",{ fileName : "EventSystem.hx", lineNumber : 58, className : "EventSystem", methodName : "_eventOptionButtonClick"});
+		haxe_Log.trace(" Options window ",{ fileName : "EventSystem.hx", lineNumber : 86, className : "EventSystem", methodName : "_eventOptionButtonClick"});
 	}
 	,_eventAuthorsButtonClick: function(e) {
-		haxe_Log.trace(" Authors window ",{ fileName : "EventSystem.hx", lineNumber : 64, className : "EventSystem", methodName : "_eventAuthorsButtonClick"});
+		haxe_Log.trace(" Authors window ",{ fileName : "EventSystem.hx", lineNumber : 92, className : "EventSystem", methodName : "_eventAuthorsButtonClick"});
 	}
 	,_eventMouseOverButton: function(e) {
 		var sprite = e.target;
@@ -4622,7 +4635,7 @@ EventSystem.prototype = {
 	}
 	,_eventMouseClickBuilding: function(e) {
 		var sprite = e.target;
-		haxe_Log.trace("Click: " + sprite.get_name(),{ fileName : "EventSystem.hx", lineNumber : 108, className : "EventSystem", methodName : "_eventMouseClickBuilding"});
+		haxe_Log.trace("Click: " + sprite.get_name(),{ fileName : "EventSystem.hx", lineNumber : 138, className : "EventSystem", methodName : "_eventMouseClickBuilding"});
 	}
 	,addEvent: function(name,object) {
 		switch(name) {
@@ -4633,10 +4646,51 @@ EventSystem.prototype = {
 			this._addStartSceneButton(name,object);
 			break;
 		default:
-			haxe_Log.trace("Error in EventSystem.addEvent, type of event can't be: " + name + ".",{ fileName : "EventSystem.hx", lineNumber : 124, className : "EventSystem", methodName : "addEvent"});
+			haxe_Log.trace("Error in EventSystem.addEvent, type of event can't be: " + name + ".",{ fileName : "EventSystem.hx", lineNumber : 155, className : "EventSystem", methodName : "addEvent"});
 		}
 	}
-	,removeEvent: function(object,type) {
+	,removeEvent: function(name,object,eventName) {
+		var newEvent = null;
+		switch(eventName) {
+		case "mCLICK":
+			newEvent = "click";
+			break;
+		case "mDOWN":
+			newEvent = "mouseDown";
+			break;
+		case "mOUT":
+			newEvent = "mouseOut";
+			break;
+		case "mOVER":
+			newEvent = "mouseOver";
+			break;
+		case "mUP":
+			newEvent = "mouseUp";
+			break;
+		}
+		var _g1 = 0;
+		var _g = this._eventListeners.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			var listener = this._eventListeners[i];
+			if(name == listener.name) {
+				var array = listener.events;
+				var _g3 = 0;
+				var _g2 = array.length;
+				while(_g3 < _g2) {
+					var j = _g3++;
+					if(newEvent == null) {
+						object.removeEventListener(array[j].event,array[j].eventFunction);
+					} else if(newEvent == array[j].event) {
+						object.removeEventListener(array[j].event,array[j].eventFunction);
+						listener.events.splice(j,1);
+						break;
+					}
+				}
+				this._eventListeners.splice(i,1);
+				break;
+			}
+		}
 	}
 	,__class__: EventSystem
 };
@@ -4896,13 +4950,14 @@ GraphicsSystem.prototype = {
 				textSprite.set_height(sprite.get_height());
 				textSprite.set_width(sprite.get_width());
 				this._parent.getSystem("event").addEvent(button.get("name"),textSprite);
+				if(button.get("name") == "startSceneContinueButton") {
+					var chekButton = this._checkButton("startSceneContinueButton");
+					if(chekButton) {
+						this._parent.getSystem("event").removeEvent(button.get("name"),textSprite,null);
+						sprite.set_alpha(0.5);
+					}
+				}
 				sprite.addChild(textSprite);
-			}
-		}
-		if(button.get("name") == "startSceneContinueButton") {
-			var chekButton = this._checkButton("startSceneContinueButton");
-			if(chekButton) {
-				sprite.set_alpha(0.5);
 			}
 		}
 		return sprite;
@@ -4910,6 +4965,29 @@ GraphicsSystem.prototype = {
 	,_createBuilding: function(object) {
 		var sprite = new openfl_display_Sprite();
 		var objectGraphics = object.getComponent("graphics");
+		var data = new openfl_display_Bitmap(openfl_utils_Assets.getBitmapData(objectGraphics.getUrl(0)));
+		var data2 = new openfl_display_Bitmap(openfl_utils_Assets.getBitmapData(objectGraphics.getUrl(1)));
+		sprite.addChild(data);
+		data2.set_visible(false);
+		sprite.addChild(data2);
+		var coords = objectGraphics.getCoordinates();
+		sprite.set_x(coords.x);
+		sprite.set_y(coords.y);
+		var text = objectGraphics.getText();
+		if(text != null) {
+			var _g = 0;
+			var _g1 = Reflect.fields(text);
+			while(_g < _g1.length) {
+				var key = _g1[_g];
+				++_g;
+				var value = Reflect.getProperty(text,key);
+				var textSprite = this._createText(value);
+				textSprite.set_height(sprite.get_height());
+				textSprite.set_width(sprite.get_width());
+				textSprite.set_visible(false);
+				sprite.addChild(textSprite);
+			}
+		}
 		return sprite;
 	}
 	,_drawStartScene: function(scene) {
@@ -4965,13 +5043,13 @@ GraphicsSystem.prototype = {
 		var sceneName = scene.getName();
 		switch(sceneName) {
 		case "cityScene":
-			this._drawStartScene(scene);
+			this._drawCityScene(scene);
 			break;
 		case "startScene":
 			this._drawStartScene(scene);
 			break;
 		default:
-			haxe_Log.trace("Can't draw scene with name: " + sceneName + ".",{ fileName : "GraphicsSystem.hx", lineNumber : 202, className : "GraphicsSystem", methodName : "drawScene"});
+			haxe_Log.trace("Can't draw scene with name: " + sceneName + ".",{ fileName : "GraphicsSystem.hx", lineNumber : 225, className : "GraphicsSystem", methodName : "drawScene"});
 		}
 	}
 	,undrawScene: function(scene) {
@@ -4984,7 +5062,7 @@ GraphicsSystem.prototype = {
 			this._undrawStartScene(scene);
 			break;
 		default:
-			haxe_Log.trace("Can't sraw scene with name: " + sceneName + ".",{ fileName : "GraphicsSystem.hx", lineNumber : 213, className : "GraphicsSystem", methodName : "undrawScene"});
+			haxe_Log.trace("Can't sraw scene with name: " + sceneName + ".",{ fileName : "GraphicsSystem.hx", lineNumber : 236, className : "GraphicsSystem", methodName : "undrawScene"});
 		}
 	}
 	,createUiObject: function(name,list) {
@@ -5020,7 +5098,7 @@ GraphicsSystem.prototype = {
 		if(type == "building") {
 			return this._createBuilding(object);
 		} else {
-			haxe_Log.trace("Error GraphicsSystem.createObject, object type: " + type + ", can't be found.",{ fileName : "GraphicsSystem.hx", lineNumber : 251, className : "GraphicsSystem", methodName : "createObject"});
+			haxe_Log.trace("Error GraphicsSystem.createObject, object type: " + type + ", can't be found.",{ fileName : "GraphicsSystem.hx", lineNumber : 274, className : "GraphicsSystem", methodName : "createObject"});
 		}
 		return null;
 	}
@@ -5149,7 +5227,7 @@ ManifestResources.init = function(config) {
 	var data;
 	var manifest;
 	var library;
-	data = "{\"name\":null,\"assets\":\"aoy4:pathy29:assets%2Fimages%2Facademy.pngy4:sizei409445y4:typey5:IMAGEy2:idR1y7:preloadtgoR0y31:assets%2Fimages%2Facademy_m.pngR2i413561R3R4R5R7R6tgoR0y37:assets%2Fimages%2Fbackground_game.pngR2i1897994R3R4R5R8R6tgoR0y30:assets%2Fimages%2Fbutton_b.pngR2i1941R3R4R5R9R6tgoR0y36:assets%2Fimages%2Fbutton_b_hover.pngR2i1948R3R4R5R10R6tgoR0y35:assets%2Fimages%2Fbutton_b_push.pngR2i2723R3R4R5R11R6tgoR0y30:assets%2Fimages%2Fbutton_c.pngR2i4148R3R4R5R12R6tgoR0y36:assets%2Fimages%2Fbutton_c_hover.pngR2i4148R3R4R5R13R6tgoR0y35:assets%2Fimages%2Fbutton_c_push.pngR2i4148R3R4R5R14R6tgoR0y30:assets%2Fimages%2Fbutton_d.pngR2i4829R3R4R5R15R6tgoR0y36:assets%2Fimages%2Fbutton_d_hover.pngR2i4829R3R4R5R16R6tgoR0y35:assets%2Fimages%2Fbutton_d_push.pngR2i4829R3R4R5R17R6tgoR0y40:assets%2Fimages%2FcitySceneBackround.pngR2i2043474R3R4R5R18R6tgoR0y29:assets%2Fimages%2Ffontain.pngR2i185396R3R4R5R19R6tgoR0y31:assets%2Fimages%2Ffontain_m.pngR2i194684R3R4R5R20R6tgoR0y31:assets%2Fimages%2Fgraveyard.pngR2i172698R3R4R5R21R6tgoR0y33:assets%2Fimages%2Fgraveyard_m.pngR2i176786R3R4R5R22R6tgoR0y28:assets%2Fimages%2Fhermit.pngR2i198769R3R4R5R23R6tgoR0y30:assets%2Fimages%2Fhermit_m.pngR2i207348R3R4R5R24R6tgoR0y30:assets%2Fimages%2Fhospital.pngR2i306480R3R4R5R25R6tgoR0y32:assets%2Fimages%2Fhospital_m.pngR2i321808R3R4R5R26R6tgoR0y31:assets%2Fimages%2FinnWindow.pngR2i11509R3R4R5R27R6tgoR0y41:assets%2Fimages%2FinnWindowHeroWindow.pngR2i6013R3R4R5R28R6tgoR0y30:assets%2Fimages%2FquestMan.pngR2i49162R3R4R5R29R6tgoR0y32:assets%2Fimages%2FquestMan_m.pngR2i43455R3R4R5R30R6tgoR0y30:assets%2Fimages%2Frecruits.pngR2i339084R3R4R5R31R6tgoR0y32:assets%2Fimages%2Frecruits_m.pngR2i339084R3R4R5R32R6tgoR0y26:assets%2Fimages%2Fshop.pngR2i396984R3R4R5R33R6tgoR0y28:assets%2Fimages%2Fshop_m.pngR2i399153R3R4R5R34R6tgoR0y45:assets%2Fimages%2FstartSceneButtonsWindow.pngR2i7836R3R4R5R35R6tgoR0y29:assets%2Fimages%2Fstorage.pngR2i358167R3R4R5R36R6tgoR0y31:assets%2Fimages%2Fstorage_m.pngR2i371206R3R4R5R37R6tgoR0y28:assets%2Fimages%2Ftavern.pngR2i505790R3R4R5R38R6tgh\",\"rootPath\":null,\"version\":2,\"libraryArgs\":[],\"libraryType\":null}";
+	data = "{\"name\":null,\"assets\":\"aoy4:pathy29:assets%2Fimages%2Facademy.pngy4:sizei409445y4:typey5:IMAGEy2:idR1y7:preloadtgoR0y31:assets%2Fimages%2Facademy_m.pngR2i413561R3R4R5R7R6tgoR0y37:assets%2Fimages%2Fbackground_game.pngR2i1897994R3R4R5R8R6tgoR0y32:assets%2Fimages%2Fblacksmith.pngR2i339084R3R4R5R9R6tgoR0y34:assets%2Fimages%2Fblacksmith_m.pngR2i339084R3R4R5R10R6tgoR0y30:assets%2Fimages%2Fbutton_b.pngR2i1941R3R4R5R11R6tgoR0y36:assets%2Fimages%2Fbutton_b_hover.pngR2i1948R3R4R5R12R6tgoR0y35:assets%2Fimages%2Fbutton_b_push.pngR2i2723R3R4R5R13R6tgoR0y30:assets%2Fimages%2Fbutton_c.pngR2i4148R3R4R5R14R6tgoR0y36:assets%2Fimages%2Fbutton_c_hover.pngR2i4148R3R4R5R15R6tgoR0y35:assets%2Fimages%2Fbutton_c_push.pngR2i4148R3R4R5R16R6tgoR0y30:assets%2Fimages%2Fbutton_d.pngR2i4829R3R4R5R17R6tgoR0y36:assets%2Fimages%2Fbutton_d_hover.pngR2i4829R3R4R5R18R6tgoR0y35:assets%2Fimages%2Fbutton_d_push.pngR2i4829R3R4R5R19R6tgoR0y40:assets%2Fimages%2FcitySceneBackround.pngR2i2043474R3R4R5R20R6tgoR0y29:assets%2Fimages%2Ffontain.pngR2i185396R3R4R5R21R6tgoR0y31:assets%2Fimages%2Ffontain_m.pngR2i194684R3R4R5R22R6tgoR0y31:assets%2Fimages%2Fgraveyard.pngR2i172698R3R4R5R23R6tgoR0y33:assets%2Fimages%2Fgraveyard_m.pngR2i176786R3R4R5R24R6tgoR0y28:assets%2Fimages%2Fhermit.pngR2i198769R3R4R5R25R6tgoR0y30:assets%2Fimages%2Fhermit_m.pngR2i207348R3R4R5R26R6tgoR0y30:assets%2Fimages%2Fhospital.pngR2i306480R3R4R5R27R6tgoR0y32:assets%2Fimages%2Fhospital_m.pngR2i321808R3R4R5R28R6tgoR0y31:assets%2Fimages%2FinnWindow.pngR2i11509R3R4R5R29R6tgoR0y41:assets%2Fimages%2FinnWindowHeroWindow.pngR2i6013R3R4R5R30R6tgoR0y30:assets%2Fimages%2Fmerchant.pngR2i396984R3R4R5R31R6tgoR0y32:assets%2Fimages%2Fmerchant_m.pngR2i399153R3R4R5R32R6tgoR0y30:assets%2Fimages%2Fquestman.pngR2i49162R3R4R5R33R6tgoR0y32:assets%2Fimages%2Fquestman_m.pngR2i43455R3R4R5R34R6tgoR0y30:assets%2Fimages%2Frecruits.pngR2i339084R3R4R5R35R6tgoR0y32:assets%2Fimages%2Frecruits_m.pngR2i339084R3R4R5R36R6tgoR0y45:assets%2Fimages%2FstartSceneButtonsWindow.pngR2i7836R3R4R5R37R6tgoR0y29:assets%2Fimages%2Fstorage.pngR2i358167R3R4R5R38R6tgoR0y31:assets%2Fimages%2Fstorage_m.pngR2i371206R3R4R5R39R6tgoR0y28:assets%2Fimages%2Ftavern.pngR2i505790R3R4R5R40R6tgoR0y30:assets%2Fimages%2Ftavern_m.pngR2i505790R3R4R5R41R6tgh\",\"rootPath\":null,\"version\":2,\"libraryArgs\":[],\"libraryType\":null}";
 	manifest = lime_utils_AssetManifest.parse(data,ManifestResources.rootPath);
 	library = lime_utils_AssetLibrary.fromManifest(manifest);
 	lime_utils_Assets.registerLibrary("default",library);
@@ -26385,7 +26463,7 @@ var lime_utils_AssetCache = function() {
 	this.audio = new haxe_ds_StringMap();
 	this.font = new haxe_ds_StringMap();
 	this.image = new haxe_ds_StringMap();
-	this.version = 763571;
+	this.version = 343046;
 };
 $hxClasses["lime.utils.AssetCache"] = lime_utils_AssetCache;
 lime_utils_AssetCache.__name__ = ["lime","utils","AssetCache"];

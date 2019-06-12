@@ -4,6 +4,26 @@
 		"selected_items":
 		[
 			[
+				"getB",
+				"getBitmapData(...)\topenfl.display.BitmapData"
+			],
+			[
+				"M",
+				"MOUSE_OVER\topenfl.events.EventType<flash.events.MouseEvent>"
+			],
+			[
+				"remove",
+				"removeEventListener(...)\tVoid"
+			],
+			[
+				"even",
+				"eventFunction\tString"
+			],
+			[
+				"li",
+				"listeners"
+			],
+			[
 				"scne",
 				"sceneObjectEntities\tDynamic"
 			],
@@ -494,26 +514,6 @@
 			[
 				"huma",
 				"humanoidsClassData\tparameter"
-			],
-			[
-				"isFigh",
-				"isFightEnd\tproperty"
-			],
-			[
-				"rac",
-				"racesDataArray\tproperty"
-			],
-			[
-				"creat",
-				"creaturesDataArray\tproperty"
-			],
-			[
-				"exp",
-				"expToNextLvl\tproperty"
-			],
-			[
-				"is",
-				"isFightEnd\tproperty"
 			]
 		]
 	},
@@ -532,7 +532,7 @@
 			"file": "Source/EventSystem.hx",
 			"settings":
 			{
-				"buffer_size": 4254,
+				"buffer_size": 6432,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -541,16 +541,8 @@
 			"file": "Source/GraphicsSystem.hx",
 			"settings":
 			{
-				"buffer_size": 7051,
+				"buffer_size": 7934,
 				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "Source/EntitySystem.hx",
-			"settings":
-			{
-				"buffer_size": 3145,
 				"line_ending": "Windows"
 			}
 		},
@@ -618,6 +610,7 @@
 	],
 	"file_history":
 	[
+		"/C/projects/DgrayDungeon/Source/Main.hx",
 		"/C/projects/DgrayDungeon/Source/Graphics.hx",
 		"/C/projects/DieAnotherDay_v0.11/source/UserInterface.hx",
 		"/C/projects/DieAnotherDay/source/UserInterface.hx",
@@ -626,7 +619,6 @@
 		"/C/projects/DgrayDungeon/Source/TimeSystem.hx",
 		"/C/projects/DgrayDungeon/Source/Game.hx",
 		"/C/projects/DgrayDungeon/Source/EntityComponents/Component.hx",
-		"/C/projects/DgrayDungeon/Source/Main.hx",
 		"/C/projects/DgrayDungeon/DgrayDungeon.hxproj",
 		"/C/projects/DgrayDungeon/project.xml",
 		"/C/projects/HelloWorld/Source/Main.hx",
@@ -820,15 +812,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4254,
+						"buffer_size": 6432,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2057,
-								2057
+								6190,
+								6190
 							]
 						],
 						"settings":
@@ -838,10 +830,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 360.0,
+						"translation.y": 2940.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
@@ -850,15 +842,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 7051,
+						"buffer_size": 7934,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3221,
-								3221
+								3720,
+								3720
 							]
 						],
 						"settings":
@@ -868,7 +860,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1910.0,
+						"translation.y": 2170.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -876,36 +868,6 @@
 				},
 				{
 					"buffer": 3,
-					"file": "Source/EntitySystem.hx",
-					"semi_transient": true,
-					"settings":
-					{
-						"buffer_size": 3145,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								888,
-								888
-							]
-						],
-						"settings":
-						{
-							"haxe-build-id": 0,
-							"syntax": "Packages/Haxe/Haxe.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
 					"file": "Source/SceneSystem.hx",
 					"semi_transient": false,
 					"settings":
@@ -917,8 +879,8 @@
 						"selection":
 						[
 							[
-								2667,
-								2667
+								2776,
+								2776
 							]
 						],
 						"settings":
@@ -928,14 +890,14 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1500.0,
+						"translation.y": 1620.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
-					"buffer": 5,
+					"buffer": 4,
 					"file": "Source/data.json",
 					"semi_transient": false,
 					"settings":

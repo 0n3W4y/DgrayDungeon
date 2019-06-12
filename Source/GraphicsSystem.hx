@@ -98,29 +98,52 @@ class GraphicsSystem
 				textSprite.height = sprite.height;
 				textSprite.width = sprite.width;
 				this._parent.getSystem( "event" ).addEvent( button.get( "name" ), textSprite );
+				if( button.get( "name" ) == "startSceneContinueButton")
+				{
+					var chekButton = this._checkButton( "startSceneContinueButton" );
+					if( chekButton )
+					{
+						//remove all events from button.
+						this._parent.getSystem( "event" ).removeEvent( button.get( "name" ), textSprite, null );
+						sprite.alpha = 0.5;
+					}
+				}
 				sprite.addChild( textSprite );
-			}
-			
+			}	
 		}
-
-		if( button.get( "name" ) == "startSceneContinueButton")
-		{
-			var chekButton = this._checkButton( "startSceneContinueButton" );
-			if( chekButton )
-			{
-				//remove all events from button.
-				sprite.alpha = 0.5;
-			}
-
-		}
-
 		return sprite;
 	}
 
 	private function _createBuilding( object:Entity ):Sprite
 	{
 		var sprite = new Sprite();
-		var objectGraphics = object.getComponent( "graphics" );// TODO:
+		var objectGraphics = object.getComponent( "graphics" );
+
+		var data = new Bitmap( Assets.getBitmapData( objectGraphics.getUrl( 0 ) ) );
+		var data2 = new Bitmap( Assets.getBitmapData( objectGraphics.getUrl( 1 ) ) );
+		sprite.addChild( data );
+		data2.visible = false;
+		sprite.addChild( data2 );
+
+		var coords = objectGraphics.getCoordinates();
+		sprite.x = coords.x;
+		sprite.y = coords.y;
+
+		var text = objectGraphics.getText();
+		if( text != null )
+		{
+			for( key in Reflect.fields( text ) )
+			{
+				var value = Reflect.getProperty( text, key );
+				var textSprite = this._createText( value );
+				textSprite.height = sprite.height;
+				textSprite.width = sprite.width;
+				textSprite.visible = false;
+				//this._parent.getSystem( "event" ).addEvent( object.get( "name" ), textSprite );
+				sprite.addChild( textSprite );
+			}
+			
+		}
 		return sprite;
 	}
 
@@ -198,7 +221,7 @@ class GraphicsSystem
 		switch( sceneName )
 		{
 			case "startScene": this._drawStartScene( scene );
-			case "cityScene": this._drawStartScene( scene );
+			case "cityScene": this._drawCityScene( scene );
 			default: trace( "Can't draw scene with name: " + sceneName + "." );
 		}
 	}
