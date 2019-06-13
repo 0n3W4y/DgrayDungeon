@@ -45,26 +45,30 @@
 						"name":
 						{
 							"text": "Hospital",
-							"x": 0.0,
-							"y": 0.0,
+							"x": 100.0,
+							"y": 50.0,
 							"font": "Verdana",
-							"size": 64,
-							"color": "0x000000",
+							"size": 48,
+							"color": "0xffffff",
 							"visible": true,
 							"selectable": false,
-							"queue": 1
+							"queue": 1,
+							"height":100,
+							"width":100
 						},
 						"hint":
 						{
 							"text": "Make a health",
-							"x": 0.0,
-							"y": 0.0,
+							"x": 100.0,
+							"y": 100.0,
 							"font": "Verdana",
-							"size": 64,
-							"color": "0x000000",
+							"size": 32,
+							"color": "0xffffff",
 							"visible": true,
 							"selectable": false,
-							"queue": 2
+							"queue": 2,
+							"height":100,
+							"width":100
 						}
 					},
 					"addiction": null,
@@ -88,11 +92,13 @@
 							"x": 0.0,
 							"y": 0.0,
 							"font": "Verdana",
-							"size": 64,
-							"color": "0x000000",
+							"size": 48,
+							"color": "0xffffff",
 							"visible": true,
 							"selectable": false,
-							"queue": 1
+							"queue": 1,
+							"height":100,
+							"width":100
 						},
 						"hint":
 						{
@@ -100,11 +106,13 @@
 							"x": 0.0,
 							"y": 0.0,
 							"font": "Verdana",
-							"size": 64,
-							"color": "0x000000",
+							"size": 32,
+							"color": "0xffffff",
 							"visible": true,
 							"selectable": false,
-							"queue": 2
+							"queue": 2,
+							"height":100,
+							"width":100
 						}
 					},
 					"addiction": null,
@@ -132,11 +140,13 @@
 							"x": 0.0,
 							"y": 0.0,
 							"font": "Verdana",
-							"size": 64,
-							"color": "0x000000",
+							"size": 48,
+							"color": "0xffffff",
 							"visible": true,
 							"selectable": false,
-							"queue": 1
+							"queue": 1,
+							"height":100,
+							"width":100
 						},
 						"hint":
 						{
@@ -144,11 +154,13 @@
 							"x": 0.0,
 							"y": 0.0,
 							"font": "Verdana",
-							"size": 64,
-							"color": "0x000000",
+							"size": 32,
+							"color": "0xffffff",
 							"visible": true,
 							"selectable": false,
-							"queue": 2
+							"queue": 2,
+							"height":100,
+							"width":100
 						}
 					},
 					"addiction": null,
@@ -172,11 +184,13 @@
 							"x": 0.0,
 							"y": 0.0,
 							"font": "Verdana",
-							"size": 64,
-							"color": "0x000000",
+							"size": 48,
+							"color": "0xffffff",
 							"visible": true,
 							"selectable": false,
-							"queue": 1
+							"queue": 1,
+							"height":100,
+							"width":100
 						},
 						"hint":
 						{
@@ -184,11 +198,13 @@
 							"x": 0.0,
 							"y": 0.0,
 							"font": "Verdana",
-							"size": 64,
-							"color": "0x000000",
+							"size": 32,
+							"color": "0xffffff",
 							"visible": true,
 							"selectable": false,
-							"queue": 2
+							"queue": 2,
+							"height":100,
+							"width":100
 						}
 					},
 					"addiction": null,
@@ -212,11 +228,13 @@
 							"x": 0.0,
 							"y": 0.0,
 							"font": "Verdana",
-							"size": 64,
-							"color": "0x000000",
+							"size": 48,
+							"color": "0xffffff",
 							"visible": true,
 							"selectable": false,
-							"queue": 1
+							"queue": 1,
+							"height":100,
+							"width":100
 						},
 						"hint":
 						{
@@ -224,11 +242,13 @@
 							"x": 0.0,
 							"y": 0.0,
 							"font": "Verdana",
-							"size": 64,
-							"color": "0x000000",
+							"size": 32,
+							"color": "0xffffff",
 							"visible": true,
 							"selectable": false,
-							"queue": 2
+							"queue": 2,
+							"height":100,
+							"width":100
 						}
 					},
 					"addiction": null,
@@ -252,11 +272,13 @@
 							"x": 0.0,
 							"y": 0.0,
 							"font": "Verdana",
-							"size": 64,
-							"color": "0x000000",
+							"size": 48,
+							"color": "0xffffff",
 							"visible": true,
 							"selectable": false,
-							"queue": 1
+							"queue": 1,
+							"height":100,
+							"width":100
 						},
 						"hint":
 						{
@@ -264,11 +286,13 @@
 							"x": 0.0,
 							"y": 0.0,
 							"font": "Verdana",
-							"size": 64,
-							"color": "0x000000",
+							"size": 32,
+							"color": "0xffffff",
 							"visible": true,
 							"selectable": false,
-							"queue": 2
+							"queue": 2,
+							"height":100,
+							"width":100
 						}
 					},
 					"addiction": null,
@@ -289,26 +313,30 @@
 						"name":
 						{
 							"text": "Graveyard",
-							"x": 0.0,
-							"y": 0.0,
+							"x": 200.0,
+							"y": 100.0,
 							"font": "Verdana",
-							"size": 64,
-							"color": "0x000000",
+							"size": 48,
+							"color": "0xffffff",
 							"visible": true,
 							"selectable": false,
-							"queue": 1
+							"queue": 1,
+							"height":100,
+							"width":200
 						},
 						"hint":
 						{
 							"text": "R.I.P.",
-							"x": 0.0,
-							"y": 0.0,
+							"x": 200.0,
+							"y": 150.0,
 							"font": "Verdana",
-							"size": 64,
-							"color": "0x000000",
+							"size": 32,
+							"color": "0xffffff",
 							"visible": true,
 							"selectable": false,
-							"queue": 2
+							"queue": 2,
+							"height":100,
+							"width":200
 						}
 					},
 					"addiction": null,
@@ -332,11 +360,13 @@
 							"x": 0.0,
 							"y": 0.0,
 							"font": "Verdana",
-							"size": 64,
-							"color": "0x000000",
+							"size": 48,
+							"color": "0xffffff",
 							"visible": true,
 							"selectable": false,
-							"queue": 1
+							"queue": 1,
+							"height":100,
+							"width":100
 						},
 						"hint":
 						{
@@ -344,11 +374,13 @@
 							"x": 0.0,
 							"y": 0.0,
 							"font": "Verdana",
-							"size": 64,
-							"color": "0x000000",
+							"size": 32,
+							"color": "0xffffff",
 							"visible": true,
 							"selectable": false,
-							"queue": 2
+							"queue": 2,
+							"height":100,
+							"width":100
 						}
 					},
 					"addiction": null,
@@ -364,7 +396,7 @@
 					"url2": "assets/images/hermit_m.png",
 					"url3": null,
 					"x": 0.0,
-					"y": 700.0,
+					"y": 600.0,
 					"text": {
 						"name":
 						{
@@ -372,11 +404,13 @@
 							"x": 0.0,
 							"y": 0.0,
 							"font": "Verdana",
-							"size": 64,
-							"color": "0x000000",
+							"size": 40,
+							"color": "0xffffff",
 							"visible": true,
 							"selectable": false,
-							"queue": 1
+							"queue": 1,
+							"height":100,
+							"width":100
 						},
 						"hint":
 						{
@@ -384,11 +418,13 @@
 							"x": 0.0,
 							"y": 0.0,
 							"font": "Verdana",
-							"size": 64,
-							"color": "0x000000",
+							"size": 28,
+							"color": "0xffffff",
 							"visible": true,
 							"selectable": false,
-							"queue": 2
+							"queue": 2,
+							"height":100,
+							"width":100
 						}
 					},
 					"addiction": null,
@@ -409,26 +445,30 @@
 						"name":
 						{
 							"text": "Strange person",
-							"x": 0.0,
-							"y": 0.0,
+							"x": 50.0,
+							"y": 50.0,
 							"font": "Verdana",
-							"size": 32,
-							"color": "0x000000",
+							"size": 30,
+							"color": "0xffffff",
 							"visible": true,
 							"selectable": false,
-							"queue": 1
+							"queue": 1,
+							"height":100,
+							"width":200
 						},
 						"hint":
 						{
 							"text": "Collect new quests",
-							"x": 0.0,
-							"y": 0.0,
+							"x": 50.0,
+							"y": 100.0,
 							"font": "Verdana",
-							"size": 28,
-							"color": "0x000000",
+							"size": 18,
+							"color": "0xffffff",
 							"visible": true,
 							"selectable": false,
-							"queue": 2
+							"queue": 2,
+							"height":50,
+							"width":100
 						}
 					},
 					"addiction": null,
@@ -449,26 +489,30 @@
 						"name":
 						{
 							"text": "Fontain",
-							"x": 100.0,
-							"y": 50.0,
+							"x": 80.0,
+							"y": 100.0,
 							"font": "Verdana",
-							"size": 48,
+							"size": 30,
 							"color": "0xffffff",
 							"visible": true,
 							"selectable": false,
-							"queue": 1
+							"queue": 1,
+							"height":50,
+							"width":150
 						},
 						"hint":
 						{
 							"text": "Learn more",
 							"x": 80.0,
-							"y": 100.0,
+							"y": 140.0,
 							"font": "Verdana",
-							"size": 32,
+							"size": 18,
 							"color": "0xffffff",
 							"visible": true,
 							"selectable": false,
-							"queue": 2
+							"queue": 2,
+							"height":50,
+							"width":150
 						}
 					},
 					"addiction": null,
@@ -485,8 +529,8 @@
 				"graphics":
 				{
 					"url": "assets/images/button_b.png",
-					"url2": "assets/images/button_b_push.png",
-					"url3": "assets/images/button_b_hover.png",
+					"url2": "assets/images/button_b_hover.png",
+					"url3": "assets/images/button_b_push.png",
 					"x": 75.0,
 					"y": 145.0,
 					"text": 
@@ -501,7 +545,9 @@
 							"color": "0x000000",
 							"visible": true,
 							"selectable": false,
-							"queue": 0
+							"queue": 0,
+							"height":100,
+							"width":100
 						}
 					},
 					"addiction": "startSceneButtonsWindow",
@@ -514,8 +560,8 @@
 				"graphics":
 				{
 					"url": "assets/images/button_b.png",
-					"url2": "assets/images/button_b_push.png",
-					"url3": "assets/images/button_b_hover.png",
+					"url2": "assets/images/button_b_hover.png",
+					"url3": "assets/images/button_b_push.png",
 					"x": 75.0,
 					"y": 25.0,
 					"text": 
@@ -530,7 +576,9 @@
 							"color": "0x000000",
 							"visible": true,
 							"selectable": false,
-							"queue": 0
+							"queue": 0,
+							"height":100,
+							"width":100
 						}
 					},
 					"addiction": "startSceneButtonsWindow",
@@ -543,8 +591,8 @@
 				"graphics":
 				{
 					"url": "assets/images/button_b.png",
-					"url2": "assets/images/button_b_push.png",
-					"url3": "assets/images/button_b_hover.png",
+					"url2": "assets/images/button_b_hover.png",
+					"url3": "assets/images/button_b_push.png",
 					"x": 75.0,
 					"y": 265.0,
 					"text": 
@@ -559,7 +607,9 @@
 							"color": "0x000000",
 							"visible": true,
 							"selectable": false,
-							"queue": 0
+							"queue": 0,
+							"height":100,
+							"width":100
 						}
 					},
 					"addiction": "startSceneButtonsWindow",
@@ -572,8 +622,8 @@
 				"graphics":
 				{
 					"url": "assets/images/button_b.png",
-					"url2": "assets/images/button_b_push.png",
-					"url3": "assets/images/button_b_hover.png",
+					"url2": "assets/images/button_b_hover.png",
+					"url3": "assets/images/button_b_push.png",
 					"x": 75.0,
 					"y": 385.0,
 					"text": {
@@ -588,7 +638,8 @@
 							"visible": true,
 							"selectable": false,
 							"queue": 0,
-							"margin": { "left": 0, "right": 0 }
+							"height":100,
+							"width":100
 						}
 					},
 					"addiction": "startSceneButtonsWindow",
@@ -601,8 +652,8 @@
 				"graphics":
 				{
 					"url": "assets/images/button_c.png",
-					"url2": "assets/images/button_c_push.png",
-					"url3": "assets/images/button_c_hover.png",
+					"url2": "assets/images/button_c_hover.png",
+					"url3": "assets/images/button_c_push.png",
 					"x": 70.0,
 					"y": 950.0,
 					"text" : null,
@@ -662,11 +713,13 @@
 							"x": 0.0,
 							"y": 0.0,
 							"font": "Verdana",
-							"size": 64,
-							"color": "0x000000",
+							"size": 32,
+							"color": "0xffffff",
 							"visible": true,
 							"selectable": false,
-							"queue": 1
+							"queue": 1,
+							"height":100,
+							"width":100
 						},
 						"quantityHeroes":
 						{
@@ -674,11 +727,13 @@
 							"x": 140.0,
 							"y": 0.0,
 							"font": "Verdana",
-							"size": 64,
-							"color": "0x000000",
+							"size": 32,
+							"color": "0xffffff",
 							"visible": true,
 							"selectable": false,
-							"queue": 2
+							"queue": 2,
+							"height":100,
+							"width":100
 						}
 					},
 					"addiction": "innWindow",
@@ -704,11 +759,13 @@
 							"x": 0.0,
 							"y": 0.0,
 							"font": "Verdana",
-							"size": 64,
+							"size": 22,
 							"color": "0x000000",
 							"visible": true,
 							"selectable": false,
-							"queue": 1
+							"queue": 1,
+							"height":50,
+							"width":50
 						},
 						"lvl":
 						{
@@ -716,11 +773,13 @@
 							"x": 0.0,
 							"y": 0.0,
 							"font": "Verdana",
-							"size": 64,
+							"size": 22,
 							"color": "0x000000",
 							"visible": true,
 							"selectable": false,
-							"queue": 2
+							"queue": 2,
+							"height":50,
+							"width":50
 						},
 						"armorPower":
 						{
@@ -728,11 +787,13 @@
 							"x": 0.0,
 							"y": 0.0,
 							"font": "Verdana",
-							"size": 64,
+							"size": 22,
 							"color": "0x000000",
 							"visible": true,
 							"selectable": false,
-							"queue": 3
+							"queue": 3,
+							"height":50,
+							"width":50
 						},
 						"attackPower":
 						{
@@ -740,11 +801,13 @@
 							"x": 0.0,
 							"y": 0.0,
 							"font": "Verdana",
-							"size": 64,
+							"size": 22,
 							"color": "0x000000",
 							"visible": true,
 							"selectable": false,
-							"queue": 4
+							"queue": 4,
+							"height":50,
+							"width":50
 						}
 					},
 					"addiction": "innWindowHeroWindow",

@@ -40,7 +40,7 @@ class Scene extends Sprite
 
 	public function update( time:Float ):Void
 	{
-		trace( "update scene id: " + this._id + ", delta: " + time + "." );
+		// update all Entities;
 	}
 
 	public function draw():Void //draw all scene

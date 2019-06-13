@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"Display",
+				"DisplayObjectContainer\tflash.display"
+			],
+			[
 				"getB",
 				"getBitmapData(...)\topenfl.display.BitmapData"
 			],
@@ -510,10 +514,6 @@
 			[
 				"hu",
 				"humanoidsClassDataArray\tproperty"
-			],
-			[
-				"huma",
-				"humanoidsClassData\tparameter"
 			]
 		]
 	},
@@ -532,7 +532,7 @@
 			"file": "Source/EventSystem.hx",
 			"settings":
 			{
-				"buffer_size": 6432,
+				"buffer_size": 6444,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -541,7 +541,7 @@
 			"file": "Source/GraphicsSystem.hx",
 			"settings":
 			{
-				"buffer_size": 7934,
+				"buffer_size": 8901,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -559,7 +559,7 @@
 			"file": "Source/data.json",
 			"settings":
 			{
-				"buffer_size": 13290,
+				"buffer_size": 16037,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -610,17 +610,18 @@
 	],
 	"file_history":
 	[
+		"/C/projects/DgrayDungeon/project.xml",
+		"/C/projects/DgrayDungeon/Source/Game.hx",
 		"/C/projects/DgrayDungeon/Source/Main.hx",
+		"/C/projects/DgrayDungeon/Source/Scene.hx",
 		"/C/projects/DgrayDungeon/Source/Graphics.hx",
 		"/C/projects/DieAnotherDay_v0.11/source/UserInterface.hx",
 		"/C/projects/DieAnotherDay/source/UserInterface.hx",
 		"/C/projects/DieAnotherDay/source/WelcomeScene.hx",
 		"/C/projects/DgrayDungeon/Source/EntitySystem.hx",
 		"/C/projects/DgrayDungeon/Source/TimeSystem.hx",
-		"/C/projects/DgrayDungeon/Source/Game.hx",
 		"/C/projects/DgrayDungeon/Source/EntityComponents/Component.hx",
 		"/C/projects/DgrayDungeon/DgrayDungeon.hxproj",
-		"/C/projects/DgrayDungeon/project.xml",
 		"/C/projects/HelloWorld/Source/Main.hx",
 		"/C/projects/brother-arms/source/GraphicsManager.js",
 		"/C/projects/brother-arms/source/Tile.js",
@@ -736,8 +737,7 @@
 		"/C/projects/webgl+three_js/Lets test it/js/services.js",
 		"/C/projects/webgl+three_js/Lets test it/js/framework/generators.js",
 		"/C/projects/webgl+three_js/Lets test it/js/graphics.js",
-		"/C/projects/webgl+three_js/Lets test it/js/classes.ts",
-		"/C/Users/Admin/Desktop/shoot-them-all-master/index.html"
+		"/C/projects/webgl+three_js/Lets test it/js/classes.ts"
 	],
 	"find":
 	{
@@ -773,7 +773,7 @@
 	"groups":
 	[
 		{
-			"selected": 2,
+			"selected": 1,
 			"sheets":
 			[
 				{
@@ -812,15 +812,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 6432,
+						"buffer_size": 6444,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								6190,
-								6190
+								2934,
+								2934
 							]
 						],
 						"settings":
@@ -830,10 +830,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 2940.0,
+						"translation.y": 1260.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 0,
 					"type": "text"
 				},
 				{
@@ -842,15 +842,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 7934,
+						"buffer_size": 8901,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3720,
-								3720
+								2543,
+								2543
 							]
 						],
 						"settings":
@@ -860,10 +860,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 2170.0,
+						"translation.y": 1250.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
@@ -890,7 +890,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1620.0,
+						"translation.y": 900.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 1,
@@ -902,15 +902,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 13290,
+						"buffer_size": 16037,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								719,
-								719
+								12309,
+								12309
 							]
 						],
 						"settings":
@@ -919,7 +919,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 11648.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 3,

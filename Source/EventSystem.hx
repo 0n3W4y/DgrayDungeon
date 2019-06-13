@@ -15,161 +15,149 @@ class EventSystem
 	private function _addStartSceneButton( name:String, object:Sprite ):Void
 	{
 		var arrayOfEvents:Array<Dynamic> = new Array();
-		switch( name )
-		{
-			case "startSceneStartButton": 
-			{
-				object.addEventListener( MouseEvent.CLICK, this._eventStartButtonClick );
-				arrayOfEvents.push( { "event": MouseEvent.CLICK, "eventFunction": this._eventStartButtonClick } );
-			}
-			case "startSceneContinueButton":
-			{
-				object.addEventListener( MouseEvent.CLICK, this._eventContinueButtonClick );
-				arrayOfEvents.push( { "event": MouseEvent.CLICK, "eventFunction": this._eventContinueButtonClick } );
-			}
-			case "startSceneOptionsButton":
-			{
-				 object.addEventListener( MouseEvent.CLICK, this._eventOptionButtonClick );
-				 arrayOfEvents.push( { "event": MouseEvent.CLICK, "eventFunction": this._eventOptionButtonClick } );
-			}
-			case "startSceneAuthorsButton":
-			{
-				object.addEventListener( MouseEvent.CLICK, this._eventAuthorsButtonClick );
-				arrayOfEvents.push( { "event": MouseEvent.CLICK, "eventFunction": this._eventAuthorsButtonClick } );
-			}
-			default: trace( "Error in EventSystem._addStartSceneButton, button with name " + name +", does not exist in case." );
-		}
 
-		object.addEventListener( MouseEvent.MOUSE_OVER, this._eventMouseOverButton );
-		arrayOfEvents.push( { "event": MouseEvent.MOUSE_OVER , "eventFunction": this._eventMouseOverButton} );
+		object.addEventListener( MouseEvent.CLICK, this._eventMouseClick );
+		arrayOfEvents.push( { "event": MouseEvent.CLICK, "eventFunction": this._eventMouseClick } );
 
-		object.addEventListener( MouseEvent.MOUSE_OUT, this._eventMouseOutButton );
-		arrayOfEvents.push( { "event": MouseEvent.MOUSE_OUT , "eventFunction": this._eventMouseOutButton} );
+		object.addEventListener( MouseEvent.MOUSE_OVER, this._eventMouseOver );
+		arrayOfEvents.push( { "event": MouseEvent.MOUSE_OVER , "eventFunction": this._eventMouseOver } );
 
-		object.addEventListener( MouseEvent.MOUSE_DOWN, this._eventMouseDownButton );
-		arrayOfEvents.push( { "event": MouseEvent.MOUSE_DOWN , "eventFunction": this._eventMouseDownButton} );
+		object.addEventListener( MouseEvent.MOUSE_OUT, this._eventMouseOut );
+		arrayOfEvents.push( { "event": MouseEvent.MOUSE_OUT , "eventFunction": this._eventMouseOut} );
 
-		object.addEventListener( MouseEvent.MOUSE_UP, this._eventMouseUpButton );
-		arrayOfEvents.push( { "event": MouseEvent.MOUSE_UP , "eventFunction": this._eventMouseUpButton} );
+		object.addEventListener( MouseEvent.MOUSE_DOWN, this._eventMouseDown );
+		arrayOfEvents.push( { "event": MouseEvent.MOUSE_DOWN , "eventFunction": this._eventMouseDown } );
+
+		object.addEventListener( MouseEvent.MOUSE_UP, this._eventMouseUp );
+		arrayOfEvents.push( { "event": MouseEvent.MOUSE_UP , "eventFunction": this._eventMouseUp} );
 
 		var listener = { "name": name, "events": arrayOfEvents };
-		this._eventListeners.push( listener );
-		
+		this._eventListeners.push( listener );	
 	}
 
-	private function _addBuildingsScene( name:String, object:Sprite ):Void
+	private function _addCitySceneBuildings( name:String, object:Sprite ):Void
 	{
 		var arrayOfEvents:Array<Dynamic> = new Array();
-		switch( name )
-		{
-			case "hospital", "tavern", "academy", "recruits", "storage", "graveyard", "blacksmith", "hermit", "merchant", "questman", "fontain":
-			{
-				object.addEventListener( MouseEvent.CLICK, this._eventMouseClickBuilding );
-				arrayOfEvents.push( { "event": MouseEvent.CLICK, "eventFunction": this._eventMouseClickBuilding } );
-			} 
-			default: trace( "Error in EventSystem._addBuildingsScene, bulding with name " + name + ", does not exist in case." );
-		}
 
-		object.addEventListener( MouseEvent.MOUSE_OVER, this._eventMouseOverBuilding );
-		arrayOfEvents.push( { "event": MouseEvent.MOUSE_OVER, "eventFunction": this._eventMouseOverBuilding } );
+		object.addEventListener( MouseEvent.CLICK, this._eventMouseClick );
+		arrayOfEvents.push( { "event": MouseEvent.CLICK, "eventFunction": this._eventMouseClick} );
 
-		object.addEventListener( MouseEvent.MOUSE_OUT, this._eventMouseOutBuilding );
-		arrayOfEvents.push( { "event": MouseEvent.MOUSE_OUT, "eventFunction": this._eventMouseOutBuilding } );
+		object.addEventListener( MouseEvent.MOUSE_OVER, this._eventMouseOver );
+		arrayOfEvents.push( { "event": MouseEvent.MOUSE_OVER, "eventFunction": this._eventMouseOver } );
+
+		object.addEventListener( MouseEvent.MOUSE_OUT, this._eventMouseOut );
+		arrayOfEvents.push( { "event": MouseEvent.MOUSE_OUT, "eventFunction": this._eventMouseOut } );
 
 		var listener = { "name": name, "events": arrayOfEvents };
 		this._eventListeners.push( listener );
 	}
 
-	private function _eventStartButtonClick( e:MouseEvent ):Void
+	private function _eventMouseClick( e:MouseEvent ):Void
 	{
-		//check if save file available, if yes - push new window to user, 2 button yes, no -> yes - start new game, no - load saved file;
-		var newScene = this._parent.getSystem( "scene" ).createScene( "cityScene" );
-		this._parent.getSystem( "scene" ).doActiveScene( newScene );
+		var obj:Sprite = e.target;
+		if( Std.is( obj, TextField ) )
+		{
+			var parent:Dynamic = obj.parent;
+			if( parent.get( "type" ) == "button" )
+			{
+				switch( parent.get( "name" ) )
+				{
+					case "startSceneAuthorsButton": trace( "Authors button pushed." );
+					case "startSceneOptionsButton": trace( "Options button pushed." );
+					case "startSceneStartButton": 
+					{
+						//check for load file
+						var newScene = this._parent.getSystem( "scene" ).createScene( "cityScene" );
+						this._parent.getSystem( "scene" ).doActiveScene( newScene );
+					}
+					case "startSceneContinueButton": trace( "Continue button pushed" );
+				}
+			}
+			
+		}		
 	}
 
-	private function _eventContinueButtonClick( e:MouseEvent ):Void
+	private function _eventMouseOver( e:MouseEvent ):Void
 	{
-		trace( " continue ... load saved game from file??? ");
+		var sprite:Sprite = e.target;
+		if( Std.is( sprite, TextField ) )
+		{
+			var parent:Dynamic = sprite.parent;
+			if( parent.get( "type" ) == "building" )
+			{
+				sprite.parent.getChildAt( 1 ).visible = true; // new image;
+				sprite.parent.getChildAt( 2 ).alpha = 1; // text
+				sprite.parent.getChildAt( 3 ).alpha = 1; // hint
+			}
+			else
+			{
+				parent.getChildAt( 1 ).visible = true;
+			}			
+		}
+		else
+		{
+			var obj:Dynamic = e.target;
+			if( obj.get( "type" ) == "building" )
+			{
+				sprite.getChildAt( 1 ).visible = true; // new image;
+				sprite.getChildAt( 2 ).alpha = 1; // text
+				sprite.getChildAt( 3 ).alpha = 1; // hint
+			}
+			else
+			{
+				sprite.getChildAt( 1 ).visible = true;
+			}		
+		}
 	}
 
-	private function _eventOptionButtonClick( e:MouseEvent ):Void
+	private function _eventMouseOut( e:MouseEvent ):Void
 	{
-		// create new options window with buttons, text e.t.c
-		trace( " Options window ");
+		var sprite:Sprite = e.target;		
+		if( Std.is( sprite, TextField ) )
+		{
+			var parent:Dynamic = sprite.parent;
+			if( parent.get( "type") == "building" )
+			{
+				sprite.parent.getChildAt( 1 ).visible = false;
+				sprite.parent.getChildAt( 2 ).alpha = 0;
+				sprite.parent.getChildAt( 3 ).alpha = 0;	
+			}
+			else
+			{
+				sprite.parent.getChildAt( 1 ).visible = false;
+				sprite.parent.getChildAt( 2 ).visible = false;
+			}	
+		}
+		else
+		{	
+			var obj:Dynamic = e.target;
+			if( obj.get( "type" ) == "building" )
+			{
+				sprite.getChildAt( 1 ).visible = false;
+				sprite.getChildAt( 2 ).alpha = 0;
+				sprite.getChildAt( 3 ).alpha = 0;
+			}
+			else
+			{
+				sprite.getChildAt( 1 ).visible = false;
+				sprite.getChildAt( 2 ).visible = false;
+			}
+			
+		}
 	}
 
-	private function _eventAuthorsButtonClick( e:MouseEvent ):Void
-	{
-		// create new owindow with autors
-		trace( " Authors window ");
-	}
-
-	private function _eventMouseOverButton( e:MouseEvent ):Void
+	private function _eventMouseDown( e:MouseEvent ):Void
 	{
 		var sprite:Sprite = e.target;
 		sprite.parent.getChildAt( 2 ).visible = true;
+
 	}
 
-	private function _eventMouseOutButton( e:MouseEvent ):Void
+	private function _eventMouseUp( e:MouseEvent ):Void
 	{
 		var sprite:Sprite = e.target;
 		sprite.parent.getChildAt( 2 ).visible = false;
 	}
-
-	private function _eventMouseDownButton( e:MouseEvent ):Void
-	{
-		var sprite:Sprite = e.target;
-		sprite.parent.getChildAt( 1 ).visible = true;
-	}
-
-	private function _eventMouseUpButton( e:MouseEvent ):Void
-	{
-		var sprite:Sprite = e.target;
-		sprite.parent.getChildAt( 1 ).visible = false;
-	}
-
-	private function _eventMouseOverBuilding( e:MouseEvent ):Void
-	{
-		var sprite:Sprite = e.target;
-		if( Std.is( sprite, TextField ) )
-		{
-			sprite.parent.getChildAt( 1 ).visible = true; // new image;
-			sprite.parent.getChildAt( 2 ).alpha = 1; // text
-			sprite.parent.getChildAt( 3 ).alpha = 1; // hint
-			
-		}
-		else
-		{
-			sprite.getChildAt( 1 ).visible = true; // new image;
-			sprite.getChildAt( 2 ).alpha = 1; // text
-			sprite.getChildAt( 3 ).alpha = 1; // hint
-		}		
-	}
-
-	private function _eventMouseOutBuilding( e:MouseEvent ):Void
-	{
-		var sprite:Sprite = e.target;
-		if( Std.is( sprite, TextField ) )
-		{
-			sprite.parent.getChildAt( 1 ).visible = false;
-			sprite.parent.getChildAt( 2 ).alpha = 0;
-			sprite.parent.getChildAt( 3 ).alpha = 0;			
-		}
-		else
-		{
-			sprite.getChildAt( 1 ).visible = false;
-			sprite.getChildAt( 2 ).alpha = 0;
-			sprite.getChildAt( 3 ).alpha = 0;
-		}			
-	}
-
-	private function _eventMouseClickBuilding( e:MouseEvent ):Void
-	{
-		var sprite:Sprite = e.target;
-		trace( "Click: " + sprite.name );
-	}
-
-
 
 	public function new( parent:Game ):Void
 	{
@@ -182,7 +170,7 @@ class EventSystem
 		switch( name )
 		{
 			case "startSceneStartButton", "startSceneContinueButton", "startSceneOptionsButton", "startSceneAuthorsButton" : this._addStartSceneButton( name, object );
-			case "hospital", "tavern", "academy", "recruits", "storage", "graveyard", "blacksmith", "hermit", "merchant", "questman", "fontain" : this._addBuildingsScene( name, object );
+			case "hospital", "tavern", "academy", "recruits", "storage", "graveyard", "blacksmith", "hermit", "merchant", "questman", "fontain" : this._addCitySceneBuildings( name, object );
 			default: trace( "Error in EventSystem.addEvent, type of event can't be: " + name + "." );
 		}
 		

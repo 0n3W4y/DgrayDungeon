@@ -37,6 +37,8 @@ class GraphicsSystem
         txt.selectable = text.selectable;
         txt.defaultTextFormat = textFormat;
         txt.text = text.text;
+        txt.width = text.width;
+        txt.height = text.height;
 
         txt.x = text.x;
         txt.y = text.y;	
@@ -109,7 +111,7 @@ class GraphicsSystem
 				textSprite.height = button.height;
 				textSprite.width = button.width;
 				this._parent.getSystem( "event" ).addEvent( button.get( "name" ), textSprite );
-				if( button.get( "name" ) == "startSceneContinueButton")
+				if( button.get( "name" ) == "startSceneContinueButton" )
 				{
 					var chekButton = this._checkButton( "startSceneContinueButton" );
 					if( chekButton )
@@ -154,8 +156,6 @@ class GraphicsSystem
 			for( i in 0...textArray.length )
 			{
 				var textSprite = this._createText( textArray[ i ].value );
-				textSprite.height = 100;
-				textSprite.width = 200;
 				textSprite.alpha = 0;
 				//this._parent.getSystem( "event" ).addEvent( object.get( "name" ), textSprite );
 				object.addChild( textSprite );

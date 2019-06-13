@@ -32,7 +32,7 @@ class ApplicationMain
 
 		ManifestResources.init(config);
 
-		app.meta["build"] = "219";
+		app.meta["build"] = "19";
 		app.meta["company"] = "Company Name";
 		app.meta["file"] = "DgrayDungeon";
 		app.meta["name"] = "DgrayDungeon";
@@ -65,7 +65,7 @@ class ApplicationMain
 
 		attributes.context = {
 			antialiasing: 0,
-			background: 16777215,
+			background: 0,
 			colorDepth: 32,
 			depth: true,
 			hardware: true,
@@ -99,7 +99,7 @@ class ApplicationMain
 		app.createWindow(attributes);
 		
 		#elseif !air
-		app.window.context.attributes.background = 16777215;
+		app.window.context.attributes.background = 0;
 		app.window.frameRate = 60;
 		#end
 

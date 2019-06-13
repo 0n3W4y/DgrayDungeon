@@ -2,6 +2,7 @@ package;
 
 import openfl.display.Sprite;
 import haxe.Timer;
+import openfl.system.System;
 
 class Game
 {
@@ -38,15 +39,14 @@ class Game
 	{
 		//TODO: mathemathic tick with minimum time, graphics tick like FPS says;
 		this._currentTime = Date.now().getTime();
-		var delta = this._currentTime - this._lastTime;
+		var delta:Float = this._currentTime - this._lastTime;
 
 		if ( delta >= this._delta ){
 			if( delta >= this._doubleDelta ){
 				delta = this._doubleDelta;
 			}
-
 			this._update( delta );
-			this._lastTime = this._currentTime;
+			this._lastTime = Date.now().getTime();			
 		}
 	}
 
@@ -54,8 +54,7 @@ class Game
 	{
 		if( !this._onPause )
 		{
-			trace( "tick" );
-			//this._sceneSystem.update( time );
+			this._sceneSystem.update( time );
 		}
 	}
 
@@ -84,6 +83,9 @@ class Game
 		this._userInterface = new UserInterface( this );
 		this._eventSystem = new EventSystem( this );
 		this._enterSprite = mainSprite;
+		this._fps = fps;
+		this._height = height;
+		this._width = width;
 
 		this._mainSprite = new Sprite();
 		mainSprite.addChild( this._mainSprite );
@@ -91,6 +93,7 @@ class Game
 
 		this._calculateDelta();
 		this._gameStart = Date.now().getTime();
+		this._lastTime = 0.0;
 		this._startGame();
 		
 		
@@ -103,7 +106,7 @@ class Game
 		this._mainLoop = new Timer( time );
 		this._mainLoop.run = function()
 		{
-			//this._update( 10.0 );
+			this._tick();
 		};
 	}
 
@@ -118,6 +121,11 @@ class Game
 			this._onPause = false;
 		else
 			this._onPause = true;
+	}
+
+	public function exit():Void
+	{
+		System.exit(0);
 	}
 
 	public function changeFpsTo( fps:Int ):Void
