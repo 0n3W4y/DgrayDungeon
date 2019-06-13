@@ -894,9 +894,9 @@ ApplicationMain.create = function(config) {
 	ManifestResources.init(config);
 	var _this = app.meta;
 	if(__map_reserved["build"] != null) {
-		_this.setReserved("build","17");
+		_this.setReserved("build","219");
 	} else {
-		_this.h["build"] = "17";
+		_this.h["build"] = "219";
 	}
 	var _this1 = app.meta;
 	if(__map_reserved["company"] != null) {
@@ -4374,77 +4374,79 @@ EReg.prototype = {
 	,__class__: EReg
 };
 var Entity = function(parent,id,type,name) {
-	this._components = [];
-	this._parent = parent;
-	this._id = id;
-	this._type = type;
+	this.__components = [];
+	openfl_display_Sprite.call(this);
+	this.__parent = parent;
+	this.__id = id;
+	this.__type = type;
 	this._name = name;
 };
 $hxClasses["Entity"] = Entity;
 Entity.__name__ = ["Entity"];
-Entity.prototype = {
-	_parent: null
-	,_id: null
-	,_type: null
+Entity.__super__ = openfl_display_Sprite;
+Entity.prototype = $extend(openfl_display_Sprite.prototype,{
+	__parent: null
+	,__id: null
+	,__type: null
 	,_name: null
-	,_components: null
+	,__components: null
 	,get: function(type) {
 		switch(type) {
 		case "id":
-			return this._id;
+			return this.__id;
 		case "name":
 			return this._name;
 		case "parent":
-			return this._parent;
+			return this.__parent;
 		case "type":
-			return this._type;
+			return this.__type;
 		default:
-			haxe_Log.trace("Error in Entity.get, type can't be: " + type + ".",{ fileName : "Entity.hx", lineNumber : 27, className : "Entity", methodName : "get"});
+			haxe_Log.trace("Error in Entity.get, type can't be: " + type + ".",{ fileName : "Entity.hx", lineNumber : 30, className : "Entity", methodName : "get"});
 		}
 		return null;
 	}
 	,getComponent: function(name) {
 		var _g1 = 0;
-		var _g = this._components.length;
+		var _g = this.__components.length;
 		while(_g1 < _g) {
 			var i = _g1++;
-			var component = this._components[i];
+			var component = this.__components[i];
 			if(component.getName() == name) {
 				return component;
 			}
 		}
-		haxe_Log.trace("Error in Entity.getComponent, no component with name: " + name + ".",{ fileName : "Entity.hx", lineNumber : 41, className : "Entity", methodName : "getComponent"});
+		haxe_Log.trace("Error in Entity.getComponent, no component with name: " + name + ".",{ fileName : "Entity.hx", lineNumber : 44, className : "Entity", methodName : "getComponent"});
 		return null;
 	}
 	,update: function(time) {
 		var _g1 = 0;
-		var _g = this._components.length;
+		var _g = this.__components.length;
 		while(_g1 < _g) {
 			var i = _g1++;
-			this._components[i].update(time);
+			this.__components[i].update(time);
 		}
 	}
 	,addComponent: function(component) {
 		this.removeComponent(component.getName());
 		component.setParent(this);
-		this._components.push(component);
+		this.__components.push(component);
 	}
 	,removeComponent: function(componentName) {
 		var _g1 = 0;
-		var _g = this._components.length;
+		var _g = this.__components.length;
 		while(_g1 < _g) {
 			var i = _g1++;
-			var newComponentName = this._components[i].getName();
+			var newComponentName = this.__components[i].getName();
 			if(componentName == newComponentName) {
-				var oldComponent = this._components[i];
-				this._components.splice(i,1);
+				var oldComponent = this.__components[i];
+				this.__components.splice(i,1);
 				return oldComponent;
 			}
 		}
 		return null;
 	}
 	,__class__: Entity
-};
+});
 var EntitySystem = function(parent,params) {
 	this._nextId = 0;
 	this._parent = parent;
@@ -4570,7 +4572,7 @@ EventSystem.prototype = {
 			arrayOfEvents.push({ "event" : "click", "eventFunction" : $bind(this,this._eventStartButtonClick)});
 			break;
 		default:
-			haxe_Log.trace("Error in EventSystem._addStartSceneButton, button with name " + name + ", does not exist in case.",{ fileName : "EventSystem.hx", lineNumber : 39, className : "EventSystem", methodName : "_addStartSceneButton"});
+			haxe_Log.trace("Error in EventSystem._addStartSceneButton, button with name " + name + ", does not exist in case.",{ fileName : "EventSystem.hx", lineNumber : 40, className : "EventSystem", methodName : "_addStartSceneButton"});
 		}
 		object.addEventListener("mouseOver",$bind(this,this._eventMouseOverButton));
 		arrayOfEvents.push({ "event" : "mouseOver", "eventFunction" : $bind(this,this._eventMouseOverButton)});
@@ -4584,28 +4586,34 @@ EventSystem.prototype = {
 		this._eventListeners.push(listener);
 	}
 	,_addBuildingsScene: function(name,object) {
+		var arrayOfEvents = [];
 		switch(name) {
-		case "academy":case "hospital":case "merchant":case "questman":case "recruits":case "storage":case "tavern":
+		case "academy":case "blacksmith":case "fontain":case "graveyard":case "hermit":case "hospital":case "merchant":case "questman":case "recruits":case "storage":case "tavern":
 			object.addEventListener("click",$bind(this,this._eventMouseClickBuilding));
+			arrayOfEvents.push({ "event" : "click", "eventFunction" : $bind(this,this._eventMouseClickBuilding)});
 			break;
 		default:
-			haxe_Log.trace("Error in EventSystem._addBuildingsScene, bulding with name " + name + ", does not exist in case.",{ fileName : "EventSystem.hx", lineNumber : 64, className : "EventSystem", methodName : "_addBuildingsScene"});
+			haxe_Log.trace("Error in EventSystem._addBuildingsScene, bulding with name " + name + ", does not exist in case.",{ fileName : "EventSystem.hx", lineNumber : 70, className : "EventSystem", methodName : "_addBuildingsScene"});
 		}
 		object.addEventListener("mouseOver",$bind(this,this._eventMouseOverBuilding));
+		arrayOfEvents.push({ "event" : "mouseOver", "eventFunction" : $bind(this,this._eventMouseOverBuilding)});
 		object.addEventListener("mouseOut",$bind(this,this._eventMouseOutBuilding));
+		arrayOfEvents.push({ "event" : "mouseOut", "eventFunction" : $bind(this,this._eventMouseOutBuilding)});
+		var listener = { "name" : name, "events" : arrayOfEvents};
+		this._eventListeners.push(listener);
 	}
 	,_eventStartButtonClick: function(e) {
 		var newScene = this._parent.getSystem("scene").createScene("cityScene");
 		this._parent.getSystem("scene").doActiveScene(newScene);
 	}
 	,_eventContinueButtonClick: function(e) {
-		haxe_Log.trace(" continue ... load saved game from file??? ",{ fileName : "EventSystem.hx", lineNumber : 80, className : "EventSystem", methodName : "_eventContinueButtonClick"});
+		haxe_Log.trace(" continue ... load saved game from file??? ",{ fileName : "EventSystem.hx", lineNumber : 92, className : "EventSystem", methodName : "_eventContinueButtonClick"});
 	}
 	,_eventOptionButtonClick: function(e) {
-		haxe_Log.trace(" Options window ",{ fileName : "EventSystem.hx", lineNumber : 86, className : "EventSystem", methodName : "_eventOptionButtonClick"});
+		haxe_Log.trace(" Options window ",{ fileName : "EventSystem.hx", lineNumber : 98, className : "EventSystem", methodName : "_eventOptionButtonClick"});
 	}
 	,_eventAuthorsButtonClick: function(e) {
-		haxe_Log.trace(" Authors window ",{ fileName : "EventSystem.hx", lineNumber : 92, className : "EventSystem", methodName : "_eventAuthorsButtonClick"});
+		haxe_Log.trace(" Authors window ",{ fileName : "EventSystem.hx", lineNumber : 104, className : "EventSystem", methodName : "_eventAuthorsButtonClick"});
 	}
 	,_eventMouseOverButton: function(e) {
 		var sprite = e.target;
@@ -4625,28 +4633,42 @@ EventSystem.prototype = {
 	}
 	,_eventMouseOverBuilding: function(e) {
 		var sprite = e.target;
-		sprite.getChildAt(1).set_visible(true);
-		sprite.getChildAt(2).set_visible(true);
+		if(js_Boot.__instanceof(sprite,openfl_text_TextField)) {
+			sprite.parent.getChildAt(1).set_visible(true);
+			sprite.parent.getChildAt(2).set_alpha(1);
+			sprite.parent.getChildAt(3).set_alpha(1);
+		} else {
+			sprite.getChildAt(1).set_visible(true);
+			sprite.getChildAt(2).set_alpha(1);
+			sprite.getChildAt(3).set_alpha(1);
+		}
 	}
 	,_eventMouseOutBuilding: function(e) {
 		var sprite = e.target;
-		sprite.getChildAt(1).set_visible(false);
-		sprite.getChildAt(2).set_visible(false);
+		if(js_Boot.__instanceof(sprite,openfl_text_TextField)) {
+			sprite.parent.getChildAt(1).set_visible(false);
+			sprite.parent.getChildAt(2).set_alpha(0);
+			sprite.parent.getChildAt(3).set_alpha(0);
+		} else {
+			sprite.getChildAt(1).set_visible(false);
+			sprite.getChildAt(2).set_alpha(0);
+			sprite.getChildAt(3).set_alpha(0);
+		}
 	}
 	,_eventMouseClickBuilding: function(e) {
 		var sprite = e.target;
-		haxe_Log.trace("Click: " + sprite.get_name(),{ fileName : "EventSystem.hx", lineNumber : 138, className : "EventSystem", methodName : "_eventMouseClickBuilding"});
+		haxe_Log.trace("Click: " + sprite.get_name(),{ fileName : "EventSystem.hx", lineNumber : 169, className : "EventSystem", methodName : "_eventMouseClickBuilding"});
 	}
 	,addEvent: function(name,object) {
 		switch(name) {
-		case "hospital":
+		case "academy":case "blacksmith":case "fontain":case "graveyard":case "hermit":case "hospital":case "merchant":case "questman":case "recruits":case "storage":case "tavern":
 			this._addBuildingsScene(name,object);
 			break;
 		case "startSceneAuthorsButton":case "startSceneContinueButton":case "startSceneOptionsButton":case "startSceneStartButton":
 			this._addStartSceneButton(name,object);
 			break;
 		default:
-			haxe_Log.trace("Error in EventSystem.addEvent, type of event can't be: " + name + ".",{ fileName : "EventSystem.hx", lineNumber : 155, className : "EventSystem", methodName : "addEvent"});
+			haxe_Log.trace("Error in EventSystem.addEvent, type of event can't be: " + name + ".",{ fileName : "EventSystem.hx", lineNumber : 186, className : "EventSystem", methodName : "addEvent"});
 		}
 	}
 	,removeEvent: function(name,object,eventName) {
@@ -4752,7 +4774,7 @@ Game.prototype = {
 		}
 	}
 	,_parseData: function() {
-		var conf = { entity : { button : { startSceneAuthorsButton : { graphics : { graphicsInstance : null, url : "assets/images/button_b.png", y : 385, x : 75, queue : 0, url3 : "assets/images/button_b_hover.png", url2 : "assets/images/button_b_push.png", text : { buttonText : { visible : true, y : 0, x : 0, text : "Authors", size : 64, color : "0x000000", selectable : false, font : "Verdana"}}, addiction : "startSceneButtonsWindow"}}, startSceneContinueButton : { graphics : { graphicsInstance : null, url : "assets/images/button_b.png", y : 25, x : 75, queue : 0, url3 : "assets/images/button_b_hover.png", url2 : "assets/images/button_b_push.png", text : { buttonText : { visible : true, y : 0, x : 0, text : "Continue", size : 64, color : "0x000000", selectable : false, font : "Verdana"}}, addiction : "startSceneButtonsWindow"}}, startSceneOptionsButton : { graphics : { graphicsInstance : null, url : "assets/images/button_b.png", y : 265, x : 75, queue : 0, url3 : "assets/images/button_b_hover.png", url2 : "assets/images/button_b_push.png", text : { buttonText : { visible : true, y : 0, x : 0, text : "Options", size : 64, color : "0x000000", selectable : false, font : "Verdana"}}, addiction : "startSceneButtonsWindow"}}, innWindowButtonHeroListUp : { graphics : { graphicsInstance : null, url : "assets/images/button_c.png", y : 0, x : 0, queue : 0, url3 : "assets/images/button_c_hover.png", url2 : "assets/images/button_c_push.png", text : null, addiction : "innWindow"}}, startSceneStartButton : { graphics : { graphicsInstance : null, url : "assets/images/button_b.png", y : 145, x : 75, queue : 1, url3 : "assets/images/button_b_hover.png", url2 : "assets/images/button_b_push.png", text : { buttonText : { visible : true, y : 0, x : 0, text : "New game", size : 58, color : "0x000000", selectable : false, font : "Verdana"}}, addiction : "startSceneButtonsWindow"}}, innWindowButtonHeroListDown : { graphics : { graphicsInstance : null, url : "assets/images/button_d.png", y : 0, x : 0, queue : 0, url3 : "assets/images/button_d_hover.png", url2 : "assets/images/button_d_push.png", text : null, addiction : "innWindow"}}}, building : { graveyard : { graphics : { graphicsInstance : null, url : "assets/images/graveyard.png", y : 0, x : 0, queue : 2, url3 : null, url2 : "assets/images/graveyard_m.png", text : { name : { visible : true, y : 0, x : 0, text : "Graveyard", size : 64, color : "0x000000", selectable : false, font : "Verdana"}, hint : { visible : true, y : 0, x : 0, text : "R.I.P.", size : 64, color : "0x000000", selectable : false, font : "Verdana"}}, addiction : null}}, questman : { graphics : { graphicsInstance : null, url : "assets/images/questman.png", y : 0, x : 0, queue : 10, url3 : null, url2 : "assets/images/questman_m.png", text : { name : { visible : true, y : 0, x : 0, text : "Strange person", size : 64, color : "0x000000", selectable : false, font : "Verdana"}, hint : { visible : true, y : 0, x : 0, text : "Collect new quests", size : 64, color : "0x000000", selectable : false, font : "Verdana"}}, addiction : null}}, blacksmith : { graphics : { graphicsInstance : null, url : "assets/images/blacksmith.png", y : 0, x : 0, queue : 8, url3 : null, url2 : "assets/images/blacksmith_m.png", text : { name : { visible : true, y : 0, x : 0, text : "BlackSmith", size : 64, color : "0x000000", selectable : false, font : "Verdana"}, hint : { visible : true, y : 0, x : 0, text : "Make a new weapon", size : 64, color : "0x000000", selectable : false, font : "Verdana"}}, addiction : null}}, merchant : { graphics : { graphicsInstance : null, url : "assets/images/merchant.png", y : 0, x : 0, queue : 6, url3 : null, url2 : "assets/images/merchant_m.png", text : { name : { visible : true, y : 0, x : 0, text : "Humble shop", size : 64, color : "0x000000", selectable : false, font : "Verdana"}, hint : { visible : true, y : 0, x : 0, text : "Buy new stuff", size : 64, color : "0x000000", selectable : false, font : "Verdana"}}, addiction : null}}, fontain : { graphics : { graphicsInstance : null, url : "assets/images/fontain.png", y : 0, x : 0, queue : 10, url3 : null, url2 : "assets/images/fontain_m.png", text : { name : { visible : true, y : 0, x : 0, text : "Fontain", size : 48, color : "0xffffff", selectable : false, font : "Verdana"}, hint : { visible : true, y : 30, x : 0, text : "Learn more", size : 32, color : "0xffffff", selectable : false, font : "Verdana"}}, addiction : null}}, tavern : { graphics : { graphicsInstance : null, url : "assets/images/tavern.png", y : 0, x : 0, queue : 4, url3 : null, url2 : "assets/images/tavern_m.png", text : { name : { visible : true, y : 0, x : 0, text : "Tavern", size : 64, color : "0x000000", selectable : false, font : "Verdana"}, hint : { visible : true, y : 0, x : 0, text : "Make a drink", size : 64, color : "0x000000", selectable : false, font : "Verdana"}}, addiction : null}}, hermit : { graphics : { graphicsInstance : null, url : "assets/images/hermit.png", y : 0, x : 0, queue : 9, url3 : null, url2 : "assets/images/hermit_m.png", text : { name : { visible : true, y : 0, x : 0, text : "Hermit", size : 64, color : "0x000000", selectable : false, font : "Verdana"}, hint : { visible : true, y : 0, x : 0, text : "Teach surviving", size : 64, color : "0x000000", selectable : false, font : "Verdana"}}, addiction : null}}, hospital : { graphics : { graphicsInstance : null, url : "assets/images/hospital.png", y : 0, x : 0, queue : 1, url3 : null, url2 : "assets/images/hospital_m.png", text : { name : { visible : true, y : 0, x : 0, text : "Hospital", size : 64, color : "0x000000", selectable : false, font : "Verdana"}, hint : { visible : true, y : 0, x : 0, text : "Make a health", size : 64, color : "0x000000", selectable : false, font : "Verdana"}}, addiction : null}}, inn : { }, academy : { graphics : { graphicsInstance : null, url : "assets/images/academy.png", y : 0, x : 0, queue : 3, url3 : null, url2 : "assets/images/academy_m.png", text : { name : { visible : true, y : 0, x : 0, text : "Skill academy", size : 64, color : "0x000000", selectable : false, font : "Verdana"}, hint : { visible : true, y : 0, x : 0, text : "Learn new skills", size : 64, color : "0x000000", selectable : false, font : "Verdana"}}, addiction : null}}, recruits : { graphics : { graphicsInstance : null, url : "assets/images/recruits.png", y : 0, x : 0, queue : 5, url3 : null, url2 : "assets/images/recruits_m.png", text : { name : { visible : true, y : 0, x : 0, text : "Recruit Coach", size : 64, color : "0x000000", selectable : false, font : "Verdana"}, hint : { visible : true, y : 0, x : 0, text : "Train a new recruits", size : 64, color : "0x000000", selectable : false, font : "Verdana"}}, addiction : null}}, storage : { graphics : { graphicsInstance : null, url : "assets/images/storage.png", y : 0, x : 0, queue : 7, url3 : null, url2 : "assets/images/storage_m.png", text : { name : { visible : true, y : 0, x : 0, text : "Storage", size : 64, color : "0x000000", selectable : false, font : "Verdana"}, hint : { visible : true, y : 0, x : 0, text : "Open your inventory", size : 64, color : "0x000000", selectable : false, font : "Verdana"}}, addiction : null}}}, window : { innWindowHeroWindow : { graphics : { graphicsInstance : null, url : "assets/images/innWindowHeroWindow.png", y : 0, x : 0, queue : 2, url3 : null, url2 : null, text : { armorPower : { y : 0, x : 0, text : "0"}, lvl : { y : 0, x : 0, text : "1"}, attackPower : { y : 0, x : 0, text : "0"}, nameWindow : { y : 0, x : 0, text : "Empty"}}, addiction : "innWindowHeroWindow"}}, startSceneButtonsWindow : { graphics : { graphicsInstance : null, url : "assets/images/startSceneButtonsWindow.png", y : 450, x : 1300, queue : 1, url3 : null, url2 : null, text : null, addiction : "startSceneButtonsWindow"}}, innWindow : { graphics : { graphicsInstance : null, url : "assets/images/innWindow.png", y : 0, x : 0, queue : 1, url3 : null, url2 : null, text : { quantityHeroes : { y : 0, x : 0, text : "0/0"}, nameWindow : { y : 0, x : 0, text : "Inn"}}, addiction : "innWindow"}}}}, scene : { chooseDungeonScene : { backgroundImageURL : "url"}, dungeonScene : { backgroundImageURL : "url"}, startScene : { backgroundImageURL : "assets/images/background_game.png", button : ["startSceneStartButton","startSceneOptionsButton","startSceneContinueButton","startSceneAuthorsButton"], window : ["startSceneButtonsWindow"]}, cityScene : { backgroundImageURL : "assets/images/citySceneBackround.png", button : ["innWindowButtonHeroListUp","innWindowButtonHeroListDown"], building : ["hospital","academy","hermit","merchant","storage","graveyard","recruits","questman","fontain","blacksmith","tavern"], window : ["innWindow","innWindowHeroWindow"]}}};
+		var conf = { entity : { button : { startSceneAuthorsButton : { graphics : { graphicsInstance : null, url : "assets/images/button_b.png", y : 385, x : 75, queue : 0, url3 : "assets/images/button_b_hover.png", url2 : "assets/images/button_b_push.png", text : { buttonText : { margin : { right : 0, left : 0}, visible : true, y : 0, x : 0, queue : 0, text : "Authors", size : 64, color : "0x000000", selectable : false, font : "Verdana"}}, addiction : "startSceneButtonsWindow"}}, startSceneContinueButton : { graphics : { graphicsInstance : null, url : "assets/images/button_b.png", y : 25, x : 75, queue : 0, url3 : "assets/images/button_b_hover.png", url2 : "assets/images/button_b_push.png", text : { buttonText : { visible : true, y : 0, x : 0, queue : 0, text : "Continue", size : 64, color : "0x000000", selectable : false, font : "Verdana"}}, addiction : "startSceneButtonsWindow"}}, startSceneOptionsButton : { graphics : { graphicsInstance : null, url : "assets/images/button_b.png", y : 265, x : 75, queue : 0, url3 : "assets/images/button_b_hover.png", url2 : "assets/images/button_b_push.png", text : { buttonText : { visible : true, y : 0, x : 0, queue : 0, text : "Options", size : 64, color : "0x000000", selectable : false, font : "Verdana"}}, addiction : "startSceneButtonsWindow"}}, innWindowButtonHeroListUp : { graphics : { graphicsInstance : null, url : "assets/images/button_c.png", y : 950, x : 70, queue : 0, url3 : "assets/images/button_c_hover.png", url2 : "assets/images/button_c_push.png", text : null, addiction : "innWindow"}}, startSceneStartButton : { graphics : { graphicsInstance : null, url : "assets/images/button_b.png", y : 145, x : 75, queue : 1, url3 : "assets/images/button_b_hover.png", url2 : "assets/images/button_b_push.png", text : { buttonText : { visible : true, y : 0, x : 0, queue : 0, text : "New", size : 58, color : "0x000000", selectable : false, font : "Verdana"}}, addiction : "startSceneButtonsWindow"}}, innWindowButtonHeroListDown : { graphics : { graphicsInstance : null, url : "assets/images/button_d.png", y : 950, x : 25, queue : 0, url3 : "assets/images/button_d_hover.png", url2 : "assets/images/button_d_push.png", text : null, addiction : "innWindow"}}}, building : { graveyard : { graphics : { graphicsInstance : null, url : "assets/images/graveyard.png", y : 400, x : 680, queue : 2, url3 : null, url2 : "assets/images/graveyard_m.png", text : { name : { visible : true, y : 0, x : 0, queue : 1, text : "Graveyard", size : 64, color : "0x000000", selectable : false, font : "Verdana"}, hint : { visible : true, y : 0, x : 0, queue : 2, text : "R.I.P.", size : 64, color : "0x000000", selectable : false, font : "Verdana"}}, addiction : null}}, questman : { graphics : { graphicsInstance : null, url : "assets/images/questman.png", y : 820, x : 550, queue : 10, url3 : null, url2 : "assets/images/questman_m.png", text : { name : { visible : true, y : 0, x : 0, queue : 1, text : "Strange person", size : 32, color : "0x000000", selectable : false, font : "Verdana"}, hint : { visible : true, y : 0, x : 0, queue : 2, text : "Collect new quests", size : 28, color : "0x000000", selectable : false, font : "Verdana"}}, addiction : null}}, blacksmith : { graphics : { graphicsInstance : null, url : "assets/images/blacksmith.png", y : 500, x : 100, queue : 8, url3 : null, url2 : "assets/images/blacksmith_m.png", text : { name : { visible : true, y : 0, x : 0, queue : 1, text : "BlackSmith", size : 64, color : "0x000000", selectable : false, font : "Verdana"}, hint : { visible : true, y : 0, x : 0, queue : 2, text : "Make a new weapon", size : 64, color : "0x000000", selectable : false, font : "Verdana"}}, addiction : null}}, merchant : { graphics : { graphicsInstance : null, url : "assets/images/merchant.png", y : 280, x : 300, queue : 6, url3 : null, url2 : "assets/images/merchant_m.png", text : { name : { visible : true, y : 0, x : 0, queue : 1, text : "Humble shop", size : 64, color : "0x000000", selectable : false, font : "Verdana"}, hint : { visible : true, y : 0, x : 0, queue : 2, text : "Buy new stuff", size : 64, color : "0x000000", selectable : false, font : "Verdana"}}, addiction : null}}, fontain : { graphics : { graphicsInstance : null, url : "assets/images/fontain.png", y : 690, x : 700, queue : 10, url3 : null, url2 : "assets/images/fontain_m.png", text : { name : { visible : true, y : 50, x : 100, queue : 1, text : "Fontain", size : 48, color : "0xffffff", selectable : false, font : "Verdana"}, hint : { visible : true, y : 100, x : 80, queue : 2, text : "Learn more", size : 32, color : "0xffffff", selectable : false, font : "Verdana"}}, addiction : null}}, tavern : { graphics : { graphicsInstance : null, url : "assets/images/tavern.png", y : 330, x : 990, queue : 4, url3 : null, url2 : "assets/images/tavern_m.png", text : { name : { visible : true, y : 0, x : 0, queue : 1, text : "Tavern", size : 64, color : "0x000000", selectable : false, font : "Verdana"}, hint : { visible : true, y : 0, x : 0, queue : 2, text : "Make a drink", size : 64, color : "0x000000", selectable : false, font : "Verdana"}}, addiction : null}}, hermit : { graphics : { graphicsInstance : null, url : "assets/images/hermit.png", y : 700, x : 0, queue : 9, url3 : null, url2 : "assets/images/hermit_m.png", text : { name : { visible : true, y : 0, x : 0, queue : 1, text : "Hermit", size : 64, color : "0x000000", selectable : false, font : "Verdana"}, hint : { visible : true, y : 0, x : 0, queue : 2, text : "Teach surviving", size : 64, color : "0x000000", selectable : false, font : "Verdana"}}, addiction : null}}, hospital : { graphics : { graphicsInstance : null, url : "assets/images/hospital.png", y : 80, x : 650, queue : 1, url3 : null, url2 : "assets/images/hospital_m.png", text : { name : { visible : true, y : 0, x : 0, queue : 1, text : "Hospital", size : 64, color : "0x000000", selectable : false, font : "Verdana"}, hint : { visible : true, y : 0, x : 0, queue : 2, text : "Make a health", size : 64, color : "0x000000", selectable : false, font : "Verdana"}}, addiction : null}}, inn : { }, academy : { graphics : { graphicsInstance : null, url : "assets/images/academy.png", y : 100, x : 450, queue : 3, url3 : null, url2 : "assets/images/academy_m.png", text : { name : { visible : true, y : 0, x : 0, queue : 1, text : "Skill academy", size : 64, color : "0x000000", selectable : false, font : "Verdana"}, hint : { visible : true, y : 0, x : 0, queue : 2, text : "Learn new skills", size : 64, color : "0x000000", selectable : false, font : "Verdana"}}, addiction : null}}, recruits : { graphics : { graphicsInstance : null, url : "assets/images/recruits.png", y : 500, x : 1100, queue : 5, url3 : null, url2 : "assets/images/recruits_m.png", text : { name : { visible : true, y : 0, x : 0, queue : 1, text : "Recruit Coach", size : 64, color : "0x000000", selectable : false, font : "Verdana"}, hint : { visible : true, y : 0, x : 0, queue : 2, text : "Train a new recruits", size : 64, color : "0x000000", selectable : false, font : "Verdana"}}, addiction : null}}, storage : { graphics : { graphicsInstance : null, url : "assets/images/storage.png", y : 575, x : 1300, queue : 7, url3 : null, url2 : "assets/images/storage_m.png", text : { name : { visible : true, y : 0, x : 0, queue : 1, text : "Storage", size : 64, color : "0x000000", selectable : false, font : "Verdana"}, hint : { visible : true, y : 0, x : 0, queue : 2, text : "Open your inventory", size : 64, color : "0x000000", selectable : false, font : "Verdana"}}, addiction : null}}}, window : { innWindowHeroWindow : { graphics : { graphicsInstance : null, url : "assets/images/innWindowHeroWindow.png", y : 0, x : 0, queue : 2, url3 : null, url2 : null, text : { armorPower : { visible : true, y : 0, x : 0, queue : 3, text : "0", size : 64, color : "0x000000", selectable : false, font : "Verdana"}, lvl : { visible : true, y : 0, x : 0, queue : 2, text : "1", size : 64, color : "0x000000", selectable : false, font : "Verdana"}, attackPower : { visible : true, y : 0, x : 0, queue : 4, text : "0", size : 64, color : "0x000000", selectable : false, font : "Verdana"}, nameWindow : { visible : true, y : 0, x : 0, queue : 1, text : "Empty", size : 64, color : "0x000000", selectable : false, font : "Verdana"}}, addiction : "innWindowHeroWindow"}}, startSceneButtonsWindow : { graphics : { graphicsInstance : null, url : "assets/images/startSceneButtonsWindow.png", y : 450, x : 1300, queue : 1, url3 : null, url2 : null, text : null, addiction : "startSceneButtonsWindow"}}, innWindow : { graphics : { graphicsInstance : null, url : "assets/images/innWindow.png", y : 40, x : 1500, queue : 1, url3 : null, url2 : null, text : { quantityHeroes : { visible : true, y : 0, x : 140, queue : 2, text : "0/0", size : 64, color : "0x000000", selectable : false, font : "Verdana"}, nameWindow : { visible : true, y : 0, x : 0, queue : 1, text : "Inn", size : 64, color : "0x000000", selectable : false, font : "Verdana"}}, addiction : "innWindow"}}}}, scene : { chooseDungeonScene : { backgroundImageURL : "url"}, dungeonScene : { backgroundImageURL : "url"}, startScene : { backgroundImageURL : "assets/images/background_game.png", button : ["startSceneStartButton","startSceneOptionsButton","startSceneContinueButton","startSceneAuthorsButton"], window : ["startSceneButtonsWindow"]}, cityScene : { backgroundImageURL : "assets/images/citySceneBackround.png", button : ["innWindowButtonHeroListUp","innWindowButtonHeroListDown"], building : ["hospital","academy","hermit","merchant","storage","graveyard","recruits","questman","fontain","blacksmith","tavern"], window : ["innWindow","innWindowHeroWindow"]}}};
 		return conf;
 	}
 	,_startGame: function() {
@@ -4894,10 +4916,13 @@ GraphicsSystem.prototype = {
 		textFormat.font = text.font;
 		textFormat.size = text.size;
 		textFormat.color = text.color;
+		textFormat.leftMargin = 0;
+		textFormat.align = 0;
 		txt.set_visible(text.visible);
 		txt.set_selectable(text.selectable);
 		txt.set_defaultTextFormat(textFormat);
 		txt.set_text(lime_text__$UTF8String_UTF8String_$Impl_$.fromDynamic(text.text));
+		txt.set_autoSize(0);
 		txt.set_x(text.x);
 		txt.set_y(text.y);
 		return txt;
@@ -4905,90 +4930,116 @@ GraphicsSystem.prototype = {
 	,_createWindow: function(window) {
 		var windowGraphics = window.getComponent("graphics");
 		var data = new openfl_display_Bitmap(openfl_utils_Assets.getBitmapData(windowGraphics.getUrl(0)));
-		var sprite = new openfl_display_Sprite();
-		sprite.addChild(data);
+		window.addChild(data);
 		var coords = windowGraphics.getCoordinates();
-		sprite.set_x(coords.x);
-		sprite.set_y(coords.y);
+		window.set_x(coords.x);
+		window.set_y(coords.y);
 		var text = windowGraphics.getText();
 		if(text != null) {
+			var textArray = [];
 			var _g = 0;
 			var _g1 = Reflect.fields(text);
 			while(_g < _g1.length) {
 				var key = _g1[_g];
 				++_g;
 				var value = Reflect.getProperty(text,key);
-				var textSprite = this._createText(value);
-				sprite.addChild(textSprite);
+				textArray.push({ "name" : key, "value" : value});
+			}
+			textArray.sort($bind(this,this._sortWithQueueText));
+			var _g11 = 0;
+			var _g2 = textArray.length;
+			while(_g11 < _g2) {
+				var i = _g11++;
+				var newText = textArray[i];
+				var textSprite = this._createText(newText.value);
+				window.addChild(textSprite);
 			}
 		}
-		return sprite;
+		return window;
 	}
 	,_createButton: function(button) {
-		var sprite = new openfl_display_Sprite();
 		var buttonGraphics = button.getComponent("graphics");
 		var data = new openfl_display_Bitmap(openfl_utils_Assets.getBitmapData(buttonGraphics.getUrl(0)));
 		var data2 = new openfl_display_Bitmap(openfl_utils_Assets.getBitmapData(buttonGraphics.getUrl(1)));
 		var data3 = new openfl_display_Bitmap(openfl_utils_Assets.getBitmapData(buttonGraphics.getUrl(2)));
 		data2.set_visible(false);
 		data3.set_visible(false);
-		sprite.addChild(data);
-		sprite.addChild(data2);
-		sprite.addChild(data3);
+		button.addChild(data);
+		button.addChild(data2);
+		button.addChild(data3);
 		var coords = buttonGraphics.getCoordinates();
-		sprite.set_x(coords.x);
-		sprite.set_y(coords.y);
+		button.set_x(coords.x);
+		button.set_y(coords.y);
 		var text = buttonGraphics.getText();
 		if(text != null) {
+			var textArray = [];
 			var _g = 0;
 			var _g1 = Reflect.fields(text);
 			while(_g < _g1.length) {
 				var key = _g1[_g];
 				++_g;
 				var value = Reflect.getProperty(text,key);
-				var textSprite = this._createText(value);
-				textSprite.set_height(sprite.get_height());
-				textSprite.set_width(sprite.get_width());
+				textArray.push({ "name" : key, "value" : value});
+			}
+			textArray.sort($bind(this,this._sortWithQueueText));
+			var _g11 = 0;
+			var _g2 = textArray.length;
+			while(_g11 < _g2) {
+				var i = _g11++;
+				var textSprite = this._createText(textArray[i].value);
+				textSprite.set_height(button.get_height());
+				textSprite.set_width(button.get_width());
 				this._parent.getSystem("event").addEvent(button.get("name"),textSprite);
 				if(button.get("name") == "startSceneContinueButton") {
 					var chekButton = this._checkButton("startSceneContinueButton");
 					if(chekButton) {
 						this._parent.getSystem("event").removeEvent(button.get("name"),textSprite,null);
-						sprite.set_alpha(0.5);
+						button.set_alpha(0.5);
 					}
 				}
-				sprite.addChild(textSprite);
+				button.addChild(textSprite);
 			}
 		}
-		return sprite;
+		return button;
 	}
 	,_createBuilding: function(object) {
-		var sprite = new openfl_display_Sprite();
 		var objectGraphics = object.getComponent("graphics");
 		var data = new openfl_display_Bitmap(openfl_utils_Assets.getBitmapData(objectGraphics.getUrl(0)));
 		var data2 = new openfl_display_Bitmap(openfl_utils_Assets.getBitmapData(objectGraphics.getUrl(1)));
-		sprite.addChild(data);
+		object.addChild(data);
 		data2.set_visible(false);
-		sprite.addChild(data2);
+		object.addChild(data2);
 		var coords = objectGraphics.getCoordinates();
-		sprite.set_x(coords.x);
-		sprite.set_y(coords.y);
+		object.set_x(coords.x);
+		object.set_y(coords.y);
 		var text = objectGraphics.getText();
 		if(text != null) {
+			var textSp = new openfl_display_Sprite();
+			var textArray = [];
 			var _g = 0;
 			var _g1 = Reflect.fields(text);
 			while(_g < _g1.length) {
 				var key = _g1[_g];
 				++_g;
 				var value = Reflect.getProperty(text,key);
-				var textSprite = this._createText(value);
-				textSprite.set_height(sprite.get_height());
-				textSprite.set_width(sprite.get_width());
-				textSprite.set_visible(false);
-				sprite.addChild(textSprite);
+				textArray.push({ "name" : key, "value" : value});
 			}
+			textArray.sort($bind(this,this._sortWithQueueText));
+			var _g11 = 0;
+			var _g2 = textArray.length;
+			while(_g11 < _g2) {
+				var i = _g11++;
+				var textSprite = this._createText(textArray[i].value);
+				textSprite.set_height(100);
+				textSprite.set_width(200);
+				textSprite.set_alpha(0);
+				object.addChild(textSprite);
+			}
+			textSp.set_alpha(0);
+			this._parent.getSystem("event").addEvent(object.get("name"),object);
+			object.addChild(textSp);
 		}
-		return sprite;
+		return object;
 	}
 	,_drawStartScene: function(scene) {
 		var backgroundURL = scene.getBackgroundImageURL();
@@ -5015,16 +5066,7 @@ GraphicsSystem.prototype = {
 		scene.addChild(bitmap);
 		var sceneObjectEntities = scene.getEntities("object");
 		var buildingsList = sceneObjectEntities.buildings;
-		var sortFunction = function(a,b) {
-			if(a.getComponent("graphics").getQueue() > b.getComponent("graphics").getQueue()) {
-				return 1;
-			} else if(a.getComponent("graphics").getQueue() < b.getComponent("graphics").getQueue()) {
-				return -1;
-			} else {
-				return 0;
-			}
-		};
-		buildingsList.sort(sortFunction);
+		buildingsList.sort($bind(this,this._sortWithQueueEntity));
 		var _g1 = 0;
 		var _g = buildingsList.length;
 		while(_g1 < _g) {
@@ -5039,6 +5081,24 @@ GraphicsSystem.prototype = {
 	}
 	,_undrawCityScene: function(scene) {
 	}
+	,_sortWithQueueEntity: function(a,b) {
+		if(a.getComponent("graphics").getQueue() > b.getComponent("graphics").getQueue()) {
+			return 1;
+		} else if(a.getComponent("graphics").getQueue() < b.getComponent("graphics").getQueue()) {
+			return -1;
+		} else {
+			return 0;
+		}
+	}
+	,_sortWithQueueText: function(a,b) {
+		if(a.queue > b.queue) {
+			return 1;
+		} else if(a.queue < b.queue) {
+			return -1;
+		} else {
+			return 0;
+		}
+	}
 	,drawScene: function(scene) {
 		var sceneName = scene.getName();
 		switch(sceneName) {
@@ -5049,7 +5109,7 @@ GraphicsSystem.prototype = {
 			this._drawStartScene(scene);
 			break;
 		default:
-			haxe_Log.trace("Can't draw scene with name: " + sceneName + ".",{ fileName : "GraphicsSystem.hx", lineNumber : 225, className : "GraphicsSystem", methodName : "drawScene"});
+			haxe_Log.trace("Can't draw scene with name: " + sceneName + ".",{ fileName : "GraphicsSystem.hx", lineNumber : 258, className : "GraphicsSystem", methodName : "drawScene"});
 		}
 	}
 	,undrawScene: function(scene) {
@@ -5062,11 +5122,10 @@ GraphicsSystem.prototype = {
 			this._undrawStartScene(scene);
 			break;
 		default:
-			haxe_Log.trace("Can't sraw scene with name: " + sceneName + ".",{ fileName : "GraphicsSystem.hx", lineNumber : 236, className : "GraphicsSystem", methodName : "undrawScene"});
+			haxe_Log.trace("Can't sraw scene with name: " + sceneName + ".",{ fileName : "GraphicsSystem.hx", lineNumber : 269, className : "GraphicsSystem", methodName : "undrawScene"});
 		}
 	}
 	,createUiObject: function(name,list) {
-		var sprite = new openfl_display_Sprite();
 		var windows = list.windows;
 		var buttons = list.buttons;
 		var _g1 = 0;
@@ -5088,17 +5147,16 @@ GraphicsSystem.prototype = {
 						spriteWindow.addChild(spriteButton);
 					}
 				}
-				sprite.addChild(spriteWindow);
+				this._parent.getSystem("ui").addUiObject({ "name" : name, "sprite" : spriteWindow});
 			}
 		}
-		this._parent.getSystem("ui").addUiObject({ "name" : name, "sprite" : sprite});
 	}
 	,createObject: function(object) {
 		var type = object.get("type");
 		if(type == "building") {
 			return this._createBuilding(object);
 		} else {
-			haxe_Log.trace("Error GraphicsSystem.createObject, object type: " + type + ", can't be found.",{ fileName : "GraphicsSystem.hx", lineNumber : 274, className : "GraphicsSystem", methodName : "createObject"});
+			haxe_Log.trace("Error GraphicsSystem.createObject, object type: " + type + ", can't be found.",{ fileName : "GraphicsSystem.hx", lineNumber : 305, className : "GraphicsSystem", methodName : "createObject"});
 		}
 		return null;
 	}
@@ -5227,7 +5285,7 @@ ManifestResources.init = function(config) {
 	var data;
 	var manifest;
 	var library;
-	data = "{\"name\":null,\"assets\":\"aoy4:pathy29:assets%2Fimages%2Facademy.pngy4:sizei409445y4:typey5:IMAGEy2:idR1y7:preloadtgoR0y31:assets%2Fimages%2Facademy_m.pngR2i413561R3R4R5R7R6tgoR0y37:assets%2Fimages%2Fbackground_game.pngR2i1897994R3R4R5R8R6tgoR0y32:assets%2Fimages%2Fblacksmith.pngR2i339084R3R4R5R9R6tgoR0y34:assets%2Fimages%2Fblacksmith_m.pngR2i339084R3R4R5R10R6tgoR0y30:assets%2Fimages%2Fbutton_b.pngR2i1941R3R4R5R11R6tgoR0y36:assets%2Fimages%2Fbutton_b_hover.pngR2i1948R3R4R5R12R6tgoR0y35:assets%2Fimages%2Fbutton_b_push.pngR2i2723R3R4R5R13R6tgoR0y30:assets%2Fimages%2Fbutton_c.pngR2i4148R3R4R5R14R6tgoR0y36:assets%2Fimages%2Fbutton_c_hover.pngR2i4148R3R4R5R15R6tgoR0y35:assets%2Fimages%2Fbutton_c_push.pngR2i4148R3R4R5R16R6tgoR0y30:assets%2Fimages%2Fbutton_d.pngR2i4829R3R4R5R17R6tgoR0y36:assets%2Fimages%2Fbutton_d_hover.pngR2i4829R3R4R5R18R6tgoR0y35:assets%2Fimages%2Fbutton_d_push.pngR2i4829R3R4R5R19R6tgoR0y40:assets%2Fimages%2FcitySceneBackround.pngR2i2043474R3R4R5R20R6tgoR0y29:assets%2Fimages%2Ffontain.pngR2i185396R3R4R5R21R6tgoR0y31:assets%2Fimages%2Ffontain_m.pngR2i194684R3R4R5R22R6tgoR0y31:assets%2Fimages%2Fgraveyard.pngR2i172698R3R4R5R23R6tgoR0y33:assets%2Fimages%2Fgraveyard_m.pngR2i176786R3R4R5R24R6tgoR0y28:assets%2Fimages%2Fhermit.pngR2i198769R3R4R5R25R6tgoR0y30:assets%2Fimages%2Fhermit_m.pngR2i207348R3R4R5R26R6tgoR0y30:assets%2Fimages%2Fhospital.pngR2i306480R3R4R5R27R6tgoR0y32:assets%2Fimages%2Fhospital_m.pngR2i321808R3R4R5R28R6tgoR0y31:assets%2Fimages%2FinnWindow.pngR2i11509R3R4R5R29R6tgoR0y41:assets%2Fimages%2FinnWindowHeroWindow.pngR2i6013R3R4R5R30R6tgoR0y30:assets%2Fimages%2Fmerchant.pngR2i396984R3R4R5R31R6tgoR0y32:assets%2Fimages%2Fmerchant_m.pngR2i399153R3R4R5R32R6tgoR0y30:assets%2Fimages%2Fquestman.pngR2i49162R3R4R5R33R6tgoR0y32:assets%2Fimages%2Fquestman_m.pngR2i43455R3R4R5R34R6tgoR0y30:assets%2Fimages%2Frecruits.pngR2i339084R3R4R5R35R6tgoR0y32:assets%2Fimages%2Frecruits_m.pngR2i339084R3R4R5R36R6tgoR0y45:assets%2Fimages%2FstartSceneButtonsWindow.pngR2i7836R3R4R5R37R6tgoR0y29:assets%2Fimages%2Fstorage.pngR2i358167R3R4R5R38R6tgoR0y31:assets%2Fimages%2Fstorage_m.pngR2i371206R3R4R5R39R6tgoR0y28:assets%2Fimages%2Ftavern.pngR2i505790R3R4R5R40R6tgoR0y30:assets%2Fimages%2Ftavern_m.pngR2i505790R3R4R5R41R6tgh\",\"rootPath\":null,\"version\":2,\"libraryArgs\":[],\"libraryType\":null}";
+	data = "{\"name\":null,\"assets\":\"aoy4:pathy29:assets%2Fimages%2Facademy.pngy4:sizei409445y4:typey5:IMAGEy2:idR1y7:preloadtgoR0y31:assets%2Fimages%2Facademy_m.pngR2i413561R3R4R5R7R6tgoR0y37:assets%2Fimages%2Fbackground_game.pngR2i1897994R3R4R5R8R6tgoR0y32:assets%2Fimages%2Fblacksmith.pngR2i234186R3R4R5R9R6tgoR0y34:assets%2Fimages%2Fblacksmith_m.pngR2i238097R3R4R5R10R6tgoR0y30:assets%2Fimages%2Fbutton_b.pngR2i1941R3R4R5R11R6tgoR0y36:assets%2Fimages%2Fbutton_b_hover.pngR2i1948R3R4R5R12R6tgoR0y35:assets%2Fimages%2Fbutton_b_push.pngR2i2723R3R4R5R13R6tgoR0y30:assets%2Fimages%2Fbutton_c.pngR2i4148R3R4R5R14R6tgoR0y36:assets%2Fimages%2Fbutton_c_hover.pngR2i4148R3R4R5R15R6tgoR0y35:assets%2Fimages%2Fbutton_c_push.pngR2i4148R3R4R5R16R6tgoR0y30:assets%2Fimages%2Fbutton_d.pngR2i4829R3R4R5R17R6tgoR0y36:assets%2Fimages%2Fbutton_d_hover.pngR2i4829R3R4R5R18R6tgoR0y35:assets%2Fimages%2Fbutton_d_push.pngR2i4829R3R4R5R19R6tgoR0y40:assets%2Fimages%2FcitySceneBackround.pngR2i2043474R3R4R5R20R6tgoR0y29:assets%2Fimages%2Ffontain.pngR2i185396R3R4R5R21R6tgoR0y31:assets%2Fimages%2Ffontain_m.pngR2i194684R3R4R5R22R6tgoR0y31:assets%2Fimages%2Fgraveyard.pngR2i172698R3R4R5R23R6tgoR0y33:assets%2Fimages%2Fgraveyard_m.pngR2i176786R3R4R5R24R6tgoR0y28:assets%2Fimages%2Fhermit.pngR2i198769R3R4R5R25R6tgoR0y30:assets%2Fimages%2Fhermit_m.pngR2i207348R3R4R5R26R6tgoR0y30:assets%2Fimages%2Fhospital.pngR2i306480R3R4R5R27R6tgoR0y32:assets%2Fimages%2Fhospital_m.pngR2i321808R3R4R5R28R6tgoR0y31:assets%2Fimages%2FinnWindow.pngR2i11509R3R4R5R29R6tgoR0y41:assets%2Fimages%2FinnWindowHeroWindow.pngR2i6013R3R4R5R30R6tgoR0y30:assets%2Fimages%2Fmerchant.pngR2i396984R3R4R5R31R6tgoR0y32:assets%2Fimages%2Fmerchant_m.pngR2i399153R3R4R5R32R6tgoR0y30:assets%2Fimages%2Fquestman.pngR2i49162R3R4R5R33R6tgoR0y32:assets%2Fimages%2Fquestman_m.pngR2i43455R3R4R5R34R6tgoR0y30:assets%2Fimages%2Frecruits.pngR2i339084R3R4R5R35R6tgoR0y32:assets%2Fimages%2Frecruits_m.pngR2i339084R3R4R5R36R6tgoR0y45:assets%2Fimages%2FstartSceneButtonsWindow.pngR2i7836R3R4R5R37R6tgoR0y29:assets%2Fimages%2Fstorage.pngR2i358167R3R4R5R38R6tgoR0y31:assets%2Fimages%2Fstorage_m.pngR2i371206R3R4R5R39R6tgoR0y28:assets%2Fimages%2Ftavern.pngR2i505790R3R4R5R40R6tgoR0y30:assets%2Fimages%2Ftavern_m.pngR2i505790R3R4R5R41R6tgh\",\"rootPath\":null,\"version\":2,\"libraryArgs\":[],\"libraryType\":null}";
 	manifest = lime_utils_AssetManifest.parse(data,ManifestResources.rootPath);
 	library = lime_utils_AssetLibrary.fromManifest(manifest);
 	lime_utils_Assets.registerLibrary("default",library);
@@ -26463,7 +26521,7 @@ var lime_utils_AssetCache = function() {
 	this.audio = new haxe_ds_StringMap();
 	this.font = new haxe_ds_StringMap();
 	this.image = new haxe_ds_StringMap();
-	this.version = 343046;
+	this.version = 651802;
 };
 $hxClasses["lime.utils.AssetCache"] = lime_utils_AssetCache;
 lime_utils_AssetCache.__name__ = ["lime","utils","AssetCache"];

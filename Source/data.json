@@ -38,8 +38,8 @@
 					"url": "assets/images/hospital.png",
 					"url2": "assets/images/hospital_m.png",
 					"url3": null,
-					"x": 0.0,
-					"y": 0.0,
+					"x": 650.0,
+					"y": 80.0,
 					"text": 
 					{
 						"name":
@@ -51,7 +51,8 @@
 							"size": 64,
 							"color": "0x000000",
 							"visible": true,
-							"selectable": false
+							"selectable": false,
+							"queue": 1
 						},
 						"hint":
 						{
@@ -62,7 +63,8 @@
 							"size": 64,
 							"color": "0x000000",
 							"visible": true,
-							"selectable": false
+							"selectable": false,
+							"queue": 2
 						}
 					},
 					"addiction": null,
@@ -77,8 +79,8 @@
 					"url": "assets/images/tavern.png",
 					"url2": "assets/images/tavern_m.png",
 					"url3": null,
-					"x": 0.0,
-					"y": 0.0,
+					"x": 990.0,
+					"y": 330.0,
 					"text": {
 						"name":
 						{
@@ -89,7 +91,8 @@
 							"size": 64,
 							"color": "0x000000",
 							"visible": true,
-							"selectable": false
+							"selectable": false,
+							"queue": 1
 						},
 						"hint":
 						{
@@ -100,7 +103,8 @@
 							"size": 64,
 							"color": "0x000000",
 							"visible": true,
-							"selectable": false
+							"selectable": false,
+							"queue": 2
 						}
 					},
 					"addiction": null,
@@ -119,8 +123,8 @@
 					"url": "assets/images/storage.png",
 					"url2": "assets/images/storage_m.png",
 					"url3": null,
-					"x": 0.0,
-					"y": 0.0,
+					"x": 1300.0,
+					"y": 575.0,
 					"text": {
 						"name":
 						{
@@ -131,7 +135,8 @@
 							"size": 64,
 							"color": "0x000000",
 							"visible": true,
-							"selectable": false
+							"selectable": false,
+							"queue": 1
 						},
 						"hint":
 						{
@@ -142,7 +147,8 @@
 							"size": 64,
 							"color": "0x000000",
 							"visible": true,
-							"selectable": false
+							"selectable": false,
+							"queue": 2
 						}
 					},
 					"addiction": null,
@@ -157,8 +163,8 @@
 					"url": "assets/images/recruits.png",
 					"url2": "assets/images/recruits_m.png",
 					"url3": null,
-					"x": 0.0,
-					"y": 0.0,
+					"x": 1100.0,
+					"y": 500.0,
 					"text": {
 						"name":
 						{
@@ -169,7 +175,8 @@
 							"size": 64,
 							"color": "0x000000",
 							"visible": true,
-							"selectable": false
+							"selectable": false,
+							"queue": 1
 						},
 						"hint":
 						{
@@ -180,7 +187,8 @@
 							"size": 64,
 							"color": "0x000000",
 							"visible": true,
-							"selectable": false
+							"selectable": false,
+							"queue": 2
 						}
 					},
 					"addiction": null,
@@ -195,8 +203,8 @@
 					"url": "assets/images/blacksmith.png",
 					"url2": "assets/images/blacksmith_m.png",
 					"url3": null,
-					"x": 0.0,
-					"y": 0.0,
+					"x": 100.0,
+					"y": 500.0,
 					"text": {
 						"name":
 						{
@@ -207,7 +215,8 @@
 							"size": 64,
 							"color": "0x000000",
 							"visible": true,
-							"selectable": false
+							"selectable": false,
+							"queue": 1
 						},
 						"hint":
 						{
@@ -218,7 +227,8 @@
 							"size": 64,
 							"color": "0x000000",
 							"visible": true,
-							"selectable": false
+							"selectable": false,
+							"queue": 2
 						}
 					},
 					"addiction": null,
@@ -233,8 +243,8 @@
 					"url": "assets/images/merchant.png",
 					"url2": "assets/images/merchant_m.png",
 					"url3": null,
-					"x": 0.0,
-					"y": 0.0,
+					"x": 300.0,
+					"y": 280.0,
 					"text": {
 						"name":
 						{
@@ -245,7 +255,8 @@
 							"size": 64,
 							"color": "0x000000",
 							"visible": true,
-							"selectable": false
+							"selectable": false,
+							"queue": 1
 						},
 						"hint":
 						{
@@ -256,7 +267,8 @@
 							"size": 64,
 							"color": "0x000000",
 							"visible": true,
-							"selectable": false
+							"selectable": false,
+							"queue": 2
 						}
 					},
 					"addiction": null,
@@ -271,8 +283,8 @@
 					"url": "assets/images/graveyard.png",
 					"url2": "assets/images/graveyard_m.png",
 					"url3": null,
-					"x": 0.0,
-					"y": 0.0,
+					"x": 680.0,
+					"y": 400.0,
 					"text": {
 						"name":
 						{
@@ -283,7 +295,8 @@
 							"size": 64,
 							"color": "0x000000",
 							"visible": true,
-							"selectable": false
+							"selectable": false,
+							"queue": 1
 						},
 						"hint":
 						{
@@ -294,7 +307,8 @@
 							"size": 64,
 							"color": "0x000000",
 							"visible": true,
-							"selectable": false
+							"selectable": false,
+							"queue": 2
 						}
 					},
 					"addiction": null,
@@ -309,8 +323,8 @@
 					"url": "assets/images/academy.png",
 					"url2": "assets/images/academy_m.png",
 					"url3": null,
-					"x": 0.0,
-					"y": 0.0,
+					"x": 450.0,
+					"y": 100.0,
 					"text": {
 						"name":
 						{
@@ -321,7 +335,8 @@
 							"size": 64,
 							"color": "0x000000",
 							"visible": true,
-							"selectable": false
+							"selectable": false,
+							"queue": 1
 						},
 						"hint":
 						{
@@ -332,7 +347,8 @@
 							"size": 64,
 							"color": "0x000000",
 							"visible": true,
-							"selectable": false
+							"selectable": false,
+							"queue": 2
 						}
 					},
 					"addiction": null,
@@ -348,7 +364,7 @@
 					"url2": "assets/images/hermit_m.png",
 					"url3": null,
 					"x": 0.0,
-					"y": 0.0,
+					"y": 700.0,
 					"text": {
 						"name":
 						{
@@ -359,7 +375,8 @@
 							"size": 64,
 							"color": "0x000000",
 							"visible": true,
-							"selectable": false
+							"selectable": false,
+							"queue": 1
 						},
 						"hint":
 						{
@@ -370,7 +387,8 @@
 							"size": 64,
 							"color": "0x000000",
 							"visible": true,
-							"selectable": false
+							"selectable": false,
+							"queue": 2
 						}
 					},
 					"addiction": null,
@@ -385,8 +403,8 @@
 					"url": "assets/images/questman.png",
 					"url2": "assets/images/questman_m.png",
 					"url3": null,
-					"x": 0.0,
-					"y": 0.0,
+					"x": 550.0,
+					"y": 820.0,
 					"text": {
 						"name":
 						{
@@ -394,10 +412,11 @@
 							"x": 0.0,
 							"y": 0.0,
 							"font": "Verdana",
-							"size": 64,
+							"size": 32,
 							"color": "0x000000",
 							"visible": true,
-							"selectable": false
+							"selectable": false,
+							"queue": 1
 						},
 						"hint":
 						{
@@ -405,10 +424,11 @@
 							"x": 0.0,
 							"y": 0.0,
 							"font": "Verdana",
-							"size": 64,
+							"size": 28,
 							"color": "0x000000",
 							"visible": true,
-							"selectable": false
+							"selectable": false,
+							"queue": 2
 						}
 					},
 					"addiction": null,
@@ -423,30 +443,32 @@
 					"url": "assets/images/fontain.png",
 					"url2": "assets/images/fontain_m.png",
 					"url3": null,
-					"x": 0.0,
-					"y": 0.0,
+					"x": 700.0,
+					"y": 690.0,
 					"text": {
 						"name":
 						{
 							"text": "Fontain",
-							"x": 0.0,
-							"y": 0.0,
+							"x": 100.0,
+							"y": 50.0,
 							"font": "Verdana",
 							"size": 48,
 							"color": "0xffffff",
 							"visible": true,
-							"selectable": false
+							"selectable": false,
+							"queue": 1
 						},
 						"hint":
 						{
 							"text": "Learn more",
-							"x": 0.0,
-							"y": 30.0,
+							"x": 80.0,
+							"y": 100.0,
 							"font": "Verdana",
 							"size": 32,
 							"color": "0xffffff",
 							"visible": true,
-							"selectable": false
+							"selectable": false,
+							"queue": 2
 						}
 					},
 					"addiction": null,
@@ -471,14 +493,15 @@
 					{
 						"buttonText":
 						{
-							"text": "New game",
+							"text": "New",
 							"x": 0.0,
 							"y": 0.0,
 							"font": "Verdana",
 							"size": 58,
 							"color": "0x000000",
 							"visible": true,
-							"selectable": false
+							"selectable": false,
+							"queue": 0
 						}
 					},
 					"addiction": "startSceneButtonsWindow",
@@ -506,7 +529,8 @@
 							"size": 64,
 							"color": "0x000000",
 							"visible": true,
-							"selectable": false
+							"selectable": false,
+							"queue": 0
 						}
 					},
 					"addiction": "startSceneButtonsWindow",
@@ -534,7 +558,8 @@
 							"size": 64,
 							"color": "0x000000",
 							"visible": true,
-							"selectable": false
+							"selectable": false,
+							"queue": 0
 						}
 					},
 					"addiction": "startSceneButtonsWindow",
@@ -561,7 +586,9 @@
 							"size": 64,
 							"color": "0x000000",
 							"visible": true,
-							"selectable": false
+							"selectable": false,
+							"queue": 0,
+							"margin": { "left": 0, "right": 0 }
 						}
 					},
 					"addiction": "startSceneButtonsWindow",
@@ -576,8 +603,8 @@
 					"url": "assets/images/button_c.png",
 					"url2": "assets/images/button_c_push.png",
 					"url3": "assets/images/button_c_hover.png",
-					"x": 0.0,
-					"y": 0.0,
+					"x": 70.0,
+					"y": 950.0,
 					"text" : null,
 					"addiction": "innWindow",
 					"queue" : 0,
@@ -591,8 +618,8 @@
 					"url": "assets/images/button_d.png",
 					"url2": "assets/images/button_d_push.png",
 					"url3": "assets/images/button_d_hover.png",
-					"x": 0.0,
-					"y": 0.0,
+					"x": 25.0,
+					"y": 950.0,
 					"text" : null,
 					"addiction": "innWindow",
 					"queue" : 0,
@@ -625,21 +652,33 @@
 					"url": "assets/images/innWindow.png",
 					"url2": null,
 					"url3": null,
-					"x": 0.0,
-					"y": 0.0,
+					"x": 1500.0,
+					"y": 40.0,
 					"text" : 
 					{
 						"nameWindow":
 						{
 							"text": "Inn",
-							"x":0.0,
-							"y":0.0
+							"x": 0.0,
+							"y": 0.0,
+							"font": "Verdana",
+							"size": 64,
+							"color": "0x000000",
+							"visible": true,
+							"selectable": false,
+							"queue": 1
 						},
 						"quantityHeroes":
 						{
 							"text": "0/0",
-						"x":0.0,
-							"y":0.0
+							"x": 140.0,
+							"y": 0.0,
+							"font": "Verdana",
+							"size": 64,
+							"color": "0x000000",
+							"visible": true,
+							"selectable": false,
+							"queue": 2
 						}
 					},
 					"addiction": "innWindow",
@@ -662,26 +701,50 @@
 						"nameWindow":
 						{
 							"text": "Empty",
-							"x":0.0,
-							"y":0.0
+							"x": 0.0,
+							"y": 0.0,
+							"font": "Verdana",
+							"size": 64,
+							"color": "0x000000",
+							"visible": true,
+							"selectable": false,
+							"queue": 1
 						},
 						"lvl":
 						{
 							"text": "1",
-							"x":0.0,
-							"y":0.0
+							"x": 0.0,
+							"y": 0.0,
+							"font": "Verdana",
+							"size": 64,
+							"color": "0x000000",
+							"visible": true,
+							"selectable": false,
+							"queue": 2
 						},
 						"armorPower":
 						{
 							"text": "0",
-							"x":0.0,
-							"y":0.0
+							"x": 0.0,
+							"y": 0.0,
+							"font": "Verdana",
+							"size": 64,
+							"color": "0x000000",
+							"visible": true,
+							"selectable": false,
+							"queue": 3
 						},
 						"attackPower":
 						{
 							"text": "0",
-							"x":0.0,
-							"y":0.0
+							"x": 0.0,
+							"y": 0.0,
+							"font": "Verdana",
+							"size": 64,
+							"color": "0x000000",
+							"visible": true,
+							"selectable": false,
+							"queue": 4
 						}
 					},
 					"addiction": "innWindowHeroWindow",

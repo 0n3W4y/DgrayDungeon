@@ -4,6 +4,7 @@ import openfl.display.Sprite;
 import openfl.display.Bitmap;
 import openfl.events.MouseEvent;
 import openfl.events.Event;
+import openfl.text.TextField;
 
 
 class EventSystem
@@ -58,14 +59,25 @@ class EventSystem
 
 	private function _addBuildingsScene( name:String, object:Sprite ):Void
 	{
+		var arrayOfEvents:Array<Dynamic> = new Array();
 		switch( name )
 		{
-			case "hospital", "tavern", "recruits", "storage", "merchant", "questman", "academy": object.addEventListener( MouseEvent.CLICK, this._eventMouseClickBuilding );
+			case "hospital", "tavern", "academy", "recruits", "storage", "graveyard", "blacksmith", "hermit", "merchant", "questman", "fontain":
+			{
+				object.addEventListener( MouseEvent.CLICK, this._eventMouseClickBuilding );
+				arrayOfEvents.push( { "event": MouseEvent.CLICK, "eventFunction": this._eventMouseClickBuilding } );
+			} 
 			default: trace( "Error in EventSystem._addBuildingsScene, bulding with name " + name + ", does not exist in case." );
 		}
 
 		object.addEventListener( MouseEvent.MOUSE_OVER, this._eventMouseOverBuilding );
+		arrayOfEvents.push( { "event": MouseEvent.MOUSE_OVER, "eventFunction": this._eventMouseOverBuilding } );
+
 		object.addEventListener( MouseEvent.MOUSE_OUT, this._eventMouseOutBuilding );
+		arrayOfEvents.push( { "event": MouseEvent.MOUSE_OUT, "eventFunction": this._eventMouseOutBuilding } );
+
+		var listener = { "name": name, "events": arrayOfEvents };
+		this._eventListeners.push( listener );
 	}
 
 	private function _eventStartButtonClick( e:MouseEvent ):Void
@@ -119,17 +131,36 @@ class EventSystem
 	private function _eventMouseOverBuilding( e:MouseEvent ):Void
 	{
 		var sprite:Sprite = e.target;
-		sprite.getChildAt( 1 ).visible = true; // new image;
-		sprite.getChildAt( 2 ).visible = true; // text
-		//sprite.getChildAt( 3 ).visible = true; // text
+		if( Std.is( sprite, TextField ) )
+		{
+			sprite.parent.getChildAt( 1 ).visible = true; // new image;
+			sprite.parent.getChildAt( 2 ).alpha = 1; // text
+			sprite.parent.getChildAt( 3 ).alpha = 1; // hint
+			
+		}
+		else
+		{
+			sprite.getChildAt( 1 ).visible = true; // new image;
+			sprite.getChildAt( 2 ).alpha = 1; // text
+			sprite.getChildAt( 3 ).alpha = 1; // hint
+		}		
 	}
 
 	private function _eventMouseOutBuilding( e:MouseEvent ):Void
 	{
 		var sprite:Sprite = e.target;
-		sprite.getChildAt( 1 ).visible = false;
-		sprite.getChildAt( 2 ).visible = false;
-		//sprite.getChildAt( 3 ).visible = false;
+		if( Std.is( sprite, TextField ) )
+		{
+			sprite.parent.getChildAt( 1 ).visible = false;
+			sprite.parent.getChildAt( 2 ).alpha = 0;
+			sprite.parent.getChildAt( 3 ).alpha = 0;			
+		}
+		else
+		{
+			sprite.getChildAt( 1 ).visible = false;
+			sprite.getChildAt( 2 ).alpha = 0;
+			sprite.getChildAt( 3 ).alpha = 0;
+		}			
 	}
 
 	private function _eventMouseClickBuilding( e:MouseEvent ):Void
@@ -151,7 +182,7 @@ class EventSystem
 		switch( name )
 		{
 			case "startSceneStartButton", "startSceneContinueButton", "startSceneOptionsButton", "startSceneAuthorsButton" : this._addStartSceneButton( name, object );
-			case "hospital" : this._addBuildingsScene( name, object );
+			case "hospital", "tavern", "academy", "recruits", "storage", "graveyard", "blacksmith", "hermit", "merchant", "questman", "fontain" : this._addBuildingsScene( name, object );
 			default: trace( "Error in EventSystem.addEvent, type of event can't be: " + name + "." );
 		}
 		

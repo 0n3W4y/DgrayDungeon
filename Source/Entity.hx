@@ -1,18 +1,21 @@
 package;
 
-class Entity
+import openfl.display.Sprite;
+
+class Entity extends Sprite
 {
-	private var _parent:EntitySystem;
-	private var _id:String;
-	private var _type:String;
+	private var __parent:EntitySystem;
+	private var __id:String;
+	private var __type:String;
 	private var _name:String;
-	private var _components:Array<Component> = new Array();
+	private var __components:Array<Component> = new Array();
 
 	public function new( parent:EntitySystem, id:String, type:String, name:String ):Void
 	{
-		this._parent = parent;
-		this._id = id;
-		this._type = type;
+		super();
+		this.__parent = parent;
+		this.__id = id;
+		this.__type = type;
 		this._name = name;
 	}
 
@@ -20,9 +23,9 @@ class Entity
 	{
 		switch( type )
 		{
-			case "parent": return this._parent;
-			case "id": return this._id;
-			case "type": return this._type;
+			case "parent": return this.__parent;
+			case "id": return this.__id;
+			case "type": return this.__type;
 			case "name": return this._name;
 			default: trace( "Error in Entity.get, type can't be: " + type + "." );
 		};
@@ -31,9 +34,9 @@ class Entity
 
 	public function getComponent( name:String ):Dynamic
 	{
-		for( i in 0...this._components.length )
+		for( i in 0...this.__components.length )
 		{
-			var component = this._components[ i ];
+			var component = this.__components[ i ];
 			if( component.getName() == name )
 				return component;
 		};
@@ -44,9 +47,9 @@ class Entity
 
 	public function update( time:Float )
 	{
-		for( i in 0...this._components.length )
+		for( i in 0...this.__components.length )
 		{
-			this._components[ i ].update( time );
+			this.__components[ i ].update( time );
 		};
 	}
 
@@ -54,18 +57,18 @@ class Entity
 	{
 		this.removeComponent( component.getName() ); //check if component exist. Remove it if need;
 		component.setParent( this );
-		this._components.push( component );
+		this.__components.push( component );
 	}
 
 	public function removeComponent( componentName:String ):Component
 	{
-		for( i in 0...this._components.length )
+		for( i in 0...this.__components.length )
 		{
-			var newComponentName = this._components[ i ].getName();
+			var newComponentName = this.__components[ i ].getName();
 			if( componentName == newComponentName )
 			{
-				var oldComponent = this._components[ i ];
-				this._components.splice( i, 1 );
+				var oldComponent = this.__components[ i ];
+				this.__components.splice( i, 1 );
 				return oldComponent;
 			};
 
