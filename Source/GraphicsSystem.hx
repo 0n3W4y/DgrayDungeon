@@ -30,12 +30,11 @@ class GraphicsSystem
         textFormat.font = text.font;
         textFormat.size = text.size;
         textFormat.color = text.color;
-        textFormat.leftMargin = 0;
         textFormat.align = TextFormatAlign.CENTER;
 
+        txt.defaultTextFormat = textFormat;
         txt.visible = text.visible;
         txt.selectable = text.selectable;
-        txt.defaultTextFormat = textFormat;
         txt.text = text.text;
         txt.width = text.width;
         txt.height = text.height;
@@ -123,6 +122,10 @@ class GraphicsSystem
 				}
 				button.addChild( textSprite );
 			}
+		}
+		else
+		{
+			this._parent.getSystem( "event" ).addEvent( button.get( "name" ), button );
 		}
 		return button;
 	}

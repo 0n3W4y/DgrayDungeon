@@ -894,9 +894,9 @@ ApplicationMain.create = function(config) {
 	ManifestResources.init(config);
 	var _this = app.meta;
 	if(__map_reserved["build"] != null) {
-		_this.setReserved("build","19");
+		_this.setReserved("build","220");
 	} else {
-		_this.h["build"] = "19";
+		_this.h["build"] = "220";
 	}
 	var _this1 = app.meta;
 	if(__map_reserved["company"] != null) {
@@ -4665,7 +4665,7 @@ EventSystem.prototype = {
 			this._addStartSceneButton(name,object);
 			break;
 		default:
-			haxe_Log.trace("Error in EventSystem.addEvent, type of event can't be: " + name + ".",{ fileName : "EventSystem.hx", lineNumber : 174, className : "EventSystem", methodName : "addEvent"});
+			haxe_Log.trace("Error in EventSystem.addEvent, type of event can't be: " + name + ".",{ fileName : "EventSystem.hx", lineNumber : 173, className : "EventSystem", methodName : "addEvent"});
 		}
 	}
 	,removeEvent: function(name,object,eventName) {
@@ -4922,11 +4922,10 @@ GraphicsSystem.prototype = {
 		textFormat.font = text.font;
 		textFormat.size = text.size;
 		textFormat.color = text.color;
-		textFormat.leftMargin = 0;
 		textFormat.align = 0;
+		txt.set_defaultTextFormat(textFormat);
 		txt.set_visible(text.visible);
 		txt.set_selectable(text.selectable);
-		txt.set_defaultTextFormat(textFormat);
 		txt.set_text(lime_text__$UTF8String_UTF8String_$Impl_$.fromDynamic(text.text));
 		txt.set_width(text.width);
 		txt.set_height(text.height);
@@ -5006,6 +5005,8 @@ GraphicsSystem.prototype = {
 				}
 				button.addChild(textSprite);
 			}
+		} else {
+			this._parent.getSystem("event").addEvent(button.get("name"),button);
 		}
 		return button;
 	}
@@ -5114,7 +5115,7 @@ GraphicsSystem.prototype = {
 			this._drawStartScene(scene);
 			break;
 		default:
-			haxe_Log.trace("Can't draw scene with name: " + sceneName + ".",{ fileName : "GraphicsSystem.hx", lineNumber : 257, className : "GraphicsSystem", methodName : "drawScene"});
+			haxe_Log.trace("Can't draw scene with name: " + sceneName + ".",{ fileName : "GraphicsSystem.hx", lineNumber : 260, className : "GraphicsSystem", methodName : "drawScene"});
 		}
 	}
 	,undrawScene: function(scene) {
@@ -5127,7 +5128,7 @@ GraphicsSystem.prototype = {
 			this._undrawStartScene(scene);
 			break;
 		default:
-			haxe_Log.trace("Can't sraw scene with name: " + sceneName + ".",{ fileName : "GraphicsSystem.hx", lineNumber : 268, className : "GraphicsSystem", methodName : "undrawScene"});
+			haxe_Log.trace("Can't sraw scene with name: " + sceneName + ".",{ fileName : "GraphicsSystem.hx", lineNumber : 271, className : "GraphicsSystem", methodName : "undrawScene"});
 		}
 	}
 	,createUiObject: function(name,list) {
@@ -5161,7 +5162,7 @@ GraphicsSystem.prototype = {
 		if(type == "building") {
 			return this._createBuilding(object);
 		} else {
-			haxe_Log.trace("Error GraphicsSystem.createObject, object type: " + type + ", can't be found.",{ fileName : "GraphicsSystem.hx", lineNumber : 304, className : "GraphicsSystem", methodName : "createObject"});
+			haxe_Log.trace("Error GraphicsSystem.createObject, object type: " + type + ", can't be found.",{ fileName : "GraphicsSystem.hx", lineNumber : 307, className : "GraphicsSystem", methodName : "createObject"});
 		}
 		return null;
 	}
@@ -5290,7 +5291,7 @@ ManifestResources.init = function(config) {
 	var data;
 	var manifest;
 	var library;
-	data = "{\"name\":null,\"assets\":\"aoy4:pathy29:assets%2Fimages%2Facademy.pngy4:sizei409445y4:typey5:IMAGEy2:idR1y7:preloadtgoR0y31:assets%2Fimages%2Facademy_m.pngR2i413561R3R4R5R7R6tgoR0y37:assets%2Fimages%2Fbackground_game.pngR2i1897994R3R4R5R8R6tgoR0y32:assets%2Fimages%2Fblacksmith.pngR2i234186R3R4R5R9R6tgoR0y34:assets%2Fimages%2Fblacksmith_m.pngR2i238097R3R4R5R10R6tgoR0y30:assets%2Fimages%2Fbutton_b.pngR2i1941R3R4R5R11R6tgoR0y36:assets%2Fimages%2Fbutton_b_hover.pngR2i1948R3R4R5R12R6tgoR0y35:assets%2Fimages%2Fbutton_b_push.pngR2i2723R3R4R5R13R6tgoR0y30:assets%2Fimages%2Fbutton_c.pngR2i4148R3R4R5R14R6tgoR0y36:assets%2Fimages%2Fbutton_c_hover.pngR2i4148R3R4R5R15R6tgoR0y35:assets%2Fimages%2Fbutton_c_push.pngR2i4148R3R4R5R16R6tgoR0y30:assets%2Fimages%2Fbutton_d.pngR2i4829R3R4R5R17R6tgoR0y36:assets%2Fimages%2Fbutton_d_hover.pngR2i4829R3R4R5R18R6tgoR0y35:assets%2Fimages%2Fbutton_d_push.pngR2i4829R3R4R5R19R6tgoR0y40:assets%2Fimages%2FcitySceneBackround.pngR2i2043474R3R4R5R20R6tgoR0y29:assets%2Fimages%2Ffontain.pngR2i185396R3R4R5R21R6tgoR0y31:assets%2Fimages%2Ffontain_m.pngR2i194684R3R4R5R22R6tgoR0y31:assets%2Fimages%2Fgraveyard.pngR2i172698R3R4R5R23R6tgoR0y33:assets%2Fimages%2Fgraveyard_m.pngR2i176786R3R4R5R24R6tgoR0y28:assets%2Fimages%2Fhermit.pngR2i198769R3R4R5R25R6tgoR0y30:assets%2Fimages%2Fhermit_m.pngR2i207348R3R4R5R26R6tgoR0y30:assets%2Fimages%2Fhospital.pngR2i306480R3R4R5R27R6tgoR0y32:assets%2Fimages%2Fhospital_m.pngR2i321808R3R4R5R28R6tgoR0y31:assets%2Fimages%2FinnWindow.pngR2i11509R3R4R5R29R6tgoR0y41:assets%2Fimages%2FinnWindowHeroWindow.pngR2i6013R3R4R5R30R6tgoR0y30:assets%2Fimages%2Fmerchant.pngR2i396984R3R4R5R31R6tgoR0y32:assets%2Fimages%2Fmerchant_m.pngR2i399153R3R4R5R32R6tgoR0y30:assets%2Fimages%2Fquestman.pngR2i49162R3R4R5R33R6tgoR0y32:assets%2Fimages%2Fquestman_m.pngR2i43455R3R4R5R34R6tgoR0y30:assets%2Fimages%2Frecruits.pngR2i339084R3R4R5R35R6tgoR0y32:assets%2Fimages%2Frecruits_m.pngR2i339084R3R4R5R36R6tgoR0y45:assets%2Fimages%2FstartSceneButtonsWindow.pngR2i7836R3R4R5R37R6tgoR0y29:assets%2Fimages%2Fstorage.pngR2i358167R3R4R5R38R6tgoR0y31:assets%2Fimages%2Fstorage_m.pngR2i371206R3R4R5R39R6tgoR0y28:assets%2Fimages%2Ftavern.pngR2i505790R3R4R5R40R6tgoR0y30:assets%2Fimages%2Ftavern_m.pngR2i505790R3R4R5R41R6tgh\",\"rootPath\":null,\"version\":2,\"libraryArgs\":[],\"libraryType\":null}";
+	data = "{\"name\":null,\"assets\":\"aoy4:pathy29:assets%2Fimages%2Facademy.pngy4:sizei250184y4:typey5:IMAGEy2:idR1y7:preloadtgoR0y31:assets%2Fimages%2Facademy_m.pngR2i254647R3R4R5R7R6tgoR0y37:assets%2Fimages%2Fbackground_game.pngR2i1897994R3R4R5R8R6tgoR0y32:assets%2Fimages%2Fblacksmith.pngR2i137197R3R4R5R9R6tgoR0y34:assets%2Fimages%2Fblacksmith_m.pngR2i137556R3R4R5R10R6tgoR0y30:assets%2Fimages%2Fbutton_a.pngR2i2360R3R4R5R11R6tgoR0y36:assets%2Fimages%2Fbutton_a_hover.pngR2i501R3R4R5R12R6tgoR0y35:assets%2Fimages%2Fbutton_a_push.pngR2i2634R3R4R5R13R6tgoR0y30:assets%2Fimages%2Fbutton_b.pngR2i1941R3R4R5R14R6tgoR0y36:assets%2Fimages%2Fbutton_b_hover.pngR2i1948R3R4R5R15R6tgoR0y35:assets%2Fimages%2Fbutton_b_push.pngR2i2723R3R4R5R16R6tgoR0y30:assets%2Fimages%2Fbutton_c.pngR2i6120R3R4R5R17R6tgoR0y36:assets%2Fimages%2Fbutton_c_hover.pngR2i5436R3R4R5R18R6tgoR0y35:assets%2Fimages%2Fbutton_c_push.pngR2i6444R3R4R5R19R6tgoR0y30:assets%2Fimages%2Fbutton_d.pngR2i6033R3R4R5R20R6tgoR0y36:assets%2Fimages%2Fbutton_d_hover.pngR2i5542R3R4R5R21R6tgoR0y35:assets%2Fimages%2Fbutton_d_push.pngR2i6462R3R4R5R22R6tgoR0y43:assets%2Fimages%2FchooseDungeonSceneOne.pngR2i818784R3R4R5R23R6tgoR0y40:assets%2Fimages%2FcitySceneBackround.pngR2i2080322R3R4R5R24R6tgoR0y29:assets%2Fimages%2Ffontain.pngR2i86429R3R4R5R25R6tgoR0y31:assets%2Fimages%2Ffontain_m.pngR2i91633R3R4R5R26R6tgoR0y31:assets%2Fimages%2Fgraveyard.pngR2i43609R3R4R5R27R6tgoR0y33:assets%2Fimages%2Fgraveyard_m.pngR2i46711R3R4R5R28R6tgoR0y28:assets%2Fimages%2Fhermit.pngR2i127275R3R4R5R29R6tgoR0y30:assets%2Fimages%2Fhermit_m.pngR2i131909R3R4R5R30R6tgoR0y30:assets%2Fimages%2Fhospital.pngR2i173889R3R4R5R31R6tgoR0y32:assets%2Fimages%2Fhospital_m.pngR2i187422R3R4R5R32R6tgoR0y31:assets%2Fimages%2FinnWindow.pngR2i21440R3R4R5R33R6tgoR0y41:assets%2Fimages%2FinnWindowHeroWindow.pngR2i38355R3R4R5R34R6tgoR0y30:assets%2Fimages%2Fmerchant.pngR2i173333R3R4R5R35R6tgoR0y32:assets%2Fimages%2Fmerchant_m.pngR2i175571R3R4R5R36R6tgoR0y29:assets%2Fimages%2Fpeshera.pngR2i51742R3R4R5R37R6tgoR0y31:assets%2Fimages%2Fpeshera_m.pngR2i53281R3R4R5R38R6tgoR0y30:assets%2Fimages%2Fquestman.pngR2i17934R3R4R5R39R6tgoR0y32:assets%2Fimages%2Fquestman_m.pngR2i18588R3R4R5R40R6tgoR0y30:assets%2Fimages%2Frecruits.pngR2i223501R3R4R5R41R6tgoR0y32:assets%2Fimages%2Frecruits_m.pngR2i234504R3R4R5R42R6tgoR0y35:assets%2Fimages%2FruinedBashnya.pngR2i95120R3R4R5R43R6tgoR0y37:assets%2Fimages%2FruinedBashnya_m.pngR2i97518R3R4R5R44R6tgoR0y28:assets%2Fimages%2Fshahta.pngR2i38828R3R4R5R45R6tgoR0y30:assets%2Fimages%2Fshahta_m.pngR2i41659R3R4R5R46R6tgoR0y45:assets%2Fimages%2FstartSceneButtonsWindow.pngR2i7836R3R4R5R47R6tgoR0y29:assets%2Fimages%2Fstorage.pngR2i207220R3R4R5R48R6tgoR0y31:assets%2Fimages%2Fstorage_m.pngR2i216808R3R4R5R49R6tgoR0y28:assets%2Fimages%2Ftavern.pngR2i271014R3R4R5R50R6tgoR0y30:assets%2Fimages%2Ftavern_m.pngR2i269613R3R4R5R51R6tgh\",\"rootPath\":null,\"version\":2,\"libraryArgs\":[],\"libraryType\":null}";
 	manifest = lime_utils_AssetManifest.parse(data,ManifestResources.rootPath);
 	library = lime_utils_AssetLibrary.fromManifest(manifest);
 	lime_utils_Assets.registerLibrary("default",library);
@@ -26525,7 +26526,7 @@ var lime_utils_AssetCache = function() {
 	this.audio = new haxe_ds_StringMap();
 	this.font = new haxe_ds_StringMap();
 	this.image = new haxe_ds_StringMap();
-	this.version = 276814;
+	this.version = 433171;
 };
 $hxClasses["lime.utils.AssetCache"] = lime_utils_AssetCache;
 lime_utils_AssetCache.__name__ = ["lime","utils","AssetCache"];

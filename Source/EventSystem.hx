@@ -141,8 +141,7 @@ class EventSystem
 			{
 				sprite.getChildAt( 1 ).visible = false;
 				sprite.getChildAt( 2 ).visible = false;
-			}
-			
+			}			
 		}
 	}
 
@@ -172,8 +171,7 @@ class EventSystem
 			case "startSceneStartButton", "startSceneContinueButton", "startSceneOptionsButton", "startSceneAuthorsButton" : this._addStartSceneButton( name, object );
 			case "hospital", "tavern", "academy", "recruits", "storage", "graveyard", "blacksmith", "hermit", "merchant", "questman", "fontain" : this._addCitySceneBuildings( name, object );
 			default: trace( "Error in EventSystem.addEvent, type of event can't be: " + name + "." );
-		}
-		
+		}		
 	}
 
 	public function removeEvent( name:String, object:Sprite, eventName:String  ):Void
