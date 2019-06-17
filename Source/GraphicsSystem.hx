@@ -59,6 +59,7 @@ class GraphicsSystem
 		if( text != null )
 		{
 			var textArray:Array<Dynamic> = new Array();
+			var ts:Sprite = new Sprite();
 			for( key in Reflect.fields( text ) )
 			{
 				var value = Reflect.getProperty( text, key );
@@ -69,8 +70,9 @@ class GraphicsSystem
 			{
 				var newText = textArray[ i ];
 				var textSprite = this._createText( newText.value );
-				window.addChild( textSprite );
-			}			
+				ts.addChild( textSprite );
+			}
+			window.addChild( ts );		
 		}
 		return window;
 	}
@@ -98,6 +100,7 @@ class GraphicsSystem
 		if( text != null )
 		{
 			var textArray:Array<Dynamic> = new Array();
+			var ts:Sprite = new Sprite();
 			for( key in Reflect.fields( text ) )
 			{
 				var value = Reflect.getProperty( text, key );
@@ -108,25 +111,22 @@ class GraphicsSystem
 			{
 				var textSprite = this._createText( textArray[ i ].value );
 				textSprite.height = button.height;
-				textSprite.width = button.width;
-				this._parent.getSystem( "event" ).addEvent( button.get( "name" ), textSprite );
-				if( button.get( "name" ) == "startSceneContinueButton" )
-				{
-					var chekButton = this._checkButton( "startSceneContinueButton" );
-					if( chekButton )
-					{
-						//remove all events from button.
-						this._parent.getSystem( "event" ).removeEvent( button.get( "name" ), textSprite, null );
-						button.alpha = 0.5;
-					}
-				}
-				button.addChild( textSprite );
+				textSprite.width = button.width;	
+				ts.addChild( textSprite );
 			}
+			button.addChild( ts );
 		}
-		else
+		this._parent.getSystem( "event" ).addEvent( button.get( "name" ), button );
+		if( button.get( "name" ) == "startSceneContinueButton" )
 		{
-			this._parent.getSystem( "event" ).addEvent( button.get( "name" ), button );
-		}
+			var chekButton = this._checkButton( "startSceneContinueButton" );
+			if( chekButton )
+			{
+				//remove all events from button.
+				this._parent.getSystem( "event" ).removeEvent( button.get( "name" ), button, null );
+				button.alpha = 0.5;
+			}
+		}			
 		return button;
 	}
 
@@ -159,9 +159,7 @@ class GraphicsSystem
 			for( i in 0...textArray.length )
 			{
 				var textSprite = this._createText( textArray[ i ].value );
-				textSprite.alpha = 0;
-				//this._parent.getSystem( "event" ).addEvent( object.get( "name" ), textSprite );
-				object.addChild( textSprite );
+				textSp.addChild( textSprite );
 			}
 			textSp.alpha = 0;
 			this._parent.getSystem( "event" ).addEvent( object.get( "name" ), object );
@@ -215,6 +213,7 @@ class GraphicsSystem
 		var sceneUiEntities:Dynamic = scene.getEntities( "ui" );
 		//here we create only that window, whom see all time;
 		this.createUiObject( "innWindow", sceneUiEntities );
+		this.createUiObject( "panelCityWindow", sceneUiEntities );
 
 		this._parent.getMainSprite().addChild( scene );
 	}

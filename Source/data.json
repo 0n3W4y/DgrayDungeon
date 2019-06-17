@@ -11,14 +11,17 @@
 		"cityScene": 
 		{
 			"backgroundImageURL": "assets/images/citySceneBackround.png",
-			"window": [ "innWindow", "innWindowHeroWindow" ],
-			"button": [ "innWindowButtonHeroListUp", "innWindowButtonHeroListDown" ],
+			"window": [ "innWindow", "innWindowHeroWindow", "panelCityWindow" ],
+			"button": [ "innWindowButtonHeroListUp", "innWindowButtonHeroListDown", "citySceneStartJourneyButton" ],
 			"building": [ "hospital", "academy", "hermit", "merchant", "storage", "graveyard", "recruits", "questman", "fontain", "blacksmith", "tavern" ]
 		},
 
 		"chooseDungeonScene":
 		{
-			"backgroundImageURL": "url"
+			"backgroundImageURL": "assets/images/chooseDungeonSceneOne.png",
+			"window": [ "innWindow", "heroesToDungeonWindow", "panelCityWindow" ],
+			"button": [ "innWindowButtonHeroListUp", "innWindowButtonHeroListDown", "citySceneStartJourneyButton" ],
+			"buildings": [ "dungeon1", "dungeon2", "dungeon3" ]
 		},
 
 		"dungeonScene":
@@ -29,6 +32,144 @@
 
 	"entity":
 	{
+		"dungeons":
+		{
+			"dungeon1":
+			{
+				"graphics":
+				{
+					"url": "assets/images/ruinedBashnya.png",
+					"url2": "assets/images/ruinedBashnya_m.png",
+					"url3": null,
+					"x": 0.0,
+					"y": 0.0,
+					"text": 
+					{
+						"name":
+						{
+							"text": "Ruined Banshee",
+							"x": 100.0,
+							"y": 50.0,
+							"font": "Verdana",
+							"size": 48,
+							"color": "0xffffff",
+							"visible": true,
+							"selectable": false,
+							"queue": 1,
+							"height":100,
+							"width":100
+						},
+						"hint":
+						{
+							"text": "Make a health",
+							"x": 100.0,
+							"y": 100.0,
+							"font": "Verdana",
+							"size": 32,
+							"color": "0xffffff",
+							"visible": true,
+							"selectable": false,
+							"queue": 2,
+							"height":100,
+							"width":100
+						}
+					},
+					"addiction": null,
+					"queue": 1,
+					"graphicsInstance": null
+				}
+			},
+			"dungeon2":
+			{
+				"graphics":
+				{
+					"url": "assets/images/peshera.png",
+					"url2": "assets/images/peshera_m.png",
+					"url3": null,
+					"x": 0.0,
+					"y": 0.0,
+					"text": 
+					{
+						"name":
+						{
+							"text": "Peshera",
+							"x": 100.0,
+							"y": 50.0,
+							"font": "Verdana",
+							"size": 48,
+							"color": "0xffffff",
+							"visible": true,
+							"selectable": false,
+							"queue": 1,
+							"height":100,
+							"width":100
+						},
+						"hint":
+						{
+							"text": ":D",
+							"x": 100.0,
+							"y": 100.0,
+							"font": "Verdana",
+							"size": 32,
+							"color": "0xffffff",
+							"visible": true,
+							"selectable": false,
+							"queue": 2,
+							"height":100,
+							"width":100
+						}
+					},
+					"addiction": null,
+					"queue": 2,
+					"graphicsInstance": null
+				}
+			},
+			"dungeon3":
+			{
+				"graphics":
+				{
+					"url": "assets/images/shahta.png",
+					"url2": "assets/images/shahta_m.png",
+					"url3": null,
+					"x": 0.0,
+					"y": 0.0,
+					"text": 
+					{
+						"name":
+						{
+							"text": "Shahta",
+							"x": 100.0,
+							"y": 50.0,
+							"font": "Verdana",
+							"size": 48,
+							"color": "0xffffff",
+							"visible": true,
+							"selectable": false,
+							"queue": 1,
+							"height":100,
+							"width":100
+						},
+						"hint":
+						{
+							"text": "Boooo! ;-)",
+							"x": 100.0,
+							"y": 100.0,
+							"font": "Verdana",
+							"size": 32,
+							"color": "0xffffff",
+							"visible": true,
+							"selectable": false,
+							"queue": 2,
+							"height":100,
+							"width":100
+						}
+					},
+					"addiction": null,
+					"queue": 3,
+					"graphicsInstance": null
+				}
+			}
+		},
 		"building":
 		{
 			"hospital":
@@ -647,6 +788,37 @@
 					"graphicsInstance": null
 				}				
 			},
+			"citySceneStartJourneyButton":
+			{
+				"graphics":
+				{
+					"url": "assets/images/button_a.png",
+					"url2": "assets/images/button_a_hover.png",
+					"url3": "assets/images/button_a_push.png",
+					"x": 860.0,
+					"y": 5.0,
+					"text" : 
+					{
+						"buttonText":
+						{
+							"text": "START",
+							"x": 0.0,
+							"y": 0.0,
+							"font": "Verdana",
+							"size": 38,
+							"color": "0xffffff",
+							"visible": true,
+							"selectable": false,
+							"queue": 0,
+							"height":100,
+							"width":100
+						}
+					},
+					"addiction": "panelCityWindow",
+					"queue" : 0,
+					"graphicsInstance": null
+				}				
+			},
 			"innWindowButtonHeroListUp":
 			{
 				"graphics":
@@ -696,6 +868,39 @@
 					"graphicsInstance": null
 				}				
 			},
+
+			"panelCityWindow":
+			{
+				"graphics":
+				{
+					"url": "assets/images/panelCityWindow.png",
+					"url2": null,
+					"url3": null,
+					"x": -5.0,
+					"y": 1010.0,
+					"text" : null,
+					"addiction": "panelCityWindow",
+					"queue" : 2,
+					"graphicsInstance": null
+				}
+			},
+
+			"heroesToDungeonWindow":
+			{
+				"graphics":
+				{
+					"url": "assets/images/heroesToDungeonWindow.png",
+					"url2": null,
+					"url3": null,
+					"x": 0.0,
+					"y": 0.0,
+					"text" : null,
+					"addiction": null,
+					"queue" : 1,
+					"graphicsInstance": null
+				}	
+			},
+
 			"innWindow":
 			{
 				"graphics":
