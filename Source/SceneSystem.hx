@@ -35,15 +35,12 @@ class SceneSystem
 				break;	
 			}
 		}
-
 		if( value == null )
 			trace( "Error in SceneSystem._screateStartScene, scene name: " + sceneName + " not found in config container." );
 		
 		scene.setBackgroundImageURL( value.backgroundImageURL );
 
 		var entitySystem = this._parent.getSystem( "entity" );
-
-
 		for( key in Reflect.fields( value ) )
 		{
 			if( key == "backgroundImageURL" )
@@ -115,7 +112,6 @@ class SceneSystem
 			this._activeScene = null;
 			
 		}
-
 		this._activeScene = scene;
 		this._activeScene.draw();
 	}

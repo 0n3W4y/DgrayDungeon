@@ -17,8 +17,11 @@ class UserInterface extends Sprite
 
 	public function addUiObject( object:Dynamic ):Void //{ "name": name, "sprite": sprite }
 	{
+		//[{"name": "Window1","window":{window:entity},"textWindow":[{"name":newText.name,"sprite":textSprite}],
+		//"button":[{"name":"button1","sprite":button,"text":{"name":newText.name,"sprite":textSprite}]];
+		//{ "name": name, "window": spriteWindow, "textWindow": windowTextArray, "button": buttonsArray }
 		this._objectsOnUi.push( object );
-		this.addChild( object.sprite );
+		this.addChild( object.window );
 	}
 
 	public function removeUiObject( object:Entity ):Void
@@ -28,7 +31,7 @@ class UserInterface extends Sprite
 		{
 			if( name == this._objectsOnUi[ i ].name )
 			{
-				this.removeChild( this._objectsOnUi[ i ].sprite );
+				this.removeChild( this._objectsOnUi[ i ].window );
 				this._objectsOnUi.splice( i, 1 );
 			}
 		}
@@ -41,7 +44,7 @@ class UserInterface extends Sprite
 		{
 			var object = this._objectsOnUi[ i ];
 			if( object.name == name )
-				object.sprite.visible = true;
+				object.window.visible = true;
 		}
 	}
 
@@ -51,7 +54,7 @@ class UserInterface extends Sprite
 		{
 			var object = this._objectsOnUi[ i ];
 			if( object.name == name )
-				object.sprite.visible = false;
+				object.window.visible = false;
 		}
 	}
 }

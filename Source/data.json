@@ -4,8 +4,8 @@
 		"startScene": 
 		{
 			"backgroundImageURL": "assets/images/background_game.png",
-			"window":[ "startSceneButtonsWindow" ],
-			"button":[ "startSceneStartButton", "startSceneOptionsButton", "startSceneContinueButton", "startSceneAuthorsButton" ]
+			"window": [ "startSceneButtonsWindow" ],
+			"button": [ "startSceneAuthorsButton", "startSceneOptionsButton", "startSceneContinueButton", "startSceneStartButton"]
 		},
 
 		"cityScene": 

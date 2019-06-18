@@ -9,6 +9,7 @@ import openfl.text.TextField;
 
 class EventSystem
 {
+	// Try TODO: world event function on game sprite. 
 	private var _parent:Game;
 	private var _eventListeners:Array<Dynamic>;
 
@@ -120,15 +121,19 @@ class EventSystem
 						{
 							var dungeonScene = sceneSystem.getScene( "chooseDungeonScene" );
 							if( dungeonScene == null )
-								var dungeonScene = sceneSystem.createScene( "chooseDungeonScene" );
+								dungeonScene = sceneSystem.createScene( "chooseDungeonScene" );
 
+							dungeonScene.draw();
 							sceneSystem.switchScene( dungeonScene );
+							this._parent.getSystem( "ui" ).showUiObject( "innWindow" );
+							this._parent.getSystem( "ui" ).showUiObject( "panelCityWindow" );
 						}
 						else
 						{
 							//check full stack heroes, check choosen dungeon, check if total LVL heroes are lower then dungeon needed, confirm;
 							trace( " we go to fight... TODO." );
 						}
+						
 					}
 					default: trace( "Click this: " + obj.get( "name" ) );
 				}

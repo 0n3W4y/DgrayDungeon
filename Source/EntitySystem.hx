@@ -16,6 +16,7 @@ class EntitySystem
 
 	private function _createUiType( type:String, name:String, id:String, params:Dynamic ):Entity
 	{
+		// [{"name": "Window1","window":{window:entity},"text":[{"text1":{text}}],"button":[{"button1":{button1},"text":{text}]];
 		var uiObject = new Entity( this, id, type, name );
 		var component = this.createComponent( "graphics", params.graphics );
 		this.addComponentTo( component, uiObject );
