@@ -19,9 +19,8 @@
 		"chooseDungeonScene":
 		{
 			"backgroundImageURL": "assets/images/chooseDungeonSceneOne.png",
-			"window": [ "innWindow", "heroesToDungeonWindow", "panelCityWindow" ],
-			"button": [ "innWindowButtonHeroListUp", "innWindowButtonHeroListDown", "citySceneStartJourneyButton" ],
-			"buildings": [ "dungeon1", "dungeon2", "dungeon3" ]
+			"window": [ "dungeon1", "chooseHeroToDungeonWindow" ],
+			"button": [ "chooseDungeonSceneDungeonButtonA" ]
 		},
 
 		"dungeonScene":
@@ -32,144 +31,6 @@
 
 	"entity":
 	{
-		"dungeons":
-		{
-			"dungeon1":
-			{
-				"graphics":
-				{
-					"url": "assets/images/ruinedBashnya.png",
-					"url2": "assets/images/ruinedBashnya_m.png",
-					"url3": null,
-					"x": 0.0,
-					"y": 0.0,
-					"text": 
-					{
-						"name":
-						{
-							"text": "Ruined Banshee",
-							"x": 100.0,
-							"y": 50.0,
-							"font": "Verdana",
-							"size": 48,
-							"color": "0xffffff",
-							"visible": true,
-							"selectable": false,
-							"queue": 1,
-							"height":100,
-							"width":100
-						},
-						"hint":
-						{
-							"text": "Make a health",
-							"x": 100.0,
-							"y": 100.0,
-							"font": "Verdana",
-							"size": 32,
-							"color": "0xffffff",
-							"visible": true,
-							"selectable": false,
-							"queue": 2,
-							"height":100,
-							"width":100
-						}
-					},
-					"addiction": null,
-					"queue": 1,
-					"graphicsInstance": null
-				}
-			},
-			"dungeon2":
-			{
-				"graphics":
-				{
-					"url": "assets/images/peshera.png",
-					"url2": "assets/images/peshera_m.png",
-					"url3": null,
-					"x": 0.0,
-					"y": 0.0,
-					"text": 
-					{
-						"name":
-						{
-							"text": "Peshera",
-							"x": 100.0,
-							"y": 50.0,
-							"font": "Verdana",
-							"size": 48,
-							"color": "0xffffff",
-							"visible": true,
-							"selectable": false,
-							"queue": 1,
-							"height":100,
-							"width":100
-						},
-						"hint":
-						{
-							"text": ":D",
-							"x": 100.0,
-							"y": 100.0,
-							"font": "Verdana",
-							"size": 32,
-							"color": "0xffffff",
-							"visible": true,
-							"selectable": false,
-							"queue": 2,
-							"height":100,
-							"width":100
-						}
-					},
-					"addiction": null,
-					"queue": 2,
-					"graphicsInstance": null
-				}
-			},
-			"dungeon3":
-			{
-				"graphics":
-				{
-					"url": "assets/images/shahta.png",
-					"url2": "assets/images/shahta_m.png",
-					"url3": null,
-					"x": 0.0,
-					"y": 0.0,
-					"text": 
-					{
-						"name":
-						{
-							"text": "Shahta",
-							"x": 100.0,
-							"y": 50.0,
-							"font": "Verdana",
-							"size": 48,
-							"color": "0xffffff",
-							"visible": true,
-							"selectable": false,
-							"queue": 1,
-							"height":100,
-							"width":100
-						},
-						"hint":
-						{
-							"text": "Boooo! ;-)",
-							"x": 100.0,
-							"y": 100.0,
-							"font": "Verdana",
-							"size": 32,
-							"color": "0xffffff",
-							"visible": true,
-							"selectable": false,
-							"queue": 2,
-							"height":100,
-							"width":100
-						}
-					},
-					"addiction": null,
-					"queue": 3,
-					"graphicsInstance": null
-				}
-			}
-		},
 		"building":
 		{
 			"hospital":
@@ -692,7 +553,7 @@
 						}
 					},
 					"addiction": "startSceneButtonsWindow",
-					"queue": 1,
+					"queue": 0,
 					"graphicsInstance": null
 				}				
 			},
@@ -848,6 +709,67 @@
 					"queue" : 0,
 					"graphicsInstance": null
 				}			
+			},
+
+			"chooseDungeonSceneDungeonButtonA":
+			{
+				"graphics":
+				{
+					"url": "assets/images/button_dungeon_a.png",
+					"url2": "assets/images/button_dungeon_a.png",
+					"url3": "assets/images/button_dungeon_a_choose.png",
+					"x": 370.0,
+					"y": 100.0,
+					"text" : null,
+					"addiction": "dungeon1",
+					"queue" : 0,
+					"graphicsInstance": null
+				}			
+			},
+			"chooseDungeonSceneDungeonButtonB":
+			{
+				"graphics":
+				{
+					"url": "assets/images/button_dungeon_b.png",
+					"url2": "assets/images/button_dungeon_b.png",
+					"url3": "assets/images/button_dungeon_b_choose.png",
+					"x": 0.0,
+					"y": 0.0,
+					"text" : null,
+					"addiction": "dungeon1",
+					"queue" : 0,
+					"graphicsInstance": null
+				}			
+			},
+			"chooseDungeonSceneDungeonButtonC":
+			{
+				"graphics":
+				{
+					"url": "assets/images/button_dungeon_c.png",
+					"url2": "assets/images/button_dungeon_c.png",
+					"url3": "assets/images/button_dungeon_c_choose.png",
+					"x": 0.0,
+					"y": 0.0,
+					"text" : null,
+					"addiction": "dungeon1",
+					"queue" : 0,
+					"graphicsInstance": null
+				}			
+			},
+			"chooseDungeonSceneDungeonButtonD":
+			{
+				"graphics":
+				{
+					"url": "assets/images/button_dungeon_d.png",
+					"url2": "assets/images/button_dungeon_d.png",
+					"url3": "assets/images/button_dungeon_d_choose.png",
+					"x": 0.0,
+					"y": 0.0,
+					"text" : null,
+					"addiction": "dungeon1",
+					"queue" : 0,
+					"graphicsInstance": null
+				}			
 			}
 		},
 		
@@ -864,7 +786,7 @@
 					"y": 450.0,
 					"text" : null,
 					"addiction": "startSceneButtonsWindow",
-					"queue" : 1,
+					"queue" : 0,
 					"graphicsInstance": null
 				}				
 			},
@@ -880,25 +802,9 @@
 					"y": 1010.0,
 					"text" : null,
 					"addiction": "panelCityWindow",
-					"queue" : 2,
+					"queue" : 0,
 					"graphicsInstance": null
 				}
-			},
-
-			"heroesToDungeonWindow":
-			{
-				"graphics":
-				{
-					"url": "assets/images/heroesToDungeonWindow.png",
-					"url2": null,
-					"url3": null,
-					"x": 0.0,
-					"y": 0.0,
-					"text" : null,
-					"addiction": null,
-					"queue" : 1,
-					"graphicsInstance": null
-				}	
 			},
 
 			"innWindow":
@@ -942,7 +848,7 @@
 						}
 					},
 					"addiction": "innWindow",
-					"queue" : 1,
+					"queue" : 0,
 					"graphicsInstance": null
 				}				
 			},
@@ -1016,11 +922,72 @@
 						}
 					},
 					"addiction": "innWindowHeroWindow",
-					"queue" : 2,
+					"queue" : 0,
+					"graphicsInstance": null
+				}
+			},
+
+			"dungeon1":
+			{
+				"graphics":
+				{
+					"url": "assets/images/dungeonWindow.png",
+					"url2": null,
+					"url3": null,
+					"x": 200.0,
+					"y": 450.0,
+					"text" : 
+					{
+						"nameWindow":
+						{
+							"text": "Empty",
+							"x": 0.0,
+							"y": 0.0,
+							"font": "Verdana",
+							"size": 22,
+							"color": "0x000000",
+							"visible": true,
+							"selectable": false,
+							"queue": 1,
+							"height":50,
+							"width":50
+						},
+						"lvl":
+						{
+							"text": "1",
+							"x": 50.0,
+							"y": 10.0,
+							"font": "Verdana",
+							"size": 22,
+							"color": "0x000000",
+							"visible": true,
+							"selectable": false,
+							"queue": 2,
+							"height":50,
+							"width":50
+						}
+					},
+					"addiction": "dungeon1",
+					"queue": 0,
+					"graphicsInstance": null
+				}
+			},
+
+			"chooseHeroToDungeonWindow":
+			{
+				"graphics":
+				{
+					"url": "assets/images/dungeonSceneHeroesToDungeon.png",
+					"url2": null,
+					"url3": null,
+					"x": 685.0,
+					"y": 820.0,
+					"text": null,
+					"addiction": "chooseHeroToDungeonWindow",
+					"queue" : 0,
 					"graphicsInstance": null
 				}
 			}
-			
 		}
 	}
 }

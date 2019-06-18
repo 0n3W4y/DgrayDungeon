@@ -70,6 +70,29 @@ class EventSystem
 						this._parent.getSystem( "scene" ).doActiveScene( newScene );
 					}
 					case "startSceneContinueButton": trace( "Continue button pushed" );
+					case "citySceneStartJourneyButton": 
+					{
+						var sceneSystem:SceneSystem = this._parent.getSystem( "scene" );
+						var activeScene = sceneSystem.getActiveScene();
+						var name = activeScene.getName();
+						if ( name == "cityScene" )
+						{
+							var dungeonScene = sceneSystem.getScene( "chooseDungeonScene" );
+							if( dungeonScene == null )
+								dungeonScene = sceneSystem.createScene( "chooseDungeonScene" );
+
+							dungeonScene.draw();
+							sceneSystem.switchScene( dungeonScene );
+							this._parent.getSystem( "ui" ).showUiObject( "innWindow" );
+							this._parent.getSystem( "ui" ).showUiObject( "panelCityWindow" );
+						}
+						else
+						{
+							//check full stack heroes, check choosen dungeon, check if total LVL heroes are lower then dungeon needed, confirm;
+							trace( " we go to fight... TODO." );
+						}
+					}
+					default: trace( "Click this: " + obj.parent.parent.get( "name" ) );
 				}
 			}			
 		}
@@ -88,6 +111,26 @@ class EventSystem
 						this._parent.getSystem( "scene" ).doActiveScene( newScene );
 					}
 					case "startSceneContinueButton": trace( "Continue button pushed" );
+					case "citySceneStartJourneyButton": 
+					{
+						var sceneSystem:SceneSystem = this._parent.getSystem( "scene" );
+						var activeScene = sceneSystem.getActiveScene();
+						var name = activeScene.getName();
+						if ( name == "cityScene" )
+						{
+							var dungeonScene = sceneSystem.getScene( "chooseDungeonScene" );
+							if( dungeonScene == null )
+								var dungeonScene = sceneSystem.createScene( "chooseDungeonScene" );
+
+							sceneSystem.switchScene( dungeonScene );
+						}
+						else
+						{
+							//check full stack heroes, check choosen dungeon, check if total LVL heroes are lower then dungeon needed, confirm;
+							trace( " we go to fight... TODO." );
+						}
+					}
+					default: trace( "Click this: " + obj.get( "name" ) );
 				}
 			}
 		}	
@@ -130,7 +173,7 @@ class EventSystem
 		if( Std.is( sprite, TextField ) )
 		{
 			var obj:Dynamic = sprite.parent;
-			if( obj.parent.get( "type") == "building" )
+			if( obj.parent.get( "type" ) == "building" )
 			{
 				sprite.parent.parent.getChildAt( 1 ).visible = false;
 				sprite.parent.parent.getChildAt( 2 ).alpha = 0;	
@@ -170,10 +213,15 @@ class EventSystem
 	private function _eventMouseUp( e:MouseEvent ):Void
 	{
 		var sprite:Sprite = e.target;
+		var entity:Dynamic = e.target;
 		if( Std.is( sprite, TextField ) )
-			sprite.parent.parent.getChildAt( 2 ).visible = false;
+		{
+			sprite.parent.parent.getChildAt( 2 ).visible = false;			
+		}
 		else
+		{
 			sprite.getChildAt( 2 ).visible = false;
+		}
 	}
 
 	public function new( parent:Game ):Void
@@ -187,7 +235,7 @@ class EventSystem
 		switch( name )
 		{
 			case "startSceneStartButton", "startSceneContinueButton", "startSceneOptionsButton", "startSceneAuthorsButton", "innWindowButtonHeroListUp",  
-				 "innWindowButtonHeroListDown", "citySceneStartJourneyButton" : this._addStartSceneButton( name, object );
+				 "innWindowButtonHeroListDown", "citySceneStartJourneyButton", "chooseDungeonSceneDungeonButtonA" : this._addStartSceneButton( name, object );
 			case "hospital", "tavern", "academy", "recruits", "storage", "graveyard", "blacksmith", "hermit", "merchant", "questman", "fontain" : this._addCitySceneBuildings( name, object );
 			default: trace( "Error in EventSystem.addEvent, type of event can't be: " + name + "." );
 		}		

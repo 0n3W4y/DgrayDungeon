@@ -87,7 +87,7 @@ class SceneSystem
 	{
 		switch( sceneName )
 		{
-			case "startScene", "cityScene", "dungeonChooseScene": return this._createStartScene( sceneName );
+			case "startScene", "cityScene", "chooseDungeonScene": return this._createStartScene( sceneName );
 			default: trace( "Error in SceneSystem.createScene, scene name can't be: " + sceneName + "." );
 		}
 		return null;
@@ -135,5 +135,21 @@ class SceneSystem
 	public function getParent():Game
 	{
 		return this._parent;
+	}
+
+	public function getActiveScene():Scene
+	{
+		return this._activeScene;
+	}
+
+	public function getScene( name:String ):Scene
+	{
+		for( i in 0...this._scenesArray.length )
+		{
+			var sceneName = this._scenesArray[ i ].getName();
+			if( sceneName == name )
+				return this._scenesArray[ i ];
+		}
+		return null;
 	}
 }

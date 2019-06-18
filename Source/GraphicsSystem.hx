@@ -218,6 +218,18 @@ class GraphicsSystem
 		this._parent.getMainSprite().addChild( scene );
 	}
 
+	private function _drawchooseDungeonScene( scene:Scene ):Void
+	{
+		var backgroundURL = scene.getBackgroundImageURL();
+		var bitmap = new Bitmap( Assets.getBitmapData ( backgroundURL ) );
+		scene.addChild( bitmap );
+
+		var sceneUiEntities:Dynamic = scene.getEntities( "ui" );
+		this.createUiObject( "dungeon1", sceneUiEntities );
+		this.createUiObject( "chooseHeroToDungeonWindow", sceneUiEntities );
+		this._parent.getMainSprite().addChild( scene );
+	}
+
 	private function _undrawCityScene( scene:Scene ):Void
 	{
 
@@ -246,7 +258,7 @@ class GraphicsSystem
 
 	public function new( parent:Game ):Void
 	{
-		_parent = parent;
+		this._parent = parent;
 	}
 
 	public function drawScene( scene:Scene ):Void
@@ -256,6 +268,7 @@ class GraphicsSystem
 		{
 			case "startScene": this._drawStartScene( scene );
 			case "cityScene": this._drawCityScene( scene );
+			case "chooseDungeonScene": this._drawchooseDungeonScene( scene );
 			default: trace( "Can't draw scene with name: " + sceneName + "." );
 		}
 	}
@@ -273,6 +286,7 @@ class GraphicsSystem
 
 	public function createUiObject( name:String, list:Dynamic ):Void
 	{
+		//TODO: rebuild function;
 		var windows:Array<Entity> = list.windows;
 		var buttons:Array<Entity> = list.buttons;
 		for( i in 0...windows.length )
@@ -311,6 +325,13 @@ class GraphicsSystem
 	public function hideScene( scene:Scene ):Void
 	{
 		scene.visible = false;
+		var list:Dynamic = scene.getEntities( "ui" );
+		var windows:Array<Entity> = list.windows;
+		for( i in 0...windows.length )
+		{
+			var name = windows[ i ].get( "name" );
+			this._parent.getSystem( "ui" ).hideUiObject( name );
+		}
 	}
 
 	public function showScene( scene:Scene ):Void
