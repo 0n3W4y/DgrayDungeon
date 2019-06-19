@@ -44,7 +44,10 @@ class UserInterface extends Sprite
 		{
 			var object = this._objectsOnUi[ i ];
 			if( object.name == name )
-				object.window.visible = true;
+			{
+				var sprite:Sprite = object.window;
+				sprite.visible = true;
+			}
 		}
 	}
 
@@ -54,7 +57,10 @@ class UserInterface extends Sprite
 		{
 			var object = this._objectsOnUi[ i ];
 			if( object.name == name )
-				object.window.visible = false;
+			{
+				var sprite:Sprite = object.window;
+				sprite.visible = false;
+			}
 		}
 	}
 }

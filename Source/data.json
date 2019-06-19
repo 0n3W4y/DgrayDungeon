@@ -11,8 +11,8 @@
 		"cityScene": 
 		{
 			"backgroundImageURL": "assets/images/citySceneBackround.png",
-			"window": [ "innWindow", "innWindowHeroWindow", "panelCityWindow" ],
-			"button": [ "innWindowButtonHeroListUp", "innWindowButtonHeroListDown", "citySceneStartJourneyButton" ],
+			"window": [ "innWindow", "innWindowHeroWindow", "panelCityWindow", "citySceneMainWindow" ],
+			"button": [ "innWindowButtonHeroListUp", "innWindowButtonHeroListDown", "citySceneStartJourneyButton", "citySceneMainWindowExitButton" ],
 			"building": [ "hospital", "academy", "hermit", "merchant", "storage", "graveyard", "recruits", "questman", "fontain", "blacksmith", "tavern" ]
 		},
 
@@ -20,7 +20,7 @@
 		{
 			"backgroundImageURL": "assets/images/chooseDungeonSceneOne.png",
 			"window": [ "dungeon1", "chooseHeroToDungeonWindow" ],
-			"button": [ "chooseDungeonSceneDungeonButtonA" ]
+			"button": [ "chooseDungeonSceneDungeonButtonA", "chooseDungeonBackToCityButton" ]
 		},
 
 		"dungeonScene":
@@ -31,6 +31,41 @@
 
 	"entity":
 	{
+		"heroes":
+		{
+			"swordsman":
+			{
+				"graphics":
+				{
+					"url": null,
+					"url2": null,
+					"url3": null,
+					"x": 0.0,
+					"y": 0.0,
+					"text": 
+					{
+						"Empty":
+						{
+							"text": "null",
+							"x": 100.0,
+							"y": 50.0,
+							"font": "Verdana",
+							"size": 48,
+							"color": "0xffffff",
+							"visible": true,
+							"selectable": false,
+							"queue": 1,
+							"height":100,
+							"width":100
+						}
+					},
+					"addiction": null,
+					"queue": 1,
+					"graphicsInstance": null
+				}
+			}
+		},
+
 		"building":
 		{
 			"hospital":
@@ -663,16 +698,16 @@
 						"buttonText":
 						{
 							"text": "START",
-							"x": 0.0,
-							"y": 0.0,
+							"x": 75.0,
+							"y": 5.0,
 							"font": "Verdana",
 							"size": 38,
 							"color": "0xffffff",
 							"visible": true,
 							"selectable": false,
 							"queue": 0,
-							"height":100,
-							"width":100
+							"height":40,
+							"width":140
 						}
 					},
 					"addiction": "panelCityWindow",
@@ -687,8 +722,8 @@
 					"url": "assets/images/button_c.png",
 					"url2": "assets/images/button_c_hover.png",
 					"url3": "assets/images/button_c_push.png",
-					"x": 70.0,
-					"y": 950.0,
+					"x": 105.0,
+					"y": 810.0,
 					"text" : null,
 					"addiction": "innWindow",
 					"queue" : 0,
@@ -703,12 +738,12 @@
 					"url2": "assets/images/button_d_push.png",
 					"url3": "assets/images/button_d_hover.png",
 					"x": 25.0,
-					"y": 950.0,
+					"y": 810.0,
 					"text" : null,
 					"addiction": "innWindow",
 					"queue" : 0,
 					"graphicsInstance": null
-				}			
+				}		
 			},
 
 			"chooseDungeonSceneDungeonButtonA":
@@ -718,13 +753,14 @@
 					"url": "assets/images/button_dungeon_a.png",
 					"url2": "assets/images/button_dungeon_a.png",
 					"url3": "assets/images/button_dungeon_a_choose.png",
-					"x": 370.0,
+					"x": -50.0,
 					"y": 100.0,
 					"text" : null,
 					"addiction": "dungeon1",
 					"queue" : 0,
 					"graphicsInstance": null
-				}			
+				},
+				"ui":{}			
 			},
 			"chooseDungeonSceneDungeonButtonB":
 			{
@@ -739,7 +775,8 @@
 					"addiction": "dungeon1",
 					"queue" : 0,
 					"graphicsInstance": null
-				}			
+				},
+				"ui":{}			
 			},
 			"chooseDungeonSceneDungeonButtonC":
 			{
@@ -754,7 +791,8 @@
 					"addiction": "dungeon1",
 					"queue" : 0,
 					"graphicsInstance": null
-				}			
+				},
+				"ui":{}			
 			},
 			"chooseDungeonSceneDungeonButtonD":
 			{
@@ -769,7 +807,39 @@
 					"addiction": "dungeon1",
 					"queue" : 0,
 					"graphicsInstance": null
-				}			
+				},
+				"ui":{}		
+			},
+				
+			"chooseDungeonBackToCityButton":
+			{
+				"graphics":
+				{
+					"url": "assets/images/backToCityButton.png",
+					"url2": "assets/images/backToCityButton_hover.png",
+					"url3": "assets/images/backToCityButton_push.png",
+					"x": 100.0,
+					"y": 150.0,
+					"text" : null,
+					"addiction": null,
+					"queue" : 0,
+					"graphicsInstance": null
+				}
+			},
+			"citySceneMainWindowExitButton":
+			{
+				"graphics":
+				{
+					"url": "assets/images/citySceneMainWindowExitButton.png",
+					"url2": "assets/images/citySceneMainWindowExitButton.png",
+					"url3": "assets/images/citySceneMainWindowExitButton_push.png",
+					"x": 1000.0,
+					"y": 10.0,
+					"text" : null,
+					"addiction": "citySceneMainWindow",
+					"queue" : 0,
+					"graphicsInstance": null
+				}
 			}
 		},
 		
@@ -789,6 +859,41 @@
 					"queue" : 0,
 					"graphicsInstance": null
 				}				
+			},
+			"citySceneMainWindow":
+			{
+				"graphics":
+				{
+					"url": "assets/images/citySceneMainWindow.png",
+					"url2": null,
+					"url3": null,
+					"x": 170.0,
+					"y": 70.0,
+					"text" : 
+					{
+						"nameWindow":
+						{
+							"text": "The real estate",
+							"x": 0.0,
+							"y": 0.0,
+							"font": "Verdana",
+							"size": 48,
+							"color": "0xffffff",
+							"visible": true,
+							"selectable": false,
+							"queue": 1,
+							"height":50,
+							"width":350
+						}
+					},
+					"addiction": "citySceneMainWindow",
+					"queue" : 0,
+					"graphicsInstance": null
+				},
+				"ui":
+				{
+
+				}
 			},
 
 			"panelCityWindow":
@@ -814,37 +919,37 @@
 					"url": "assets/images/innWindow.png",
 					"url2": null,
 					"url3": null,
-					"x": 1500.0,
-					"y": 40.0,
+					"x": 1600.0,
+					"y": 80.0,
 					"text" : 
 					{
 						"nameWindow":
 						{
 							"text": "Inn",
-							"x": 0.0,
-							"y": 0.0,
+							"x": 20.0,
+							"y": -35.0,
 							"font": "Verdana",
 							"size": 32,
 							"color": "0xffffff",
 							"visible": true,
 							"selectable": false,
 							"queue": 1,
-							"height":100,
-							"width":100
+							"height":50,
+							"width":50
 						},
 						"quantityHeroes":
 						{
 							"text": "0/0",
-							"x": 140.0,
-							"y": 0.0,
+							"x": 100.0,
+							"y": -35.0,
 							"font": "Verdana",
 							"size": 32,
 							"color": "0xffffff",
 							"visible": true,
 							"selectable": false,
 							"queue": 2,
-							"height":100,
-							"width":100
+							"height":50,
+							"width":50
 						}
 					},
 					"addiction": "innWindow",
@@ -934,37 +1039,37 @@
 					"url": "assets/images/dungeonWindow.png",
 					"url2": null,
 					"url3": null,
-					"x": 200.0,
-					"y": 450.0,
+					"x": 700.0,
+					"y": 400.0,
 					"text" : 
 					{
 						"nameWindow":
 						{
-							"text": "Empty",
-							"x": 0.0,
-							"y": 0.0,
+							"text": "The real path of truth",
+							"x": 15.0,
+							"y": 10.0,
 							"font": "Verdana",
 							"size": 22,
-							"color": "0x000000",
+							"color": "0xffffff",
 							"visible": true,
 							"selectable": false,
 							"queue": 1,
-							"height":50,
-							"width":50
+							"height":20,
+							"width":250
 						},
 						"lvl":
 						{
 							"text": "1",
-							"x": 50.0,
+							"x": 350.0,
 							"y": 10.0,
 							"font": "Verdana",
 							"size": 22,
-							"color": "0x000000",
+							"color": "0xfffff0",
 							"visible": true,
 							"selectable": false,
 							"queue": 2,
-							"height":50,
-							"width":50
+							"height":30,
+							"width":10
 						}
 					},
 					"addiction": "dungeon1",

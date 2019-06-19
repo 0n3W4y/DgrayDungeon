@@ -177,6 +177,9 @@ class GraphicsSystem
 		//here we create only that window, whom see all time;
 		this.createUiObject( "innWindow", sceneUiEntities );
 		this.createUiObject( "panelCityWindow", sceneUiEntities );
+		this.createUiObject( "citySceneMainWindow", sceneUiEntities );
+		this._parent.getSystem( "ui" ).hideUiObject( "citySceneMainWindow" );
+
 
 		this._parent.getMainSprite().addChild( scene );
 	}
@@ -264,7 +267,7 @@ class GraphicsSystem
 			var windowName = window.get( "name" );
 			if( windowName == name )
 			{
-				var spriteWindow = this._createWindow( window );
+				var spriteWindow:Sprite = this._createWindow( window );
 				var text = window.getComponent( "graphics" ).getText();
 				if( text != null )
 				{

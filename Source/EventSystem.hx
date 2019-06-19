@@ -13,6 +13,64 @@ class EventSystem
 	private var _parent:Game;
 	private var _eventListeners:Array<Dynamic>;
 
+	private function _clickButton( obj:Dynamic ):Void
+	{
+		switch( obj.get( "name" ) )
+		{
+			case "startSceneAuthorsButton": trace( "Authors button pushed." );
+			case "startSceneOptionsButton": trace( "Options button pushed." );
+			case "startSceneStartButton": 
+			{
+				//check for load file
+				var newScene = this._parent.getSystem( "scene" ).createScene( "cityScene" );
+				this._parent.getSystem( "scene" ).doActiveScene( newScene );
+			}
+			case "startSceneContinueButton": trace( "Continue button pushed" );
+			case "citySceneStartJourneyButton": 
+			{
+				var sceneSystem:SceneSystem = this._parent.getSystem( "scene" );
+				var activeScene = sceneSystem.getActiveScene();
+				var name = activeScene.getName();
+				if ( name == "cityScene" )
+				{
+					var dungeonScene = sceneSystem.getScene( "chooseDungeonScene" );
+					if( dungeonScene == null )
+					dungeonScene = sceneSystem.createScene( "chooseDungeonScene" );
+					dungeonScene.draw();
+					sceneSystem.switchScene( dungeonScene );
+					this._parent.getSystem( "ui" ).showUiObject( "innWindow" );
+					this._parent.getSystem( "ui" ).showUiObject( "panelCityWindow" );
+				}
+				else
+				{
+					//check full stack heroes, check choosen dungeon, check if total LVL heroes are lower then dungeon needed, confirm;
+					trace( " we go to fight... TODO." );
+				}
+			}
+			case "citySceneMainWindowExitButton": this._parent.getSystem( "ui" ).hideUiObject( "citySceneMainWindow" );
+			default: trace( "Click this: " + obj.get( "name" ) );
+		}
+	}
+
+	private function _clickBuilding( obj:Dynamic ):Void
+	{
+		this._parent.getSystem( "ui" ).showUiObject( "citySceneMainWindow" );
+		switch( obj.get( "name" ) )
+		{
+			case "hospital": {};
+			case "tavern":{};
+			case "recruits" : {};
+			case "storage": {};
+			case "graveyard": {};
+			case "blacksmith": {};
+			case "hermit": {};
+			case "merchant": {};
+			case "questman": {};
+			case "fontain": {};
+			default: trace( "Click this: " + obj.get( "name" ) );
+		}
+	}
+
 	private function _addStartSceneButton( name:String, object:Sprite ):Void
 	{
 		var arrayOfEvents:Array<Dynamic> = new Array();
@@ -53,91 +111,28 @@ class EventSystem
 		this._eventListeners.push( listener );
 	}
 
+	//TODO: functions with click;
+
 	private function _eventMouseClick( e:MouseEvent ):Void
 	{
 		var obj:Dynamic = e.target;
 		if( Std.is( e.target, TextField ) )
 		{
-			if( obj.parent.parent.get( "type" ) == "button" )
+			switch( obj.parent.parent.get( "type" ) )
 			{
-				switch( obj.parent.parent.get( "name" ) )
-				{
-					case "startSceneAuthorsButton": trace( "Authors button pushed." );
-					case "startSceneOptionsButton": trace( "Options button pushed." );
-					case "startSceneStartButton": 
-					{
-						//check for load file
-						var newScene = this._parent.getSystem( "scene" ).createScene( "cityScene" );
-						this._parent.getSystem( "scene" ).doActiveScene( newScene );
-					}
-					case "startSceneContinueButton": trace( "Continue button pushed" );
-					case "citySceneStartJourneyButton": 
-					{
-						var sceneSystem:SceneSystem = this._parent.getSystem( "scene" );
-						var activeScene = sceneSystem.getActiveScene();
-						var name = activeScene.getName();
-						if ( name == "cityScene" )
-						{
-							var dungeonScene = sceneSystem.getScene( "chooseDungeonScene" );
-							if( dungeonScene == null )
-								dungeonScene = sceneSystem.createScene( "chooseDungeonScene" );
-
-							dungeonScene.draw();
-							sceneSystem.switchScene( dungeonScene );
-							this._parent.getSystem( "ui" ).showUiObject( "innWindow" );
-							this._parent.getSystem( "ui" ).showUiObject( "panelCityWindow" );
-						}
-						else
-						{
-							//check full stack heroes, check choosen dungeon, check if total LVL heroes are lower then dungeon needed, confirm;
-							trace( " we go to fight... TODO." );
-						}
-					}
-					default: trace( "Click this: " + obj.parent.parent.get( "name" ) );
-				}
-			}			
+				case "button": this._clickButton( obj.parent.parent );
+				case "building": this._clickBuilding( obj.parent.parent );
+				default: trace( "Click " + obj.get( "name" ) );
+			}
 		}
 		else
 		{
-			if( obj.get( "type" ) == "button" )
+			switch( obj.get( "type") )
 			{
-				switch ( obj.get( "name" ) ) 
-				{
-					case "startSceneAuthorsButton": trace( "Authors button pushed." );
-					case "startSceneOptionsButton": trace( "Options button pushed." );
-					case "startSceneStartButton": 
-					{
-						//check for load file
-						var newScene = this._parent.getSystem( "scene" ).createScene( "cityScene" );
-						this._parent.getSystem( "scene" ).doActiveScene( newScene );
-					}
-					case "startSceneContinueButton": trace( "Continue button pushed" );
-					case "citySceneStartJourneyButton": 
-					{
-						var sceneSystem:SceneSystem = this._parent.getSystem( "scene" );
-						var activeScene = sceneSystem.getActiveScene();
-						var name = activeScene.getName();
-						if ( name == "cityScene" )
-						{
-							var dungeonScene = sceneSystem.getScene( "chooseDungeonScene" );
-							if( dungeonScene == null )
-								dungeonScene = sceneSystem.createScene( "chooseDungeonScene" );
-
-							dungeonScene.draw();
-							sceneSystem.switchScene( dungeonScene );
-							this._parent.getSystem( "ui" ).showUiObject( "innWindow" );
-							this._parent.getSystem( "ui" ).showUiObject( "panelCityWindow" );
-						}
-						else
-						{
-							//check full stack heroes, check choosen dungeon, check if total LVL heroes are lower then dungeon needed, confirm;
-							trace( " we go to fight... TODO." );
-						}
-						
-					}
-					default: trace( "Click this: " + obj.get( "name" ) );
-				}
-			}
+				case "button": this._clickButton( obj );
+				case "building": this._clickBuilding( obj );
+				default: trace( "Click " + obj.get( "name" ) );
+			}			
 		}	
 	}
 
@@ -185,6 +180,10 @@ class EventSystem
 			}
 			else
 			{
+				if( obj.parent.get( "name" ) == "chooseDungeonSceneDungeonButtonA" && obj.parent.getComponent( "ui" ).isChoosen() )
+				{
+					return;
+				}
 				sprite.parent.parent.getChildAt( 1 ).visible = false;
 				sprite.parent.parent.getChildAt( 2 ).visible = false;
 			}	
@@ -199,6 +198,10 @@ class EventSystem
 			}
 			else
 			{
+				if( obj.get( "name" ) == "chooseDungeonSceneDungeonButtonA" && obj.getComponent( "ui" ).isChoosen() )
+				{
+					return;
+				}
 				sprite.getChildAt( 1 ).visible = false;
 				sprite.getChildAt( 2 ).visible = false;
 			}			
@@ -208,10 +211,15 @@ class EventSystem
 	private function _eventMouseDown( e:MouseEvent ):Void
 	{
 		var sprite:Sprite = e.target;
+		var entity:Dynamic = e.target;
 		if( Std.is( sprite, TextField ) )
+		{
 			sprite.parent.parent.getChildAt( 2 ).visible = true;
+		}
 		else
+		{
 			sprite.getChildAt( 2 ).visible = true;
+		}
 
 	}
 
@@ -221,10 +229,34 @@ class EventSystem
 		var entity:Dynamic = e.target;
 		if( Std.is( sprite, TextField ) )
 		{
+			if( entity.parent.parent.get( "name" ) == "chooseDungeonSceneDungeonButtonA" )
+			{
+				if( entity.parent.parent.getComponent( "ui" ).isChoosen() )
+				{
+					entity.parent.parent.getComponent( "ui" ).setIsChoosen( false );
+				}
+				else
+				{
+					entity.parent.parent.getComponent( "ui" ).setIsChoosen( true );
+					return;
+				}
+			}
 			sprite.parent.parent.getChildAt( 2 ).visible = false;			
 		}
 		else
 		{
+			if( entity.get( "name" ) == "chooseDungeonSceneDungeonButtonA" )
+			{
+				if( entity.getComponent( "ui" ).isChoosen() )
+				{
+					entity.getComponent( "ui" ).setIsChoosen( false );
+				}
+				else
+				{
+					entity.getComponent( "ui" ).setIsChoosen( true );
+					return;
+				}
+			}
 			sprite.getChildAt( 2 ).visible = false;
 		}
 	}
@@ -240,7 +272,7 @@ class EventSystem
 		switch( name )
 		{
 			case "startSceneStartButton", "startSceneContinueButton", "startSceneOptionsButton", "startSceneAuthorsButton", "innWindowButtonHeroListUp",  
-				 "innWindowButtonHeroListDown", "citySceneStartJourneyButton", "chooseDungeonSceneDungeonButtonA" : this._addStartSceneButton( name, object );
+				 "innWindowButtonHeroListDown", "citySceneStartJourneyButton", "chooseDungeonSceneDungeonButtonA", "citySceneMainWindowExitButton" : this._addStartSceneButton( name, object );
 			case "hospital", "tavern", "academy", "recruits", "storage", "graveyard", "blacksmith", "hermit", "merchant", "questman", "fontain" : this._addCitySceneBuildings( name, object );
 			default: trace( "Error in EventSystem.addEvent, type of event can't be: " + name + "." );
 		}		

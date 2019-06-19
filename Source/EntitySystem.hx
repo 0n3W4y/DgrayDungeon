@@ -16,10 +16,13 @@ class EntitySystem
 
 	private function _createUiType( type:String, name:String, id:String, params:Dynamic ):Entity
 	{
-		// [{"name": "Window1","window":{window:entity},"text":[{"text1":{text}}],"button":[{"button1":{button1},"text":{text}]];
 		var uiObject = new Entity( this, id, type, name );
-		var component = this.createComponent( "graphics", params.graphics );
-		this.addComponentTo( component, uiObject );
+		for( key in Reflect.fields( params ) )
+		{
+			var value = Reflect.getProperty( params, key );
+			var component = this.createComponent( key, value );
+			this.addComponentTo( component, uiObject );
+		}
 		return uiObject;
 	}
 
@@ -65,6 +68,7 @@ class EntitySystem
 		switch( componentName )
 		{
 			case "graphics": component = new Graphics( null, id, params );
+			case "ui": component = new UI( null, id, params );
 			default: trace( "Error in EntitySystem.createComponent, component with name: '" + componentName + "' does not exist." );
 		}
 		return component;

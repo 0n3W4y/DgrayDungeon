@@ -3,6 +3,8 @@ package;
 class UI extends Component
 {
 	private var _isChoosen:Bool = false;
+	//private var _currentChildOpen:String = null;
+	// this is child window is opened on parent window;
 
 
 
