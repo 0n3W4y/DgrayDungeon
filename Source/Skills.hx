@@ -2,8 +2,9 @@ package;
 
 class Skills extends Component
 {
-	public function new():Void
+	public function new( parent:Entity, id:String, params:Dynamic ):Void
 	{
-		super();
+		super( parent, id, "traits" );
+
 	}
 }

@@ -35,33 +35,93 @@
 		{
 			"swordsman":
 			{
-				"graphics":
+				"uncommon":
 				{
-					"url": null,
-					"url2": null,
-					"url3": null,
-					"x": 0.0,
-					"y": 0.0,
-					"text": 
+					"name":
 					{
-						"Empty":
-						{
-							"text": "null",
-							"x": 100.0,
-							"y": 50.0,
-							"font": "Verdana",
-							"size": 48,
-							"color": "0xffffff",
-							"visible": true,
-							"selectable": false,
-							"queue": 1,
-							"height":100,
-							"width":100
-						}
+
 					},
-					"addiction": null,
-					"queue": 1,
-					"graphicsInstance": null
+
+					"experience":
+					{
+
+					},
+
+					"stats":
+					{
+						"hp": 10,
+						"acc": 10,
+						"ddg": 10, 
+						"cc": 10,
+						"def": 10,
+						"dmg": 10,
+						"spd": 10,
+						"tiredness": 0
+					},
+
+					"traits":
+					{
+
+					},
+
+					"skills":
+					{
+						"active":
+						{
+
+						},
+						"passive":
+						{
+
+						},
+						""
+					},
+
+					"inentory":
+					{
+
+					},
+
+					"graphics":
+					{
+						"url": null,
+						"url2": null,
+						"url3": null,
+						"x": 0.0,
+						"y": 0.0,
+						"text": 
+						{
+							"Empty":
+							{
+								"text": "null",
+								"x": 100.0,
+								"y": 50.0,
+								"font": "Verdana",
+								"size": 48,
+								"color": "0xffffff",
+								"visible": true,
+								"selectable": false,
+								"queue": 1,
+								"height":100,
+								"width":100
+							}
+						},
+						"addiction": null,
+						"queue": 1,
+						"graphicsInstance": null
+					}
+				},
+				"common":
+				{
+
+				},
+				"rare":
+				{
+
+				},
+				"legendary":
+				{
+
 				}
 			}
 		},
@@ -1093,6 +1153,32 @@
 					"graphicsInstance": null
 				}
 			}
+		}
+	},
+
+	"trait":
+	{
+		"positive":
+		{
+
+		},
+
+		"negative":
+		{
+
+		},
+
+		"disease":
+		{
+
+		}
+	},
+
+	"skill":
+	{
+		"swordsman":
+		{
+
 		}
 	}
 }
