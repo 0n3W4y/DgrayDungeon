@@ -9,10 +9,16 @@ class Traits extends Component
 	private var _numOfPositive:Int = 0;
 	private var _numOfNegative:Int = 0;
 	private var _numOfDiseases:Int = 0;
+	private var _numOfPositiveStatic:Int = 0;
+	private var _numOfNegativeStatic:Int = 0;
+	private var _numOfDiseasesStatic:Int = 0;
 
 	private var _maxNumOfPositive:Int;
 	private var _maxNumOfNegative:Int;
 	private var _maxNumOfDiseases:Int;
+	private var _maxNumOfPositiveStatic:Int;
+	private var _maxNumOfNegativeStatic:Int;
+	private var _maxNumOfDiseasesStatic:Int;
 
 
 	public function new( parent:Entity, id:String, params:Dynamic ):Void
@@ -21,6 +27,9 @@ class Traits extends Component
 		this._maxNumOfPositive = params.maxNumOfPositive;
 		this._maxNumOfNegative = params.maxNumOfNegative;
 		this._maxNumOfDiseases = params.maxNumOfDiseases;
+		this._maxNumOfPositiveStatic = params.maxNumOfPositiveStatic;
+		this._maxNumOfNegativeStatic = params.maxNumOfNegativeStatic;
+		this._maxNumOfDiseasesStatic = params.maxNumOfDiseasesStatic;
 	}
 
 	public function addTrait( trait:Dynamic, place:String ):Void
@@ -53,6 +62,16 @@ class Traits extends Component
 			}
 			default: trace( "Error in Traits.addTrait, can't add trait with type: " + place );
 		}
+	}
+
+	public function doStaticTrait( trait:Dynamic ):Void
+	{
+
+	}
+
+	public function removeTrait( trait:Dynamic ):Void
+	{
+		
 	}
 
 	public function getTrait( name:String ):Dynamic

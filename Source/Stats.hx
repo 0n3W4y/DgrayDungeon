@@ -30,6 +30,8 @@ class Stats extends Component
 	private var _currentDebuffResist:FLoat;
 	private var _totalMoveResist:Float;
 	private var _currentMoveResist:Float;
+	private var _totalFireResist:FLoat;
+	private var _currentFireResist:Float;
 
 
 

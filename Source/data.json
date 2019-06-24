@@ -33,6 +33,16 @@
 	{
 		"heroes":
 		{
+			"crossbowman":{},
+			"bowman": {},
+			"gunman":{},
+			"highwayman": {},
+			"barbarian": {},
+			"paladin": {},
+			"picker": {},
+			"alchemistry":{},
+			"thief":{},
+
 			"swordsman":
 			{
 				"uncommon":
