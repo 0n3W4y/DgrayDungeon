@@ -33,12 +33,268 @@
 	{
 		"heroes":
 		{
-			"crossbowman":{},
+			"crossbowman":
+			{
+				"skills":
+				{
+					"active":
+					{
+						"basic": { "isChoose": false, "upgradeLevel": 0, "dmg": [ 1, 5 ], "effect": null, "cooldawn": 0, "target": [ 1, 2, 3, 4 ] },
+						"throughAttack": { "isChoose": false, "upgradeLevel": 0, "cooldawn": 0 },
+						"bleedingAttack": { "isChoose": false, "upgradeLevel": 0 },
+						"hightBolt": { "isChoose": false, "upgradeLevel": 0 },
+						"binti": { "isChoose": false, "upgradeLevel": 0 },
+						"6": { "isChoose": false, "upgradeLevel": 0 },
+						"7": { "isChoose": false, "upgradeLevel": 0 }
+					},
+					"passive":
+					{
+						"armorpiercingBolts":{ "isChoose": false, "upgradeLevel": 0 },
+						"speedup": { "isChoose": false, "upgradeLevel": 0 },
+						"dodgeup":{ "isChoose": false, "upgradeLevel": 0 },
+						"hightcritdamage": { "isChoose": false, "upgradeLevel": 0 }
+					},
+					"camping":
+					{
+
+					}
+				},
+
+				"inentory":
+				{
+					"slots": 4,
+					"weaponsSlot": { "object": null, "restriction": "paladin" },
+					"armorSlot": { "object": null, "restriction": 4 },
+					"accessoryOne": { "object": null, "restriction": null },
+					"accessoryTwo": { "object": null, "restriction": null }
+				},
+
+				"name":
+				{
+					"name": null,
+					"surname": null,
+					"rank": null
+				},
+				"experience":
+				{
+					"lvl": 1,
+					"exp": 0
+				},
+
+				"stats":{},
+				"traits":{},
+				"skills":{},
+				"graphics":{},
+
+				"uncommon":
+				{
+					"stats":
+					{
+						"hp": 10,
+						"acc": 10,
+						"ddg": 10, 
+						"cc": 10,
+						"def": 10,
+						"dmg": 1,
+						"spd": 10,
+						"tiredness": 100,
+						"stunResist": 50,
+						"poisonResist": 50,
+						"bleedResist": 50,
+						"diseasResist": 50,
+						"debuffResist": 50,
+						"moveResist": 50,
+						"fireResist": 50,
+
+					},
+
+					"traits":
+					{
+						"maxNumOfPositive": 3,
+						"maxNumOfNegative": 5,
+						"maxNumOfDiseases": 7,
+						"maxNumOfPositiveStatic": 1,
+						"maxNumOfNegativeStatic": 4,
+						"maxNumOfPositiveDiseases": 3
+					},
+
+					"skills":
+					{
+						"active":
+						{
+							"maxActiveSkills": 3,
+							"maxStaticActiveSkills": 2
+						},
+						"passive":
+						{
+							"maxPassiveSkills": 2,
+							"maxStaticPassiveSkills": 1,
+						},
+						"camping":
+						{
+
+						}
+					},					
+
+					"graphics":
+					{
+						"url": null,
+						"url2": null,
+						"url3": null,
+						"x": 0.0,
+						"y": 0.0,
+						"text": 
+						{
+							"Empty":
+							{
+								"text": "null",
+								"x": 100.0,
+								"y": 50.0,
+								"font": "Verdana",
+								"size": 48,
+								"color": "0xffffff",
+								"visible": true,
+								"selectable": false,
+								"queue": 1,
+								"height":100,
+								"width":100
+							}
+						},
+						"addiction": null,
+						"queue": 1,
+						"graphicsInstance": null
+					}
+				},
+				"common":
+				{
+
+				},
+				"rare":
+				{
+
+				},
+				"legendary":
+				{
+
+				}
+			},
+
 			"bowman": {},
 			"gunman":{},
 			"highwayman": {},
 			"barbarian": {},
-			"paladin": {},
+			"paladin": 
+			{
+				"uncommon":
+				{
+					"name":
+					{
+
+					},
+
+					"experience":
+					{
+
+					},
+
+					"stats":
+					{
+						"hp": 10,
+						"acc": 10,
+						"ddg": 10, 
+						"cc": 10,
+						"def": 10,
+						"dmg": 10,
+						"spd": 10,
+						"tiredness": 100
+					},
+
+					"traits":
+					{
+						"maxNumOfPositive": 3,
+						"maxNumOfNegative": 5,
+						"maxNumOfDiseases": 7,
+						"maxNumOfPositiveStatic": 1,
+						"maxNumOfNegativeStatic": 4,
+						"maxNumOfPositiveDiseases": 3
+					},
+
+					"skills":
+					{
+						"active":
+						{
+							"basic":{},
+							"hummerStun":{},
+							"shieldMove":{},
+							"hummerCrippling": {},
+							"healSomeone":{},
+							"healSelf":{},
+							"armorDebuff": {}
+						},
+						"passive":
+						{
+							"highDefense":{},
+							"hightAttackOnUndead": {},
+							"highHealing":{},
+							"hightStun": {},
+						},
+						"camping":
+						{
+
+						}
+					},
+
+					"inentory":
+					{
+						"weaponsSlot": {},
+						"armorSlot": {},
+						"accessoryOne": {},
+						"accessoryTwo": {}
+					},
+
+					"graphics":
+					{
+						"url": null,
+						"url2": null,
+						"url3": null,
+						"x": 0.0,
+						"y": 0.0,
+						"text": 
+						{
+							"Empty":
+							{
+								"text": "null",
+								"x": 100.0,
+								"y": 50.0,
+								"font": "Verdana",
+								"size": 48,
+								"color": "0xffffff",
+								"visible": true,
+								"selectable": false,
+								"queue": 1,
+								"height":100,
+								"width":100
+							}
+						},
+						"addiction": null,
+						"queue": 1,
+						"graphicsInstance": null
+					}
+				},
+				"common":
+				{
+
+				},
+				"rare":
+				{
+
+				},
+				"legendary":
+				{
+
+				}
+			},
+
 			"picker": {},
 			"alchemistry":{},
 			"thief":{},
@@ -236,6 +492,11 @@
 			{
 
 			},
+			"svyatilishe":
+			{
+
+			},
+
 			"storage":
 			{
 				"graphics":

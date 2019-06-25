@@ -33,29 +33,31 @@ class Stats extends Component
 	private var _totalFireResist:FLoat;
 	private var _currentFireResist:Float;
 
+	private var _effects:Array<Dynamic>;
+
 
 
 	public function new( parent:Entity, id:String, params:Dynamic ):Void
 	{
 		super( parent, id, "stats" );
+		this._effects = new Array();
+
 		for( key in Reflect.fields ( params ) )
 		{
 			var value = Reflect.getProperty( params, key );
 			switch( key )
 			{
 				case "hp": this._currentHp = value; this._totalHp = value;
-				case "acc": this._currentAcc = value;
-				case "ddg": this._currentDdg = value;
-				case "cc": this._currentCc = value;
-				case "def": this._currentDef = value;
-				case "dmg": this._currentDmg = value;
-				case "spd": this._currentSpd = value;
-				case "trd": this._currentTiredness = value;
+				case "acc": this._currentAcc = value; this._totalAcc = value;
+				case "ddg": this._currentDdg = value; this._totalDdg = value;
+				case "cc": this._currentCc = value; this._totalCc = value;
+				case "def": this._currentDef = value; this._totalDef = value;
+				case "dmg": this._currentDmg = value; this._totalDmg = value;
+				case "spd": this._currentSpd = value; this._totalSpd = value;
+				case "trd": this._currentTiredness = value; this._totalTiredness = value;
 				default: trace( "Error in Stats.setCurrent, name can't be: " + name );
 			}
-
 		}
-
 	}
 
 	public function setCurrent( name:String, value:Float ):Void
@@ -76,7 +78,7 @@ class Stats extends Component
 			case "diseas": this._currentDiseaseResist = value;
 			case "debuff": this._currentDebuffResist = value;
 			case "move": this._currentMoveResist = value;
-
+			case "fire": this._currentFireResist = value;
 			default: trace( "Error in Stats.setCurrent, name can't be: " + name );
 		}
 	}
@@ -99,6 +101,7 @@ class Stats extends Component
 			case "diseas": this._totalDiseasResist = value;
 			case "debuff": this._totalDebuffResist = value;
 			case "move": this._totalMoveResist = value;
+			case "fire": this._totalFireResist = value;
 			default: trace( "Error in Stats.setTotal, name can't be: " + name );
 		}
 	}
@@ -121,7 +124,13 @@ class Stats extends Component
 			case "diseas": if( type == "total" ) return this._totalDiseasResist; else return this._currentDiseaseResist;
 			case "debuff": if( type == "total" ) return this._totalDebuffResist; else return this._currentDebuffResist;
 			case "move": if( type == "total" ) return this._totalMoveResist; else return this._currentMoveResist;
+			case "fire": if( type == "total" ) return this._totalFireResist; else return this._currentFireResist;
 			default: trace( "Error in Stats.get, name can't be: " + name + ", with type: " + type ); 
 		}
+	}
+
+	public function getEffects():Array
+	{
+		return this._effects;
 	}
 }
