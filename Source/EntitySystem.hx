@@ -38,6 +38,12 @@ class EntitySystem
 		return building;
 	}
 
+	private function _createHero( type:String, name:String, id:String, params:Dynamic ):Entity
+	{
+
+		return null;
+	}
+
 	public function new( parent:Game, params:Dynamic ):Void
 	{
 		this._parent = parent;
@@ -51,6 +57,7 @@ class EntitySystem
 		{
 			case "window", "button" : return this._createUiType( type, name, id, params );
 			case "building" : return this._createBuilding( type, name, id, params );
+			case "hero": return this._createHero( type, name, id, params );
 			default: trace( "Error in EntitySystem.createEntity, can't find entity with type: " + type + "." );
 		};
 		return null;
