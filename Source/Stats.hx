@@ -15,8 +15,8 @@ class Stats extends Component
 	private var _currentDmg:Float; // Damage
 	private var _totalSpd:Float;
 	private var _currentSpd:Float; // Speed
-	private var _totalTiredness:Float;
-	private var _currentTiredness:Float; // Tiredness :D
+	private var _totalStress:Float;
+	private var _currentStress:Float; // stress :D
 	private var _totalCritDamage:Float;
 	private var _currentCritDamage:Float;
 
@@ -55,7 +55,7 @@ class Stats extends Component
 				case "def": {this._currentDef = value; this._totalDef = value;}
 				case "dmg": {this._currentDmg = value; this._totalDmg = value;}
 				case "spd": {this._currentSpd = value; this._totalSpd = value;}
-				case "trd": {this._currentTiredness = value; this._totalTiredness = value;}
+				case "stress": {this._currentStress = value; this._totalStress = value;}
 				case "cd": {this._currentCritDamage = value; this._totalCritDamage = value;}
 				case "stun": {this._currentStunResist = value; this._totalStunResist = value;}
 				case "poison": {this._currentPoisonResist = value; this._totalPoisonResist = value;}
@@ -80,7 +80,7 @@ class Stats extends Component
 			case "def": this._currentDef = value;
 			case "dmg": this._currentDmg = value;
 			case "spd": this._currentSpd = value;
-			case "trd": this._currentTiredness = value;
+			case "stress": this._currentStress = value;
 			case "stun": this._currentStunResist = value;
 			case "poison": this._currentPoisonResist = value;
 			case "bleed": this._currentBleedResist = value;
@@ -103,7 +103,7 @@ class Stats extends Component
 			case "def": this._totalDef = value;
 			case "dmg": this._totalDmg = value;
 			case "spd": this._totalSpd = value;
-			case "trd": this._totalTiredness = value;
+			case "stress": this._totalStress = value;
 			case "stun": this._totalStunResist = value; 
 			case "poison": this._totalPoisonResist = value;
 			case "bleed": this._totalBleedResist = value;
@@ -126,7 +126,7 @@ class Stats extends Component
 			case "def": {if( type == "total" ) return this._totalDef;  else return this._currentDef;}
 			case "dmg": {if( type == "total" ) return this._totalDmg;  else return this._currentDmg;}
 			case "spd": {if( type == "total" ) return this._totalSpd;  else return this._currentSpd;}
-			case "trd": {if( type == "total" ) return this._totalTiredness; else return this._currentTiredness;}
+			case "stress": {if( type == "total" ) return this._totalStress; else return this._currentStress;}
 			case "cd": {if( type == "total" ) return this._totalCritDamage; else return this._currentCritDamage;}
 			case "stun": {if( type == "total" ) return this._totalStunResist; else return this._currentStunResist;}
 			case "poison": {if( type == "total" ) return this._totalPoisonResist; else return this._currentPoisonResist;}

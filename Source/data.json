@@ -35,603 +35,6 @@
 		{
 			"crossbowman":
 			{
-				"skills":
-				{
-					"active":
-					{
-						"basic": 
-						{ 
-							"isChoosen": false, 
-							"upgradeLevel": 0,
-							"dmg":null,
-							"effect":null,
-							"duration":null,
-							"cooldawn":null,
-							"target":null,
-							"upgradeValue": 
-							{
-								"0":
-								{
-									"dmg": [ 1, 2 ], 
-									"effect": null, 
-									"duration": 0, 
-									"cooldawn": 0, 
-									"target": [ 3, 4 ]
-								},
-								"1":
-								{
-									"dmg": [ 2, 3 ], 
-									"effect": null, 
-									"duration": 0, 
-									"cooldawn": 0, 
-									"target": [ 3, 4 ]
-								},
-								"2":
-								{
-									"dmg": [ 3, 4 ], 
-									"effect": null, 
-									"duration": 0, 
-									"cooldawn": 0, 
-									"target": [ 2, 3, 4 ]
-								},
-								"3":
-								{
-									"dmg": [ 4, 5 ], 
-									"effect": null, 
-									"duration": 0, 
-									"cooldawn": 0, 
-									"target": [ 2, 3, 4 ]
-								},
-								"4":
-								{
-									"dmg": [ 5, 6 ], 
-									"effect": null, 
-									"duration": 0, 
-									"cooldawn": 0, 
-									"target": [ 1, 2, 3, 4 ]
-								}
-							}
-						},
-						"throughAttack": 
-						{ 
-							"isChoosen": false, 
-							"upgradeLevel": 0,
-							"dmg":null,
-							"effect":null,
-							"duration":null,
-							"cooldawn":null,
-							"target":null,
-							"upgradeValue": 
-							{
-								"0":
-								{
-									"dmg": [ 1, 1 ], 
-									"effect": null, 
-									"duration": 0, 
-									"cooldawn": 4, 
-									"target": [ 34 ]
-								},
-								"1":
-								{
-									"dmg": [ 1, 2 ], 
-									"effect": null, 
-									"duration": 0, 
-									"cooldawn": 4, 
-									"target": [ 34 ]
-								},
-								"2":
-								{
-									"dmg": [ 2, 2 ], 
-									"effect": null, 
-									"duration": 0, 
-									"cooldawn": 3, 
-									"target": [ 23, 34 ]
-								},
-								"3":
-								{
-									"dmg": [ 2, 3 ], 
-									"effect": null, 
-									"duration": 0, 
-									"cooldawn": 3, 
-									"target": [ 123, 234 ]
-								},
-								"4":
-								{
-									"dmg": [ 3, 3 ], 
-									"effect": null, 
-									"duration": 0, 
-									"cooldawn": 2, 
-									"target": [ 14 ]
-								}
-							}
-						},
-						"bleedingAttack": 
-						{ 
-							"isChoosen": false, 
-							"upgradeLevel": 0,
-							"dmg":null,
-							"effect":null,
-							"duration":null,
-							"cooldawn":null,
-							"target":null,
-							"upgradeValue": 
-							{
-								"0":
-								{
-									"dmg": [ 1, 2 ], 
-									"effect": "bleed", 
-									"duration": 1, 
-									"cooldawn": 4, 
-									"target": [ 3, 4 ]
-								},
-								"1":
-								{
-									"dmg": [ 2, 3 ], 
-									"effect": "bleed", 
-									"duration": 2, 
-									"cooldawn": 4, 
-									"target": [ 3, 4 ]
-								},
-								"2":
-								{
-									"dmg": [ 3, 4 ], 
-									"effect": "bleed", 
-									"duration": 2, 
-									"cooldawn": 3, 
-									"target": [ 2, 3, 4 ]
-								},
-								"3":
-								{
-									"dmg": [ 4, 5 ], 
-									"effect": "bleed", 
-									"duration": 3, 
-									"cooldawn": 3, 
-									"target": [ 2, 3, 4 ]
-								},
-								"4":
-								{
-									"dmg": [ 5, 6 ], 
-									"effect": "bleed", 
-									"duration": 4, 
-									"cooldawn": 2, 
-									"target": [ 2, 3, 4 ]
-								}
-							}
-						},
-						"hightBolt": 
-						{ 
-							"isChoosen": false, 
-							"upgradeLevel": 0,
-							"dmg":null,
-							"effect":null,
-							"duration":null,
-							"cooldawn":null,
-							"target":null,
-							"upgradeValue": 
-							{
-								"0":
-								{
-									"dmg": [ 5, 5 ], 
-									"effect": "buffweapon", 
-									"duration": 1, 
-									"cooldawn": 4, 
-									"target": [ 0 ]
-								},
-								"1":
-								{
-									"dmg": [ 5, 7 ], 
-									"effect": "buffweapon", 
-									"duration": 1, 
-									"cooldawn": 4, 
-									"target": [ 0 ]
-								},
-								"2":
-								{
-									"dmg": [ 7, 7 ], 
-									"effect": "buffweapon", 
-									"duration": 1, 
-									"cooldawn": 3, 
-									"target": [ 0 ]
-								},
-								"3":
-								{
-									"dmg": [ 7, 9 ], 
-									"effect": "buffweapon", 
-									"duration": 1, 
-									"cooldawn": 3, 
-									"target": [ 0 ]
-								},
-								"4":
-								{
-									"dmg": [ 9, 9 ], 
-									"effect": "buffweapon", 
-									"duration": 1, 
-									"cooldawn": 2, 
-									"target": [ 0 ]
-								}
-							}
-						},
-						"binti": 
-						{ 
-							"isChoosen": false, 
-							"upgradeLevel": 0,
-							"dmg":null,
-							"effect":null,
-							"duration":null,
-							"cooldawn":null,
-							"target":null,
-							"upgradeValue": 
-							{
-								"0":
-								{
-									"dmg": [ 10, 12 ], 
-									"effect": "heal&cureBleed", 
-									"duration": 1, 
-									"cooldawn": 1, 
-									"target": [ 0 ]
-								},
-								"1":
-								{
-									"dmg": [ 10, 15 ], 
-									"effect": "cureBleed", 
-									"duration": 1, 
-									"cooldawn": 1, 
-									"target": [ 0 ]
-								},
-								"2":
-								{
-									"dmg": [ 12, 15 ], 
-									"effect": "cureBleed", 
-									"duration": 1, 
-									"cooldawn": 0, 
-									"target": [ 0 ]
-								},
-								"3":
-								{
-									"dmg": [ 12, 17 ], 
-									"effect": "cureBleed", 
-									"duration": 1, 
-									"cooldawn": 0, 
-									"target": [ 0 ]
-								},
-								"4":
-								{
-									"dmg": [ 17, 19 ], 
-									"effect": "cureBleed", 
-									"duration": 1, 
-									"cooldawn": 0, 
-									"target": [ 0 ]
-								}
-							}
-						},
-						"6": 
-						{ 
-							"isChoosen": false, 
-							"upgradeLevel": 0,
-							"dmg":null,
-							"effect":null,
-							"duration":null,
-							"cooldawn":null,
-							"target":null,
-							"upgradeValue": 
-							{
-								"0":
-								{
-									"dmg": [ 10, 12 ], 
-									"effect": "heal&cureBleed", 
-									"duration": 1, 
-									"cooldawn": 1, 
-									"target": [ 0 ]
-								},
-								"1":
-								{
-									"dmg": [ 10, 15 ], 
-									"effect": "cureBleed", 
-									"duration": 1, 
-									"cooldawn": 1, 
-									"target": [ 0 ]
-								},
-								"2":
-								{
-									"dmg": [ 12, 15 ], 
-									"effect": "cureBleed", 
-									"duration": 1, 
-									"cooldawn": 0, 
-									"target": [ 0 ]
-								},
-								"3":
-								{
-									"dmg": [ 12, 17 ], 
-									"effect": "cureBleed", 
-									"duration": 1, 
-									"cooldawn": 0, 
-									"target": [ 0 ]
-								},
-								"4":
-								{
-									"dmg": [ 17, 19 ], 
-									"effect": "cureBleed", 
-									"duration": 1, 
-									"cooldawn": 0, 
-									"target": [ 0 ]
-								}
-							} 
-						},
-						"7": 
-						{ 
-							"isChoosen": false, 
-							"upgradeLevel": 0,
-							"dmg":null,
-							"effect":null,
-							"duration":null,
-							"cooldawn":null,
-							"target":null,
-							"upgradeValue": 
-							{
-								"0":
-								{
-									"dmg": [ 10, 12 ], 
-									"effect": "heal&cureBleed", 
-									"duration": 1, 
-									"cooldawn": 1, 
-									"target": [ 0 ]
-								},
-								"1":
-								{
-									"dmg": [ 10, 15 ], 
-									"effect": "cureBleed", 
-									"duration": 1, 
-									"cooldawn": 1, 
-									"target": [ 0 ]
-								},
-								"2":
-								{
-									"dmg": [ 12, 15 ], 
-									"effect": "cureBleed", 
-									"duration": 1, 
-									"cooldawn": 0, 
-									"target": [ 0 ]
-								},
-								"3":
-								{
-									"dmg": [ 12, 17 ], 
-									"effect": "cureBleed", 
-									"duration": 1, 
-									"cooldawn": 0, 
-									"target": [ 0 ]
-								},
-								"4":
-								{
-									"dmg": [ 17, 19 ], 
-									"effect": "cureBleed", 
-									"duration": 1, 
-									"cooldawn": 0, 
-									"target": [ 0 ]
-								}
-							}
-						}
-					},
-					"passive":
-					{
-						"armorpiercingBolts":
-						{ 
-							"isChoosen": false, 
-							"upgradeLevel": 0,
-							"dmg":null,
-							"effect":null,
-							"duration":null,
-							"cooldawn":null,
-							"target":null,
-							"upgradeValue": 
-							{
-								"0":
-								{
-									"dmg": [ 1, 1 ], 
-									"effect": "armorpiercing", 
-									"duration": 0, 
-									"cooldawn": 0, 
-									"target": [ 0 ]
-								},
-								"1":
-								{
-									"dmg": [ 2, 2 ], 
-									"effect": "armorpiercing", 
-									"duration": 0, 
-									"cooldawn": 0, 
-									"target": [ 0 ]
-								},
-								"2":
-								{
-									"dmg": [ 3, 3 ], 
-									"effect": "armorpiercing", 
-									"duration": 0, 
-									"cooldawn": 0, 
-									"target": [ 0 ]
-								},
-								"3":
-								{
-									"dmg": [ 4, 4 ], 
-									"effect": "armorpiercing", 
-									"duration": 0, 
-									"cooldawn": 0, 
-									"target": [ 0 ]
-								},
-								"4":
-								{
-									"dmg": [ 5, 5 ], 
-									"effect": "armorpiercing", 
-									"duration": 0, 
-									"cooldawn": 0, 
-									"target": [ 0 ]
-								}
-							} 
-						},
-						"speedup": 
-						{ 
-							"isChoosen": false, 
-							"upgradeLevel": 0,
-							"dmg":null,
-							"effect":null,
-							"duration":null,
-							"cooldawn":null,
-							"target":null,
-							"upgradeValue": 
-							{
-								"0":
-								{
-									"dmg": [ 1, 1 ], 
-									"effect": "speedup", 
-									"duration": 0, 
-									"cooldawn": 0, 
-									"target": [ 0 ]
-								},
-								"1":
-								{
-									"dmg": [ 2, 2 ], 
-									"effect": "speedup", 
-									"duration": 0, 
-									"cooldawn": 0, 
-									"target": [ 0 ]
-								},
-								"2":
-								{
-									"dmg": [ 3, 3 ], 
-									"effect": "speedup", 
-									"duration": 0, 
-									"cooldawn": 0, 
-									"target": [ 0 ]
-								},
-								"3":
-								{
-									"dmg": [ 4, 4 ], 
-									"effect": "speedup", 
-									"duration": 0, 
-									"cooldawn": 0, 
-									"target": [ 0 ]
-								},
-								"4":
-								{
-									"dmg": [ 5, 5 ], 
-									"effect": "speedup", 
-									"duration": 0, 
-									"cooldawn": 0, 
-									"target": [ 0 ]
-								}
-							} 
-						},
-						"dodgeup":
-						{ 
-							"isChoosen": false, 
-							"upgradeLevel": 0,
-							"dmg":null,
-							"effect":null,
-							"duration":null,
-							"cooldawn":null,
-							"target":null,
-							"upgradeValue": 
-							{
-								"0":
-								{
-									"dmg": [ 1, 1 ], 
-									"effect": "dodgeup", 
-									"duration": 0, 
-									"cooldawn": 0, 
-									"target": [ 0 ]
-								},
-								"1":
-								{
-									"dmg": [ 2, 2 ], 
-									"effect": "dodgeup", 
-									"duration": 0, 
-									"cooldawn": 0, 
-									"target": [ 0 ]
-								},
-								"2":
-								{
-									"dmg": [ 3, 3 ], 
-									"effect": "dodgeup", 
-									"duration": 0, 
-									"cooldawn": 0, 
-									"target": [ 0 ]
-								},
-								"3":
-								{
-									"dmg": [ 4, 4 ], 
-									"effect": "dodgeup", 
-									"duration": 0, 
-									"cooldawn": 0, 
-									"target": [ 0 ]
-								},
-								"4":
-								{
-									"dmg": [ 5, 5 ], 
-									"effect": "dodgeup", 
-									"duration": 0, 
-									"cooldawn": 0, 
-									"target": [ 0 ]
-								}
-							}  
-						},
-						"hightcritdamage": 
-						{ 
-							"isChoosen": false, 
-							"upgradeLevel": 0,
-							"dmg":null,
-							"effect":null,
-							"duration":null,
-							"cooldawn":null,
-							"target":null,
-							"upgradeValue": 
-							{
-								"0":
-								{
-									"dmg": [ 1, 1 ], 
-									"effect": "critDamageUp", 
-									"duration": 0, 
-									"cooldawn": 0, 
-									"target": [ 0 ]
-								},
-								"1":
-								{
-									"dmg": [ 2, 2 ], 
-									"effect": "critDamageUp", 
-									"duration": 0, 
-									"cooldawn": 0, 
-									"target": [ 0 ]
-								},
-								"2":
-								{
-									"dmg": [ 3, 3 ], 
-									"effect": "critDamageUp", 
-									"duration": 0, 
-									"cooldawn": 0, 
-									"target": [ 0 ]
-								},
-								"3":
-								{
-									"dmg": [ 4, 4 ], 
-									"effect": "critDamageUp", 
-									"duration": 0, 
-									"cooldawn": 0, 
-									"target": [ 0 ]
-								},
-								"4":
-								{
-									"dmg": [ 5, 5 ], 
-									"effect": "critDamageUp", 
-									"duration": 0, 
-									"cooldawn": 0, 
-									"target": [ 0 ]
-								}
-							}  
-						}
-					},
-					"camping":
-					{
-
-					}
-				},
-
 				"inentory":
 				{
 					"slots": 4,
@@ -649,7 +52,8 @@
 				{
 					"name": null,
 					"surname": null,
-					"rank": null
+					"rank": null,
+					"type": "Crossbowman"
 				},
 				"experience":
 				{
@@ -674,7 +78,7 @@
 						"dmg": 1,
 						"spd": 10,
 						"cd": 2,
-						"tiredness": 100,
+						"stress": 100,
 						"stunResist": 50,
 						"poisonResist": 50,
 						"bleedResist": 50,
@@ -689,10 +93,8 @@
 					{
 						"maxNumOfPositive": 3,
 						"maxNumOfNegative": 5,
-						"maxNumOfDiseases": 7,
 						"maxNumOfPositiveStatic": 1,
 						"maxNumOfNegativeStatic": 4,
-						"maxNumOfPositiveDiseases": 3
 					},
 
 					"skills":
@@ -2047,21 +1449,612 @@
 
 	"skill":
 	{
-		"swordsman":
+		"crossbowman":
 		{
 			"active":
 			{
-
+				"basic": 
+				{ 
+					"isChoosen": false, 
+					"upgradeLevel": 0,
+					"dmg":null,
+					"effect":null,
+					"duration":null,
+					"cooldawn":null,
+					"target":null,
+					"upgradeValue": 
+					{
+						"0":
+						{
+							"dmg": [ 1, 2 ], 
+							"effect": null, 
+							"duration": 0, 
+							"cooldawn": 0, 
+							"target": [ 3, 4 ]
+						},
+						"1":
+						{
+							"dmg": [ 2, 3 ], 
+							"effect": null, 
+							"duration": 0, 
+							"cooldawn": 0, 
+							"target": [ 3, 4 ]
+						},
+						"2":
+						{
+							"dmg": [ 3, 4 ], 
+							"effect": null, 
+							"duration": 0, 
+							"cooldawn": 0, 
+							"target": [ 2, 3, 4 ]
+						},
+						"3":
+						{
+							"dmg": [ 4, 5 ], 
+							"effect": null, 
+							"duration": 0, 
+							"cooldawn": 0, 
+							"target": [ 2, 3, 4 ]
+						},
+						"4":
+						{
+							"dmg": [ 5, 6 ], 
+							"effect": null, 
+							"duration": 0, 
+							"cooldawn": 0, 
+							"target": [ 1, 2, 3, 4 ]
+						}
+					}
+				},
+				"throughAttack": 
+				{ 
+					"isChoosen": false, 
+					"upgradeLevel": 0,
+					"dmg":null,
+					"effect":null,
+					"duration":null,
+					"cooldawn":null,
+					"target":null,
+					"upgradeValue": 
+					{
+						"0":
+						{
+							"dmg": [ 1, 1 ], 
+							"effect": null, 
+							"duration": 0, 
+							"cooldawn": 4, 
+							"target": [ 34 ]
+						},
+						"1":
+						{
+							"dmg": [ 1, 2 ], 
+							"effect": null, 
+							"duration": 0, 
+							"cooldawn": 4, 
+							"target": [ 34 ]
+						},
+						"2":
+						{
+							"dmg": [ 2, 2 ], 
+							"effect": null, 
+							"duration": 0, 
+							"cooldawn": 3, 
+							"target": [ 23, 34 ]
+						},
+						"3":
+						{
+							"dmg": [ 2, 3 ], 
+							"effect": null, 
+							"duration": 0, 
+							"cooldawn": 3, 
+							"target": [ 123, 234 ]
+						},
+						"4":
+						{
+							"dmg": [ 3, 3 ], 
+							"effect": null, 
+							"duration": 0, 
+							"cooldawn": 2, 
+							"target": [ 14 ]
+						}
+					}
+				},
+				"bleedingAttack": 
+				{ 
+					"isChoosen": false, 
+					"upgradeLevel": 0,
+					"dmg":null,
+					"effect":null,
+					"duration":null,
+					"cooldawn":null,
+					"target":null,
+					"upgradeValue": 
+					{
+						"0":
+						{
+							"dmg": [ 1, 2 ], 
+							"effect": "bleed", 
+							"duration": 1, 
+							"cooldawn": 4, 
+							"target": [ 3, 4 ]
+						},
+						"1":
+						{
+							"dmg": [ 2, 3 ], 
+							"effect": "bleed", 
+							"duration": 2, 
+							"cooldawn": 4, 
+							"target": [ 3, 4 ]
+						},
+						"2":
+						{
+							"dmg": [ 3, 4 ], 
+							"effect": "bleed", 
+							"duration": 2, 
+							"cooldawn": 3, 
+							"target": [ 2, 3, 4 ]
+						},
+						"3":
+						{
+							"dmg": [ 4, 5 ], 
+							"effect": "bleed", 
+							"duration": 3, 
+							"cooldawn": 3, 
+							"target": [ 2, 3, 4 ]
+						},
+						"4":
+						{
+							"dmg": [ 5, 6 ], 
+							"effect": "bleed", 
+							"duration": 4, 
+							"cooldawn": 2, 
+							"target": [ 2, 3, 4 ]
+						}
+					}
+				},
+				"hightBolt": 
+				{ 
+					"isChoosen": false, 
+					"upgradeLevel": 0,
+					"dmg":null,
+					"effect":null,
+					"duration":null,
+					"cooldawn":null,
+					"target":null,
+					"upgradeValue": 
+					{
+						"0":
+						{
+							"dmg": [ 5, 5 ], 
+							"effect": "buffweapon", 
+							"duration": 1, 
+							"cooldawn": 4, 
+							"target": [ 0 ]
+						},
+						"1":
+						{
+							"dmg": [ 5, 7 ], 
+							"effect": "buffweapon", 
+							"duration": 1, 
+							"cooldawn": 4, 
+							"target": [ 0 ]
+						},
+						"2":
+						{
+							"dmg": [ 7, 7 ], 
+							"effect": "buffweapon", 
+							"duration": 1, 
+							"cooldawn": 3, 
+							"target": [ 0 ]
+						},
+						"3":
+						{
+							"dmg": [ 7, 9 ], 
+							"effect": "buffweapon", 
+							"duration": 1, 
+							"cooldawn": 3, 
+							"target": [ 0 ]
+						},
+						"4":
+						{
+							"dmg": [ 9, 9 ], 
+							"effect": "buffweapon", 
+							"duration": 1, 
+							"cooldawn": 2, 
+							"target": [ 0 ]
+						}
+					}
+				},
+				"binti": 
+				{ 
+					"isChoosen": false, 
+					"upgradeLevel": 0,
+					"dmg":null,
+					"effect":null,
+					"duration":null,
+					"cooldawn":null,
+					"target":null,
+					"upgradeValue": 
+					{
+						"0":
+						{
+							"dmg": [ 10, 12 ], 
+							"effect": "heal&cureBleed", 
+							"duration": 1, 
+							"cooldawn": 1, 
+							"target": [ 0 ]
+						},
+						"1":
+						{
+							"dmg": [ 10, 15 ], 
+							"effect": "cureBleed", 
+							"duration": 1, 
+							"cooldawn": 1, 
+							"target": [ 0 ]
+						},
+						"2":
+						{
+							"dmg": [ 12, 15 ], 
+							"effect": "cureBleed", 
+							"duration": 1, 
+							"cooldawn": 0, 
+							"target": [ 0 ]
+						},
+						"3":
+						{
+							"dmg": [ 12, 17 ], 
+							"effect": "cureBleed", 
+							"duration": 1, 
+							"cooldawn": 0, 
+							"target": [ 0 ]
+						},
+						"4":
+						{
+							"dmg": [ 17, 19 ], 
+							"effect": "cureBleed", 
+							"duration": 1, 
+							"cooldawn": 0, 
+							"target": [ 0 ]
+						}
+					}
+				},
+				"6": 
+				{ 
+					"isChoosen": false, 
+					"upgradeLevel": 0,
+					"dmg":null,
+					"effect":null,
+					"duration":null,
+					"cooldawn":null,
+					"target":null,
+					"upgradeValue": 
+					{
+						"0":
+						{
+							"dmg": [ 10, 12 ], 
+							"effect": "heal&cureBleed", 
+							"duration": 1, 
+							"cooldawn": 1, 
+							"target": [ 0 ]
+						},
+						"1":
+						{
+							"dmg": [ 10, 15 ], 
+							"effect": "cureBleed", 
+							"duration": 1, 
+							"cooldawn": 1, 
+							"target": [ 0 ]
+						},
+						"2":
+						{
+							"dmg": [ 12, 15 ], 
+							"effect": "cureBleed", 
+							"duration": 1, 
+							"cooldawn": 0, 
+							"target": [ 0 ]
+						},
+						"3":
+						{
+							"dmg": [ 12, 17 ], 
+							"effect": "cureBleed", 
+							"duration": 1, 
+							"cooldawn": 0, 
+							"target": [ 0 ]
+						},
+						"4":
+						{
+							"dmg": [ 17, 19 ], 
+							"effect": "cureBleed", 
+							"duration": 1, 
+							"cooldawn": 0, 
+							"target": [ 0 ]
+						}
+					} 
+				},
+				"7": 
+				{ 
+					"isChoosen": false, 
+					"upgradeLevel": 0,
+					"dmg":null,
+					"effect":null,
+					"duration":null,
+					"cooldawn":null,
+					"target":null,
+					"upgradeValue": 
+					{
+						"0":
+						{
+							"dmg": [ 10, 12 ], 
+							"effect": "heal&cureBleed", 
+							"duration": 1, 
+							"cooldawn": 1, 
+							"target": [ 0 ]
+						},
+						"1":
+						{
+							"dmg": [ 10, 15 ], 
+							"effect": "cureBleed", 
+							"duration": 1, 
+							"cooldawn": 1, 
+							"target": [ 0 ]
+						},
+						"2":
+						{
+							"dmg": [ 12, 15 ], 
+							"effect": "cureBleed", 
+							"duration": 1, 
+							"cooldawn": 0, 
+							"target": [ 0 ]
+						},
+						"3":
+						{
+							"dmg": [ 12, 17 ], 
+							"effect": "cureBleed", 
+							"duration": 1, 
+							"cooldawn": 0, 
+							"target": [ 0 ]
+						},
+						"4":
+						{
+							"dmg": [ 17, 19 ], 
+							"effect": "cureBleed", 
+							"duration": 1, 
+							"cooldawn": 0, 
+							"target": [ 0 ]
+						}
+					}
+				}	
 			},
 			"passive":
 			{
-
+				"armorpiercingBolts":
+				{ 
+					"isChoosen": false, 
+					"upgradeLevel": 0,
+					"dmg":null,
+					"effect":null,
+					"duration":null,
+					"cooldawn":null,
+					"target":null,
+					"upgradeValue": 
+					{
+					"0":
+					{
+						"dmg": [ 1, 1 ], 
+							"effect": "armorpiercing", 
+							"duration": 0, 
+							"cooldawn": 0, 
+							"target": [ 0 ]
+						},
+						"1":
+						{
+							"dmg": [ 2, 2 ], 
+							"effect": "armorpiercing", 
+							"duration": 0, 
+							"cooldawn": 0, 
+							"target": [ 0 ]
+						},
+						"2":
+						{
+							"dmg": [ 3, 3 ], 
+							"effect": "armorpiercing", 
+							"duration": 0, 
+							"cooldawn": 0, 
+							"target": [ 0 ]
+						},
+						"3":
+						{
+							"dmg": [ 4, 4 ], 
+							"effect": "armorpiercing", 
+							"duration": 0, 
+							"cooldawn": 0, 
+							"target": [ 0 ]
+						},
+						"4":
+						{
+							"dmg": [ 5, 5 ], 
+							"effect": "armorpiercing", 
+							"duration": 0, 
+							"cooldawn": 0, 
+							"target": [ 0 ]
+						}
+					} 
+				},
+				"speedup": 
+				{ 
+					"isChoosen": false, 
+					"upgradeLevel": 0,
+					"dmg":null,
+					"effect":null,
+					"duration":null,
+					"cooldawn":null,
+					"target":null,
+					"upgradeValue": 
+					{
+						"0":
+						{
+							"dmg": [ 1, 1 ], 
+							"effect": "speedup", 
+							"duration": 0, 
+							"cooldawn": 0, 
+							"target": [ 0 ]
+						},
+						"1":
+						{
+							"dmg": [ 2, 2 ], 
+							"effect": "speedup", 
+							"duration": 0, 
+							"cooldawn": 0, 
+							"target": [ 0 ]
+						},
+						"2":
+						{
+							"dmg": [ 3, 3 ], 
+							"effect": "speedup", 
+							"duration": 0, 
+							"cooldawn": 0, 
+							"target": [ 0 ]
+						},
+						"3":
+						{
+							"dmg": [ 4, 4 ], 
+							"effect": "speedup", 
+							"duration": 0, 
+							"cooldawn": 0, 
+							"target": [ 0 ]
+						},
+						"4":
+						{
+							"dmg": [ 5, 5 ], 
+							"effect": "speedup", 
+							"duration": 0, 
+							"cooldawn": 0, 
+							"target": [ 0 ]
+						}
+					} 
+				},
+				"dodgeup":
+				{ 
+					"isChoosen": false, 
+					"upgradeLevel": 0,
+					"dmg":null,
+					"effect":null,
+					"duration":null,
+					"cooldawn":null,
+					"target":null,
+					"upgradeValue": 
+					{
+						"0":
+						{
+							"dmg": [ 1, 1 ], 
+							"effect": "dodgeup", 
+							"duration": 0, 
+							"cooldawn": 0, 
+							"target": [ 0 ]
+						},
+						"1":
+						{
+							"dmg": [ 2, 2 ], 
+							"effect": "dodgeup", 
+							"duration": 0, 
+							"cooldawn": 0, 
+							"target": [ 0 ]
+						},
+						"2":
+						{
+							"dmg": [ 3, 3 ], 
+							"effect": "dodgeup", 
+							"duration": 0, 
+							"cooldawn": 0, 
+							"target": [ 0 ]
+						},
+						"3":
+						{
+							"dmg": [ 4, 4 ], 
+							"effect": "dodgeup", 
+							"duration": 0, 
+							"cooldawn": 0, 
+							"target": [ 0 ]
+						},
+						"4":
+						{
+							"dmg": [ 5, 5 ], 
+							"effect": "dodgeup", 
+							"duration": 0, 
+							"cooldawn": 0, 
+							"target": [ 0 ]
+						}
+					}  
+				},
+				"hightcritdamage": 
+				{ 
+					"isChoosen": false, 
+					"upgradeLevel": 0,
+					"dmg":null,
+					"effect":null,
+					"duration":null,
+					"cooldawn":null,
+					"target":null,
+					"upgradeValue": 
+					{
+						"0":
+						{
+							"dmg": [ 1, 1 ], 
+							"effect": "critDamageUp", 
+							"duration": 0, 
+							"cooldawn": 0, 
+							"target": [ 0 ]
+						},
+						"1":
+						{
+							"dmg": [ 2, 2 ], 
+							"effect": "critDamageUp", 
+							"duration": 0, 
+							"cooldawn": 0, 
+							"target": [ 0 ]
+						},
+						"2":
+						{
+							"dmg": [ 3, 3 ], 
+							"effect": "critDamageUp", 
+							"duration": 0, 
+							"cooldawn": 0, 
+							"target": [ 0 ]
+						},
+						"3":
+						{
+							"dmg": [ 4, 4 ], 
+							"effect": "critDamageUp", 
+							"duration": 0, 
+							"cooldawn": 0, 
+							"target": [ 0 ]
+						},
+						"4":
+						{
+							"dmg": [ 5, 5 ], 
+							"effect": "critDamageUp", 
+							"duration": 0, 
+							"cooldawn": 0, 
+							"target": [ 0 ]
+						}
+					}  
+				}
 			},
 			"camping":
 			{
 
 			}
+		},
+
+		"paladin":
+		{
+
 		}
+	},
+
+	"effect":
+	{
+
 	}
 }
 /*

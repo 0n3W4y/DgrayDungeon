@@ -18,7 +18,7 @@ class Inventory extends Component
 			if( params.needToFill )
 			{
 				var j = 0;
-				for( i in 0...prams.slots )
+				for( i in 0...params.slots )
 				{
 					if( j < this._currentSlots )
 					{
@@ -50,6 +50,6 @@ class Inventory extends Component
 
 	public function removeItemFromSlot( item:String, slot:String ):Dynamic
 	{
-
+		
 	}
 }
