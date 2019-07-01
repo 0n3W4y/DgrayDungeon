@@ -17,9 +17,23 @@ class EntitySystem
 	private function _createUiType( type:String, name:String, id:String, params:Dynamic ):Entity
 	{
 		var uiObject = new Entity( this, id, type, name );
-		for( key in Reflect.fields( params ) )
+		var config:Dynamic = this._config.window;
+		if( type == "button" )
+			config = this._config.button;
+
+		var uiObjectConfig:Dynamic = null;
+		for( obj in Reflect.fields( config ) )
 		{
-			var value = Reflect.getProperty( params, key );
+			if( obj == name )
+			{
+				uiObjectConfig = Reflect.getProperty( config, obj );
+				break;
+			}
+		}
+
+		for( key in Reflect.fields( uiObjectConfig ) )
+		{
+			var value = Reflect.getProperty( uiObjectConfig, key );
 			var component = this.createComponent( key, value );
 			this.addComponentTo( component, uiObject );
 		}
@@ -29,9 +43,20 @@ class EntitySystem
 	private function _createBuilding( type:String, name:String, id:String, params:Dynamic ):Entity
 	{
 		var building = new Entity( this, id, type, name );
-		for( key in Reflect.fields( params ) )
+		var config:Dynamic = this._config.building;
+		var buildingConfig:Dynamic = null;
+		for( obj in Reflect.fields( config ) )
 		{
-			var value = Reflect.getProperty( params, key );
+			if( obj == name )
+			{
+				buildingConfig = Reflect.getProperty( config, obj );
+				break;
+			}
+		}
+
+		for( key in Reflect.fields( buildingConfig ) )
+		{
+			var value = Reflect.getProperty( buildingConfig, key );
 			var component = this.createComponent( key, value );
 			this.addComponentTo( component, building );
 		}
@@ -40,6 +65,36 @@ class EntitySystem
 
 	private function _createHero( type:String, name:String, id:String, params:Dynamic ):Entity
 	{
+		var config:Dynamic = this._config.entity.heroes;
+		var traitConfig:Dynamic = this._config.trait;
+		var skillConfig:Dynamic = this._config.skill;
+		var heroType = params.type; // "common", "uncommon", "rare", "legendary"
+
+		var heroConfig:Dynamic = null;
+		var heroTypeConfig:Dynamic = null;
+		var skill:Dynamic = null;
+
+		for( key in Reflect.fields( config ) )
+		{
+			if( key == name )
+			{
+				heroConfig = Reflect.getProperty( config, key );
+			}
+		}
+
+		for( obj in Reflect.fields( skillConfig ) )
+		{
+			if( obj == name )
+			{
+				skill = Reflect.getProperty( skillConfig, obj );
+				break;
+			}
+		}
+
+
+
+
+
 
 		return null;
 	}
@@ -76,6 +131,11 @@ class EntitySystem
 		{
 			case "graphics": component = new Graphics( null, id, params );
 			case "ui": component = new UI( null, id, params );
+			case "name": component = new Name( null, id, params );
+			case "inventory": component = new Inventory( null, id, params );
+			case "skills": component = new Skills( null, id, params );
+			case "stats": component = new Stats( null, id, params );
+			case "traits": component = new Traits( null, id, params );
 			default: trace( "Error in EntitySystem.createComponent, component with name: '" + componentName + "' does not exist." );
 		}
 		return component;
@@ -101,10 +161,7 @@ class EntitySystem
 			trace( "Error in EntitySystem.createEntitiesForScene, can't find type: " + type + " into config container!" );
 		for( i in 0...list.length )
 		{	
-			var params = Reflect.getProperty( paramsContainer, list[ i ] );
-			if( params == null )
-				trace( "Error in EntitySystem.createEntitiesForScene, can't find name: " + list[ i ] + " into config container with type: " + type + "." );
-			var object = this.createEntity( type, list[ i ], params );
+			var object = this.createEntity( type, list[ i ], null );
 			this.addEntityToScene( object, scene );
 		}
 	}

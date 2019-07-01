@@ -16,7 +16,7 @@ class Skills extends Component
 
 	public function new( parent:Entity, id:String, params:Dynamic ):Void
 	{
-		super( parent, id, "traits" );
+		super( parent, id, "skills" );
 		this._maxActiveSkills = params.maxActiveSkills;
 		this._maxStaticActiveSkills = params.maxStsticActiveSkills;
 		this._maxPassiveSkills = params.maxPassiveSkills;
@@ -85,4 +85,5 @@ class Skills extends Component
 	{
 		
 	}
+
 }

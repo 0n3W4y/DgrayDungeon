@@ -58,9 +58,10 @@
 				"experience":
 				{
 					"lvl": 1,
-					"exp": 0
+					"exp": 0,
+					"expToNextLvl": 100,
+					"maxLvl": 10
 				},
-
 				"stats":{},
 				"traits":{},
 				"skills":{},
@@ -79,13 +80,13 @@
 						"spd": 10,
 						"cd": 2,
 						"stress": 100,
-						"stunResist": 50,
-						"poisonResist": 50,
-						"bleedResist": 50,
-						"diseasResist": 50,
-						"debuffResist": 50,
-						"moveResist": 50,
-						"fireResist": 50,
+						"stun": 50,
+						"poison": 50,
+						"bleed": 50,
+						"diseas": 50,
+						"debuff": 50,
+						"move": 50,
+						"fire": 50,
 
 					},
 
@@ -473,9 +474,9 @@
 					{
 						"slot1": { "type": "slot", "item": null, "restriction": "hero", "isAvailable": false, "isStorable": false, "maxSize": null },
 					}
-				}
-					
+				}					
 			},
+
 			"svyatilishe":
 			{
 
@@ -1439,12 +1440,6 @@
 		{
 
 		},
-
-		"disease":
-		{
-
-		}
-
 	},
 
 	"skill":

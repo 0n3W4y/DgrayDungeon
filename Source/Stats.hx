@@ -8,6 +8,7 @@ class Stats extends Component
 	private var _currentAcc:Float;
 	private var _totalDdg:Float; // Dodge %
 	private var _currentDdg:Float;
+	private var _totalCc:Float;
 	private var _currentCc:Float; // Critical Chanse
 	private var _totalDef:Float;
 	private var _currentDef:Float; // defense
@@ -34,6 +35,23 @@ class Stats extends Component
 	private var _currentMoveResist:Float;
 	private var _totalFireResist:FLoat;
 	private var _currentFireResist:Float;
+
+	private var _upHp:Float;
+	private var _upAcc:Float;
+	private var _upDdg:Float;
+	private var _upCc:Float;
+	private var _upDef:Float;
+	private var _upDmg:Float;
+	private var _upSpd:Float;
+	private var _upStress:Float;
+	private var _upCritDamage:Float;
+	private var _upStunResist:Float;
+	private var _upPoisonResist:Float;
+	private var _upBleedResist:Float;
+	private var _upDiseaseResist:Float;
+	private var _upDebuffResist:FLoat;
+	private var _upMoveResist:Float;
+	private var _upFireResist:Float;
 
 	private var _effects:Array<Dynamic>;
 
@@ -150,6 +168,11 @@ class Stats extends Component
 	}
 
 	public function removeEffect( effect:String ):Void
+	{
+
+	}
+
+	public function levelUp():Void
 	{
 
 	}
