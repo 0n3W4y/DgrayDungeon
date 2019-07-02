@@ -95,6 +95,8 @@ class GraphicsSystem
 
 	private function _createBuilding( object:Entity ):Sprite
 	{
+		if( object.get( "name" ) == "inn" )
+			return object;
 		var objectGraphics = object.getComponent( "graphics" );
 
 		var data = new Bitmap( Assets.getBitmapData( objectGraphics.getUrl( 0 ) ) );

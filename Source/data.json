@@ -13,7 +13,7 @@
 			"backgroundImageURL": "assets/images/citySceneBackround.png",
 			"window": [ "innWindow", "innWindowHeroWindow", "panelCityWindow", "citySceneMainWindow" ],
 			"button": [ "innWindowButtonHeroListUp", "innWindowButtonHeroListDown", "citySceneStartJourneyButton", "citySceneMainWindowExitButton" ],
-			"building": [ "hospital", "academy", "hermit", "merchant", "storage", "graveyard", "recruits", "questman", "fontain", "blacksmith", "tavern" ]
+			"building": [ "hospital", "academy", "hermit", "merchant", "storage", "graveyard", "recruits", "questman", "fontain", "blacksmith", "tavern", "inn" ]
 		},
 
 		"chooseDungeonScene":
@@ -41,10 +41,10 @@
 					"needToFill":false,
 					"inventory":
 					{
-						"slot1": { "type": "weapon", "item": null, "restriction": "paladin", "isAvailable": true, "isStorable": false, "maxSize": null },
-						"slot2": { "type": "armor", "item": null, "restriction": 4, "isAvailable": true, "isStorable": false, "maxSize": null },
-						"slot3": { "type": "accessory1", "item": null, "restriction": null, "isAvailable": true, "isStorable": false, "maxSize": null },
-						"slot4": { "type": "accessory2", "item": null, "restriction": null, "isAvailable": true, "isStorable": false, "maxSize": null }
+						"slot1": { "name": "slot1", "type": "weapon", "item": null, "restriction": "paladin", "isAvailable": true, "isStorable": false, "maxSize": null, "currentSize": null },
+						"slot2": { "name": "slot2", "type": "armor", "item": null, "restriction": 4, "isAvailable": true, "isStorable": false, "maxSize": null, "currentSize": null },
+						"slot3": { "name": "slot3", "type": "accessory1", "item": null, "restriction": null, "isAvailable": true, "isStorable": false, "maxSize": null, "currentSize": null },
+						"slot4": { "name": "slot4", "type": "accessory2", "item": null, "restriction": null, "isAvailable": true, "isStorable": false, "maxSize": null, "currentSize": null }
 					}					
 				},
 
@@ -62,100 +62,93 @@
 					"expToNextLvl": 100,
 					"maxLvl": 10
 				},
-				"stats":{},
-				"traits":{},
-				"skills":{},
-				"graphics":{},
-
-				"uncommon":
+				"stats":
 				{
-					"stats":
+					"hp": [ 10, 11, 12, 13 ],
+					"acc": [ 10, 11, 12, 13 ],
+					"ddg": [ 10, 11, 12, 13 ], 
+					"cc": [ 10, 11, 12, 13 ],
+					"def": [ 10, 11, 12, 13 ],
+					"dmg": [ 1, 2, 3, 4 ],
+					"spd": [ 10, 11, 12, 13 ],
+					"cd": [ 2, 2, 3, 3 ],
+					"stress": [ 100, 110, 120, 130 ],
+					"stun": [ 50, 51, 52, 53 ],
+					"poison": [ 50, 51, 52, 53 ],
+					"bleed": [ 50, 51, 52, 53 ],
+					"diseas": [ 50, 51, 52, 53 ],
+					"debuff": [ 50, 51, 52, 53 ],
+					"move": [ 50, 51, 52, 53 ],
+					"fire": [ 50, 51, 52, 53 ],
+					"upHp": [ 1, 2, 3, 4 ],
+					"upAcc": [ 1, 2, 3, 4 ],
+					"upDdg": [ 1, 2, 3, 4 ], 
+					"upCc": [ 1, 2, 3, 4 ],
+					"upDef": [ 1, 2, 3, 4 ],
+					"upDmg": [ 1, 2, 3, 4 ],
+					"upSpd": [ 1, 2, 3, 4 ],
+					"upCd": [ 1, 2, 3, 4 ],
+					"upStress": [ 5, 5, 6, 6 ],
+					"upStun": [ 1, 2, 3, 4 ],
+					"upPpoison": [ 1, 2, 3, 4 ],
+					"upBleed": [ 1, 2, 3, 4 ],
+					"upDiseas": [ 1, 2, 3, 4 ],
+					"upDebuff": [ 1, 2, 3, 4 ],
+					"upMove": [ 1, 2, 3, 4 ],
+					"upFire": [ 1, 2, 3, 4 ]
+				},
+				"traits":
+				{
+					"maxNumOfPositive": [ 3, 4, 5, 6 ],
+					"maxNumOfNegative": [ 6, 5, 4, 3 ],
+					"maxNumOfPositiveStatic": [ 1, 2, 3, 4 ],
+					"maxNumOfNegativeStatic": [ 4, 3, 2, 1 ]
+				},
+				"skills":
+				{
+					"active":
 					{
-						"hp": 10,
-						"acc": 10,
-						"ddg": 10, 
-						"cc": 10,
-						"def": 10,
-						"dmg": 1,
-						"spd": 10,
-						"cd": 2,
-						"stress": 100,
-						"stun": 50,
-						"poison": 50,
-						"bleed": 50,
-						"diseas": 50,
-						"debuff": 50,
-						"move": 50,
-						"fire": 50,
-
+						"maxActiveSkills": [ 3, 4, 5, 6 ],
+						"maxStaticActiveSkills": [ 1, 2, 3, 4 ]
 					},
-
-					"traits":
+					"passive":
 					{
-						"maxNumOfPositive": 3,
-						"maxNumOfNegative": 5,
-						"maxNumOfPositiveStatic": 1,
-						"maxNumOfNegativeStatic": 4,
+						"maxPassiveSkills": [ 1, 2, 3, 4 ],
+						"maxStaticPassiveSkills": [ 1, 2, 3, 4 ]
 					},
-
-					"skills":
+					"camping":
 					{
-						"active":
-						{
-							"maxActiveSkills": 3,
-							"maxStaticActiveSkills": 2
-						},
-						"passive":
-						{
-							"maxPassiveSkills": 2,
-							"maxStaticPassiveSkills": 1,
-						},
-						"camping":
-						{
 
-						}
-					},					
-
-					"graphics":
-					{
-						"url": null,
-						"url2": null,
-						"url3": null,
-						"x": 0.0,
-						"y": 0.0,
-						"text": 
-						{
-							"Empty":
-							{
-								"text": "null",
-								"x": 100.0,
-								"y": 50.0,
-								"font": "Verdana",
-								"size": 48,
-								"color": "0xffffff",
-								"visible": true,
-								"selectable": false,
-								"queue": 1,
-								"height":100,
-								"width":100
-							}
-						},
-						"addiction": null,
-						"queue": 1,
-						"graphicsInstance": null
 					}
 				},
-				"common":
+		
+				"graphics":
 				{
-
-				},
-				"rare":
-				{
-
-				},
-				"legendary":
-				{
-
+					"url": null,
+					"url2": null,
+					"url3": null,
+					"x": 0.0,
+					"y": 0.0,
+					"text": 
+					{
+						"empty":
+						{
+							"text": "null",
+							"x": 100.0,
+							"y": 50.0,
+							"font": "Verdana",
+							"size": 48,
+							"color": "0xffffff",
+							"visible": true,
+							"selectable": false,
+							"queue": 1,
+							"height": 100,
+							"width": 100
+						}
+					},
+					"addiction": null,
+					"queue": 1,
+					"graphicsInstance": null
 				}
 			},
 
@@ -212,7 +205,7 @@
 							"highDefense":{},
 							"hightAttackOnUndead": {},
 							"highHealing":{},
-							"hightStun": {},
+							"hightStun": {}
 						},
 						"camping":
 						{
@@ -470,10 +463,23 @@
 				{
 					"slots": 20,
 					"needToFill":true,
+					"currentSlots": 8,
 					"inventory":
 					{
-						"slot1": { "type": "slot", "item": null, "restriction": "hero", "isAvailable": false, "isStorable": false, "maxSize": null },
+						"slot1": { "name": null, "type": "slot", "item": null, "restriction": "hero", "isAvailable": false, "isStorable": false, "maxSize": null, "currentSize": null }
 					}
+				},
+				"graphics":
+				{
+					"url": null,
+					"url2": null,
+					"url3": null,
+					"x": 0.0,
+					"y": 0.0,
+					"text": null,
+					"addiction": null,
+					"queue": 13,
+					"graphicsInstance": null
 				}					
 			},
 
@@ -573,11 +579,11 @@
 				"inventory":
 				{
 					"maxSlots": 10,
-					"currentSlots": 3,
+					"currentSlots": 4,
 					"needToFill":true,
 					"inventory":
 					{
-						"slot1": { "type": "slot", "item": null, "restriction": "hero", "isAvailable": false, "isStorable": false, "maxSize": null },
+						"slot1": { "name": null, "type": "slot", "item": null, "restriction": "hero", "isAvailable": false, "isStorable": false, "maxSize": null, "currentSize": null }
 					}					
 
 				}
@@ -1439,7 +1445,7 @@
 		"negative":
 		{
 
-		},
+		}
 	},
 
 	"skill":

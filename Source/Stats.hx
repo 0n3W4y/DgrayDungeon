@@ -30,10 +30,10 @@ class Stats extends Component
 	private var _totalDiseasResist:Float;
 	private var _currentDiseaseResist:Float;
 	private var _totalDebuffResist:Float;
-	private var _currentDebuffResist:FLoat;
+	private var _currentDebuffResist:Float;
 	private var _totalMoveResist:Float;
 	private var _currentMoveResist:Float;
-	private var _totalFireResist:FLoat;
+	private var _totalFireResist:Float;
 	private var _currentFireResist:Float;
 
 	private var _upHp:Float;
@@ -49,11 +49,18 @@ class Stats extends Component
 	private var _upPoisonResist:Float;
 	private var _upBleedResist:Float;
 	private var _upDiseaseResist:Float;
-	private var _upDebuffResist:FLoat;
+	private var _upDebuffResist:Float;
 	private var _upMoveResist:Float;
 	private var _upFireResist:Float;
 
 	private var _effects:Array<Dynamic>;
+
+
+	private function _reCalculateTotalStats():Void
+	{
+		//TODO: get inventory and add all properties from items in slots;
+		//TODO: get traits and add all extra stats drom traits;
+	}
 
 
 	public function new( parent:Entity, id:String, params:Dynamic ):Void
@@ -82,7 +89,23 @@ class Stats extends Component
 				case "debuff": {this._currentDebuffResist = value; this._totalDebuffResist = value;}
 				case "move": {this._currentMoveResist = value; this._totalMoveResist = value;}
 				case "fire": {this._currentFireResist = value; this._totalFireResist = value;}
-				default: trace( "Error in Stats.setCurrent, name can't be: " + name );
+				case "upHp": this._upHp = value;
+				case "upAcc": this._upAcc = value;
+				case "upDdg": this._upDdg = value;
+				case "upCc": this._upCc = value;
+				case "upDef": this._upDef = value;
+				case "upDmg": this._upDmg = value;
+				case "upSpd": this._upSpd = value;
+				case "upStress": this._upStress = value;
+				case "upCd": this._upCritDamage = value;
+				case "upStun": this._upStunResist = value;
+				case "upPoison": this._upPoisonResist = value;
+				case "upBleed": this._upBleedResist = value;
+				case "upDiseas": this._upDiseaseResist = value;
+				case "upDebuff": this._upDebuffResist = value;
+				case "upMove": this._upMoveResist = value;
+				case "upFire": this._upFireResist = value;
+				default: trace( "Error in Stats.setCurrent, name can't be: " + key );
 			}
 		}
 	}
@@ -153,27 +176,43 @@ class Stats extends Component
 			case "debuff": {if( type == "total" ) return this._totalDebuffResist; else return this._currentDebuffResist;}
 			case "move": {if( type == "total" ) return this._totalMoveResist; else return this._currentMoveResist;}
 			case "fire": {if( type == "total" ) return this._totalFireResist; else return this._currentFireResist;}
-			default: trace( "Error in Stats.get, name can't be: " + name + ", with type: " + type ); 
+			default: { trace( "Error in Stats.get, name can't be: " + name + ", with type: " + type ); return null; }
 		}
 	}
 
-	public function getEffects():Array
+	public function getEffects():Array<Dynamic>
 	{
 		return this._effects;
 	}
 
 	public function addEffect( effect:Dynamic ):Void
 	{
-
+		//TODO: add new effetc, calculate _current stats or add value from _current stats
 	}
 
 	public function removeEffect( effect:String ):Void
 	{
-
+		//TODO: remove effect, calculate _current stats or remove value from _current stats
 	}
 
 	public function levelUp():Void
 	{
+		this._totalHp += this._upHp;
+		this._totalAcc += this._upAcc;
+		this._totalDdg += this._upDdg;
+		this._totalCc += this._upCc;
+		this._totalDef += this._upDef;
+		this._totalDmg += this._upDmg;
+		this._totalSpd += this._upSpd;
+		this._totalStress += this._upStress;
+		this._totalStunResist += this._upStunResist; 
+		this._totalPoisonResist += this._upPoisonResist;
+		this._totalBleedResist += this._upBleedResist;
+		this._totalDiseasResist += this._upDiseaseResist;
+		this._totalDebuffResist += this._upDebuffResist;
+		this._totalMoveResist += this._upMoveResist;
+		this._totalFireResist += this._upFireResist;
 
+		this._reCalculateTotalStats();
 	}
 }

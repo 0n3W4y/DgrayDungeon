@@ -37,6 +37,8 @@ class EntitySystem
 			var component = this.createComponent( key, value );
 			this.addComponentTo( component, uiObject );
 		}
+
+		trace( uiObject );
 		return uiObject;
 	}
 
@@ -60,6 +62,11 @@ class EntitySystem
 			var component = this.createComponent( key, value );
 			this.addComponentTo( component, building );
 		}
+
+		if( name == "recruit" )
+		{
+			var slots = building.getComponent( "inventory" ).getCurrentSlots();
+		}
 		return building;
 	}
 
@@ -68,7 +75,13 @@ class EntitySystem
 		var config:Dynamic = this._config.entity.heroes;
 		var traitConfig:Dynamic = this._config.trait;
 		var skillConfig:Dynamic = this._config.skill;
-		var heroType = params.type; // "common", "uncommon", "rare", "legendary"
+		var heroType = 0; // "common", "uncommon", "rare", "legendary"
+		switch( params.type )
+		{
+			case "uncommon": heroType = 1;
+			case "rare": heroType = 2;
+			case "legendary": heroType = 3;
+		}
 
 		var heroConfig:Dynamic = null;
 		var heroTypeConfig:Dynamic = null;

@@ -82,12 +82,12 @@ class Traits extends Component
 		return null;
 	}
 
-	public function getPositiveTraits():Array
+	public function getPositiveTraits():Array<Dynamic>
 	{
 		return this._positive;
 	}
 
-	public function getNegativeTraits():Array
+	public function getNegativeTraits():Array<Dynamic>
 	{
 		return this._negative;
 	}
