@@ -6,6 +6,7 @@ class Name extends Component
 	private var _surname:String;
 	private var _rank:String;
 	private var _type:String;
+	private var _rarity:String;
 
 
 	public function new( parent:Entity, id:String, params:Dynamic ):Void
@@ -15,6 +16,7 @@ class Name extends Component
 		this._surname = params.surname;
 		this._rank = params.rank;
 		this._type = params.type;
+		this._rarity = params.rarity;
 	}
 
 	public function get( type:String ):String
@@ -25,6 +27,7 @@ class Name extends Component
 			case "surname": return this._surname;
 			case "rank": return this._rank;
 			case "type": return this._type;
+			case "rarity": return this._rarity;
 			default: { trace( "Error in Name.get, type of get can't be: " + type ); return null; }
 		}
 	}
@@ -37,6 +40,7 @@ class Name extends Component
 			case "surname": this._surname = value;
 			case "rank": this._rank = value;
 			case "type": this._type = value;
+			case "rarity": this._rarity = value;
 			default: trace( "Error in Name.set, type of get can't be: " + type );
 		}
 	}

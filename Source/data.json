@@ -53,7 +53,8 @@
 					"name": null,
 					"surname": null,
 					"rank": null,
-					"type": "Crossbowman"
+					"type": "Crossbowman",
+					"rarity": [ "common", "uncommon", "rare", "legendary" ]
 				},
 				"experience":
 				{
@@ -95,7 +96,9 @@
 					"upDiseas": [ 1, 2, 3, 4 ],
 					"upDebuff": [ 1, 2, 3, 4 ],
 					"upMove": [ 1, 2, 3, 4 ],
-					"upFire": [ 1, 2, 3, 4 ]
+					"upFire": [ 1, 2, 3, 4 ],
+					"position": [ 75, 50, 50, 25 ],
+					"target": [ 25, 50, 75, 100 ]
 				},
 				"traits":
 				{

@@ -86,4 +86,14 @@ class Skills extends Component
 		
 	}
 
+	public function addSkill( skill:Dynamic, palce:String ):Void
+	{
+
+	}
+
+	public function removeSkill( skill:String ):Dynamic
+	{
+		return null;
+	}
+
 }

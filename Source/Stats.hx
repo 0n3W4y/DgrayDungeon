@@ -54,6 +54,8 @@ class Stats extends Component
 	private var _upFireResist:Float;
 
 	private var _effects:Array<Dynamic>;
+	private var _position:Array<Int>;
+	private var _target:Array<Int>;
 
 
 	private function _reCalculateTotalStats():Void
@@ -105,6 +107,8 @@ class Stats extends Component
 				case "upDebuff": this._upDebuffResist = value;
 				case "upMove": this._upMoveResist = value;
 				case "upFire": this._upFireResist = value;
+				case "position": this._position = value;
+				case "target": this._target = value;
 				default: trace( "Error in Stats.setCurrent, name can't be: " + key );
 			}
 		}
