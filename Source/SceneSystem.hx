@@ -49,6 +49,35 @@ class SceneSystem
 			var listEntities = Reflect.getProperty( value, key );
 			this._parent.getSystem( "entity" ).createEntitiesForScene(  scene, key, listEntities );
 		};
+
+		if( sceneName == "cityScene" )
+		{
+			var building:Entity = null;
+			var buildingsArray:Array<Dynamic> = scene.getEntities( "object" ).buildings;
+			for( i in 0...buildingsArray.length )
+			{
+				var obj:Entity = buildingsArray[ i ];
+				if( obj.get( "name" ) == "recruits" )
+				{
+					building = obj;
+					break;
+				}
+			}
+			var slots = building.getComponent( "inventory" ).getCurrentSlots();
+			var heroList:Array<String> = new Array();
+			//fill hero list with names of hero in config file ( data.json );
+			for( key in Reflect.fields( _config.heroes) )
+			{
+				heroList.push( key );
+			}
+
+			for( i in 1...slots )
+			{
+				var randomHeroNum = Math.floor( Math.random()*( heroList.length ) ); // heroList.length -1 + 1 ;
+				var heroName = heroList[ randomHeroNum ];
+				
+			}
+		}
 				
 		this._addScene( scene );
 		return scene;
