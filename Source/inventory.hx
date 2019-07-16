@@ -77,6 +77,7 @@ class Inventory extends Component
 	public function setItemInSlot( item:Dynamic, slot:String ):Bool
 	{
 		// { "name": "slot1", type": "slot", "item": null, "restriction": "hero", "isAvailable": false, "isStorable": false, "maxSize": null, "currentSize": null }
+
 		for( i in 0...this._inventory.length )
 		{
 			var slotName = this._inventory[ i ].name;
@@ -87,6 +88,11 @@ class Inventory extends Component
 					this._inventory[ i ].item = item;
 					return true;
 				}
+			}
+			else if( slot == null && this._inventory[ i ].item == null )
+			{
+				this._inventory[ i ].item = item;
+				return true;
 			}
 		}
 		return false;

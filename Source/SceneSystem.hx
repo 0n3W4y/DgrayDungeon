@@ -73,9 +73,21 @@ class SceneSystem
 
 			for( i in 1...slots )
 			{
-				var randomHeroNum = Math.floor( Math.random()*( heroList.length ) ); // heroList.length -1 + 1 ;
+				var randomHeroNum = Math.floor( Math.random()*( heroList.length ) ); // heroList.length - 1 + 1 ;
 				var heroName = heroList[ randomHeroNum ];
-				
+				var rarityNum = Math.floor( Math.random()*100 ); // 0 - 65%, 1 - 20%, 2 - 10%, 3 - 5%
+				var rarity:String = "common"; //0;
+				if( rarityNum < 10 )
+					rarity = "rare"; //2
+				else if( rarityNum >= 75 && rarityNum < 95 )
+					rarity = "uncommon"; //1;
+				else if( rarityNum >= 95 )
+					rarity = "legendary"; //3
+				var params = { "rarity": rarity };
+				var hero = this._parent.getSystem( "entity" ).createEntity( "hero", heroName, params );
+
+				// do this without check, because we have 1-st start and we have 4 slots at all.
+				building.getComponent( "inventory" ).setItemInSlot( hero, null ); 				
 			}
 		}
 				

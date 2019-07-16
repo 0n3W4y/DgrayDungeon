@@ -63,7 +63,7 @@ class EntitySystem
 			this.addComponentTo( component, building );
 		}
 
-		
+
 		return building;
 	}
 
@@ -74,7 +74,7 @@ class EntitySystem
 		var traitConfig:Dynamic = this._config.trait;
 		var skillConfig:Dynamic = this._config.skill;
 		var heroType:Int = 0; // "common"
-		switch( params.type )
+		switch( params.rarity )
 		{
 			case "uncommon": heroType = 1; // "uncommon", 
 			case "rare": heroType = 2; //"rare", 
