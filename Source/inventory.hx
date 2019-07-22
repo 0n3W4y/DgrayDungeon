@@ -20,15 +20,21 @@ class Inventory extends Component
 				var j = 0;
 				for( i in 0...params.maxSlots )
 				{
-					value.name = "slot" + i;
+					var newValue = { "name": null, "type": null, "item": null, "restriction": null, "isAvailable": null, "isStorable": null, "maxSize": null, "currentSize": null };
+					for( key in Reflect.fields( value ) )
+					{
+						var keyValue = Reflect.getProperty( value, key );
+						Reflect.setProperty( newValue, key, keyValue );
+					}
+					newValue.name = "slot" + i;
 					if( j < this._currentSlots )
 					{
-						value.isAvailable = true;
+						newValue.isAvailable = true;
 						j++;
 					}
 					else
-						value.isAvailable = false;
-					this._inventory.push( value );
+						newValue.isAvailable = false;
+					this._inventory.push( newValue );
 				}
 				break;
 			}
@@ -53,7 +59,7 @@ class Inventory extends Component
 				}
 			}
 		}
-		else if( !value && this._currentSlots > 0 );
+		else if( !value && this._currentSlots > 0 )
 		{
 			for( i in 0...this._inventory.length )
 			{
@@ -108,7 +114,7 @@ class Inventory extends Component
 			if ( slotName == slot )
 			{
 				item = this._inventory[ i ].item;
-				this._inventory.item = null;
+				this._inventory[ i ].item = null;
 				break;
 			}
 		}
@@ -117,7 +123,7 @@ class Inventory extends Component
 
 	public function changePropSlotInventory( slot:String, prop:Dynamic ):Void
 	{
-		var newSlot:Dyanmic = null;
+		var newSlot:Dynamic = null;
 		for( i in 0...this._inventory.length )
 		{
 			if( this._inventory[ i ].name == slot )

@@ -35,16 +35,16 @@
 		{
 			"crossbowman":
 			{
-				"inentory":
+				"inventory":
 				{
 					"slots": 4,
 					"needToFill":false,
 					"inventory":
 					{
-						"slot1": { "name": "slot1", "type": "weapon", "item": null, "restriction": "paladin", "isAvailable": true, "isStorable": false, "maxSize": null, "currentSize": null },
-						"slot2": { "name": "slot2", "type": "armor", "item": null, "restriction": 4, "isAvailable": true, "isStorable": false, "maxSize": null, "currentSize": null },
-						"slot3": { "name": "slot3", "type": "accessory1", "item": null, "restriction": null, "isAvailable": true, "isStorable": false, "maxSize": null, "currentSize": null },
-						"slot4": { "name": "slot4", "type": "accessory2", "item": null, "restriction": null, "isAvailable": true, "isStorable": false, "maxSize": null, "currentSize": null }
+						"slot1": { "name": "slot0", "type": "weapon", "item": null, "restriction": "crossbowman", "isAvailable": true, "isStorable": false, "maxSize": null, "currentSize": null },
+						"slot2": { "name": "slot1", "type": "armor", "item": null, "restriction": 4, "isAvailable": true, "isStorable": false, "maxSize": null, "currentSize": null },
+						"slot3": { "name": "slot2", "type": "accessory1", "item": null, "restriction": null, "isAvailable": true, "isStorable": false, "maxSize": null, "currentSize": null },
+						"slot4": { "name": "slot3", "type": "accessory2", "item": null, "restriction": null, "isAvailable": true, "isStorable": false, "maxSize": null, "currentSize": null }
 					}					
 				},
 
@@ -60,7 +60,7 @@
 				{
 					"lvl": 1,
 					"exp": 0,
-					"expToNextLvl": 100,
+					"expToNextLvl": [ 100, 110, 120, 130 ],
 					"maxLvl": 10
 				},
 				"stats":
@@ -97,8 +97,18 @@
 					"upDebuff": [ 1, 2, 3, 4 ],
 					"upMove": [ 1, 2, 3, 4 ],
 					"upFire": [ 1, 2, 3, 4 ],
-					"position": [ 75, 50, 50, 25 ],
-					"target": [ 25, 50, 75, 100 ]
+					"position": [ 
+						{ "first": 50, "second": 50, "third": 80, "fourth": 85 }, 
+						{ "first": 50, "second": 50, "third": 85, "fourth": 90 }, 
+						{ "first": 50, "second": 50, "third": 95, "fourth": 100 }, 
+						{ "first": 50, "second": 50, "third": 100, "fourth": 100 } 
+					],
+					"target": [ 
+						{ "first": 80, "second": 85, "third": 90, "fourth": 95 }, 
+						{ "first": 80, "second": 85, "third": 90, "fourth": 100 }, 
+						{ "first": 85, "second": 90, "third": 95, "fourth": 100 }, 
+						{ "first": 90, "second": 90, "third": 100, "fourth": 100 } 
+					]
 				},
 				"traits":
 				{
@@ -152,219 +162,6 @@
 					"addiction": null,
 					"queue": 1,
 					"graphicsInstance": null
-				}
-			},
-
-			"paladin": 
-			{
-				"uncommon":
-				{
-					"name":
-					{
-
-					},
-
-					"experience":
-					{
-
-					},
-
-					"stats":
-					{
-						"hp": 10,
-						"acc": 10,
-						"ddg": 10, 
-						"cc": 10,
-						"def": 10,
-						"dmg": 10,
-						"spd": 10,
-						"tiredness": 100
-					},
-
-					"traits":
-					{
-						"maxNumOfPositive": 3,
-						"maxNumOfNegative": 5,
-						"maxNumOfDiseases": 7,
-						"maxNumOfPositiveStatic": 1,
-						"maxNumOfNegativeStatic": 4,
-						"maxNumOfPositiveDiseases": 3
-					},
-
-					"skills":
-					{
-						"active":
-						{
-							"basic":{},
-							"hummerStun":{},
-							"shieldMove":{},
-							"hummerCrippling": {},
-							"healSomeone":{},
-							"healSelf":{},
-							"armorDebuff": {}
-						},
-						"passive":
-						{
-							"highDefense":{},
-							"hightAttackOnUndead": {},
-							"highHealing":{},
-							"hightStun": {}
-						},
-						"camping":
-						{
-
-						}
-					},
-
-					"inentory":
-					{
-						"weaponsSlot": {},
-						"armorSlot": {},
-						"accessoryOne": {},
-						"accessoryTwo": {}
-					},
-
-					"graphics":
-					{
-						"url": null,
-						"url2": null,
-						"url3": null,
-						"x": 0.0,
-						"y": 0.0,
-						"text": 
-						{
-							"Empty":
-							{
-								"text": "null",
-								"x": 100.0,
-								"y": 50.0,
-								"font": "Verdana",
-								"size": 48,
-								"color": "0xffffff",
-								"visible": true,
-								"selectable": false,
-								"queue": 1,
-								"height":100,
-								"width":100
-							}
-						},
-						"addiction": null,
-						"queue": 1,
-						"graphicsInstance": null
-					}
-				},
-				"common":
-				{
-
-				},
-				"rare":
-				{
-
-				},
-				"legendary":
-				{
-
-				}
-			},
-
-			"picker": {},
-			"alchemistry":{},
-			"thief":{},
-
-			"swordsman":
-			{
-				"uncommon":
-				{
-					"name":
-					{
-
-					},
-
-					"experience":
-					{
-
-					},
-
-					"stats":
-					{
-						"hp": 10,
-						"acc": 10,
-						"ddg": 10, 
-						"cc": 10,
-						"def": 10,
-						"dmg": 10,
-						"spd": 10,
-						"tiredness": 100
-					},
-
-					"traits":
-					{
-						"maxNumOfPositive": 3,
-						"maxNumOfNegative": 5,
-						"maxNumOfDiseases": 7
-					},
-
-					"skills":
-					{
-						"active":
-						{
-
-						},
-						"passive":
-						{
-
-						},
-						"camping":
-						{
-
-						}
-					},
-
-					"inentory":
-					{
-
-					},
-
-					"graphics":
-					{
-						"url": null,
-						"url2": null,
-						"url3": null,
-						"x": 0.0,
-						"y": 0.0,
-						"text": 
-						{
-							"Empty":
-							{
-								"text": "null",
-								"x": 100.0,
-								"y": 50.0,
-								"font": "Verdana",
-								"size": 48,
-								"color": "0xffffff",
-								"visible": true,
-								"selectable": false,
-								"queue": 1,
-								"height":100,
-								"width":100
-							}
-						},
-						"addiction": null,
-						"queue": 1,
-						"graphicsInstance": null
-					}
-				},
-				"common":
-				{
-
-				},
-				"rare":
-				{
-
-				},
-				"legendary":
-				{
-
 				}
 			}
 		},
@@ -498,8 +295,8 @@
 					"url": "assets/images/storage.png",
 					"url2": "assets/images/storage_m.png",
 					"url3": null,
-					"x": 1300.0,
-					"y": 575.0,
+					"x": 1400.0,
+					"y": 610.0,
 					"text": {
 						"name":
 						{

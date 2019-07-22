@@ -35,7 +35,7 @@ class Experience extends Component
 		this._lvl = params.lvl;
 		this._expToNextLvl = params.expToNextLvl;
 		this._exp = params.exp;
-		this._maxLvl = maxLvl;
+		this._maxLvl = params.maxLvl;
 	}	
 
 	public function addExp( value:Int ):Void

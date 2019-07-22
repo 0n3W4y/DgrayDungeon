@@ -37,8 +37,6 @@ class EntitySystem
 			var component = this.createComponent( key, value );
 			this.addComponentTo( component, uiObject );
 		}
-
-		trace( uiObject );
 		return uiObject;
 	}
 
@@ -70,7 +68,7 @@ class EntitySystem
 	private function _createHero( type:String, name:String, id:String, params:Dynamic ):Entity
 	{
 		var hero = new Entity( null, id, type, name );
-		var config:Dynamic = this._config.entity.heroes;
+		var config:Dynamic = this._config.heroes;
 		var traitConfig:Dynamic = this._config.trait;
 		var skillConfig:Dynamic = this._config.skill;
 		var heroType:Int = 0; // "common"
@@ -98,9 +96,47 @@ class EntitySystem
 		for( num in Reflect.fields( heroConfig ) )
 		{
 			var value:Dynamic = Reflect.getProperty( heroConfig, num );
-			switch( key )
+			var component:Dynamic = null;
+			switch( num )
 			{
-				case "name": value.rarity = value.rarity[ heroType ];
+				case "name": 
+				{
+					var names:Array<String> = [ "Alex", "Sally", "Edward", "Bob", "Alice", "Odry", "Cooper", "Ann" ];
+					var surnames:Array<String> = [ "Oldrich", "Slowpoke", "Duckman", "Smith", "Oldman", "Cage", "Travolta", "Parker", "Stark", "Anderson" ];
+					var newName:String = names[ Math.floor( Math.random() * names.length ) ];
+					var newSurname:String = surnames[ Math.floor( Math.random() * surnames.length ) ];
+					// genderNames;
+					var name:Dynamic = 
+					{
+						"name": newName,
+						"surname": newSurname,
+						"rank": null,
+						"type": "Crossbowman",
+						"rarity": value.rarity[ heroType ]
+					};
+					//TODO: Generate name;
+					component = this.createComponent( num, name );
+				}
+				case "experience":
+				{
+					var experience:Dynamic = 
+					{
+						"lvl": 1,
+						"exp": 0,
+						"expToNextLvl": value.expToNextLvl[ heroType ],
+						"maxLvl": 10
+					};
+					component = this.createComponent( num, experience );
+				}
+				case "inventory":
+				{
+					component = this.createComponent( num, value );
+				}
+				case "graphics":
+				{
+					//TODO: Do some graphics for hero rarity;
+					component = this.createComponent( num, value );
+				}
 				case "stats":
 				{
 					var stats = 
@@ -131,36 +167,54 @@ class EntitySystem
 						"upCd": value.upCd[ heroType ],
 						"upStress": value.upStress[ heroType ],
 						"upStun": value.upStun[ heroType ],
-						"upPpoison": value.upPpoison[ heroType ],
+						"upPoison": value.upPpoison[ heroType ],
 						"upBleed": value.upBleed[ heroType ],
 						"upDiseas": value.upDiseas[ heroType ],
 						"upDebuff": value.upDebuff[ heroType ],
 						"upMove": value.upMove[ heroType ],
 						"upFire": value.upFire[ heroType ],
-						"position": value.position,
-						"target": value.target
-					}
-					value = stats;
+						"position": value.position[ heroType ],
+						"target": value.target[ heroType ]
+					};
+					component = this.createComponent( num, stats );
 				};
 				case "traits":
 				{
-					value.maxNumOfPositive = value.maxNumOfPositive[ heroType ];
-					value.maxNumOfNegative = value.maxNumOfNegative[ heroType ];
-					value.maxNumOfPositiveStatic = value.maxNumOfPositiveStatic[ heroType ];
-					value.maxNumOfNegativeStatic = value.maxNumOfNegativeStatic[ heroType ];
+					var traits = 
+					{
+						"maxNumOfPositive": value.maxNumOfPositive[ heroType ],
+						"maxNumOfNegative": value.maxNumOfNegative[ heroType ],
+						"maxNumOfPositiveStatic": value.maxNumOfPositiveStatic[ heroType ],
+						"maxNumOfNegativeStatic": value.maxNumOfNegativeStatic[ heroType ]
+					}
+					// TODO: generate traits and add it to component;
+					component = this.createComponent( num, traits );
+
 				};
 				case "skills":
 				{
-					value.active.maxActiveSkills = value.active.maxActiveSkills[ heroType ];
-					value.active.maxStaticActiveSkills = value.active.maxStaticActiveSkills[ heroType ];
-					value.passive.maxPassiveSkills = value.passive.maxPassiveSkills[ heroType ];
-					value.passive.maxStaticPassiveSkills = value.passive.maxStaticPassiveSkills[ heroType ];
-					//value.camping;
-				}
-				default : trace( "Error in EntitySystem._heroConfig, no key with name: " + key + ", in container with heroType: " + heroType );
-			}
+					var skills = 
+					{
+						"active":
+						{
+							"maxActiveSkills": value.active.maxActiveSkills[ heroType ],
+							"maxStaticActiveSkills": value.active.maxStaticActiveSkills[ heroType ]
+						},
+						"passive":
+						{
+							"maxPassiveSkills": value.passive.maxPassiveSkills[ heroType ],
+							"maxStaticPassiveSkills": value.passive.maxStaticPassiveSkills[ heroType ]
+						},
+						"camping":
+						{
 
-			var component = this.createComponent( key, value );
+						}
+					}
+					//TODO: generate skills, and add it to component;
+					component = this.createComponent( num, skills );
+				}
+				default : trace( "Error in EntitySystem._heroConfig, no key with name: " + num + ", in container with heroType: " + heroType );
+			}
 			this.addComponentTo( component, hero );
 		}
 
@@ -183,7 +237,8 @@ class EntitySystem
 		}
 
 		//Test for console.
-		trace( hero );
+		trace( hero.get( "name" ) + "; " + hero.get( "type" ) + "; " + hero.getComponent( "name" ).get("fullName") + "; " + hero.getComponent( "name" ).get("rarity") );
+		//trace( hero.getComponent( "inventory").getInventory() );
 		return hero;
 	}
 
@@ -224,6 +279,7 @@ class EntitySystem
 			case "skills": component = new Skills( null, id, params );
 			case "stats": component = new Stats( null, id, params );
 			case "traits": component = new Traits( null, id, params );
+			case "experience": component = new Experience( null, id, params );
 			default: trace( "Error in EntitySystem.createComponent, component with name: '" + componentName + "' does not exist." );
 		}
 		return component;
@@ -252,5 +308,15 @@ class EntitySystem
 			var object = this.createEntity( type, list[ i ], null );
 			this.addEntityToScene( object, scene );
 		}
+	}
+
+	public function getHeroList():Array<String>
+	{
+		var heroList:Array<String> = new Array();
+		for( key in Reflect.fields( _config.heroes) )
+		{
+			heroList.push( key );
+		}
+		return heroList;
 	}
 }

@@ -64,14 +64,12 @@ class SceneSystem
 				}
 			}
 			var slots = building.getComponent( "inventory" ).getCurrentSlots();
-			var heroList:Array<String> = new Array();
-			//fill hero list with names of hero in config file ( data.json );
-			for( key in Reflect.fields( _config.heroes) )
-			{
-				heroList.push( key );
-			}
 
-			for( i in 1...slots )
+			//fill hero list with names of hero in config file ( data.json from entitysystem );
+			var heroList:Array<String> = this._parent.getSystem( "entity" ).getHeroList();
+			
+
+			for( i in 0...slots )
 			{
 				var randomHeroNum = Math.floor( Math.random()*( heroList.length ) ); // heroList.length - 1 + 1 ;
 				var heroName = heroList[ randomHeroNum ];
@@ -87,8 +85,9 @@ class SceneSystem
 				var hero = this._parent.getSystem( "entity" ).createEntity( "hero", heroName, params );
 
 				// do this without check, because we have 1-st start and we have 4 slots at all.
-				building.getComponent( "inventory" ).setItemInSlot( hero, null ); 				
+				building.getComponent( "inventory" ).setItemInSlot( hero, null ); 		
 			}
+			//trace ( building.getComponent( "inventory" ).getInventory() );
 		}
 				
 		this._addScene( scene );
@@ -99,7 +98,7 @@ class SceneSystem
 	{
 		var id = this._createId();
 		var scene = new Scene( this, id, sceneName );
-		//CONFIG;
+		//TODO: CONFIG;
 		this._addScene( scene );
 		return scene;
 	}

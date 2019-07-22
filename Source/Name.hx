@@ -28,6 +28,7 @@ class Name extends Component
 			case "rank": return this._rank;
 			case "type": return this._type;
 			case "rarity": return this._rarity;
+			case "fullName": return this.__name + " " + this._surname;
 			default: { trace( "Error in Name.get, type of get can't be: " + type ); return null; }
 		}
 	}

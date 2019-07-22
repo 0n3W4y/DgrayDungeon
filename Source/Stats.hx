@@ -4,7 +4,7 @@ class Stats extends Component
 {
 	private var _totalHp:Float; // Health Points;
 	private var _currentHp:Float;
-	private var _totalAcc:Float; // Accuricy %
+	private var _totalAcc:Float; // Accuricy % // choose number of damage, if acc 100% always use max damage;
 	private var _currentAcc:Float;
 	private var _totalDdg:Float; // Dodge %
 	private var _currentDdg:Float;
@@ -18,9 +18,10 @@ class Stats extends Component
 	private var _currentSpd:Float; // Speed
 	private var _totalStress:Float;
 	private var _currentStress:Float; // stress :D
-	private var _totalCritDamage:Float;
+	private var _totalCritDamage:Float; // multiply damaga ( x2, x2,1 e.t.c ); //default 100 = 2x
 	private var _currentCritDamage:Float;
 
+	//params for all resistance;
 	private var _totalStunResist:Float;
 	private var _currentStunResist:Float;
 	private var _totalPoisonResist:Float;
@@ -36,6 +37,7 @@ class Stats extends Component
 	private var _totalFireResist:Float;
 	private var _currentFireResist:Float;
 
+	//params for level up;
 	private var _upHp:Float;
 	private var _upAcc:Float;
 	private var _upDdg:Float;
@@ -53,9 +55,11 @@ class Stats extends Component
 	private var _upMoveResist:Float;
 	private var _upFireResist:Float;
 
-	private var _effects:Array<Dynamic>;
-	private var _position:Array<Int>;
-	private var _target:Array<Int>;
+	private var _effects:Array<Dynamic>; // [ { effect1 }, { effect2 } ... ];
+	private var _position:Dynamic; // { "first": 75, "second": 80, "third": 100, "fourth": 90 }
+	private var _target:Dynamic; // { "first": 100, "second": 80, "third": 90, "fourth": 70 }
+
+	private var _currentPosition:String;
 
 
 	private function _reCalculateTotalStats():Void
@@ -72,7 +76,11 @@ class Stats extends Component
 
 		for( key in Reflect.fields ( params ) )
 		{
-			var value = Reflect.getProperty( params, key );
+			var value:Float = Reflect.getProperty( params, key );
+			var value2:Dynamic = null;
+			if( key == "position" || key == "target" )
+				value2 = Reflect.getProperty( params, key );
+
 			switch( key )
 			{
 				case "hp": {this._currentHp = value; this._totalHp = value;}
@@ -107,8 +115,8 @@ class Stats extends Component
 				case "upDebuff": this._upDebuffResist = value;
 				case "upMove": this._upMoveResist = value;
 				case "upFire": this._upFireResist = value;
-				case "position": this._position = value;
-				case "target": this._target = value;
+				case "position": this._position = value2;
+				case "target": this._target = value2;
 				default: trace( "Error in Stats.setCurrent, name can't be: " + key );
 			}
 		}
