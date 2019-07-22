@@ -155,3 +155,28 @@ class Game
 		return this._mainSprite;
 	}
 }
+/*
+var acc = 70;
+        var dmg = [ 10, 12 ];
+        var minDmg = dmg[0];
+        var maxDmg = dmg[1];
+        var damage = null;
+        var difDmg = Math.round( (maxDmg - minDmg)*acc/100 );
+        var k = 0;
+        var l = 0;
+        for( i in 0...9 )
+            {
+                var hitTest = Math.floor(Math.random() * 100 );
+                if( hitTest <= acc-1 )
+                    k++;
+                else
+                    l++;     
+            }
+         if( k > l )
+             minDmg += difDmg;
+        else
+            maxDmg -= difDmg;
+        
+            
+        var random =  Math.floor( minDmg + Math.random() * ( maxDmg - minDmg + 1 ));
+*/
