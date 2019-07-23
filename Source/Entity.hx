@@ -4,13 +4,13 @@ import openfl.display.Sprite;
 
 class Entity extends Sprite
 {
-	private var __parent:EntitySystem;
+	private var __parent:Dynamic;
 	private var __id:String;
 	private var __type:String;
 	private var _name:String;
 	private var __components:Array<Component> = new Array();
 
-	public function new( parent:EntitySystem, id:String, type:String, name:String ):Void
+	public function new( parent:Dynamic, id:String, type:String, name:String ):Void
 	{
 		super();
 		this.__parent = parent;
@@ -74,5 +74,10 @@ class Entity extends Sprite
 
 		};
 		return null;
+	}
+
+	public function setParent( parent:Dynamic ):Void
+	{
+		this.__parent = parent;
 	}
 }

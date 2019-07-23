@@ -193,25 +193,78 @@ class EntitySystem
 				};
 				case "skills":
 				{
+					var maxActive = value.active.maxActiveSkills[ heroType ];
+					var maxPassive = value.passive.maxPassiveSkills[ heroType ];
+					var maxCamping = value.camping.maxCampingSkills[ heroType ];
 					var skills = 
 					{
-						"active":
-						{
-							"maxActiveSkills": value.active.maxActiveSkills[ heroType ],
-							"maxStaticActiveSkills": value.active.maxStaticActiveSkills[ heroType ]
-						},
-						"passive":
-						{
-							"maxPassiveSkills": value.passive.maxPassiveSkills[ heroType ],
-							"maxStaticPassiveSkills": value.passive.maxStaticPassiveSkills[ heroType ]
-						},
-						"camping":
-						{
+						"maxActiveSkills": maxActive,
+						"maxStaticActiveSkills": value.active.maxStaticActiveSkills[ heroType ],
+						"maxPassiveSkills": maxPassive,
+						"maxStaticPassiveSkills": value.passive.maxStaticPassiveSkills[ heroType ],
+						"maxCampingSkills": maxCamping,
+						"maxStaticCampingSkills": value.camping.maxStaticCampingSkills[ heroType ]
+					}
+					component = this.createComponent( num, skills );
 
+					//generate skills into component;
+					for( k in 0...2 )
+					{
+						var list:Dynamic = value.active.skills;
+						var maxSkills:Int = maxActive;
+						var typeSkill:String = "active";
+						if( k == 1 )
+						{
+							list = value.passive.skills;
+							typeSkill = "passive";
+							maxSkills = maxPassive;
+						}
+
+						var arrayList:Array<String> = new Array();
+						for( key in Reflect.fields( list ) )
+						{
+							if( key == "basic" ) // need to use basic skill always;
+								continue;
+							arrayList.push( key ); // [ "skill1", "skill2", "skill3" ];
+						}
+						var dif = arrayList.length - maxSkills;// find diffirence from array to max skills;
+
+						for( j in 0...dif )// try to cut random skills from array of skills;
+						{
+							var randomNum = Math.floor( Math.random() * arrayList.length );
+							arrayList.splice( randomNum, 1 );
+						}
+						if( k == 0 )
+							arrayList.push( "basic" ); // add basic skill back;
+
+						for( i in 0...arrayList.length )// create skills;
+						{
+							var skill = Reflect.getProperty( list, arrayList[ i ] );
+							var newSkill = 
+							{
+								"name": skill.name,
+								"isChoosen": false,
+								"isStatic": false,
+								"upgradeLevel": 0,
+								"maxUpgradeLevel": skill.maxUpgradeLevel,
+								"value": skill.upgradeValue.value[ 0 ], //upgradeLevel = 0;
+								"type": skill.upgradeValue.type,
+								"effect": skill.upgradeValue.effect,
+								"removeEffect": skill.upgradeValue.removeEffect,
+								"valueType": skill.upgradeValue.valueType,
+								"action": skill.upgradeValue.action,
+								"targetStat": skill.upgradeValue.targetStat, 
+								"duration": skill.upgradeValue.duration[ 0 ],
+								"cooldawn": skill.upgradeValue.cooldawn[ 0 ],
+								"target": skill.upgradeValue.target[ 0 ]							
+							};
+							component.addSkill( newSkill, typeSkill );
 						}
 					}
-					//TODO: generate skills, and add it to component;
-					component = this.createComponent( num, skills );
+
+					var listOfCamping = value.camping.skills;
+
+					
 				}
 				default : trace( "Error in EntitySystem._heroConfig, no key with name: " + num + ", in container with heroType: " + heroType );
 			}
@@ -287,13 +340,14 @@ class EntitySystem
 
 	public function addEntityToScene( entity:Entity, scene:Scene ):Void
 	{
+		entity.setParent( scene );
 		var type = entity.get( "type" );
-		var container = null;
 		switch( type )
 		{
 			case "window": scene.getEntities( "ui" ).windows.push( entity );
 			case "button": scene.getEntities( "ui" ).buttons.push( entity );
-			case "building": container = scene.getEntities( "object" ).buildings.push( entity );
+			case "building": scene.getEntities( "object" ).buildings.push( entity );
+			case "hero": scene.getEntities( "alive" ).hero.push( entity );
 			default: trace( "Error in Scene.addEntity, can't add entity with name: " + entity.get( "name" ) + ", and type: " + type + "." );
 		}
 	}
@@ -318,5 +372,10 @@ class EntitySystem
 			heroList.push( key );
 		}
 		return heroList;
+	}
+
+	public function getConfig():Dynamic
+	{
+		return this._config;
 	}
 }

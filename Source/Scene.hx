@@ -23,8 +23,8 @@ class Scene extends Sprite
 
 		this._aliveEntities = 
 		{
-			"playerTeam": new Array<Entity>(),
-			"enemyTeam": new Array<Entity>()
+			"hero": new Array<Entity>(),
+			"enemy": new Array<Entity>()
 		};
 		this._objectEntities = 
 		{

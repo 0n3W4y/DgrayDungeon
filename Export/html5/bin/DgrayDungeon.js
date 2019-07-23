@@ -894,9 +894,9 @@ ApplicationMain.create = function(config) {
 	ManifestResources.init(config);
 	var _this = app.meta;
 	if(__map_reserved["build"] != null) {
-		_this.setReserved("build","41");
+		_this.setReserved("build","64");
 	} else {
-		_this.h["build"] = "41";
+		_this.h["build"] = "64";
 	}
 	var _this1 = app.meta;
 	if(__map_reserved["company"] != null) {
@@ -4445,6 +4445,9 @@ Entity.prototype = $extend(openfl_display_Sprite.prototype,{
 		}
 		return null;
 	}
+	,setParent: function(parent) {
+		this.__parent = parent;
+	}
 	,__class__: Entity
 });
 var EntitySystem = function(parent,params) {
@@ -4575,8 +4578,54 @@ EntitySystem.prototype = {
 				component = this.createComponent(num,name1);
 				break;
 			case "skills":
-				var skills = { "active" : { "maxActiveSkills" : value.active.maxActiveSkills[heroType], "maxStaticActiveSkills" : value.active.maxStaticActiveSkills[heroType]}, "passive" : { "maxPassiveSkills" : value.passive.maxPassiveSkills[heroType], "maxStaticPassiveSkills" : value.passive.maxStaticPassiveSkills[heroType]}, "camping" : { }};
+				var maxActive = value.active.maxActiveSkills[heroType];
+				var maxPassive = value.passive.maxPassiveSkills[heroType];
+				var maxCamping = value.camping.maxCampingSkills[heroType];
+				var skills = { "maxActiveSkills" : maxActive, "maxStaticActiveSkills" : value.active.maxStaticActiveSkills[heroType], "maxPassiveSkills" : maxPassive, "maxStaticPassiveSkills" : value.passive.maxStaticPassiveSkills[heroType], "maxCampingSkills" : maxCamping, "maxStaticCampingSkills" : value.camping.maxStaticCampingSkills[heroType]};
 				component = this.createComponent(num,skills);
+				var _g3 = 0;
+				while(_g3 < 2) {
+					var k = _g3++;
+					var list = value.active.skills;
+					var maxSkills = maxActive;
+					var typeSkill = "active";
+					if(k == 1) {
+						list = value.passive.skills;
+						typeSkill = "passive";
+						maxSkills = maxPassive;
+					}
+					var arrayList = [];
+					var _g4 = 0;
+					var _g5 = Reflect.fields(list);
+					while(_g4 < _g5.length) {
+						var key1 = _g5[_g4];
+						++_g4;
+						if(key1 == "basic") {
+							continue;
+						}
+						arrayList.push(key1);
+					}
+					var dif = arrayList.length - maxSkills;
+					var _g51 = 0;
+					var _g41 = dif;
+					while(_g51 < _g41) {
+						var j = _g51++;
+						var randomNum = Math.floor(Math.random() * arrayList.length);
+						arrayList.splice(randomNum,1);
+					}
+					if(k == 0) {
+						arrayList.push("basic");
+					}
+					var _g52 = 0;
+					var _g42 = arrayList.length;
+					while(_g52 < _g42) {
+						var i = _g52++;
+						var skill1 = Reflect.getProperty(list,arrayList[i]);
+						var newSkill = { "name" : skill1.name, "isChoosen" : false, "isStatic" : false, "upgradeLevel" : 0, "maxUpgradeLevel" : skill1.maxUpgradeLevel, "value" : skill1.upgradeValue.value[0], "type" : skill1.upgradeValue.type, "effect" : skill1.upgradeValue.effect, "removeEffect" : skill1.upgradeValue.removeEffect, "valueType" : skill1.upgradeValue.valueType, "action" : skill1.upgradeValue.action, "targetStat" : skill1.upgradeValue.targetStat, "duration" : skill1.upgradeValue.duration[0], "cooldawn" : skill1.upgradeValue.cooldawn[0], "target" : skill1.upgradeValue.target[0]};
+						component.addSkill(newSkill,typeSkill);
+					}
+				}
+				var listOfCamping = value.camping.skills;
 				break;
 			case "stats":
 				var stats = { "hp" : value.hp[heroType], "acc" : value.acc[heroType], "ddg" : value.ddg[heroType], "cc" : value.cc[heroType], "def" : value.def[heroType], "dmg" : value.dmg[heroType], "spd" : value.spd[heroType], "cd" : value.cd[heroType], "stress" : value.stress[heroType], "stun" : value.stun[heroType], "poison" : value.poison[heroType], "bleed" : value.bleed[heroType], "diseas" : value.diseas[heroType], "debuff" : value.debuff[heroType], "move" : value.move[heroType], "fire" : value.fire[heroType], "upHp" : value.upHp[heroType], "upAcc" : value.upAcc[heroType], "upDdg" : value.upDdg[heroType], "upCc" : value.upCc[heroType], "upDef" : value.upDef[heroType], "upDmg" : value.upDmg[heroType], "upSpd" : value.upSpd[heroType], "upCd" : value.upCd[heroType], "upStress" : value.upStress[heroType], "upStun" : value.upStun[heroType], "upPoison" : value.upPpoison[heroType], "upBleed" : value.upBleed[heroType], "upDiseas" : value.upDiseas[heroType], "upDebuff" : value.upDebuff[heroType], "upMove" : value.upMove[heroType], "upFire" : value.upFire[heroType], "position" : value.position[heroType], "target" : value.target[heroType]};
@@ -4587,7 +4636,7 @@ EntitySystem.prototype = {
 				component = this.createComponent(num,traits);
 				break;
 			default:
-				haxe_Log.trace("Error in EntitySystem._heroConfig, no key with name: " + num + ", in container with heroType: " + heroType,{ fileName : "EntitySystem.hx", lineNumber : 216, className : "EntitySystem", methodName : "_createHero"});
+				haxe_Log.trace("Error in EntitySystem._heroConfig, no key with name: " + num + ", in container with heroType: " + heroType,{ fileName : "EntitySystem.hx", lineNumber : 269, className : "EntitySystem", methodName : "_createHero"});
 			}
 			this.addComponentTo(component,hero);
 		}
@@ -4611,8 +4660,7 @@ EntitySystem.prototype = {
 				break;
 			}
 		}
-		haxe_Log.trace(Std.string(hero.get("name")) + "; " + Std.string(hero.get("type")) + "; " + Std.string(hero.getComponent("name").get("fullName")) + "; " + Std.string(hero.getComponent("name").get("rarity")),{ fileName : "EntitySystem.hx", lineNumber : 240, className : "EntitySystem", methodName : "_createHero"});
-		haxe_Log.trace(hero.getComponent("inventory").getInventory(),{ fileName : "EntitySystem.hx", lineNumber : 241, className : "EntitySystem", methodName : "_createHero"});
+		haxe_Log.trace(Std.string(hero.get("name")) + "; " + Std.string(hero.get("type")) + "; " + Std.string(hero.getComponent("name").get("fullName")) + "; " + Std.string(hero.getComponent("name").get("rarity")),{ fileName : "EntitySystem.hx", lineNumber : 293, className : "EntitySystem", methodName : "_createHero"});
 		return hero;
 	}
 	,createEntity: function(type,name,params) {
@@ -4625,7 +4673,7 @@ EntitySystem.prototype = {
 		case "hero":
 			return this._createHero(type,name,id,params);
 		default:
-			haxe_Log.trace("Error in EntitySystem.createEntity, can't find entity with type: " + type + ".",{ fileName : "EntitySystem.hx", lineNumber : 259, className : "EntitySystem", methodName : "createEntity"});
+			haxe_Log.trace("Error in EntitySystem.createEntity, can't find entity with type: " + type + ".",{ fileName : "EntitySystem.hx", lineNumber : 312, className : "EntitySystem", methodName : "createEntity"});
 		}
 		return null;
 	}
@@ -4661,31 +4709,34 @@ EntitySystem.prototype = {
 			component = new UI(null,id,params);
 			break;
 		default:
-			haxe_Log.trace("Error in EntitySystem.createComponent, component with name: '" + componentName + "' does not exist.",{ fileName : "EntitySystem.hx", lineNumber : 283, className : "EntitySystem", methodName : "createComponent"});
+			haxe_Log.trace("Error in EntitySystem.createComponent, component with name: '" + componentName + "' does not exist.",{ fileName : "EntitySystem.hx", lineNumber : 336, className : "EntitySystem", methodName : "createComponent"});
 		}
 		return component;
 	}
 	,addEntityToScene: function(entity,scene) {
+		entity.setParent(scene);
 		var type = entity.get("type");
-		var container = null;
 		switch(type) {
 		case "building":
-			container = scene.getEntities("object").buildings.push(entity);
+			scene.getEntities("object").buildings.push(entity);
 			break;
 		case "button":
 			scene.getEntities("ui").buttons.push(entity);
+			break;
+		case "hero":
+			scene.getEntities("alive").hero.push(entity);
 			break;
 		case "window":
 			scene.getEntities("ui").windows.push(entity);
 			break;
 		default:
-			haxe_Log.trace("Error in Scene.addEntity, can't add entity with name: " + Std.string(entity.get("name")) + ", and type: " + type + ".",{ fileName : "EntitySystem.hx", lineNumber : 297, className : "EntitySystem", methodName : "addEntityToScene"});
+			haxe_Log.trace("Error in Scene.addEntity, can't add entity with name: " + Std.string(entity.get("name")) + ", and type: " + type + ".",{ fileName : "EntitySystem.hx", lineNumber : 351, className : "EntitySystem", methodName : "addEntityToScene"});
 		}
 	}
 	,createEntitiesForScene: function(scene,type,list) {
 		var paramsContainer = Reflect.getProperty(this._config,type);
 		if(paramsContainer == null) {
-			haxe_Log.trace("Error in EntitySystem.createEntitiesForScene, can't find type: " + type + " into config container!",{ fileName : "EntitySystem.hx", lineNumber : 305, className : "EntitySystem", methodName : "createEntitiesForScene"});
+			haxe_Log.trace("Error in EntitySystem.createEntitiesForScene, can't find type: " + type + " into config container!",{ fileName : "EntitySystem.hx", lineNumber : 359, className : "EntitySystem", methodName : "createEntitiesForScene"});
 		}
 		var _g1 = 0;
 		var _g = list.length;
@@ -4705,6 +4756,9 @@ EntitySystem.prototype = {
 			heroList.push(key);
 		}
 		return heroList;
+	}
+	,getConfig: function() {
+		return this._config;
 	}
 	,__class__: EntitySystem
 };
@@ -5121,7 +5175,7 @@ Game.prototype = {
 		}
 	}
 	,_parseData: function() {
-		var conf = { trait : { negative : { }, positive : { }}, entity : { heroes : { crossbowman : { graphics : { graphicsInstance : null, url : null, y : 0, x : 0, queue : 1, url3 : null, url2 : null, text : { empty : { visible : true, height : 100, y : 50, x : 100, queue : 1, text : "null", size : 48, width : 100, color : "0xffffff", selectable : false, font : "Verdana"}}, addiction : null}, stats : { diseas : [50,51,52,53], bleed : [50,51,52,53], upSpd : [1,2,3,4], upDmg : [1,2,3,4], upDef : [1,2,3,4], upDdg : [1,2,3,4], upAcc : [1,2,3,4], upStress : [5,5,6,6], upBleed : [1,2,3,4], stress : [100,110,120,130], target : [{ third : 90, first : 80, fourth : 95, second : 85},{ third : 90, first : 80, fourth : 100, second : 85},{ third : 95, first : 85, fourth : 100, second : 90},{ third : 100, first : 90, fourth : 100, second : 90}], spd : [10,11,12,13], dmg : [1,2,3,4], def : [10,11,12,13], ddg : [10,11,12,13], acc : [10,11,12,13], hp : [10,11,12,13], cd : [2,2,3,3], cc : [10,11,12,13], upStun : [1,2,3,4], upMove : [1,2,3,4], poison : [50,51,52,53], upFire : [1,2,3,4], upDebuff : [1,2,3,4], upPpoison : [1,2,3,4], debuff : [50,51,52,53], upHp : [1,2,3,4], upCd : [1,2,3,4], upCc : [1,2,3,4], stun : [50,51,52,53], position : [{ third : 80, first : 50, fourth : 85, second : 50},{ third : 85, first : 50, fourth : 90, second : 50},{ third : 95, first : 50, fourth : 100, second : 50},{ third : 100, first : 50, fourth : 100, second : 50}], move : [50,51,52,53], upDiseas : [1,2,3,4], fire : [50,51,52,53]}, experience : { maxLvl : 10, lvl : 1, exp : 0, expToNextLvl : [100,110,120,130]}, skills : { active : { maxStaticActiveSkills : [1,2,3,4], maxActiveSkills : [3,4,5,6]}, passive : { maxStaticPassiveSkills : [1,2,3,4], maxPassiveSkills : [1,2,3,4]}, camping : { }}, name : { rarity : ["common","uncommon","rare","legendary"], surname : null, type : "Crossbowman", rank : null, name : null}, inventory : { slots : 4, needToFill : false, inventory : { slot4 : { restriction : null, currentSize : null, isAvailable : true, type : "accessory2", maxSize : null, isStorable : false, name : "slot3", item : null}, slot3 : { restriction : null, currentSize : null, isAvailable : true, type : "accessory1", maxSize : null, isStorable : false, name : "slot2", item : null}, slot2 : { restriction : 4, currentSize : null, isAvailable : true, type : "armor", maxSize : null, isStorable : false, name : "slot1", item : null}, slot1 : { restriction : "crossbowman", currentSize : null, isAvailable : true, type : "weapon", maxSize : null, isStorable : false, name : "slot0", item : null}}}, traits : { maxNumOfNegative : [6,5,4,3], maxNumOfPositive : [3,4,5,6], maxNumOfNegativeStatic : [4,3,2,1], maxNumOfPositiveStatic : [1,2,3,4]}}}, button : { citySceneMainWindowExitButton : { graphics : { graphicsInstance : null, url : "assets/images/citySceneMainWindowExitButton.png", y : 10, x : 1000, queue : 0, url3 : "assets/images/citySceneMainWindowExitButton_push.png", url2 : "assets/images/citySceneMainWindowExitButton.png", text : null, addiction : "citySceneMainWindow"}}, startSceneAuthorsButton : { graphics : { graphicsInstance : null, url : "assets/images/button_b.png", y : 385, x : 75, queue : 0, url3 : "assets/images/button_b_push.png", url2 : "assets/images/button_b_hover.png", text : { buttonText : { visible : true, height : 100, y : 0, x : 0, queue : 0, text : "Authors", size : 64, width : 100, color : "0x000000", selectable : false, font : "Verdana"}}, addiction : "startSceneButtonsWindow"}}, citySceneStartJourneyButton : { graphics : { graphicsInstance : null, url : "assets/images/button_a.png", y : 5, x : 860, queue : 0, url3 : "assets/images/button_a_push.png", url2 : "assets/images/button_a_hover.png", text : { buttonText : { visible : true, height : 40, y : 5, x : 75, queue : 0, text : "START", size : 38, width : 140, color : "0xffffff", selectable : false, font : "Verdana"}}, addiction : "panelCityWindow"}}, chooseDungeonSceneDungeonButtonD : { graphics : { graphicsInstance : null, url : "assets/images/button_dungeon_d.png", y : 0, x : 0, queue : 0, url3 : "assets/images/button_dungeon_d_choose.png", url2 : "assets/images/button_dungeon_d.png", text : null, addiction : "dungeon1"}, ui : { }}, chooseDungeonSceneDungeonButtonC : { graphics : { graphicsInstance : null, url : "assets/images/button_dungeon_c.png", y : 0, x : 0, queue : 0, url3 : "assets/images/button_dungeon_c_choose.png", url2 : "assets/images/button_dungeon_c.png", text : null, addiction : "dungeon1"}, ui : { }}, chooseDungeonSceneDungeonButtonB : { graphics : { graphicsInstance : null, url : "assets/images/button_dungeon_b.png", y : 0, x : 0, queue : 0, url3 : "assets/images/button_dungeon_b_choose.png", url2 : "assets/images/button_dungeon_b.png", text : null, addiction : "dungeon1"}, ui : { }}, chooseDungeonSceneDungeonButtonA : { graphics : { graphicsInstance : null, url : "assets/images/button_dungeon_a.png", y : 100, x : -50, queue : 0, url3 : "assets/images/button_dungeon_a_choose.png", url2 : "assets/images/button_dungeon_a.png", text : null, addiction : "dungeon1"}, ui : { }}, chooseDungeonBackToCityButton : { graphics : { graphicsInstance : null, url : "assets/images/backToCityButton.png", y : 150, x : 100, queue : 0, url3 : "assets/images/backToCityButton_push.png", url2 : "assets/images/backToCityButton_hover.png", text : null, addiction : null}}, startSceneContinueButton : { graphics : { graphicsInstance : null, url : "assets/images/button_b.png", y : 25, x : 75, queue : 0, url3 : "assets/images/button_b_push.png", url2 : "assets/images/button_b_hover.png", text : { buttonText : { visible : true, height : 100, y : 0, x : 0, queue : 0, text : "Continue", size : 64, width : 100, color : "0x000000", selectable : false, font : "Verdana"}}, addiction : "startSceneButtonsWindow"}}, startSceneOptionsButton : { graphics : { graphicsInstance : null, url : "assets/images/button_b.png", y : 265, x : 75, queue : 0, url3 : "assets/images/button_b_push.png", url2 : "assets/images/button_b_hover.png", text : { buttonText : { visible : true, height : 100, y : 0, x : 0, queue : 0, text : "Options", size : 64, width : 100, color : "0x000000", selectable : false, font : "Verdana"}}, addiction : "startSceneButtonsWindow"}}, innWindowButtonHeroListUp : { graphics : { graphicsInstance : null, url : "assets/images/button_c.png", y : 810, x : 105, queue : 0, url3 : "assets/images/button_c_push.png", url2 : "assets/images/button_c_hover.png", text : null, addiction : "innWindow"}}, startSceneStartButton : { graphics : { graphicsInstance : null, url : "assets/images/button_b.png", y : 145, x : 75, queue : 0, url3 : "assets/images/button_b_push.png", url2 : "assets/images/button_b_hover.png", text : { buttonText : { visible : true, height : 100, y : 0, x : 0, queue : 0, text : "New", size : 58, width : 100, color : "0x000000", selectable : false, font : "Verdana"}}, addiction : "startSceneButtonsWindow"}}, innWindowButtonHeroListDown : { graphics : { graphicsInstance : null, url : "assets/images/button_d.png", y : 810, x : 25, queue : 0, url3 : "assets/images/button_d_hover.png", url2 : "assets/images/button_d_push.png", text : null, addiction : "innWindow"}}}, building : { graveyard : { graphics : { graphicsInstance : null, url : "assets/images/graveyard.png", y : 400, x : 680, queue : 2, url3 : null, url2 : "assets/images/graveyard_m.png", text : { name : { visible : true, height : 100, y : 100, x : 200, queue : 1, text : "Graveyard", size : 48, width : 200, color : "0xffffff", selectable : false, font : "Verdana"}, hint : { visible : true, height : 100, y : 150, x : 200, queue : 2, text : "R.I.P.", size : 32, width : 200, color : "0xffffff", selectable : false, font : "Verdana"}}, addiction : null}}, svyatilishe : { }, questman : { graphics : { graphicsInstance : null, url : "assets/images/questman.png", y : 820, x : 550, queue : 10, url3 : null, url2 : "assets/images/questman_m.png", text : { name : { visible : true, height : 100, y : 50, x : 50, queue : 1, text : "Strange person", size : 30, width : 200, color : "0xffffff", selectable : false, font : "Verdana"}, hint : { visible : true, height : 50, y : 100, x : 50, queue : 2, text : "Collect new quests", size : 18, width : 100, color : "0xffffff", selectable : false, font : "Verdana"}}, addiction : null}}, blacksmith : { graphics : { graphicsInstance : null, url : "assets/images/blacksmith.png", y : 500, x : 100, queue : 8, url3 : null, url2 : "assets/images/blacksmith_m.png", text : { name : { visible : true, height : 100, y : 0, x : 0, queue : 1, text : "BlackSmith", size : 48, width : 100, color : "0xffffff", selectable : false, font : "Verdana"}, hint : { visible : true, height : 100, y : 0, x : 0, queue : 2, text : "Make a new weapon", size : 32, width : 100, color : "0xffffff", selectable : false, font : "Verdana"}}, addiction : null}}, merchant : { graphics : { graphicsInstance : null, url : "assets/images/merchant.png", y : 280, x : 300, queue : 6, url3 : null, url2 : "assets/images/merchant_m.png", text : { name : { visible : true, height : 100, y : 0, x : 0, queue : 1, text : "Humble shop", size : 48, width : 100, color : "0xffffff", selectable : false, font : "Verdana"}, hint : { visible : true, height : 100, y : 0, x : 0, queue : 2, text : "Buy new stuff", size : 32, width : 100, color : "0xffffff", selectable : false, font : "Verdana"}}, addiction : null}}, fontain : { graphics : { graphicsInstance : null, url : "assets/images/fontain.png", y : 690, x : 700, queue : 10, url3 : null, url2 : "assets/images/fontain_m.png", text : { name : { visible : true, height : 50, y : 100, x : 80, queue : 1, text : "Fontain", size : 30, width : 150, color : "0xffffff", selectable : false, font : "Verdana"}, hint : { visible : true, height : 50, y : 140, x : 80, queue : 2, text : "Learn more", size : 18, width : 150, color : "0xffffff", selectable : false, font : "Verdana"}}, addiction : null}}, tavern : { graphics : { graphicsInstance : null, url : "assets/images/tavern.png", y : 330, x : 990, queue : 4, url3 : null, url2 : "assets/images/tavern_m.png", text : { name : { visible : true, height : 100, y : 0, x : 0, queue : 1, text : "Tavern", size : 48, width : 100, color : "0xffffff", selectable : false, font : "Verdana"}, hint : { visible : true, height : 100, y : 0, x : 0, queue : 2, text : "Make a drink", size : 32, width : 100, color : "0xffffff", selectable : false, font : "Verdana"}}, addiction : null}}, hermit : { graphics : { graphicsInstance : null, url : "assets/images/hermit.png", y : 600, x : 0, queue : 9, url3 : null, url2 : "assets/images/hermit_m.png", text : { name : { visible : true, height : 100, y : 0, x : 0, queue : 1, text : "Hermit", size : 40, width : 100, color : "0xffffff", selectable : false, font : "Verdana"}, hint : { visible : true, height : 100, y : 0, x : 0, queue : 2, text : "Teach surviving", size : 28, width : 100, color : "0xffffff", selectable : false, font : "Verdana"}}, addiction : null}}, hospital : { graphics : { graphicsInstance : null, url : "assets/images/hospital.png", y : 80, x : 650, queue : 1, url3 : null, url2 : "assets/images/hospital_m.png", text : { name : { visible : true, height : 100, y : 50, x : 100, queue : 1, text : "Hospital", size : 48, width : 100, color : "0xffffff", selectable : false, font : "Verdana"}, hint : { visible : true, height : 100, y : 100, x : 100, queue : 2, text : "Make a health", size : 32, width : 100, color : "0xffffff", selectable : false, font : "Verdana"}}, addiction : null}}, inn : { graphics : { graphicsInstance : null, url : null, y : 0, x : 0, queue : 13, url3 : null, url2 : null, text : null, addiction : null}, inventory : { slots : 20, needToFill : true, inventory : { slot1 : { restriction : "hero", currentSize : null, isAvailable : false, type : "slot", maxSize : null, isStorable : false, name : null, item : null}}, currentSlots : 8}}, academy : { graphics : { graphicsInstance : null, url : "assets/images/academy.png", y : 100, x : 450, queue : 3, url3 : null, url2 : "assets/images/academy_m.png", text : { name : { visible : true, height : 100, y : 0, x : 0, queue : 1, text : "Skill academy", size : 48, width : 100, color : "0xffffff", selectable : false, font : "Verdana"}, hint : { visible : true, height : 100, y : 0, x : 0, queue : 2, text : "Learn new skills", size : 32, width : 100, color : "0xffffff", selectable : false, font : "Verdana"}}, addiction : null}}, recruits : { graphics : { graphicsInstance : null, url : "assets/images/recruits.png", y : 500, x : 1100, queue : 5, url3 : null, url2 : "assets/images/recruits_m.png", text : { name : { visible : true, height : 100, y : 0, x : 0, queue : 1, text : "Recruit Coach", size : 48, width : 100, color : "0xffffff", selectable : false, font : "Verdana"}, hint : { visible : true, height : 100, y : 0, x : 0, queue : 2, text : "Train a new recruits", size : 32, width : 100, color : "0xffffff", selectable : false, font : "Verdana"}}, addiction : null}, inventory : { maxSlots : 10, needToFill : true, inventory : { slot1 : { restriction : "hero", currentSize : null, isAvailable : false, type : "slot", maxSize : null, isStorable : false, name : null, item : null}}, currentSlots : 4}}, storage : { graphics : { graphicsInstance : null, url : "assets/images/storage.png", y : 575, x : 1300, queue : 7, url3 : null, url2 : "assets/images/storage_m.png", text : { name : { visible : true, height : 100, y : 0, x : 0, queue : 1, text : "Storage", size : 48, width : 100, color : "0xffffff", selectable : false, font : "Verdana"}, hint : { visible : true, height : 100, y : 0, x : 0, queue : 2, text : "Open your inventory", size : 32, width : 100, color : "0xffffff", selectable : false, font : "Verdana"}}, addiction : null}}}, window : { innWindowHeroWindow : { graphics : { graphicsInstance : null, url : "assets/images/innWindowHeroWindow.png", y : 0, x : 0, queue : 0, url3 : null, url2 : null, text : { armorPower : { visible : true, height : 50, y : 0, x : 0, queue : 3, text : "0", size : 22, width : 50, color : "0x000000", selectable : false, font : "Verdana"}, lvl : { visible : true, height : 50, y : 0, x : 0, queue : 2, text : "1", size : 22, width : 50, color : "0x000000", selectable : false, font : "Verdana"}, attackPower : { visible : true, height : 50, y : 0, x : 0, queue : 4, text : "0", size : 22, width : 50, color : "0x000000", selectable : false, font : "Verdana"}, nameWindow : { visible : true, height : 50, y : 0, x : 0, queue : 1, text : "Empty", size : 22, width : 50, color : "0x000000", selectable : false, font : "Verdana"}}, addiction : "innWindowHeroWindow"}}, panelCityWindow : { graphics : { graphicsInstance : null, url : "assets/images/panelCityWindow.png", y : 1010, x : -5, queue : 0, url3 : null, url2 : null, text : null, addiction : "panelCityWindow"}}, startSceneButtonsWindow : { graphics : { graphicsInstance : null, url : "assets/images/startSceneButtonsWindow.png", y : 450, x : 1300, queue : 0, url3 : null, url2 : null, text : null, addiction : "startSceneButtonsWindow"}}, innWindow : { graphics : { graphicsInstance : null, url : "assets/images/innWindow.png", y : 80, x : 1600, queue : 0, url3 : null, url2 : null, text : { quantityHeroes : { visible : true, height : 50, y : -35, x : 100, queue : 2, text : "0/0", size : 32, width : 50, color : "0xffffff", selectable : false, font : "Verdana"}, nameWindow : { visible : true, height : 50, y : -35, x : 20, queue : 1, text : "Inn", size : 32, width : 50, color : "0xffffff", selectable : false, font : "Verdana"}}, addiction : "innWindow"}}, dungeon1 : { graphics : { graphicsInstance : null, url : "assets/images/dungeonWindow.png", y : 400, x : 700, queue : 0, url3 : null, url2 : null, text : { lvl : { visible : true, height : 30, y : 10, x : 350, queue : 2, text : "1", size : 22, width : 10, color : "0xfffff0", selectable : false, font : "Verdana"}, nameWindow : { visible : true, height : 20, y : 10, x : 15, queue : 1, text : "The real path of truth", size : 22, width : 250, color : "0xffffff", selectable : false, font : "Verdana"}}, addiction : "dungeon1"}}, citySceneMainWindow : { graphics : { graphicsInstance : null, url : "assets/images/citySceneMainWindow.png", y : 70, x : 170, queue : 0, url3 : null, url2 : null, text : { nameWindow : { visible : true, height : 50, y : 0, x : 0, queue : 1, text : "The real estate", size : 48, width : 350, color : "0xffffff", selectable : false, font : "Verdana"}}, addiction : "citySceneMainWindow"}, ui : { }}, chooseHeroToDungeonWindow : { graphics : { graphicsInstance : null, url : "assets/images/dungeonSceneHeroesToDungeon.png", y : 820, x : 685, queue : 0, url3 : null, url2 : null, text : null, addiction : "chooseHeroToDungeonWindow"}}}}, skill : { crossbowman : { active : { binti : { duration : null, upgradeLevel : 0, target : null, dmg : null, cooldawn : null, isChoosen : false, effect : null, upgradeValue : { '4' : { duration : 1, target : [0], dmg : [17,19], cooldawn : 0, effect : "cureBleed"}, '3' : { duration : 1, target : [0], dmg : [12,17], cooldawn : 0, effect : "cureBleed"}, '2' : { duration : 1, target : [0], dmg : [12,15], cooldawn : 0, effect : "cureBleed"}, '1' : { duration : 1, target : [0], dmg : [10,15], cooldawn : 1, effect : "cureBleed"}, '0' : { duration : 1, target : [0], dmg : [10,12], cooldawn : 1, effect : "heal&cureBleed"}}}, basic : { duration : null, upgradeLevel : 0, target : null, dmg : null, cooldawn : null, isChoosen : false, effect : null, upgradeValue : { '4' : { duration : 0, target : [1,2,3,4], dmg : [5,6], cooldawn : 0, effect : null}, '3' : { duration : 0, target : [2,3,4], dmg : [4,5], cooldawn : 0, effect : null}, '2' : { duration : 0, target : [2,3,4], dmg : [3,4], cooldawn : 0, effect : null}, '1' : { duration : 0, target : [3,4], dmg : [2,3], cooldawn : 0, effect : null}, '0' : { duration : 0, target : [3,4], dmg : [1,2], cooldawn : 0, effect : null}}}, '7' : { duration : null, upgradeLevel : 0, target : null, dmg : null, cooldawn : null, isChoosen : false, effect : null, upgradeValue : { '4' : { duration : 1, target : [0], dmg : [17,19], cooldawn : 0, effect : "cureBleed"}, '3' : { duration : 1, target : [0], dmg : [12,17], cooldawn : 0, effect : "cureBleed"}, '2' : { duration : 1, target : [0], dmg : [12,15], cooldawn : 0, effect : "cureBleed"}, '1' : { duration : 1, target : [0], dmg : [10,15], cooldawn : 1, effect : "cureBleed"}, '0' : { duration : 1, target : [0], dmg : [10,12], cooldawn : 1, effect : "heal&cureBleed"}}}, '6' : { duration : null, upgradeLevel : 0, target : null, dmg : null, cooldawn : null, isChoosen : false, effect : null, upgradeValue : { '4' : { duration : 1, target : [0], dmg : [17,19], cooldawn : 0, effect : "cureBleed"}, '3' : { duration : 1, target : [0], dmg : [12,17], cooldawn : 0, effect : "cureBleed"}, '2' : { duration : 1, target : [0], dmg : [12,15], cooldawn : 0, effect : "cureBleed"}, '1' : { duration : 1, target : [0], dmg : [10,15], cooldawn : 1, effect : "cureBleed"}, '0' : { duration : 1, target : [0], dmg : [10,12], cooldawn : 1, effect : "heal&cureBleed"}}}, throughAttack : { duration : null, upgradeLevel : 0, target : null, dmg : null, cooldawn : null, isChoosen : false, effect : null, upgradeValue : { '4' : { duration : 0, target : [14], dmg : [3,3], cooldawn : 2, effect : null}, '3' : { duration : 0, target : [123,234], dmg : [2,3], cooldawn : 3, effect : null}, '2' : { duration : 0, target : [23,34], dmg : [2,2], cooldawn : 3, effect : null}, '1' : { duration : 0, target : [34], dmg : [1,2], cooldawn : 4, effect : null}, '0' : { duration : 0, target : [34], dmg : [1,1], cooldawn : 4, effect : null}}}, hightBolt : { duration : null, upgradeLevel : 0, target : null, dmg : null, cooldawn : null, isChoosen : false, effect : null, upgradeValue : { '4' : { duration : 1, target : [0], dmg : [9,9], cooldawn : 2, effect : "buffweapon"}, '3' : { duration : 1, target : [0], dmg : [7,9], cooldawn : 3, effect : "buffweapon"}, '2' : { duration : 1, target : [0], dmg : [7,7], cooldawn : 3, effect : "buffweapon"}, '1' : { duration : 1, target : [0], dmg : [5,7], cooldawn : 4, effect : "buffweapon"}, '0' : { duration : 1, target : [0], dmg : [5,5], cooldawn : 4, effect : "buffweapon"}}}, bleedingAttack : { duration : null, upgradeLevel : 0, target : null, dmg : null, cooldawn : null, isChoosen : false, effect : null, upgradeValue : { '4' : { duration : 4, target : [2,3,4], dmg : [5,6], cooldawn : 2, effect : "bleed"}, '3' : { duration : 3, target : [2,3,4], dmg : [4,5], cooldawn : 3, effect : "bleed"}, '2' : { duration : 2, target : [2,3,4], dmg : [3,4], cooldawn : 3, effect : "bleed"}, '1' : { duration : 2, target : [3,4], dmg : [2,3], cooldawn : 4, effect : "bleed"}, '0' : { duration : 1, target : [3,4], dmg : [1,2], cooldawn : 4, effect : "bleed"}}}}, passive : { armorpiercingBolts : { duration : null, upgradeLevel : 0, target : null, dmg : null, cooldawn : null, isChoosen : false, effect : null, upgradeValue : { '4' : { duration : 0, target : [0], dmg : [5,5], cooldawn : 0, effect : "armorpiercing"}, '3' : { duration : 0, target : [0], dmg : [4,4], cooldawn : 0, effect : "armorpiercing"}, '2' : { duration : 0, target : [0], dmg : [3,3], cooldawn : 0, effect : "armorpiercing"}, '1' : { duration : 0, target : [0], dmg : [2,2], cooldawn : 0, effect : "armorpiercing"}, '0' : { duration : 0, target : [0], dmg : [1,1], cooldawn : 0, effect : "armorpiercing"}}}, dodgeup : { duration : null, upgradeLevel : 0, target : null, dmg : null, cooldawn : null, isChoosen : false, effect : null, upgradeValue : { '4' : { duration : 0, target : [0], dmg : [5,5], cooldawn : 0, effect : "dodgeup"}, '3' : { duration : 0, target : [0], dmg : [4,4], cooldawn : 0, effect : "dodgeup"}, '2' : { duration : 0, target : [0], dmg : [3,3], cooldawn : 0, effect : "dodgeup"}, '1' : { duration : 0, target : [0], dmg : [2,2], cooldawn : 0, effect : "dodgeup"}, '0' : { duration : 0, target : [0], dmg : [1,1], cooldawn : 0, effect : "dodgeup"}}}, speedup : { duration : null, upgradeLevel : 0, target : null, dmg : null, cooldawn : null, isChoosen : false, effect : null, upgradeValue : { '4' : { duration : 0, target : [0], dmg : [5,5], cooldawn : 0, effect : "speedup"}, '3' : { duration : 0, target : [0], dmg : [4,4], cooldawn : 0, effect : "speedup"}, '2' : { duration : 0, target : [0], dmg : [3,3], cooldawn : 0, effect : "speedup"}, '1' : { duration : 0, target : [0], dmg : [2,2], cooldawn : 0, effect : "speedup"}, '0' : { duration : 0, target : [0], dmg : [1,1], cooldawn : 0, effect : "speedup"}}}, hightcritdamage : { duration : null, upgradeLevel : 0, target : null, dmg : null, cooldawn : null, isChoosen : false, effect : null, upgradeValue : { '4' : { duration : 0, target : [0], dmg : [5,5], cooldawn : 0, effect : "critDamageUp"}, '3' : { duration : 0, target : [0], dmg : [4,4], cooldawn : 0, effect : "critDamageUp"}, '2' : { duration : 0, target : [0], dmg : [3,3], cooldawn : 0, effect : "critDamageUp"}, '1' : { duration : 0, target : [0], dmg : [2,2], cooldawn : 0, effect : "critDamageUp"}, '0' : { duration : 0, target : [0], dmg : [1,1], cooldawn : 0, effect : "critDamageUp"}}}}, camping : { }}, paladin : { }}, scene : { chooseDungeonScene : { backgroundImageURL : "assets/images/chooseDungeonSceneOne.png", button : ["chooseDungeonSceneDungeonButtonA","chooseDungeonBackToCityButton"], window : ["dungeon1","chooseHeroToDungeonWindow"]}, dungeonScene : { backgroundImageURL : "url"}, startScene : { backgroundImageURL : "assets/images/background_game.png", button : ["startSceneAuthorsButton","startSceneOptionsButton","startSceneContinueButton","startSceneStartButton"], window : ["startSceneButtonsWindow"]}, cityScene : { backgroundImageURL : "assets/images/citySceneBackround.png", button : ["innWindowButtonHeroListUp","innWindowButtonHeroListDown","citySceneStartJourneyButton","citySceneMainWindowExitButton"], building : ["hospital","academy","hermit","merchant","storage","graveyard","recruits","questman","fontain","blacksmith","tavern","inn"], window : ["innWindow","innWindowHeroWindow","panelCityWindow","citySceneMainWindow"]}}, effect : { }};
+		var conf = { trait : { negative : { }, positive : { }}, entity : { heroes : { crossbowman : { graphics : { graphicsInstance : null, url : null, y : 0, x : 0, queue : 1, url3 : null, url2 : null, text : { empty : { visible : true, height : 100, y : 50, x : 100, queue : 1, text : "null", size : 48, width : 100, color : "0xffffff", selectable : false, font : "Verdana"}}, addiction : null}, stats : { diseas : [50,51,52,53], bleed : [50,51,52,53], upSpd : [1,2,3,4], upDmg : [1,2,3,4], upDef : [1,2,3,4], upDdg : [1,2,3,4], upAcc : [1,2,3,4], upStress : [5,5,6,6], upBleed : [1,2,3,4], stress : [100,110,120,130], target : [{ third : 90, first : 80, fourth : 95, second : 85},{ third : 90, first : 80, fourth : 100, second : 85},{ third : 95, first : 85, fourth : 100, second : 90},{ third : 100, first : 90, fourth : 100, second : 90}], spd : [10,11,12,13], dmg : [1,2,3,4], def : [10,11,12,13], ddg : [10,11,12,13], acc : [10,11,12,13], hp : [10,11,12,13], cd : [2,2,3,3], cc : [10,11,12,13], upStun : [1,2,3,4], upMove : [1,2,3,4], poison : [50,51,52,53], upFire : [1,2,3,4], upDebuff : [1,2,3,4], upPpoison : [1,2,3,4], debuff : [50,51,52,53], upHp : [1,2,3,4], upCd : [1,2,3,4], upCc : [1,2,3,4], stun : [50,51,52,53], position : [{ third : 80, first : 50, fourth : 85, second : 50},{ third : 85, first : 50, fourth : 90, second : 50},{ third : 95, first : 50, fourth : 100, second : 50},{ third : 100, first : 50, fourth : 100, second : 50}], move : [50,51,52,53], upDiseas : [1,2,3,4], fire : [50,51,52,53]}, experience : { maxLvl : 10, lvl : 1, exp : 0, expToNextLvl : [100,110,120,130]}, skills : { active : { maxStaticActiveSkills : [1,2,3,4], maxActiveSkills : [4,5,6,7], skills : { basic : { maxUpgradeLevel : 4, upgradeValue : { value : [[1,2],[2,3],[3,4],[4,5],[5,6]], targetStat : ["hp"], valueType : "flat", action : "substract", duration : [0,0,0,0,0], target : [[3,4],[3,4],[2,3,4],[2,3,4],[1,2,3,4]], cooldawn : [0,0,0,0,0], effect : null, removeEffect : null, type : "once"}, name : "basic"}, '7' : { maxUpgradeLevel : 4, upgradeValue : { value : [[0,0],[0,0],[0,0],[0,0],[0,0]], targetStat : [null], valueType : null, action : null, duration : [0,0,0,0,0], target : [[0],[0],[0],[0],[0]], cooldawn : [0,0,0,0,0], effect : null, removeEffect : null, type : null}, name : "7"}, '6' : { maxUpgradeLevel : 4, upgradeValue : { value : [[0,0],[0,0],[0,0],[0,0],[0,0]], targetStat : [null], valueType : null, action : null, duration : [0,0,0,0,0], target : [[0],[0],[0],[0],[0]], cooldawn : [0,0,0,0,0], effect : null, removeEffect : null, type : null}, name : "6"}, throughAttack : { maxUpgradeLevel : 4, upgradeValue : { value : [[1,1],[1,2],[2,2],[2,3],[3,3]], targetStat : ["hp"], valueType : "flat", action : "substract", duration : [0,0,0,0,0], target : [[34],[34],[23,34],[123,234],[14]], cooldawn : [4,4,3,3,2], effect : null, removeEffect : null, type : "once"}, name : "throughAttack"}, hightBolt : { maxUpgradeLevel : 4, upgradeValue : { value : [[5,5],[5,7],[7,7],[7,9],[9,9]], targetStat : ["dmg"], valueType : "flat", action : "add", duration : [1,1,1,1,1], target : [[0],[0],[0],[0],[0]], cooldawn : [4,4,3,3,2], effect : "buff", removeEffect : null, type : "once"}, name : "hightBolt"}, bandage : { maxUpgradeLevel : 4, upgradeValue : { value : [[10,12],[10,15],[12,15],[12,17],[15,17]], targetStat : ["hp"], valueType : "flat", action : "add", duration : [1,1,1,1,1], target : [[0],[0],[0],[0],[0]], cooldawn : [1,1,0,0,0], effect : null, removeEffect : "bleed", type : "once"}, name : "bandage"}, bleedingAttack : { maxUpgradeLevel : 4, upgradeValue : { value : [[1,2],[2,3],[3,4],[4,5],[5,6]], targetStat : ["hp"], valueType : "flat", action : "substract", duration : [1,2,2,3,4], target : [[3,4],[3,4],[2,3,4],[2,3,4],[2,3,4]], cooldawn : [4,4,3,3,2], effect : "bleed", removeEffect : null, type : "forever"}, name : "bleedingAttack"}}}, passive : { maxStaticPassiveSkills : [1,2,3,4], skills : { armorpiercingBolts : { maxUpgradeLevel : 4, upgradeValue : { value : [[20,22],[22,25],[25,30],[30,34],[34,40]], targetStat : ["def"], valueType : "percent", action : "substract", duration : [0,0,0,0,0], target : [[1,2,3,4],[1,2,3,4],[1,2,3,4],[1,2,3,4],[1,2,3,4]], cooldawn : [0,0,0,0,0], effect : null, removeEffect : null, type : "once"}, name : "armorpiercingBolts"}, dodgeup : { maxUpgradeLevel : 4, upgradeValue : { value : [[1,1],[2,2],[3,3],[4,4],[5,5]], targetStat : ["ddg"], valueType : "flat", action : "add", duration : [0,0,0,0,0], target : [[0],[0],[0],[0],[0]], cooldawn : [0,0,0,0,0], effect : "forever", removeEffect : null}, name : "dodgeup"}, speedup : { maxUpgradeLevel : 4, upgradeValue : { value : [[1,1],[2,2],[3,3],[4,4],[5,5]], targetStat : ["spd"], valueType : "flat", action : "add", duration : [0,0,0,0,0], target : [[0],[0],[0],[0],[0]], cooldawn : [0,0,0,0,0], effect : "forever", removeEffect : null}, name : "speedup"}, hightcritdamage : { maxUpgradeLevel : 4, upgradeValue : { value : [[10,12],[12,14],[14,16],[16,19],[19,23]], targetStat : ["critDmg"], valueType : "flat", action : "add", duration : [0,0,0,0,0], target : [[0],[0],[0],[0],[0]], cooldawn : [0,0,0,0,0], effect : "forever", removeEffect : null}, name : "hightcritdamage"}}, maxPassiveSkills : [2,3,4,4]}, camping : { maxStaticCampingSkills : [1,1,2,2], maxCampingSkills : [1,2,2,2], skills : { }}}, name : { rarity : ["common","uncommon","rare","legendary"], surname : null, type : "Crossbowman", rank : null, name : null}, inventory : { slots : 4, needToFill : false, inventory : { slot4 : { restriction : null, currentSize : null, isAvailable : true, type : "accessory2", maxSize : null, isStorable : false, name : "slot3", item : null}, slot3 : { restriction : null, currentSize : null, isAvailable : true, type : "accessory1", maxSize : null, isStorable : false, name : "slot2", item : null}, slot2 : { restriction : 4, currentSize : null, isAvailable : true, type : "armor", maxSize : null, isStorable : false, name : "slot1", item : null}, slot1 : { restriction : "crossbowman", currentSize : null, isAvailable : true, type : "weapon", maxSize : null, isStorable : false, name : "slot0", item : null}}}, traits : { maxNumOfNegative : [6,5,4,3], maxNumOfPositive : [3,4,5,6], maxNumOfNegativeStatic : [4,3,2,1], maxNumOfPositiveStatic : [1,2,3,4]}}, paladin : { graphics : { graphicsInstance : null, url : null, y : 0, x : 0, queue : 1, url3 : null, url2 : null, text : { empty : { visible : true, height : 100, y : 50, x : 100, queue : 1, text : "null", size : 48, width : 100, color : "0xffffff", selectable : false, font : "Verdana"}}, addiction : null}, stats : { diseas : [50,51,52,53], bleed : [50,51,52,53], upSpd : [1,2,3,4], upDmg : [1,2,3,4], upDef : [1,2,3,4], upDdg : [1,2,3,4], upAcc : [1,2,3,4], upStress : [5,5,6,6], upBleed : [1,2,3,4], stress : [100,110,120,130], target : [{ third : 75, first : 85, fourth : 70, second : 80},{ third : 80, first : 90, fourth : 75, second : 85},{ third : 85, first : 95, fourth : 80, second : 90},{ third : 90, first : 100, fourth : 85, second : 95}], spd : [10,11,12,13], dmg : [1,2,3,4], def : [10,11,12,13], ddg : [10,11,12,13], acc : [10,11,12,13], hp : [10,11,12,13], cd : [2,2,3,3], cc : [10,11,12,13], upStun : [1,2,3,4], upMove : [1,2,3,4], poison : [50,51,52,53], upFire : [1,2,3,4], upDebuff : [1,2,3,4], upPpoison : [1,2,3,4], debuff : [50,51,52,53], upHp : [1,2,3,4], upCd : [1,2,3,4], upCc : [1,2,3,4], stun : [50,51,52,53], position : [{ third : 60, first : 85, fourth : 60, second : 85},{ third : 60, first : 90, fourth : 60, second : 90},{ third : 65, first : 95, fourth : 65, second : 95},{ third : 65, first : 100, fourth : 65, second : 100}], move : [50,51,52,53], upDiseas : [1,2,3,4], fire : [50,51,52,53]}, experience : { maxLvl : 10, lvl : 1, exp : 0, expToNextLvl : [100,110,120,130]}, skills : { active : { maxStaticActiveSkills : [1,2,3,4], maxActiveSkills : [3,4,5,6], skills : { basic : { maxUpgradeLevel : 4, upgradeValue : { value : [[0,0],[0,0],[0,0],[0,0],[0,0]], targetStat : [null], valueType : null, action : null, duration : [0,0,0,0,0], target : [[0],[0],[0],[0],[0]], cooldawn : [0,0,0,0,0], effect : null, removeEffect : null, type : null}, name : "basic"}, '7' : { maxUpgradeLevel : 4, upgradeValue : { value : [[0,0],[0,0],[0,0],[0,0],[0,0]], targetStat : [null], valueType : null, action : null, duration : [0,0,0,0,0], target : [[0],[0],[0],[0],[0]], cooldawn : [0,0,0,0,0], effect : null, removeEffect : null, type : null}, name : "7"}, '6' : { maxUpgradeLevel : 4, upgradeValue : { value : [[0,0],[0,0],[0,0],[0,0],[0,0]], targetStat : [null], valueType : null, action : null, duration : [0,0,0,0,0], target : [[0],[0],[0],[0],[0]], cooldawn : [0,0,0,0,0], effect : null, removeEffect : null, type : null}, name : "6"}, '5' : { maxUpgradeLevel : 4, upgradeValue : { value : [[0,0],[0,0],[0,0],[0,0],[0,0]], targetStat : [null], valueType : null, action : null, duration : [0,0,0,0,0], target : [[0],[0],[0],[0],[0]], cooldawn : [0,0,0,0,0], effect : null, removeEffect : null, type : null}, name : "5"}, '4' : { maxUpgradeLevel : 4, upgradeValue : { value : [[0,0],[0,0],[0,0],[0,0],[0,0]], targetStat : [null], valueType : null, action : null, duration : [0,0,0,0,0], target : [[0],[0],[0],[0],[0]], cooldawn : [0,0,0,0,0], effect : null, removeEffect : null, type : null}, name : "4"}, '3' : { maxUpgradeLevel : 4, upgradeValue : { value : [[0,0],[0,0],[0,0],[0,0],[0,0]], targetStat : [null], valueType : null, action : null, duration : [0,0,0,0,0], target : [[0],[0],[0],[0],[0]], cooldawn : [0,0,0,0,0], effect : null, removeEffect : null, type : null}, name : "3"}, '2' : { maxUpgradeLevel : 4, upgradeValue : { value : [[0,0],[0,0],[0,0],[0,0],[0,0]], targetStat : [null], valueType : null, action : null, duration : [0,0,0,0,0], target : [[0],[0],[0],[0],[0]], cooldawn : [0,0,0,0,0], effect : null, removeEffect : null, type : null}, name : "2"}}}, passive : { maxStaticPassiveSkills : [1,2,3,4], skills : { '4' : { maxUpgradeLevel : 4, upgradeValue : { value : [[0,0],[0,0],[0,0],[0,0],[0,0]], targetStat : [null], valueType : null, action : null, duration : [0,0,0,0,0], target : [[0],[0],[0],[0],[0]], cooldawn : [0,0,0,0,0], effect : null, removeEffect : null, type : null}, name : "4"}, '3' : { maxUpgradeLevel : 4, upgradeValue : { value : [[0,0],[0,0],[0,0],[0,0],[0,0]], targetStat : [null], valueType : null, action : null, duration : [0,0,0,0,0], target : [[0],[0],[0],[0],[0]], cooldawn : [0,0,0,0,0], effect : null, removeEffect : null, type : null}, name : "3"}, '2' : { maxUpgradeLevel : 4, upgradeValue : { value : [[0,0],[0,0],[0,0],[0,0],[0,0]], targetStat : [null], valueType : null, action : null, duration : [0,0,0,0,0], target : [[0],[0],[0],[0],[0]], cooldawn : [0,0,0,0,0], effect : null, removeEffect : null, type : null}, name : "2"}, '1' : { maxUpgradeLevel : 4, upgradeValue : { value : [[0,0],[0,0],[0,0],[0,0],[0,0]], targetStat : [null], valueType : null, action : null, duration : [0,0,0,0,0], target : [[0],[0],[0],[0],[0]], cooldawn : [0,0,0,0,0], effect : null, removeEffect : null, type : null}, name : "1"}}, maxPassiveSkills : [1,2,3,4]}, camping : { maxStaticCampingSkills : [1,1,2,2], maxCampingSkills : [1,2,2,2], skills : { }}}, name : { rarity : ["common","uncommon","rare","legendary"], surname : null, type : "Paladin", rank : null, name : null}, inventory : { slots : 4, needToFill : false, inventory : { slot4 : { restriction : null, currentSize : null, isAvailable : true, type : "accessory2", maxSize : null, isStorable : false, name : "slot3", item : null}, slot3 : { restriction : null, currentSize : null, isAvailable : true, type : "accessory1", maxSize : null, isStorable : false, name : "slot2", item : null}, slot2 : { restriction : 4, currentSize : null, isAvailable : true, type : "armor", maxSize : null, isStorable : false, name : "slot1", item : null}, slot1 : { restriction : "paladin", currentSize : null, isAvailable : true, type : "weapon", maxSize : null, isStorable : false, name : "slot0", item : null}}}, traits : { maxNumOfNegative : [6,5,4,3], maxNumOfPositive : [3,4,5,6], maxNumOfNegativeStatic : [4,3,2,1], maxNumOfPositiveStatic : [1,2,3,4]}}}, button : { citySceneMainWindowExitButton : { graphics : { graphicsInstance : null, url : "assets/images/citySceneMainWindowExitButton.png", y : 10, x : 1000, queue : 0, url3 : "assets/images/citySceneMainWindowExitButton_push.png", url2 : "assets/images/citySceneMainWindowExitButton.png", text : null, addiction : "citySceneMainWindow"}}, startSceneAuthorsButton : { graphics : { graphicsInstance : null, url : "assets/images/button_b.png", y : 385, x : 75, queue : 0, url3 : "assets/images/button_b_push.png", url2 : "assets/images/button_b_hover.png", text : { buttonText : { visible : true, height : 100, y : 0, x : 0, queue : 0, text : "Authors", size : 64, width : 100, color : "0x000000", selectable : false, font : "Verdana"}}, addiction : "startSceneButtonsWindow"}}, citySceneStartJourneyButton : { graphics : { graphicsInstance : null, url : "assets/images/button_a.png", y : 5, x : 860, queue : 0, url3 : "assets/images/button_a_push.png", url2 : "assets/images/button_a_hover.png", text : { buttonText : { visible : true, height : 40, y : 5, x : 75, queue : 0, text : "START", size : 38, width : 140, color : "0xffffff", selectable : false, font : "Verdana"}}, addiction : "panelCityWindow"}}, chooseDungeonSceneDungeonButtonD : { graphics : { graphicsInstance : null, url : "assets/images/button_dungeon_d.png", y : 0, x : 0, queue : 0, url3 : "assets/images/button_dungeon_d_choose.png", url2 : "assets/images/button_dungeon_d.png", text : null, addiction : "dungeon1"}, ui : { }}, chooseDungeonSceneDungeonButtonC : { graphics : { graphicsInstance : null, url : "assets/images/button_dungeon_c.png", y : 0, x : 0, queue : 0, url3 : "assets/images/button_dungeon_c_choose.png", url2 : "assets/images/button_dungeon_c.png", text : null, addiction : "dungeon1"}, ui : { }}, chooseDungeonSceneDungeonButtonB : { graphics : { graphicsInstance : null, url : "assets/images/button_dungeon_b.png", y : 0, x : 0, queue : 0, url3 : "assets/images/button_dungeon_b_choose.png", url2 : "assets/images/button_dungeon_b.png", text : null, addiction : "dungeon1"}, ui : { }}, chooseDungeonSceneDungeonButtonA : { graphics : { graphicsInstance : null, url : "assets/images/button_dungeon_a.png", y : 100, x : -50, queue : 0, url3 : "assets/images/button_dungeon_a_choose.png", url2 : "assets/images/button_dungeon_a.png", text : null, addiction : "dungeon1"}, ui : { }}, chooseDungeonBackToCityButton : { graphics : { graphicsInstance : null, url : "assets/images/backToCityButton.png", y : 150, x : 100, queue : 0, url3 : "assets/images/backToCityButton_push.png", url2 : "assets/images/backToCityButton_hover.png", text : null, addiction : null}}, startSceneContinueButton : { graphics : { graphicsInstance : null, url : "assets/images/button_b.png", y : 25, x : 75, queue : 0, url3 : "assets/images/button_b_push.png", url2 : "assets/images/button_b_hover.png", text : { buttonText : { visible : true, height : 100, y : 0, x : 0, queue : 0, text : "Continue", size : 64, width : 100, color : "0x000000", selectable : false, font : "Verdana"}}, addiction : "startSceneButtonsWindow"}}, startSceneOptionsButton : { graphics : { graphicsInstance : null, url : "assets/images/button_b.png", y : 265, x : 75, queue : 0, url3 : "assets/images/button_b_push.png", url2 : "assets/images/button_b_hover.png", text : { buttonText : { visible : true, height : 100, y : 0, x : 0, queue : 0, text : "Options", size : 64, width : 100, color : "0x000000", selectable : false, font : "Verdana"}}, addiction : "startSceneButtonsWindow"}}, innWindowButtonHeroListUp : { graphics : { graphicsInstance : null, url : "assets/images/button_c.png", y : 810, x : 105, queue : 0, url3 : "assets/images/button_c_push.png", url2 : "assets/images/button_c_hover.png", text : null, addiction : "innWindow"}}, startSceneStartButton : { graphics : { graphicsInstance : null, url : "assets/images/button_b.png", y : 145, x : 75, queue : 0, url3 : "assets/images/button_b_push.png", url2 : "assets/images/button_b_hover.png", text : { buttonText : { visible : true, height : 100, y : 0, x : 0, queue : 0, text : "New", size : 58, width : 100, color : "0x000000", selectable : false, font : "Verdana"}}, addiction : "startSceneButtonsWindow"}}, innWindowButtonHeroListDown : { graphics : { graphicsInstance : null, url : "assets/images/button_d.png", y : 810, x : 25, queue : 0, url3 : "assets/images/button_d_hover.png", url2 : "assets/images/button_d_push.png", text : null, addiction : "innWindow"}}}, building : { graveyard : { graphics : { graphicsInstance : null, url : "assets/images/graveyard.png", y : 400, x : 680, queue : 2, url3 : null, url2 : "assets/images/graveyard_m.png", text : { name : { visible : true, height : 100, y : 100, x : 200, queue : 1, text : "Graveyard", size : 48, width : 200, color : "0xffffff", selectable : false, font : "Verdana"}, hint : { visible : true, height : 100, y : 150, x : 200, queue : 2, text : "R.I.P.", size : 32, width : 200, color : "0xffffff", selectable : false, font : "Verdana"}}, addiction : null}}, svyatilishe : { }, questman : { graphics : { graphicsInstance : null, url : "assets/images/questman.png", y : 820, x : 550, queue : 10, url3 : null, url2 : "assets/images/questman_m.png", text : { name : { visible : true, height : 100, y : 50, x : 50, queue : 1, text : "Strange person", size : 30, width : 200, color : "0xffffff", selectable : false, font : "Verdana"}, hint : { visible : true, height : 50, y : 100, x : 50, queue : 2, text : "Collect new quests", size : 18, width : 100, color : "0xffffff", selectable : false, font : "Verdana"}}, addiction : null}}, blacksmith : { graphics : { graphicsInstance : null, url : "assets/images/blacksmith.png", y : 500, x : 100, queue : 8, url3 : null, url2 : "assets/images/blacksmith_m.png", text : { name : { visible : true, height : 100, y : 0, x : 0, queue : 1, text : "BlackSmith", size : 48, width : 100, color : "0xffffff", selectable : false, font : "Verdana"}, hint : { visible : true, height : 100, y : 0, x : 0, queue : 2, text : "Make a new weapon", size : 32, width : 100, color : "0xffffff", selectable : false, font : "Verdana"}}, addiction : null}}, merchant : { graphics : { graphicsInstance : null, url : "assets/images/merchant.png", y : 280, x : 300, queue : 6, url3 : null, url2 : "assets/images/merchant_m.png", text : { name : { visible : true, height : 100, y : 0, x : 0, queue : 1, text : "Humble shop", size : 48, width : 100, color : "0xffffff", selectable : false, font : "Verdana"}, hint : { visible : true, height : 100, y : 0, x : 0, queue : 2, text : "Buy new stuff", size : 32, width : 100, color : "0xffffff", selectable : false, font : "Verdana"}}, addiction : null}}, fontain : { graphics : { graphicsInstance : null, url : "assets/images/fontain.png", y : 690, x : 700, queue : 10, url3 : null, url2 : "assets/images/fontain_m.png", text : { name : { visible : true, height : 50, y : 100, x : 80, queue : 1, text : "Fontain", size : 30, width : 150, color : "0xffffff", selectable : false, font : "Verdana"}, hint : { visible : true, height : 50, y : 140, x : 80, queue : 2, text : "Learn more", size : 18, width : 150, color : "0xffffff", selectable : false, font : "Verdana"}}, addiction : null}}, tavern : { graphics : { graphicsInstance : null, url : "assets/images/tavern.png", y : 330, x : 990, queue : 4, url3 : null, url2 : "assets/images/tavern_m.png", text : { name : { visible : true, height : 100, y : 0, x : 0, queue : 1, text : "Tavern", size : 48, width : 100, color : "0xffffff", selectable : false, font : "Verdana"}, hint : { visible : true, height : 100, y : 0, x : 0, queue : 2, text : "Make a drink", size : 32, width : 100, color : "0xffffff", selectable : false, font : "Verdana"}}, addiction : null}}, hermit : { graphics : { graphicsInstance : null, url : "assets/images/hermit.png", y : 600, x : 0, queue : 9, url3 : null, url2 : "assets/images/hermit_m.png", text : { name : { visible : true, height : 100, y : 0, x : 0, queue : 1, text : "Hermit", size : 40, width : 100, color : "0xffffff", selectable : false, font : "Verdana"}, hint : { visible : true, height : 100, y : 0, x : 0, queue : 2, text : "Teach surviving", size : 28, width : 100, color : "0xffffff", selectable : false, font : "Verdana"}}, addiction : null}}, hospital : { graphics : { graphicsInstance : null, url : "assets/images/hospital.png", y : 80, x : 650, queue : 1, url3 : null, url2 : "assets/images/hospital_m.png", text : { name : { visible : true, height : 100, y : 50, x : 100, queue : 1, text : "Hospital", size : 48, width : 100, color : "0xffffff", selectable : false, font : "Verdana"}, hint : { visible : true, height : 100, y : 100, x : 100, queue : 2, text : "Make a health", size : 32, width : 100, color : "0xffffff", selectable : false, font : "Verdana"}}, addiction : null}}, inn : { graphics : { graphicsInstance : null, url : null, y : 0, x : 0, queue : 13, url3 : null, url2 : null, text : null, addiction : null}, inventory : { slots : 20, needToFill : true, inventory : { slot1 : { restriction : "hero", currentSize : null, isAvailable : false, type : "slot", maxSize : null, isStorable : false, name : null, item : null}}, currentSlots : 8}}, academy : { graphics : { graphicsInstance : null, url : "assets/images/academy.png", y : 100, x : 450, queue : 3, url3 : null, url2 : "assets/images/academy_m.png", text : { name : { visible : true, height : 100, y : 0, x : 0, queue : 1, text : "Skill academy", size : 48, width : 100, color : "0xffffff", selectable : false, font : "Verdana"}, hint : { visible : true, height : 100, y : 0, x : 0, queue : 2, text : "Learn new skills", size : 32, width : 100, color : "0xffffff", selectable : false, font : "Verdana"}}, addiction : null}}, recruits : { graphics : { graphicsInstance : null, url : "assets/images/recruits.png", y : 500, x : 1100, queue : 5, url3 : null, url2 : "assets/images/recruits_m.png", text : { name : { visible : true, height : 100, y : 0, x : 0, queue : 1, text : "Recruit Coach", size : 48, width : 100, color : "0xffffff", selectable : false, font : "Verdana"}, hint : { visible : true, height : 100, y : 0, x : 0, queue : 2, text : "Train a new recruits", size : 32, width : 100, color : "0xffffff", selectable : false, font : "Verdana"}}, addiction : null}, inventory : { maxSlots : 10, needToFill : true, inventory : { slot1 : { restriction : "hero", currentSize : null, isAvailable : false, type : "slot", maxSize : null, isStorable : false, name : null, item : null}}, currentSlots : 4}}, storage : { graphics : { graphicsInstance : null, url : "assets/images/storage.png", y : 610, x : 1400, queue : 7, url3 : null, url2 : "assets/images/storage_m.png", text : { name : { visible : true, height : 100, y : 0, x : 0, queue : 1, text : "Storage", size : 48, width : 100, color : "0xffffff", selectable : false, font : "Verdana"}, hint : { visible : true, height : 100, y : 0, x : 0, queue : 2, text : "Open your inventory", size : 32, width : 100, color : "0xffffff", selectable : false, font : "Verdana"}}, addiction : null}}}, window : { innWindowHeroWindow : { graphics : { graphicsInstance : null, url : "assets/images/innWindowHeroWindow.png", y : 0, x : 0, queue : 0, url3 : null, url2 : null, text : { armorPower : { visible : true, height : 50, y : 0, x : 0, queue : 3, text : "0", size : 22, width : 50, color : "0x000000", selectable : false, font : "Verdana"}, lvl : { visible : true, height : 50, y : 0, x : 0, queue : 2, text : "1", size : 22, width : 50, color : "0x000000", selectable : false, font : "Verdana"}, attackPower : { visible : true, height : 50, y : 0, x : 0, queue : 4, text : "0", size : 22, width : 50, color : "0x000000", selectable : false, font : "Verdana"}, nameWindow : { visible : true, height : 50, y : 0, x : 0, queue : 1, text : "Empty", size : 22, width : 50, color : "0x000000", selectable : false, font : "Verdana"}}, addiction : "innWindowHeroWindow"}}, panelCityWindow : { graphics : { graphicsInstance : null, url : "assets/images/panelCityWindow.png", y : 1010, x : -5, queue : 0, url3 : null, url2 : null, text : null, addiction : "panelCityWindow"}}, startSceneButtonsWindow : { graphics : { graphicsInstance : null, url : "assets/images/startSceneButtonsWindow.png", y : 450, x : 1300, queue : 0, url3 : null, url2 : null, text : null, addiction : "startSceneButtonsWindow"}}, innWindow : { graphics : { graphicsInstance : null, url : "assets/images/innWindow.png", y : 80, x : 1600, queue : 0, url3 : null, url2 : null, text : { quantityHeroes : { visible : true, height : 50, y : -35, x : 100, queue : 2, text : "0/0", size : 32, width : 50, color : "0xffffff", selectable : false, font : "Verdana"}, nameWindow : { visible : true, height : 50, y : -35, x : 20, queue : 1, text : "Inn", size : 32, width : 50, color : "0xffffff", selectable : false, font : "Verdana"}}, addiction : "innWindow"}}, dungeon1 : { graphics : { graphicsInstance : null, url : "assets/images/dungeonWindow.png", y : 400, x : 700, queue : 0, url3 : null, url2 : null, text : { lvl : { visible : true, height : 30, y : 10, x : 350, queue : 2, text : "1", size : 22, width : 10, color : "0xfffff0", selectable : false, font : "Verdana"}, nameWindow : { visible : true, height : 20, y : 10, x : 15, queue : 1, text : "The real path of truth", size : 22, width : 250, color : "0xffffff", selectable : false, font : "Verdana"}}, addiction : "dungeon1"}}, citySceneMainWindow : { graphics : { graphicsInstance : null, url : "assets/images/citySceneMainWindow.png", y : 70, x : 170, queue : 0, url3 : null, url2 : null, text : { nameWindow : { visible : true, height : 50, y : 0, x : 0, queue : 1, text : "The real estate", size : 48, width : 350, color : "0xffffff", selectable : false, font : "Verdana"}}, addiction : "citySceneMainWindow"}, ui : { }}, chooseHeroToDungeonWindow : { graphics : { graphicsInstance : null, url : "assets/images/dungeonSceneHeroesToDungeon.png", y : 820, x : 685, queue : 0, url3 : null, url2 : null, text : null, addiction : "chooseHeroToDungeonWindow"}}}}, scene : { chooseDungeonScene : { backgroundImageURL : "assets/images/chooseDungeonSceneOne.png", button : ["chooseDungeonSceneDungeonButtonA","chooseDungeonBackToCityButton"], window : ["dungeon1","chooseHeroToDungeonWindow"]}, dungeonScene : { backgroundImageURL : "url"}, startScene : { backgroundImageURL : "assets/images/background_game.png", button : ["startSceneAuthorsButton","startSceneOptionsButton","startSceneContinueButton","startSceneStartButton"], window : ["startSceneButtonsWindow"]}, cityScene : { backgroundImageURL : "assets/images/citySceneBackround.png", button : ["innWindowButtonHeroListUp","innWindowButtonHeroListDown","citySceneStartJourneyButton","citySceneMainWindowExitButton"], building : ["hospital","academy","hermit","merchant","storage","graveyard","recruits","questman","fontain","blacksmith","tavern","inn"], window : ["innWindow","innWindowHeroWindow","panelCityWindow","citySceneMainWindow"]}}};
 		return conf;
 	}
 	,_startGame: function() {
@@ -5992,7 +6046,7 @@ var Scene = function(parent,id,name) {
 	this._parent = parent;
 	this._id = id;
 	this._name = name;
-	this._aliveEntities = { "playerTeam" : [], "enemyTeam" : []};
+	this._aliveEntities = { "hero" : [], "enemy" : []};
 	this._objectEntities = { "buildings" : [], "treasures" : []};
 	this._uiEntities = { "windows" : [], "buttons" : []};
 };
@@ -6141,6 +6195,7 @@ SceneSystem.prototype = {
 				}
 				var params = { "rarity" : rarity};
 				var hero = this._parent.getSystem("entity").createEntity("hero",heroName,params);
+				this._parent.getSystem("entity").addEntityToScene(hero,scene);
 				building.getComponent("inventory").setItemInSlot(hero,null);
 			}
 		}
@@ -6164,10 +6219,14 @@ SceneSystem.prototype = {
 	}
 	,createScene: function(sceneName) {
 		switch(sceneName) {
-		case "chooseDungeonScene":case "cityScene":case "startScene":
+		case "chooseDungeonScene":
+			return this._createStartScene(sceneName);
+		case "cityScene":
+			return this._createStartScene(sceneName);
+		case "startScene":
 			return this._createStartScene(sceneName);
 		default:
-			haxe_Log.trace("Error in SceneSystem.createScene, scene name can't be: " + sceneName + ".",{ fileName : "SceneSystem.hx", lineNumber : 128, className : "SceneSystem", methodName : "createScene"});
+			haxe_Log.trace("Error in SceneSystem.createScene, scene name can't be: " + sceneName + ".",{ fileName : "SceneSystem.hx", lineNumber : 134, className : "SceneSystem", methodName : "createScene"});
 		}
 		return null;
 	}
@@ -6221,10 +6280,13 @@ SceneSystem.prototype = {
 	,__class__: SceneSystem
 };
 var Skills = function(parent,id,params) {
-	this._choosenPassiveSkills = 0;
-	this._choosenActiveSkills = 0;
+	this._currentStaticCampingSkills = 0;
+	this._maxStaticCampingSkills = 0;
+	this._maxCampingSkills = 0;
+	this._currentStaticPassiveSkills = 0;
 	this._maxStaticPassiveSkills = 0;
 	this._maxPassiveSkills = 0;
+	this._currentStaticActiveSkills = 0;
 	this._maxStaticActiveSkills = 0;
 	this._maxActiveSkills = 0;
 	Component.call(this,parent,id,"skills");
@@ -6232,6 +6294,8 @@ var Skills = function(parent,id,params) {
 	this._maxStaticActiveSkills = params.maxStsticActiveSkills;
 	this._maxPassiveSkills = params.maxPassiveSkills;
 	this._maxStaticPassiveSkills = params.maxStaticPassiveSlkills;
+	this._maxCampingSkills = params.maxCampingSkills;
+	this._maxStaticCampingSkills = params.maxStaticCampingSkills;
 	this._active = [];
 	this._passive = [];
 	this._camping = [];
@@ -6245,71 +6309,137 @@ Skills.prototype = $extend(Component.prototype,{
 	,_camping: null
 	,_maxActiveSkills: null
 	,_maxStaticActiveSkills: null
+	,_currentStaticActiveSkills: null
 	,_maxPassiveSkills: null
 	,_maxStaticPassiveSkills: null
-	,_choosenActiveSkills: null
-	,_choosenPassiveSkills: null
-	,setSkillChoose: function(name,value) {
-		if(value) {
-			if(this._choosenActiveSkills < this._maxActiveSkills) {
-				var _g1 = 0;
-				var _g = this._active.length;
-				while(_g1 < _g) {
-					var i = _g1++;
-					var skill = this._active[i];
-					if(skill.name == name) {
-						skill.isChoosen = value;
-						this._choosenActiveSkills++;
-					}
-				}
-			}
-			if(this._choosenPassiveSkills < this._maxPassiveSkills) {
-				var _g11 = 0;
-				var _g2 = this._passive.length;
-				while(_g11 < _g2) {
-					var j = _g11++;
-					var skill1 = this._passive[j];
-					if(skill1.name == name) {
-						skill1.isChoosen = value;
-						this._choosenPassiveSkills++;
-					}
-				}
+	,_currentStaticPassiveSkills: null
+	,_maxCampingSkills: null
+	,_maxStaticCampingSkills: null
+	,_currentStaticCampingSkills: null
+	,_setChooseActive: function(skill) {
+		if(!skill.isStatic) {
+			if(this._currentStaticActiveSkills < this._maxStaticActiveSkills) {
+				skill.isStatic = true;
+				this._currentStaticActiveSkills++;
+				return true;
 			}
 		} else {
-			var _g12 = 0;
-			var _g3 = this._active.length;
-			while(_g12 < _g3) {
-				var i1 = _g12++;
-				var skill2 = this._active[i1];
-				if(skill2.name == name) {
-					skill2.isChoosen = value;
-					this._choosenActiveSkills--;
-				}
+			skill.isStatic = false;
+			this._currentStaticActiveSkills--;
+			return true;
+		}
+		return false;
+	}
+	,_setChoosePassive: function(skill) {
+		if(!skill.isStatic) {
+			if(this._currentStaticPassiveSkills < this._maxStaticPassiveSkills) {
+				skill.isStatic = true;
+				this._currentStaticPassiveSkills++;
+				return true;
 			}
-			var _g13 = 0;
-			var _g4 = this._passive.length;
-			while(_g13 < _g4) {
-				var j1 = _g13++;
-				var skill3 = this._passive[j1];
-				if(skill3.name == name) {
-					skill3.isChoosen = value;
-					this._choosenPassiveSkills--;
-				}
+		} else {
+			skill.isStatic = false;
+			this._currentStaticPassiveSkills--;
+			return true;
+		}
+		return false;
+	}
+	,_setChooseCamping: function(skill) {
+		if(!skill.isStatic) {
+			if(this._currentStaticCampingSkills < this._maxStaticCampingSkills) {
+				skill.isStatic = true;
+				this._currentStaticCampingSkills++;
+				return true;
+			}
+		} else {
+			skill.isStatic = false;
+			this._currentStaticCampingSkills--;
+			return true;
+		}
+		return false;
+	}
+	,chooseSkill: function(name) {
+		var _g1 = 0;
+		var _g = this._active.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			var skill = this._active[i];
+			if(skill.name == name) {
+				return this._setChooseActive(skill);
 			}
 		}
+		var _g11 = 0;
+		var _g2 = this._passive.length;
+		while(_g11 < _g2) {
+			var j = _g11++;
+			var skill1 = this._passive[j];
+			if(skill1.name == name) {
+				return this._setChoosePassive(skill1);
+			}
+		}
+		var _g12 = 0;
+		var _g3 = this._camping.length;
+		while(_g12 < _g3) {
+			var k = _g12++;
+			var skill2 = this._camping[k];
+			if(skill2.name == name) {
+				return this._setChooseCamping(skill2);
+			}
+		}
+		return false;
 	}
 	,unChooseSkill: function(name) {
 	}
-	,addSkill: function(skill,palce) {
+	,addSkill: function(skill,place) {
+		switch(place) {
+		case "active":
+			if(this._maxActiveSkills <= this._active.length) {
+				this._active.push(skill);
+				return true;
+			}
+			return false;
+		case "camping":
+			if(this._maxCampingSkills <= this._camping.length) {
+				this._camping.push(skill);
+				return true;
+			}
+			return false;
+		case "passive":
+			if(this._maxPassiveSkills <= this._passive.length) {
+				this._passive.push(skill);
+				return true;
+			}
+			return false;
+		default:
+			haxe_Log.trace("Error in Skills.addSkill, can't add skill in place: " + place,{ fileName : "Skills.hx", lineNumber : 165, className : "Skills", methodName : "addSkill"});
+			return false;
+		}
+	}
+	,levelUpSkill: function(skill) {
+		var config = this._parent.get("parent").getParent().getParent.getSystem("entity").getConfig();
 	}
 	,removeSkill: function(skill) {
 		return null;
+	}
+	,getSkills: function(type) {
+		switch(type) {
+		case "active":
+			return this._active;
+		case "camping":
+			return this._camping;
+		case "passive":
+			return this._passive;
+		default:
+			haxe_Log.trace("Error in Skills.getSkills, can't get array of skills with type: " + type,{ fileName : "Skills.hx", lineNumber : 187, className : "Skills", methodName : "getSkills"});
+			return null;
+		}
 	}
 	,__class__: Skills
 });
 var Stats = function(parent,id,params) {
 	Component.call(this,parent,id,"stats");
 	this._effects = [];
+	this._currentPosition = null;
 	var _g = 0;
 	var _g1 = Reflect.fields(params);
 	while(_g < _g1.length) {
@@ -6324,54 +6454,67 @@ var Stats = function(parent,id,params) {
 		case "acc":
 			this._currentAcc = value;
 			this._totalAcc = value;
+			this._baseAcc = value;
 			break;
 		case "bleed":
-			this._currentBleedResist = value;
+			this._baseBleedResist = value;
 			this._totalBleedResist = value;
+			this._currentBleedResist = value;
 			break;
 		case "cc":
 			this._currentCc = value;
 			this._totalCc = value;
+			this._baseCc = value;
 			break;
 		case "cd":
 			this._currentCritDamage = value;
 			this._totalCritDamage = value;
+			this._baseCritDamage = value;
 			break;
 		case "ddg":
 			this._currentDdg = value;
 			this._totalDdg = value;
+			this._baseDdg = value;
 			break;
 		case "debuff":
-			this._currentDebuffResist = value;
+			this._baseDebuffResist = value;
 			this._totalDebuffResist = value;
+			this._currentDebuffResist = value;
 			break;
 		case "def":
 			this._currentDef = value;
 			this._totalDef = value;
+			this._baseDef = value;
 			break;
 		case "diseas":
+			this._baseDiseaseResist = value;
+			this._totalDiseaseResist = value;
 			this._currentDiseaseResist = value;
-			this._totalDiseasResist = value;
 			break;
 		case "dmg":
 			this._currentDmg = value;
 			this._totalDmg = value;
+			this._baseDmg = value;
 			break;
 		case "fire":
-			this._currentFireResist = value;
+			this._baseFireResist = value;
 			this._totalFireResist = value;
+			this._currentFireResist = value;
 			break;
 		case "hp":
 			this._currentHp = value;
 			this._totalHp = value;
+			this._baseHp = value;
 			break;
 		case "move":
-			this._currentMoveResist = value;
+			this._baseMoveResist = value;
 			this._totalMoveResist = value;
+			this._currentMoveResist = value;
 			break;
 		case "poison":
 			this._currentPoisonResist = value;
 			this._totalPoisonResist = value;
+			this._basePoisonResist = value;
 			break;
 		case "position":
 			this._position = value2;
@@ -6379,14 +6522,17 @@ var Stats = function(parent,id,params) {
 		case "spd":
 			this._currentSpd = value;
 			this._totalSpd = value;
+			this._baseSpd = value;
 			break;
 		case "stress":
 			this._currentStress = value;
 			this._totalStress = value;
+			this._baseStress = value;
 			break;
 		case "stun":
 			this._currentStunResist = value;
 			this._totalStunResist = value;
+			this._baseStunResist = value;
 			break;
 		case "target":
 			this._target = value2;
@@ -6440,7 +6586,7 @@ var Stats = function(parent,id,params) {
 			this._upStunResist = value;
 			break;
 		default:
-			haxe_Log.trace("Error in Stats.setCurrent, name can't be: " + key,{ fileName : "Stats.hx", lineNumber : 120, className : "Stats", methodName : "new"});
+			haxe_Log.trace("Error in Stats.setCurrent, name can't be: " + key,{ fileName : "Stats.hx", lineNumber : 179, className : "Stats", methodName : "new"});
 		}
 	}
 };
@@ -6448,38 +6594,54 @@ $hxClasses["Stats"] = Stats;
 Stats.__name__ = ["Stats"];
 Stats.__super__ = Component;
 Stats.prototype = $extend(Component.prototype,{
-	_totalHp: null
-	,_currentHp: null
+	_baseHp: null
+	,_baseAcc: null
+	,_baseDdg: null
+	,_baseCc: null
+	,_baseDef: null
+	,_baseDmg: null
+	,_baseSpd: null
+	,_baseStress: null
+	,_baseCritDamage: null
+	,_totalHp: null
 	,_totalAcc: null
-	,_currentAcc: null
 	,_totalDdg: null
-	,_currentDdg: null
 	,_totalCc: null
-	,_currentCc: null
 	,_totalDef: null
-	,_currentDef: null
 	,_totalDmg: null
-	,_currentDmg: null
 	,_totalSpd: null
-	,_currentSpd: null
 	,_totalStress: null
-	,_currentStress: null
 	,_totalCritDamage: null
+	,_currentHp: null
+	,_currentAcc: null
+	,_currentDdg: null
+	,_currentCc: null
+	,_currentDef: null
+	,_currentDmg: null
+	,_currentSpd: null
+	,_currentStress: null
 	,_currentCritDamage: null
-	,_totalStunResist: null
+	,_baseStunResist: null
+	,_basePoisonResist: null
+	,_baseBleedResist: null
+	,_baseDiseaseResist: null
+	,_baseDebuffResist: null
+	,_baseMoveResist: null
+	,_baseFireResist: null
 	,_currentStunResist: null
-	,_totalPoisonResist: null
 	,_currentPoisonResist: null
-	,_totalBleedResist: null
 	,_currentBleedResist: null
-	,_totalDiseasResist: null
 	,_currentDiseaseResist: null
-	,_totalDebuffResist: null
 	,_currentDebuffResist: null
-	,_totalMoveResist: null
 	,_currentMoveResist: null
-	,_totalFireResist: null
 	,_currentFireResist: null
+	,_totalStunResist: null
+	,_totalPoisonResist: null
+	,_totalBleedResist: null
+	,_totalDiseaseResist: null
+	,_totalDebuffResist: null
+	,_totalMoveResist: null
+	,_totalFireResist: null
 	,_upHp: null
 	,_upAcc: null
 	,_upDdg: null
@@ -6498,9 +6660,38 @@ Stats.prototype = $extend(Component.prototype,{
 	,_upFireResist: null
 	,_effects: null
 	,_position: null
-	,_target: null
 	,_currentPosition: null
-	,_reCalculateTotalStats: function() {
+	,_target: null
+	,reCalculateTotalStats: function() {
+		var inventory = this._parent.getComponent("inventory").getInventory();
+		var _g1 = 0;
+		var _g = inventory.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			var slot = inventory[i];
+			var item = slot.item;
+			if(!item) {
+				continue;
+			}
+		}
+		var positiveTraits = this._parent.getComponent("traits").getPositiveTraits();
+		var negativeTraits = this._parent.getComponent("traits").getNegativeTraits();
+		this._currentHp = this._totalHp;
+		this._currentAcc = this._totalAcc;
+		this._currentDdg = this._totalDdg;
+		this._currentCc = this._totalCc;
+		this._currentDef = this._totalDef;
+		this._currentDmg = this._totalDmg;
+		this._currentSpd = this._totalSpd;
+		this._currentStress = this._totalStress;
+		this._currentCritDamage = this._totalCritDamage;
+		this._currentStunResist = this._totalStunResist;
+		this._currentPoisonResist = this._totalPoisonResist;
+		this._currentBleedResist = this._totalBleedResist;
+		this._currentDiseaseResist = this._totalDiseaseResist;
+		this._currentDebuffResist = this._totalDebuffResist;
+		this._currentMoveResist = this._totalMoveResist;
+		this._currentFireResist = this._totalFireResist;
 	}
 	,setCurrent: function(name,value) {
 		switch(name) {
@@ -6550,7 +6741,7 @@ Stats.prototype = $extend(Component.prototype,{
 			this._currentStunResist = value;
 			break;
 		default:
-			haxe_Log.trace("Error in Stats.setCurrent, name can't be: " + name,{ fileName : "Stats.hx", lineNumber : 144, className : "Stats", methodName : "setCurrent"});
+			haxe_Log.trace("Error in Stats.setCurrent, name can't be: " + name,{ fileName : "Stats.hx", lineNumber : 203, className : "Stats", methodName : "setCurrent"});
 		}
 	}
 	,setTotal: function(name,value) {
@@ -6574,7 +6765,7 @@ Stats.prototype = $extend(Component.prototype,{
 			this._totalDef = value;
 			break;
 		case "diseas":
-			this._totalDiseasResist = value;
+			this._totalDiseaseResist = value;
 			break;
 		case "dmg":
 			this._totalDmg = value;
@@ -6601,7 +6792,7 @@ Stats.prototype = $extend(Component.prototype,{
 			this._totalStunResist = value;
 			break;
 		default:
-			haxe_Log.trace("Error in Stats.setTotal, name can't be: " + name,{ fileName : "Stats.hx", lineNumber : 167, className : "Stats", methodName : "setTotal"});
+			haxe_Log.trace("Error in Stats.setTotal, name can't be: " + name,{ fileName : "Stats.hx", lineNumber : 226, className : "Stats", methodName : "setTotal"});
 		}
 	}
 	,get: function(name,type) {
@@ -6655,9 +6846,9 @@ Stats.prototype = $extend(Component.prototype,{
 				return this._currentDef;
 			}
 			break;
-		case "diseas":
+		case "disease":
 			if(type == "total") {
-				return this._totalDiseasResist;
+				return this._totalDiseaseResist;
 			} else {
 				return this._currentDiseaseResist;
 			}
@@ -6719,7 +6910,7 @@ Stats.prototype = $extend(Component.prototype,{
 			}
 			break;
 		default:
-			haxe_Log.trace("Error in Stats.get, name can't be: " + name + ", with type: " + type,{ fileName : "Stats.hx", lineNumber : 191, className : "Stats", methodName : "get"});
+			haxe_Log.trace("Error in Stats.get, name can't be: " + name + ", with type: " + type,{ fileName : "Stats.hx", lineNumber : 250, className : "Stats", methodName : "get"});
 			return null;
 		}
 	}
@@ -6730,23 +6921,46 @@ Stats.prototype = $extend(Component.prototype,{
 	}
 	,removeEffect: function(effect) {
 	}
+	,setCurrentPosition: function(value) {
+		this._currentPosition = value;
+	}
+	,getCurrentPosition: function(value) {
+		return this._currentPosition;
+	}
 	,levelUp: function() {
-		this._totalHp += this._upHp;
-		this._totalAcc += this._upAcc;
-		this._totalDdg += this._upDdg;
-		this._totalCc += this._upCc;
-		this._totalDef += this._upDef;
-		this._totalDmg += this._upDmg;
-		this._totalSpd += this._upSpd;
-		this._totalStress += this._upStress;
-		this._totalStunResist += this._upStunResist;
-		this._totalPoisonResist += this._upPoisonResist;
-		this._totalBleedResist += this._upBleedResist;
-		this._totalDiseasResist += this._upDiseaseResist;
-		this._totalDebuffResist += this._upDebuffResist;
-		this._totalMoveResist += this._upMoveResist;
-		this._totalFireResist += this._upFireResist;
-		this._reCalculateTotalStats();
+		this._baseHp += this._upHp;
+		this._baseAcc += this._upAcc;
+		this._baseDdg += this._upDdg;
+		this._baseCc += this._upCc;
+		this._baseDef += this._upDef;
+		this._baseDmg += this._upDmg;
+		this._baseSpd += this._upSpd;
+		this._baseStress += this._upStress;
+		this._baseCritDamage += this._upCritDamage;
+		this._baseStunResist += this._upStunResist;
+		this._basePoisonResist += this._upPoisonResist;
+		this._baseBleedResist += this._upBleedResist;
+		this._baseDiseaseResist += this._upDiseaseResist;
+		this._baseDebuffResist += this._upDebuffResist;
+		this._baseMoveResist += this._upMoveResist;
+		this._baseFireResist += this._upFireResist;
+		this._totalHp = this._baseHp;
+		this._totalAcc = this._baseAcc;
+		this._totalDdg = this._baseDdg;
+		this._totalCc = this._baseCc;
+		this._totalDef = this._baseDef;
+		this._totalDmg = this._baseDmg;
+		this._totalSpd = this._baseSpd;
+		this._totalStress = this._baseStress;
+		this._totalCritDamage = this._baseCritDamage;
+		this._totalStunResist = this._baseStunResist;
+		this._totalPoisonResist = this._basePoisonResist;
+		this._totalBleedResist = this._baseBleedResist;
+		this._totalDiseaseResist = this._baseDiseaseResist;
+		this._totalDebuffResist = this._baseDebuffResist;
+		this._totalMoveResist = this._baseMoveResist;
+		this._totalFireResist = this._baseFireResist;
+		this.reCalculateTotalStats();
 	}
 	,__class__: Stats
 });
@@ -27827,7 +28041,7 @@ var lime_utils_AssetCache = function() {
 	this.audio = new haxe_ds_StringMap();
 	this.font = new haxe_ds_StringMap();
 	this.image = new haxe_ds_StringMap();
-	this.version = 947459;
+	this.version = 291829;
 };
 $hxClasses["lime.utils.AssetCache"] = lime_utils_AssetCache;
 lime_utils_AssetCache.__name__ = ["lime","utils","AssetCache"];

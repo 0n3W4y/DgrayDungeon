@@ -83,11 +83,13 @@ class SceneSystem
 					rarity = "legendary"; //3
 				var params = { "rarity": rarity };
 				var hero = this._parent.getSystem( "entity" ).createEntity( "hero", heroName, params );
+				this._parent.getSystem( "entity" ).addEntityToScene( hero, scene );
 
 				// do this without check, because we have 1-st start and we have 4 slots at all.
 				building.getComponent( "inventory" ).setItemInSlot( hero, null ); 		
 			}
 			//trace ( building.getComponent( "inventory" ).getInventory() );
+			// set timer to next change heroes in recruit building;
 		}
 				
 		this._addScene( scene );
@@ -104,6 +106,15 @@ class SceneSystem
 	}
 
 
+	
+
+	public function new( parent:Game, params:Dynamic ):Void
+	{
+		this._parent = parent;
+		this._scenesArray = new Array<Scene>();
+		this._config = params;
+	}
+
 	public function update( time:Float ):Void
 	{
 		//we can add scenes to array , who need to update, and remove them if don't need to update;
@@ -113,18 +124,13 @@ class SceneSystem
 		}
 	}
 
-	public function new( parent:Game, params:Dynamic ):Void
-	{
-		this._parent = parent;
-		this._scenesArray = new Array<Scene>();
-		this._config = params;
-	}
-
 	public function createScene( sceneName:String ):Scene
 	{
 		switch( sceneName )
 		{
-			case "startScene", "cityScene", "chooseDungeonScene": return this._createStartScene( sceneName );
+			case "startScene": return this._createStartScene( sceneName );
+			case "cityScene": return this._createStartScene( sceneName );
+			case "chooseDungeonScene": return this._createStartScene( sceneName );
 			default: trace( "Error in SceneSystem.createScene, scene name can't be: " + sceneName + "." );
 		}
 		return null;
