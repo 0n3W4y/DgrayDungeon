@@ -82,14 +82,14 @@ class Traits extends Component
 		return null;
 	}
 
-	public function getPositiveTraits():Array<Dynamic>
+	public function getTraits( type:String ):Array<Dynamic>
 	{
-		return this._positive;
-	}
-
-	public function getNegativeTraits():Array<Dynamic>
-	{
-		return this._negative;
+		switch( type )
+		{
+			case "positive": return this._positive;
+			case "negative": return this._negative;
+			default: { trace( "Error in Traits.getTraits, type can't be: " + type ); return null; }
+		}			
 	}
 
 	public function setStaticTrait( trait:String )

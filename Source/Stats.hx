@@ -6,6 +6,7 @@ class Stats extends Component
 	private var _baseHp:Float;// Health Points;
 	private var _baseAcc:Float;// Accuricy % // choose number of damage, if acc 100% always use max damage;
 	private var _baseDdg:Float;// Dodge %
+	private var _baseBlock:Float; // block with shield;
 	private var _baseCc:Float;// Critical Chanse
 	private var _baseDef:Float;// defense
 	private var _baseDmg:Float; // Damage
@@ -16,7 +17,8 @@ class Stats extends Component
 	//totalStats
 	private var _totalHp:Float; 
 	private var _totalAcc:Float; 
-	private var _totalDdg:Float; 
+	private var _totalDdg:Float;
+	private var _totalBlock:Float;
 	private var _totalCc:Float;
 	private var _totalDef:Float;
 	private var _totalDmg:Float;
@@ -28,6 +30,7 @@ class Stats extends Component
 	private var _currentHp:Float;
 	private var _currentAcc:Float;
 	private var _currentDdg:Float;
+	private var _currentBlock:Float;
 	private var _currentCc:Float; 
 	private var _currentDef:Float; 
 	private var _currentDmg:Float;	
@@ -93,38 +96,97 @@ class Stats extends Component
 	{
 		//TODO: get inventory and add all properties from items in slots;
 		//TODO: get traits and add all extra stats drom traits;
-		var inventory:Array<Dynamic> = this._parent.getComponent( "inventory" ).getInventory();
-		for( i in 0...inventory.length )
+		this._totalHp = this._baseHp;
+		this._totalAcc = this._baseAcc;
+		this._totalDdg = this._baseDdg;
+		this._totalBlock = this._baseBlock;
+		this._totalCc = this._baseCc;
+		this._totalDef = this._baseDef;
+		this._totalDmg = this._baseDmg;
+		this._totalSpd = this._baseSpd;
+		this._totalStress = this._baseStress;
+		this._totalCritDamage = this._baseCritDamage;
+		this._totalStunResist = this._baseStunResist;
+		this._totalPoisonResist = this._basePoisonResist;
+		this._totalBleedResist = this._baseBleedResist;
+		this._totalDiseaseResist = this._baseDiseaseResist;
+		this._totalDebuffResist = this._baseDebuffResist;
+		this._totalMoveResist = this._baseMoveResist; 
+		this._totalFireResist = this._baseFireResist;
+
+		var setCurrentFromTotal = function()
 		{
-			var slot = inventory[ i ];
-			var item = slot.item;
-			if( item )
-			{
-				//TODO: get item params; and add it to total;
-			}
-			else
-				continue;
+			this._currentHp = this._totalHp;
+			this._currentAcc = this._totalAcc;
+			this._currentDdg = this._totalDdg;
+			this._currentBlock = this._totalBlock;
+			this._currentCc = this._totalCc;
+			this._currentDef = this._totalDef;
+			this._currentDmg = this._totalDmg;
+			this._currentSpd = this._totalSpd;
+			this._currentStress = this._totalStress;
+			this._currentCritDamage = this._totalCritDamage;
+			this._currentStunResist = this._totalStunResist;
+			this._currentPoisonResist = this._totalPoisonResist;
+			this._currentBleedResist = this._totalBleedResist;
+			this._currentDiseaseResist = this._totalDiseaseResist;
+			this._currentDebuffResist = this._totalDebuffResist;
+			this._currentMoveResist = this._totalMoveResist; 
+			this._currentFireResist = this._totalFireResist;
 		}
-		var positiveTraits:Array<Dynamic> = this._parent.getComponent( "traits" ).getPositiveTraits();
-		var negativeTraits:Array<Dynamic> = this._parent.getComponent( "traits" ).getNegativeTraits();
+
+		if( this._parent == null )
+		{
+			setCurrentFromTotal();
+			return;
+		}
+
+		var inventoryComponent:Dynamic = this._parent.getComponent( "inventory" );
+		if( inventoryComponent != null )
+		{
+			var inventory:Array<Dynamic> = inventoryComponent.getInventory();
+			for( i in 0...inventory.length )
+			{
+				var slot = inventory[ i ];
+				var item = slot.item;
+				if( item != null )
+				{
+					//TODO: get item params; and add it to total;
+				}
+				else
+					continue;
+			}
+		}
+		
+		var taritsComponent:Dynamic = this._parent.getComponent( "traits" );
+		if( taritsComponent != null )
+		{
+			var positiveTraits:Array<Dynamic> = this._parent.getComponent( "traits" ).getPositiveTraits();
+			var negativeTraits:Array<Dynamic> = this._parent.getComponent( "traits" ).getNegativeTraits();
+		}
+		var skillsComponent:Dynamic = this._parent.getComponent( "skills" );
+		if( skillsComponent != null )
+		{
+			var passiveSkills:Array<Dynamic> = this._parent.getComponent( "skills" ).getSkills( "passive" );
+			for( key in Reflect.fields( passiveSkills ) )
+			{
+				var value:Dynamic = Reflcet.getProperty( passiveSkills, key );
+				var target:Array<Int> = value.target;
+				var type:String = value.type;
+				var num = 0;
+				for( i in 0...target.length )
+				{
+					if ( target[ i ] == 0 )
+					{
+						num = 1;
+						break;
+					}
+				}
+			}
+		}
 		//TODO: firts do postive, than negative;
 		// some traits can be use is some dungeons, need to check dungeon;
-		this._currentHp = this._totalHp;
-		this._currentAcc = this._totalAcc;
-		this._currentDdg = this._totalDdg;
-		this._currentCc = this._totalCc;
-		this._currentDef = this._totalDef;
-		this._currentDmg = this._totalDmg;
-		this._currentSpd = this._totalSpd;
-		this._currentStress = this._totalStress;
-		this._currentCritDamage = this._totalCritDamage;
-		this._currentStunResist = this._totalStunResist;
-		this._currentPoisonResist = this._totalPoisonResist;
-		this._currentBleedResist = this._totalBleedResist;
-		this._currentDiseaseResist = this._totalDiseaseResist;
-		this._currentDebuffResist = this._totalDebuffResist;
-		this._currentMoveResist = this._totalMoveResist; 
-		this._currentFireResist = this._totalFireResist;
+		
 	}
 
 	public function new( parent:Entity, id:String, params:Dynamic ):Void
@@ -142,22 +204,23 @@ class Stats extends Component
 
 			switch( key )
 			{
-				case "hp": {this._currentHp = value; this._totalHp = value; this._baseHp = value;}
-				case "acc": {this._currentAcc = value; this._totalAcc = value; this._baseAcc = value;}
-				case "ddg": {this._currentDdg = value; this._totalDdg = value; this._baseDdg = value;}
-				case "cc": {this._currentCc = value; this._totalCc = value; this._baseCc = value;}
-				case "def": {this._currentDef = value; this._totalDef = value; this._baseDef = value;}
-				case "dmg": {this._currentDmg = value; this._totalDmg = value; this._baseDmg = value;}
-				case "spd": {this._currentSpd = value; this._totalSpd = value; this._baseSpd = value;}
-				case "stress": {this._currentStress = value; this._totalStress = value; this._baseStress = value;}
-				case "cd": {this._currentCritDamage = value; this._totalCritDamage = value; this._baseCritDamage = value;}
-				case "stun": {this._currentStunResist = value; this._totalStunResist = value; this._baseStunResist = value;}
-				case "poison": {this._currentPoisonResist = value; this._totalPoisonResist = value; this._basePoisonResist = value;}
-				case "bleed": {this._baseBleedResist = value; this._totalBleedResist = value; this._currentBleedResist = value;}
-				case "diseas": {this._baseDiseaseResist = value; this._totalDiseaseResist = value; this._currentDiseaseResist = value;}
-				case "debuff": {this._baseDebuffResist = value; this._totalDebuffResist = value; this._currentDebuffResist = value;}
-				case "move": {this._baseMoveResist = value; this._totalMoveResist = value; this._currentMoveResist = value;}
-				case "fire": {this._baseFireResist = value; this._totalFireResist = value; this._currentFireResist = value;}
+				case "hp": this._baseHp = value;
+				case "acc": this._baseAcc = value;
+				case "ddg": this._baseDdg = value;
+				case "blk": this._baseBlock = value;
+				case "cc": this._baseCc = value;
+				case "def": this._baseDef = value;
+				case "dmg": this._baseDmg = value;
+				case "spd": this._baseSpd = value;
+				case "stress": this._baseStress = value;
+				case "cd": this._baseCritDamage = value;
+				case "stun": this._baseStunResist = value;
+				case "poison": this._basePoisonResist = value;
+				case "bleed": this._baseBleedResist = value; 
+				case "diseas": this._baseDiseaseResist = value;
+				case "debuff": this._baseDebuffResist = value;
+				case "move": this._baseMoveResist = value;
+				case "fire": this._baseFireResist = value;
 				case "upHp": this._upHp = value;
 				case "upAcc": this._upAcc = value;
 				case "upDdg": this._upDdg = value;
@@ -179,6 +242,7 @@ class Stats extends Component
 				default: trace( "Error in Stats.setCurrent, name can't be: " + key );
 			}
 		}
+		this.reCalculateTotalStats();
 	}
 
 	public function setCurrent( name:String, value:Float ):Void
