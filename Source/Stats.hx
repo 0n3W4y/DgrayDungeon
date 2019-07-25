@@ -87,107 +87,9 @@ class Stats extends Component
 
 	private var _effects:Array<Dynamic>; // [ { effect1 }, { effect2 } ... ];
 	private var _position:Dynamic; // { "first": 75, "second": 80, "third": 100, "fourth": 90 }
-	private var _currentPosition:String; // "Second";
+	private var _currentPosition:String; // "second";
 	private var _target:Dynamic; // { "first": 100, "second": 80, "third": 90, "fourth": 70 }
 
-
-
-	public function reCalculateTotalStats():Void
-	{
-		//TODO: get inventory and add all properties from items in slots;
-		//TODO: get traits and add all extra stats drom traits;
-		this._totalHp = this._baseHp;
-		this._totalAcc = this._baseAcc;
-		this._totalDdg = this._baseDdg;
-		this._totalBlock = this._baseBlock;
-		this._totalCc = this._baseCc;
-		this._totalDef = this._baseDef;
-		this._totalDmg = this._baseDmg;
-		this._totalSpd = this._baseSpd;
-		this._totalStress = this._baseStress;
-		this._totalCritDamage = this._baseCritDamage;
-		this._totalStunResist = this._baseStunResist;
-		this._totalPoisonResist = this._basePoisonResist;
-		this._totalBleedResist = this._baseBleedResist;
-		this._totalDiseaseResist = this._baseDiseaseResist;
-		this._totalDebuffResist = this._baseDebuffResist;
-		this._totalMoveResist = this._baseMoveResist; 
-		this._totalFireResist = this._baseFireResist;
-
-		var setCurrentFromTotal = function()
-		{
-			this._currentHp = this._totalHp;
-			this._currentAcc = this._totalAcc;
-			this._currentDdg = this._totalDdg;
-			this._currentBlock = this._totalBlock;
-			this._currentCc = this._totalCc;
-			this._currentDef = this._totalDef;
-			this._currentDmg = this._totalDmg;
-			this._currentSpd = this._totalSpd;
-			this._currentStress = this._totalStress;
-			this._currentCritDamage = this._totalCritDamage;
-			this._currentStunResist = this._totalStunResist;
-			this._currentPoisonResist = this._totalPoisonResist;
-			this._currentBleedResist = this._totalBleedResist;
-			this._currentDiseaseResist = this._totalDiseaseResist;
-			this._currentDebuffResist = this._totalDebuffResist;
-			this._currentMoveResist = this._totalMoveResist; 
-			this._currentFireResist = this._totalFireResist;
-		}
-
-		if( this._parent == null )
-		{
-			setCurrentFromTotal();
-			return;
-		}
-
-		var inventoryComponent:Dynamic = this._parent.getComponent( "inventory" );
-		if( inventoryComponent != null )
-		{
-			var inventory:Array<Dynamic> = inventoryComponent.getInventory();
-			for( i in 0...inventory.length )
-			{
-				var slot = inventory[ i ];
-				var item = slot.item;
-				if( item != null )
-				{
-					//TODO: get item params; and add it to total;
-				}
-				else
-					continue;
-			}
-		}
-		
-		var taritsComponent:Dynamic = this._parent.getComponent( "traits" );
-		if( taritsComponent != null )
-		{
-			var positiveTraits:Array<Dynamic> = this._parent.getComponent( "traits" ).getPositiveTraits();
-			var negativeTraits:Array<Dynamic> = this._parent.getComponent( "traits" ).getNegativeTraits();
-		}
-		var skillsComponent:Dynamic = this._parent.getComponent( "skills" );
-		if( skillsComponent != null )
-		{
-			var passiveSkills:Array<Dynamic> = this._parent.getComponent( "skills" ).getSkills( "passive" );
-			for( key in Reflect.fields( passiveSkills ) )
-			{
-				var value:Dynamic = Reflcet.getProperty( passiveSkills, key );
-				var target:Array<Int> = value.target;
-				var type:String = value.type;
-				var num = 0;
-				for( i in 0...target.length )
-				{
-					if ( target[ i ] == 0 )
-					{
-						num = 1;
-						break;
-					}
-				}
-			}
-		}
-		//TODO: firts do postive, than negative;
-		// some traits can be use is some dungeons, need to check dungeon;
-		
-	}
 
 	public function new( parent:Entity, id:String, params:Dynamic ):Void
 	{
@@ -298,6 +200,7 @@ class Stats extends Component
 			case "hp": {if( type == "total" ) return this._totalHp; else return this._currentHp;}
 			case "acc": {if( type == "total" ) return this._totalAcc; else return this._currentAcc;}
 			case "ddg": {if( type == "total" ) return this._totalDdg;  else return this._currentDdg;}
+			case "blk": {if( type == "total" ) return this._totalBlock; else return this._currentBlock;}
 			case "cc": {if( type == "total" ) return this._totalCc;  else return this._currentCc;}
 			case "def": {if( type == "total" ) return this._totalDef;  else return this._currentDef;}
 			case "dmg": {if( type == "total" ) return this._totalDmg;  else return this._currentDmg;}
@@ -359,9 +262,17 @@ class Stats extends Component
 		this._baseMoveResist += this._upMoveResist;
 		this._baseFireResist += this._upFireResist;
 
+		this.reCalculateTotalStats();
+	}
+
+	public function reCalculateTotalStats():Void
+	{
+		//TODO: get inventory and add all properties from items in slots;
+		//TODO: get traits and add all extra stats drom traits;
 		this._totalHp = this._baseHp;
 		this._totalAcc = this._baseAcc;
 		this._totalDdg = this._baseDdg;
+		this._totalBlock = this._baseBlock;
 		this._totalCc = this._baseCc;
 		this._totalDef = this._baseDef;
 		this._totalDmg = this._baseDmg;
@@ -376,7 +287,243 @@ class Stats extends Component
 		this._totalMoveResist = this._baseMoveResist; 
 		this._totalFireResist = this._baseFireResist;
 
+		var setCurrentFromTotal = function()
+		{
+			this._currentHp = this._totalHp;
+			this._currentAcc = this._totalAcc;
+			this._currentDdg = this._totalDdg;
+			this._currentBlock = this._totalBlock;
+			this._currentCc = this._totalCc;
+			this._currentDef = this._totalDef;
+			this._currentDmg = this._totalDmg;
+			this._currentSpd = this._totalSpd;
+			this._currentStress = this._totalStress;
+			this._currentCritDamage = this._totalCritDamage;
+			this._currentStunResist = this._totalStunResist;
+			this._currentPoisonResist = this._totalPoisonResist;
+			this._currentBleedResist = this._totalBleedResist;
+			this._currentDiseaseResist = this._totalDiseaseResist;
+			this._currentDebuffResist = this._totalDebuffResist;
+			this._currentMoveResist = this._totalMoveResist; 
+			this._currentFireResist = this._totalFireResist;
+		}
 
-		this.reCalculateTotalStats();
+		if( this._parent == null )
+		{
+			setCurrentFromTotal();
+			return;
+		}
+
+		var inventoryComponent:Dynamic = this._parent.getComponent( "inventory" );
+		if( inventoryComponent != null )
+		{
+			var inventory:Array<Dynamic> = inventoryComponent.getInventory();
+			for( i in 0...inventory.length )
+			{
+				var slot = inventory[ i ];
+				var item = slot.item;
+				if( item != null )
+				{
+					//TODO: get item params; and add it to total;
+				}
+				else
+					continue;
+			}
+		}
+		
+		var skillsComponent:Dynamic = this._parent.getComponent( "skills" );
+		if( skillsComponent != null )
+		{
+			var passiveSkills:Array<Dynamic> = this._parent.getComponent( "skills" ).getSkills( "passive" );
+			for( key in Reflect.fields( passiveSkills ) )
+			{
+				var value:Dynamic = Reflect.getProperty( passiveSkills, key );
+				var target:Array<Int> = value.target;
+				var type:String = value.type;
+				var action:String = value.action;
+				var valueType:String = value.valueType;
+				var targetStat:Array<String> = value.targetStat;
+				var damageValue:Array<Int> = value.value;
+				var dmgValue:Float = Math.floor( damageValue[ 0 ] + Math.random() * ( damageValue[ 1 ] - damageValue[ 0 ] + 1) );
+				if( target[ 0 ] == 0 && type == "forever" && value.isStatic ) // we have array in target like [ 0 ] or [ 1, 2, 3 ] of [ -12340 ]; 0 == self
+				{
+					for( i in 0...targetStat.length )
+					{
+						switch( targetStat[ i ] )
+						{
+							case "hp": 
+							{
+								if( valueType == "percent")
+									dmgValue = this._totalHp * dmgValue / 100;
+
+								if( action == "substarct" )
+									dmgValue = -dmgValue;
+
+								this._totalHp += dmgValue;
+							}
+							case "def":
+							{
+								if( valueType == "percent")
+									dmgValue = this._totalDef * dmgValue / 100;
+
+								if( action == "substarct" )
+									dmgValue = -dmgValue;
+
+								this._totalDef += dmgValue;
+							}
+							case "acc":
+							{
+								if( valueType == "percent")
+									dmgValue = this._totalAcc * dmgValue / 100;
+
+								if( action == "substarct" )
+									dmgValue = -dmgValue;
+
+								this._totalAcc += dmgValue;
+							}
+							case "spd":
+							{
+								if( valueType == "percent")
+									dmgValue = this._totalSpd * dmgValue / 100;
+
+								if( action == "substarct" )
+									dmgValue = -dmgValue;
+
+								this._totalSpd += dmgValue;
+							}
+							case "ddg":
+							{
+								if( valueType == "percent")
+									dmgValue = this._totalDdg * dmgValue / 100;
+
+								if( action == "substarct" )
+									dmgValue = -dmgValue;
+
+								this._totalDdg += dmgValue;
+							}
+							case "blk":
+							{
+								if( valueType == "percent")
+									dmgValue = this._totalBlock * dmgValue / 100;
+
+								if( action == "substarct" )
+									dmgValue = -dmgValue;
+
+								this._totalBlock += dmgValue;
+							}	
+							case "critDmg":
+							{
+								if( valueType == "percent")
+									dmgValue = this._totalCritDamage * dmgValue / 100;
+
+								if( action == "substarct" )
+									dmgValue = -dmgValue;
+
+								this._totalCritDamage += dmgValue;
+							}
+							case "stress":
+							{
+								if( valueType == "percent")
+									dmgValue = this._totalStress * dmgValue / 100;
+
+								if( action == "substarct" )
+									dmgValue = -dmgValue;
+
+								this._totalStress += dmgValue;
+							}
+							case "cc":
+							{
+								if( valueType == "percent")
+									dmgValue = this._totalCc * dmgValue / 100;
+
+								if( action == "substarct" )
+									dmgValue = -dmgValue;
+
+								this._totalCc += dmgValue;
+							}
+							case "stun":
+							{
+								if( valueType == "percent")
+									dmgValue = this._totalStunResist * dmgValue / 100;
+
+								if( action == "substarct" )
+									dmgValue = -dmgValue;
+
+								this._totalStunResist += dmgValue;
+							}
+							case "posion":
+							{
+								if( valueType == "percent")
+									dmgValue = this._totalPoisonResist * dmgValue / 100;
+
+								if( action == "substarct" )
+									dmgValue = -dmgValue;
+
+								this._totalPoisonResist += dmgValue;
+							}
+							case "fire":
+							{
+								if( valueType == "percent")
+									dmgValue = this._totalFireResist * dmgValue / 100;
+
+								if( action == "substarct" )
+									dmgValue = -dmgValue;
+
+								this._totalFireResist += dmgValue;
+							}
+							case "move":
+							{
+								if( valueType == "percent")
+									dmgValue = this._totalMoveResist * dmgValue / 100;
+
+								if( action == "substarct" )
+									dmgValue = -dmgValue;
+
+								this._totalMoveResist += dmgValue;
+							}
+							case "bleed":
+							{
+								if( valueType == "percent")
+									dmgValue = this._totalBleedResist * dmgValue / 100;
+
+								if( action == "substarct" )
+									dmgValue = -dmgValue;
+
+								this._totalBleedResist += dmgValue;
+							}
+							case "debuff":
+							{
+								if( valueType == "percent")
+									dmgValue = this._totalDebuffResist * dmgValue / 100;
+
+								if( action == "substarct" )
+									dmgValue = -dmgValue;
+
+								this._totalDebuffResist += dmgValue;
+							}
+							case "disease":
+							{
+								if( valueType == "percent")
+									dmgValue = this._totalDiseaseResist * dmgValue / 100;
+
+								if( action == "substarct" )
+									dmgValue = -dmgValue;
+
+								this._totalDiseaseResist += dmgValue;
+							}
+						}
+					}
+				}
+			}
+		}
+		var taritsComponent:Dynamic = this._parent.getComponent( "traits" );
+		if( taritsComponent != null )
+		{
+			//TODO: firts do postive, than negative;
+			// some traits can be use is some dungeons, need to check dungeon;
+			var positiveTraits:Array<Dynamic> = this._parent.getComponent( "traits" ).getPositiveTraits();
+			var negativeTraits:Array<Dynamic> = this._parent.getComponent( "traits" ).getNegativeTraits();
+		}
+		
 	}
 }

@@ -246,6 +246,7 @@ class EntitySystem
 								"isChoosen": false,
 								"isStatic": false,
 								"upgradeLevel": 0,
+								"onCooldawn": 0,
 								"maxUpgradeLevel": skill.maxUpgradeLevel,
 								"value": skill.upgradeValue.value[ 0 ], //upgradeLevel = 0;
 								"type": skill.upgradeValue.type,

@@ -32,6 +32,46 @@ class Skills extends Component
 
 	}
 
+	private function _levelupSkill( name:String, config:Dynamic ):Void
+	{
+		var skill:Dynamic = null;
+		for( i in 0...this._active.length )
+		{
+			skill = this._active[ i ];
+			if( skill.name == name )
+				break;
+		}
+		for( i in 0...this._passive.length )
+		{
+			skill = this._passive[ i ];
+			if( skill.name == name )
+				break;
+		}
+		for( i in 0...this._camping.length )
+		{
+			skill = this._camping[ i ];
+			if( skill.name == name )
+				break;
+		}
+
+		if( skill == null )
+		{
+			trace( "Error in Skills._levelupSkill, no such skill in container with name: " + name );
+			return;
+		}
+
+		var skillUpLvl = skill.upgradeLevel;
+		if( skillUpLvl < skill.maxUpgradeLevel )
+		{
+			//..
+			skill.upgradeLevel++;
+			skill.value = config.value[ skillUpLvl ];
+			skill.duration = config.duration[ skillUpLvl ];
+			skill.cooldawn = config.cooldawn[ skillUpLvl ];
+			skill.target = config.target[ skillUpLvl ];
+		}
+	}
+
 	private function _setChooseActive( skill:Dynamic ):Bool
 	{
 		if( !skill.isStatic )
@@ -94,7 +134,7 @@ class Skills extends Component
 
 
 
-	public function chooseSkill( name:String ):Bool
+	public function chooseStaticSkill( name:String ):Bool
 	{
 
 		for( i in 0...this._active.length )
@@ -126,9 +166,39 @@ class Skills extends Component
 		return false;
 	}
 
-	public function unChooseSkill( name:String ):Void
+	public function unChooseStaticSkill( name:String ):Bool
 	{
-		
+		return this.chooseSkillToStatic( name );
+	}
+
+	public function chooseActiveSkill( name:String ):Void
+	{
+
+	}
+
+	public function unchooseActiveSkill( name:String ):Void
+	{
+
+	}
+
+	public function levelupSkill( name:String ):Void
+	{
+		//component->Entity->Scene->SceneSystem->Game->EntitySystem
+		var config:Dynamic = this._parent.get( "parent" ).getParent().getParent().getSystem( "entity" ).getConfig().heroes; // config of heroes;
+		var entityName = this._parent.get( "name" ); // crossbowman;
+		var rarityNumber:Int = 0;
+
+		for( key in Reflect.fields( config ) )
+		{
+			if( key == entityName )
+			{
+				var value:Dynamic = Reflect.getProperty( config, key );
+				var skills:Dynamic = value.skills.active.skills;
+				var skillUpgradeConfig:Dynamic = Reflect.getProperty( skills, name ).upgradeValue;
+				this._levelupSkill( name, skillUpgradeConfig );
+				break;
+			}
+		}
 	}
 
 	public function addSkill( skill:Dynamic, place:String ):Bool

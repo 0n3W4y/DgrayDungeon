@@ -894,9 +894,9 @@ ApplicationMain.create = function(config) {
 	ManifestResources.init(config);
 	var _this = app.meta;
 	if(__map_reserved["build"] != null) {
-		_this.setReserved("build","73");
+		_this.setReserved("build","77");
 	} else {
-		_this.h["build"] = "73";
+		_this.h["build"] = "77";
 	}
 	var _this1 = app.meta;
 	if(__map_reserved["company"] != null) {
@@ -6557,7 +6557,7 @@ var Stats = function(parent,id,params) {
 			this._upStunResist = value;
 			break;
 		default:
-			haxe_Log.trace("Error in Stats.setCurrent, name can't be: " + key,{ fileName : "Stats.hx", lineNumber : 227, className : "Stats", methodName : "new"});
+			haxe_Log.trace("Error in Stats.setCurrent, name can't be: " + key,{ fileName : "Stats.hx", lineNumber : 144, className : "Stats", methodName : "new"});
 		}
 	}
 	this.reCalculateTotalStats();
@@ -6637,72 +6637,6 @@ Stats.prototype = $extend(Component.prototype,{
 	,_position: null
 	,_currentPosition: null
 	,_target: null
-	,reCalculateTotalStats: function() {
-		var _gthis = this;
-		this._totalHp = this._baseHp;
-		this._totalAcc = this._baseAcc;
-		this._totalDdg = this._baseDdg;
-		this._totalBlock = this._baseBlock;
-		this._totalCc = this._baseCc;
-		this._totalDef = this._baseDef;
-		this._totalDmg = this._baseDmg;
-		this._totalSpd = this._baseSpd;
-		this._totalStress = this._baseStress;
-		this._totalCritDamage = this._baseCritDamage;
-		this._totalStunResist = this._baseStunResist;
-		this._totalPoisonResist = this._basePoisonResist;
-		this._totalBleedResist = this._baseBleedResist;
-		this._totalDiseaseResist = this._baseDiseaseResist;
-		this._totalDebuffResist = this._baseDebuffResist;
-		this._totalMoveResist = this._baseMoveResist;
-		this._totalFireResist = this._baseFireResist;
-		var setCurrentFromTotal = function() {
-			_gthis._currentHp = _gthis._totalHp;
-			_gthis._currentAcc = _gthis._totalAcc;
-			_gthis._currentDdg = _gthis._totalDdg;
-			_gthis._currentBlock = _gthis._totalBlock;
-			_gthis._currentCc = _gthis._totalCc;
-			_gthis._currentDef = _gthis._totalDef;
-			_gthis._currentDmg = _gthis._totalDmg;
-			_gthis._currentSpd = _gthis._totalSpd;
-			_gthis._currentStress = _gthis._totalStress;
-			_gthis._currentCritDamage = _gthis._totalCritDamage;
-			_gthis._currentStunResist = _gthis._totalStunResist;
-			_gthis._currentPoisonResist = _gthis._totalPoisonResist;
-			_gthis._currentBleedResist = _gthis._totalBleedResist;
-			_gthis._currentDiseaseResist = _gthis._totalDiseaseResist;
-			_gthis._currentDebuffResist = _gthis._totalDebuffResist;
-			_gthis._currentMoveResist = _gthis._totalMoveResist;
-			_gthis._currentFireResist = _gthis._totalFireResist;
-		};
-		if(this._parent == null) {
-			setCurrentFromTotal();
-			return;
-		}
-		var inventoryComponent = this._parent.getComponent("inventory");
-		if(inventoryComponent != null) {
-			var inventory = inventoryComponent.getInventory();
-			var _g1 = 0;
-			var _g = inventory.length;
-			while(_g1 < _g) {
-				var i = _g1++;
-				var slot = inventory[i];
-				var item = slot.item;
-				if(item == null) {
-					continue;
-				}
-			}
-		}
-		var taritsComponent = this._parent.getComponent("traits");
-		if(taritsComponent != null) {
-			var positiveTraits = this._parent.getComponent("traits").getPositiveTraits();
-			var negativeTraits = this._parent.getComponent("traits").getNegativeTraits();
-		}
-		var skillsComponent = this._parent.getComponent("skills");
-		if(skillsComponent != null) {
-			var passiveSkills = this._parent.getComponent("skills").getSkills("passive");
-		}
-	}
 	,setCurrent: function(name,value) {
 		switch(name) {
 		case "acc":
@@ -6751,7 +6685,7 @@ Stats.prototype = $extend(Component.prototype,{
 			this._currentStunResist = value;
 			break;
 		default:
-			haxe_Log.trace("Error in Stats.setCurrent, name can't be: " + name,{ fileName : "Stats.hx", lineNumber : 252, className : "Stats", methodName : "setCurrent"});
+			haxe_Log.trace("Error in Stats.setCurrent, name can't be: " + name,{ fileName : "Stats.hx", lineNumber : 169, className : "Stats", methodName : "setCurrent"});
 		}
 	}
 	,setTotal: function(name,value) {
@@ -6802,7 +6736,7 @@ Stats.prototype = $extend(Component.prototype,{
 			this._totalStunResist = value;
 			break;
 		default:
-			haxe_Log.trace("Error in Stats.setTotal, name can't be: " + name,{ fileName : "Stats.hx", lineNumber : 275, className : "Stats", methodName : "setTotal"});
+			haxe_Log.trace("Error in Stats.setTotal, name can't be: " + name,{ fileName : "Stats.hx", lineNumber : 192, className : "Stats", methodName : "setTotal"});
 		}
 	}
 	,get: function(name,type) {
@@ -6819,6 +6753,13 @@ Stats.prototype = $extend(Component.prototype,{
 				return this._totalBleedResist;
 			} else {
 				return this._currentBleedResist;
+			}
+			break;
+		case "blk":
+			if(type == "total") {
+				return this._totalBlock;
+			} else {
+				return this._currentBlock;
 			}
 			break;
 		case "cc":
@@ -6920,7 +6861,7 @@ Stats.prototype = $extend(Component.prototype,{
 			}
 			break;
 		default:
-			haxe_Log.trace("Error in Stats.get, name can't be: " + name + ", with type: " + type,{ fileName : "Stats.hx", lineNumber : 299, className : "Stats", methodName : "get"});
+			haxe_Log.trace("Error in Stats.get, name can't be: " + name + ", with type: " + type,{ fileName : "Stats.hx", lineNumber : 217, className : "Stats", methodName : "get"});
 			return null;
 		}
 	}
@@ -6954,9 +6895,14 @@ Stats.prototype = $extend(Component.prototype,{
 		this._baseDebuffResist += this._upDebuffResist;
 		this._baseMoveResist += this._upMoveResist;
 		this._baseFireResist += this._upFireResist;
+		this.reCalculateTotalStats();
+	}
+	,reCalculateTotalStats: function() {
+		var _gthis = this;
 		this._totalHp = this._baseHp;
 		this._totalAcc = this._baseAcc;
 		this._totalDdg = this._baseDdg;
+		this._totalBlock = this._baseBlock;
 		this._totalCc = this._baseCc;
 		this._totalDef = this._baseDef;
 		this._totalDmg = this._baseDmg;
@@ -6970,7 +6916,220 @@ Stats.prototype = $extend(Component.prototype,{
 		this._totalDebuffResist = this._baseDebuffResist;
 		this._totalMoveResist = this._baseMoveResist;
 		this._totalFireResist = this._baseFireResist;
-		this.reCalculateTotalStats();
+		var setCurrentFromTotal = function() {
+			_gthis._currentHp = _gthis._totalHp;
+			_gthis._currentAcc = _gthis._totalAcc;
+			_gthis._currentDdg = _gthis._totalDdg;
+			_gthis._currentBlock = _gthis._totalBlock;
+			_gthis._currentCc = _gthis._totalCc;
+			_gthis._currentDef = _gthis._totalDef;
+			_gthis._currentDmg = _gthis._totalDmg;
+			_gthis._currentSpd = _gthis._totalSpd;
+			_gthis._currentStress = _gthis._totalStress;
+			_gthis._currentCritDamage = _gthis._totalCritDamage;
+			_gthis._currentStunResist = _gthis._totalStunResist;
+			_gthis._currentPoisonResist = _gthis._totalPoisonResist;
+			_gthis._currentBleedResist = _gthis._totalBleedResist;
+			_gthis._currentDiseaseResist = _gthis._totalDiseaseResist;
+			_gthis._currentDebuffResist = _gthis._totalDebuffResist;
+			_gthis._currentMoveResist = _gthis._totalMoveResist;
+			_gthis._currentFireResist = _gthis._totalFireResist;
+		};
+		if(this._parent == null) {
+			setCurrentFromTotal();
+			return;
+		}
+		var inventoryComponent = this._parent.getComponent("inventory");
+		if(inventoryComponent != null) {
+			var inventory = inventoryComponent.getInventory();
+			var _g1 = 0;
+			var _g = inventory.length;
+			while(_g1 < _g) {
+				var i = _g1++;
+				var slot = inventory[i];
+				var item = slot.item;
+				if(item == null) {
+					continue;
+				}
+			}
+		}
+		var skillsComponent = this._parent.getComponent("skills");
+		if(skillsComponent != null) {
+			var passiveSkills = this._parent.getComponent("skills").getSkills("passive");
+			var _g2 = 0;
+			var _g11 = Reflect.fields(passiveSkills);
+			while(_g2 < _g11.length) {
+				var key = _g11[_g2];
+				++_g2;
+				var value = Reflect.getProperty(passiveSkills,key);
+				var target = value.target;
+				var type = value.type;
+				var action = value.action;
+				var valueType = value.valueType;
+				var targetStat = value.targetStat;
+				var damageValue = value.value;
+				var dmgValue = Math.floor(damageValue[0] + Math.random() * (damageValue[1] - damageValue[0] + 1));
+				if(target[0] == 0 && type == "forever" && value.isStatic) {
+					var _g3 = 0;
+					var _g21 = targetStat.length;
+					while(_g3 < _g21) {
+						var i1 = _g3++;
+						var _g4 = targetStat[i1];
+						switch(_g4) {
+						case "acc":
+							if(valueType == "percent") {
+								dmgValue = this._totalAcc * dmgValue / 100;
+							}
+							if(action == "substarct") {
+								dmgValue = -dmgValue;
+							}
+							this._totalAcc += dmgValue;
+							break;
+						case "bleed":
+							if(valueType == "percent") {
+								dmgValue = this._totalBleedResist * dmgValue / 100;
+							}
+							if(action == "substarct") {
+								dmgValue = -dmgValue;
+							}
+							this._totalBleedResist += dmgValue;
+							break;
+						case "blk":
+							if(valueType == "percent") {
+								dmgValue = this._totalBlock * dmgValue / 100;
+							}
+							if(action == "substarct") {
+								dmgValue = -dmgValue;
+							}
+							this._totalBlock += dmgValue;
+							break;
+						case "cc":
+							if(valueType == "percent") {
+								dmgValue = this._totalCc * dmgValue / 100;
+							}
+							if(action == "substarct") {
+								dmgValue = -dmgValue;
+							}
+							this._totalCc += dmgValue;
+							break;
+						case "critDmg":
+							if(valueType == "percent") {
+								dmgValue = this._totalCritDamage * dmgValue / 100;
+							}
+							if(action == "substarct") {
+								dmgValue = -dmgValue;
+							}
+							this._totalCritDamage += dmgValue;
+							break;
+						case "ddg":
+							if(valueType == "percent") {
+								dmgValue = this._totalDdg * dmgValue / 100;
+							}
+							if(action == "substarct") {
+								dmgValue = -dmgValue;
+							}
+							this._totalDdg += dmgValue;
+							break;
+						case "debuff":
+							if(valueType == "percent") {
+								dmgValue = this._totalDebuffResist * dmgValue / 100;
+							}
+							if(action == "substarct") {
+								dmgValue = -dmgValue;
+							}
+							this._totalDebuffResist += dmgValue;
+							break;
+						case "def":
+							if(valueType == "percent") {
+								dmgValue = this._totalDef * dmgValue / 100;
+							}
+							if(action == "substarct") {
+								dmgValue = -dmgValue;
+							}
+							this._totalDef += dmgValue;
+							break;
+						case "disease":
+							if(valueType == "percent") {
+								dmgValue = this._totalDiseaseResist * dmgValue / 100;
+							}
+							if(action == "substarct") {
+								dmgValue = -dmgValue;
+							}
+							this._totalDiseaseResist += dmgValue;
+							break;
+						case "fire":
+							if(valueType == "percent") {
+								dmgValue = this._totalFireResist * dmgValue / 100;
+							}
+							if(action == "substarct") {
+								dmgValue = -dmgValue;
+							}
+							this._totalFireResist += dmgValue;
+							break;
+						case "hp":
+							if(valueType == "percent") {
+								dmgValue = this._totalHp * dmgValue / 100;
+							}
+							if(action == "substarct") {
+								dmgValue = -dmgValue;
+							}
+							this._totalHp += dmgValue;
+							break;
+						case "move":
+							if(valueType == "percent") {
+								dmgValue = this._totalMoveResist * dmgValue / 100;
+							}
+							if(action == "substarct") {
+								dmgValue = -dmgValue;
+							}
+							this._totalMoveResist += dmgValue;
+							break;
+						case "posion":
+							if(valueType == "percent") {
+								dmgValue = this._totalPoisonResist * dmgValue / 100;
+							}
+							if(action == "substarct") {
+								dmgValue = -dmgValue;
+							}
+							this._totalPoisonResist += dmgValue;
+							break;
+						case "spd":
+							if(valueType == "percent") {
+								dmgValue = this._totalSpd * dmgValue / 100;
+							}
+							if(action == "substarct") {
+								dmgValue = -dmgValue;
+							}
+							this._totalSpd += dmgValue;
+							break;
+						case "stress":
+							if(valueType == "percent") {
+								dmgValue = this._totalStress * dmgValue / 100;
+							}
+							if(action == "substarct") {
+								dmgValue = -dmgValue;
+							}
+							this._totalStress += dmgValue;
+							break;
+						case "stun":
+							if(valueType == "percent") {
+								dmgValue = this._totalStunResist * dmgValue / 100;
+							}
+							if(action == "substarct") {
+								dmgValue = -dmgValue;
+							}
+							this._totalStunResist += dmgValue;
+							break;
+						}
+					}
+				}
+			}
+		}
+		var taritsComponent = this._parent.getComponent("traits");
+		if(taritsComponent != null) {
+			var positiveTraits = this._parent.getComponent("traits").getPositiveTraits();
+			var negativeTraits = this._parent.getComponent("traits").getNegativeTraits();
+		}
 	}
 	,__class__: Stats
 });
@@ -28056,7 +28215,7 @@ var lime_utils_AssetCache = function() {
 	this.audio = new haxe_ds_StringMap();
 	this.font = new haxe_ds_StringMap();
 	this.image = new haxe_ds_StringMap();
-	this.version = 172484;
+	this.version = 9753;
 };
 $hxClasses["lime.utils.AssetCache"] = lime_utils_AssetCache;
 lime_utils_AssetCache.__name__ = ["lime","utils","AssetCache"];
