@@ -1,21 +1,18 @@
 package;
 
-import openfl.display.Sprite;
-
-class Entity extends Sprite
+class Entity
 {
-	private var __parent:Dynamic;
-	private var __id:String;
-	private var __type:String;
+	private var _parent:Dynamic;
+	private var _id:String;
+	private var _type:String;
 	private var _name:String;
-	private var __components:Array<Component> = new Array();
+	private var _components:Array<Component> = new Array();
 
 	public function new( parent:Dynamic, id:String, type:String, name:String ):Void
 	{
-		super();
-		this.__parent = parent;
-		this.__id = id;
-		this.__type = type;
+		this._parent = parent;
+		this._id = id;
+		this._type = type;
 		this._name = name;
 	}
 
@@ -23,9 +20,9 @@ class Entity extends Sprite
 	{
 		switch( type )
 		{
-			case "parent": return this.__parent;
-			case "id": return this.__id;
-			case "type": return this.__type;
+			case "parent": return this._parent;
+			case "id": return this._id;
+			case "type": return this._type;
 			case "name": return this._name;
 			default: trace( "Error in Entity.get, type can't be: " + type + "." );
 		};
@@ -34,9 +31,9 @@ class Entity extends Sprite
 
 	public function getComponent( name:String ):Dynamic
 	{
-		for( i in 0...this.__components.length )
+		for( i in 0...this._components.length )
 		{
-			var component = this.__components[ i ];
+			var component = this._components[ i ];
 			if( component.getName() == name )
 				return component;
 		};
@@ -47,9 +44,9 @@ class Entity extends Sprite
 
 	public function update( time:Float )
 	{
-		for( i in 0...this.__components.length )
+		for( i in 0...this._components.length )
 		{
-			this.__components[ i ].update( time );
+			this._components[ i ].update( time );
 		};
 	}
 
@@ -57,18 +54,18 @@ class Entity extends Sprite
 	{
 		this.removeComponent( component.getName() ); //check if component exist. Remove it if need;
 		component.setParent( this );
-		this.__components.push( component );
+		this._components.push( component );
 	}
 
 	public function removeComponent( componentName:String ):Component
 	{
-		for( i in 0...this.__components.length )
+		for( i in 0...this._components.length )
 		{
-			var newComponentName = this.__components[ i ].getName();
+			var newComponentName = this._components[ i ].getName();
 			if( componentName == newComponentName )
 			{
-				var oldComponent = this.__components[ i ];
-				this.__components.splice( i, 1 );
+				var oldComponent = this._components[ i ];
+				this._components.splice( i, 1 );
 				return oldComponent;
 			};
 
@@ -78,6 +75,6 @@ class Entity extends Sprite
 
 	public function setParent( parent:Dynamic ):Void
 	{
-		this.__parent = parent;
+		this._parent = parent;
 	}
 }

@@ -4,8 +4,8 @@
 		"startScene": 
 		{
 			"backgroundImageURL": "assets/images/background_game.png",
-			"window": [ "startSceneButtonsWindow" ],
-			"button": [ "startSceneAuthorsButton", "startSceneOptionsButton", "startSceneContinueButton", "startSceneStartButton"]
+			"window": [ "startSceneWindow" ],
+			"button": [ "gameAuthors", "gameOptions", "gameContinue", "gameStart"]
 		},
 
 		"cityScene": 
@@ -345,11 +345,17 @@
 		
 				"graphics":
 				{
-					"url": null,
-					"url2": null,
-					"url3": null,
+					"addiction": null,
+					"graphicsInstance": null,
 					"x": 0.0,
 					"y": 0.0,
+					"img":
+					{
+						"normal": { "x": 0.0, "y": 0.0, "url": "" },
+						"portrait": { "x": 0.0, "y": 0.0, "url": "" },
+						"skill1": { "x": 0.0, "y": 0.0, "url": "" },
+						"skill2": { "x": 0.0, "y": 0.0, "url": "" }
+					},
 					"text": 
 					{
 						"empty":
@@ -362,14 +368,10 @@
 							"color": "0xffffff",
 							"visible": true,
 							"selectable": false,
-							"queue": 1,
 							"height": 100,
 							"width": 100
 						}
-					},
-					"addiction": null,
-					"queue": 1,
-					"graphicsInstance": null
+					}
 				}
 			},
 
@@ -687,11 +689,17 @@
 		
 				"graphics":
 				{
-					"url": null,
-					"url2": null,
-					"url3": null,
+					"addiction": null,
+					"graphicsInstance": null,
 					"x": 0.0,
 					"y": 0.0,
+					"img":
+					{
+						"normal": { "x": 0.0, "y": 0.0, "url": "" },
+						"portrait": { "x": 0.0, "y": 0.0, "url": "" },
+						"skill1": { "x": 0.0, "y": 0.0, "url": "" },
+						"skill2": { "x": 0.0, "y": 0.0, "url": "" }
+					},
 					"text": 
 					{
 						"empty":
@@ -704,14 +712,10 @@
 							"color": "0xffffff",
 							"visible": true,
 							"selectable": false,
-							"queue": 1,
 							"height": 100,
 							"width": 100
 						}
-					},
-					"addiction": null,
-					"queue": 1,
-					"graphicsInstance": null
+					}
 				}
 			},
 			"pyromancer":
@@ -1028,11 +1032,18 @@
 		
 				"graphics":
 				{
-					"url": null,
-					"url2": null,
-					"url3": null,
+					"addiction": null,
+					"graphicsInstance": null,
+					"queue":0,
 					"x": 0.0,
 					"y": 0.0,
+					"img":
+					{
+						"normal": { "x": 0.0, "y": 0.0, "url": "" },
+						"portrait": { "x": 0.0, "y": 0.0, "url": "" },
+						"skill1": { "x": 0.0, "y": 0.0, "url": "" },
+						"skill2": { "x": 0.0, "y": 0.0, "url": "" }
+					},
 					"text": 
 					{
 						"empty":
@@ -1045,14 +1056,11 @@
 							"color": "0xffffff",
 							"visible": true,
 							"selectable": false,
-							"queue": 1,
 							"height": 100,
-							"width": 100
+							"width": 100,
+							"queue":0
 						}
-					},
-					"addiction": null,
-					"queue": 1,
-					"graphicsInstance": null
+					}
 				}
 			}
 		},
@@ -1063,11 +1071,15 @@
 			{
 				"graphics":
 				{
-					"url": "assets/images/hospital.png",
-					"url2": "assets/images/hospital_m.png",
-					"url3": null,
+					"addiction": null,
+					"graphicsInstance": null,
 					"x": 650.0,
 					"y": 80.0,
+					"img": 
+					{
+						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/hospital.png" },
+						"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/hospital_m.png" }
+					},
 					"text": 
 					{
 						"name":
@@ -1080,9 +1092,9 @@
 							"color": "0xffffff",
 							"visible": true,
 							"selectable": false,
-							"queue": 1,
 							"height":100,
-							"width":100
+							"width":100,
+							"queue":0
 						},
 						"hint":
 						{
@@ -1094,25 +1106,27 @@
 							"color": "0xffffff",
 							"visible": true,
 							"selectable": false,
-							"queue": 2,
 							"height":100,
-							"width":100
+							"width":100,
+							"queue":1
 						}
-					},
-					"addiction": null,
-					"queue": 1,
-					"graphicsInstance": null
+					}
 				}
 			},
 			"tavern":
 			{
 				"graphics":
 				{
-					"url": "assets/images/tavern.png",
-					"url2": "assets/images/tavern_m.png",
-					"url3": null,
+					"addiction": null,
+					"graphicsInstance": null,
+					"queue":0,
 					"x": 990.0,
 					"y": 330.0,
+					"img": 
+					{
+						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/tavern.png" },
+						"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/tavern_m.png" }
+					},
 					"text": {
 						"name":
 						{
@@ -1124,9 +1138,9 @@
 							"color": "0xffffff",
 							"visible": true,
 							"selectable": false,
-							"queue": 1,
 							"height":100,
-							"width":100
+							"width":100,
+							"queue":0
 						},
 						"hint":
 						{
@@ -1138,14 +1152,11 @@
 							"color": "0xffffff",
 							"visible": true,
 							"selectable": false,
-							"queue": 2,
 							"height":100,
-							"width":100
+							"width":100,
+							"queue":1
 						}
-					},
-					"addiction": null,
-					"queue": 4,
-					"graphicsInstance": null
+					}
 				}
 			},
 			"inn":
@@ -1162,15 +1173,43 @@
 				},
 				"graphics":
 				{
-					"url": null,
-					"url2": null,
-					"url3": null,
-					"x": 0.0,
-					"y": 0.0,
-					"text": null,
-					"addiction": null,
-					"queue": 13,
-					"graphicsInstance": null
+					"addiction": "inn",
+					"graphicsInstance": null,
+					"x": 1600.0,
+					"y": 80.0,
+					"img": 
+					{
+						"normal": { "x": 1600.0, "y": 80.0, "url": "assets/images/innWindow.png" }
+					},
+					"text":
+					{
+						"nameWindow":
+						{
+							"text": "Inn",
+							"x": 20.0,
+							"y": -35.0,
+							"font": "Verdana",
+							"size": 32,
+							"color": "0xffffff",
+							"visible": true,
+							"selectable": false,
+							"height":50,
+							"width":50
+						},
+						"quantityHeroes":
+						{
+							"text": "0/0",
+							"x": 100.0,
+							"y": -35.0,
+							"font": "Verdana",
+							"size": 32,
+							"color": "0xffffff",
+							"visible": true,
+							"selectable": false,
+							"height":50,
+							"width":50
+						}
+					}					
 				}					
 			},
 
@@ -1181,57 +1220,22 @@
 
 			"storage":
 			{
-				"graphics":
-				{
-					"url": "assets/images/storage.png",
-					"url2": "assets/images/storage_m.png",
-					"url3": null,
-					"x": 1400.0,
-					"y": 610.0,
-					"text": {
-						"name":
-						{
-							"text": "Storage",
-							"x": 0.0,
-							"y": 0.0,
-							"font": "Verdana",
-							"size": 48,
-							"color": "0xffffff",
-							"visible": true,
-							"selectable": false,
-							"queue": 1,
-							"height":100,
-							"width":100
-						},
-						"hint":
-						{
-							"text": "Open your inventory",
-							"x": 0.0,
-							"y": 0.0,
-							"font": "Verdana",
-							"size": 32,
-							"color": "0xffffff",
-							"visible": true,
-							"selectable": false,
-							"queue": 2,
-							"height":100,
-							"width":100
-						}
-					},
-					"addiction": null,
-					"queue": 7,
-					"graphicsInstance": null
-				}
+				
 			},
+
 			"recruits":
 			{
 				"graphics":
-				{
-					"url": "assets/images/recruits.png",
-					"url2": "assets/images/recruits_m.png",
-					"url3": null,
+				{	
+					"addiction": null,
+					"graphicsInstance": null,
 					"x": 1100.0,
 					"y": 500.0,
+					"img": 
+					{
+						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/recruits.png" },
+						"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/recruits_m.png" }
+					},
 					"text": {
 						"name":
 						{
@@ -1243,7 +1247,6 @@
 							"color": "0xffffff",
 							"visible": true,
 							"selectable": false,
-							"queue": 1,
 							"height":100,
 							"width":100
 						},
@@ -1257,20 +1260,16 @@
 							"color": "0xffffff",
 							"visible": true,
 							"selectable": false,
-							"queue": 2,
 							"height":100,
 							"width":100
 						}
-					},
-					"addiction": null,
-					"queue": 5,
-					"graphicsInstance": null
+					}					
 				},
 
 				"inventory":
 				{
-					"maxSlots": 10,
-					"currentSlots": 4,
+					"maxSlots": 6,
+					"currentSlots": 6,
 					"needToFill":true,
 					"inventory":
 					{
@@ -1283,11 +1282,15 @@
 			{
 				"graphics":
 				{
-					"url": "assets/images/blacksmith.png",
-					"url2": "assets/images/blacksmith_m.png",
-					"url3": null,
+					"addiction": null,
+					"graphicsInstance": null,
 					"x": 100.0,
 					"y": 500.0,
+					"img": 
+					{
+						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/blacksmith.png" },
+						"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/blacksmith_m.png" }
+					},				
 					"text": {
 						"name":
 						{
@@ -1317,21 +1320,22 @@
 							"height":100,
 							"width":100
 						}
-					},
-					"addiction": null,
-					"queue": 8,
-					"graphicsInstance": null
+					}
 				}
 			},
 			"merchant":
 			{
 				"graphics":
 				{
-					"url": "assets/images/merchant.png",
-					"url2": "assets/images/merchant_m.png",
-					"url3": null,
+					"addiction": null,
+					"graphicsInstance": null,
 					"x": 300.0,
 					"y": 280.0,
+					"img": 
+					{
+						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/merchant.png" },
+						"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/merchant_m.png" }
+					},
 					"text": {
 						"name":
 						{
@@ -1361,21 +1365,22 @@
 							"height":100,
 							"width":100
 						}
-					},
-					"addiction": null,
-					"queue": 6,
-					"graphicsInstance": null
+					}
 				}
 			},
 			"graveyard":
 			{
 				"graphics":
 				{
-					"url": "assets/images/graveyard.png",
-					"url2": "assets/images/graveyard_m.png",
-					"url3": null,
+					"addiction": null,
+					"graphicsInstance": null,
 					"x": 680.0,
 					"y": 400.0,
+					"img": 
+					{
+						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/graveyard.png" },
+						"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/graveyard_m.png" }
+					},
 					"text": {
 						"name":
 						{
@@ -1405,21 +1410,22 @@
 							"height":100,
 							"width":200
 						}
-					},
-					"addiction": null,
-					"queue": 2,
-					"graphicsInstance": null
+					}
 				}
 			},
 			"academy":
 			{
 				"graphics":
 				{
-					"url": "assets/images/academy.png",
-					"url2": "assets/images/academy_m.png",
-					"url3": null,
+					"addiction": null,
+					"graphicsInstance": null,
 					"x": 450.0,
 					"y": 100.0,
+					"img": 
+					{
+						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/academy.png" },
+						"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/academy_m.png" }
+					},
 					"text": {
 						"name":
 						{
@@ -1449,21 +1455,22 @@
 							"height":100,
 							"width":100
 						}
-					},
-					"addiction": null,
-					"queue": 3,
-					"graphicsInstance": null
+					}
 				}
 			},
 			"hermit":
 			{
 				"graphics":
 				{
-					"url": "assets/images/hermit.png",
-					"url2": "assets/images/hermit_m.png",
-					"url3": null,
+					"addiction": null,
+					"graphicsInstance": null,
 					"x": 0.0,
 					"y": 600.0,
+					"img": 
+					{
+						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/hermit.png" },
+						"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/hermit_m.png" }
+					},
 					"text": {
 						"name":
 						{
@@ -1493,21 +1500,22 @@
 							"height":100,
 							"width":100
 						}
-					},
-					"addiction": null,
-					"queue": 9,
-					"graphicsInstance": null
+					}
 				}
 			},
 			"questman":
 			{
 				"graphics":
 				{
-					"url": "assets/images/questman.png",
-					"url2": "assets/images/questman_m.png",
-					"url3": null,
+					"addiction": null,
+					"graphicsInstance": null,
 					"x": 550.0,
 					"y": 820.0,
+					"img": 
+					{
+						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/questman.png" },
+						"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/questman_m.png" }
+					},
 					"text": {
 						"name":
 						{
@@ -1537,21 +1545,22 @@
 							"height":50,
 							"width":100
 						}
-					},
-					"addiction": null,
-					"queue": 10,
-					"graphicsInstance": null
+					}
 				}
 			},
 			"fontain":
 			{
 				"graphics":
 				{
-					"url": "assets/images/fontain.png",
-					"url2": "assets/images/fontain_m.png",
-					"url3": null,
+					"addiction": null,
+					"graphicsInstance": null,
 					"x": 700.0,
 					"y": 690.0,
+					"img": 
+					{
+						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/fontain.png" },
+						"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/fontain_m.png" }
+					},
 					"text": {
 						"name":
 						{
@@ -1581,25 +1590,61 @@
 							"height":50,
 							"width":150
 						}
-					},
-					"addiction": null,
-					"queue": 10,
-					"graphicsInstance": null
+					}
 				}
 			}
 		},
 
 		"button":
 		{
-			"startSceneStartButton": 
+			"buttonB":
 			{
 				"graphics":
 				{
-					"url": "assets/images/button_b.png",
-					"url2": "assets/images/button_b_hover.png",
-					"url3": "assets/images/button_b_push.png",
+					"addiction": null,
+					"graphicsInstance": null,
+					"img": 
+					{
+						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b.png" },
+						"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b_hover.png" },
+						"push": {"x": 0.0, "y": 0.0, "url": "assets/images/button_b_push.png" }
+					},
+					"x": 0.0,
+					"y": 0.0,
+					"text": 
+					{
+						"buttonText":
+						{
+							"text": "",
+							"x": 0.0,
+							"y": 0.0,
+							"font": "Verdana",
+							"size": 58,
+							"color": "0x000000",
+							"visible": true,
+							"selectable": false,
+							"height":100,
+							"width":100
+						}
+					}
+				}
+			},
+
+			"gameStart": 
+			{
+				"graphics":
+				{
+					"addiction": null,
+					"graphicsInstance": null,
+					"queue": 1,
 					"x": 75.0,
 					"y": 145.0,
+					"img": 
+					{
+						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b.png" },
+						"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b_hover.png" },
+						"push": {"x": 0.0, "y": 0.0, "url": "assets/images/button_b_push.png" }
+					},
 					"text": 
 					{
 						"buttonText":
@@ -1612,25 +1657,28 @@
 							"color": "0x000000",
 							"visible": true,
 							"selectable": false,
-							"queue": 0,
-							"height":100,
-							"width":100
+							"height":200,
+							"width":100,
+							"queue": 0
 						}
-					},
-					"addiction": "startSceneButtonsWindow",
-					"queue": 0,
-					"graphicsInstance": null
+					}
 				}				
 			},
-			"startSceneContinueButton":
+			"gameContinue":
 			{
 				"graphics":
 				{
-					"url": "assets/images/button_b.png",
-					"url2": "assets/images/button_b_hover.png",
-					"url3": "assets/images/button_b_push.png",
+					"addiction": null,
+					"graphicsInstance": null,
+					"queue": 0,
 					"x": 75.0,
 					"y": 25.0,
+					"img": 
+					{
+						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b.png" },
+						"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b_hover.png" },
+						"push": {"x": 0.0, "y": 0.0, "url": "assets/images/button_b_push.png" }
+					},
 					"text": 
 					{
 						"buttonText":
@@ -1644,24 +1692,27 @@
 							"visible": true,
 							"selectable": false,
 							"queue": 0,
-							"height":100,
+							"height":200,
 							"width":100
 						}
-					},
-					"addiction": "startSceneButtonsWindow",
-					"queue": 0,
-					"graphicsInstance": null
+					}
 				}				
 			},
-			"startSceneOptionsButton": 
+			"gameOptions": 
 			{
 				"graphics":
 				{
-					"url": "assets/images/button_b.png",
-					"url2": "assets/images/button_b_hover.png",
-					"url3": "assets/images/button_b_push.png",
+					"addiction": null,
+					"graphicsInstance": null,
+					"queue": 2,
 					"x": 75.0,
 					"y": 265.0,
+					"img": 
+					{
+						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b.png" },
+						"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b_hover.png" },
+						"push": {"x": 0.0, "y": 0.0, "url": "assets/images/button_b_push.png" }
+					},
 					"text": 
 					{
 						"buttonText":
@@ -1675,24 +1726,27 @@
 							"visible": true,
 							"selectable": false,
 							"queue": 0,
-							"height":100,
+							"height":200,
 							"width":100
 						}
-					},
-					"addiction": "startSceneButtonsWindow",
-					"queue": 0,
-					"graphicsInstance": null	
+					}	
 				}									
 			},
-			"startSceneAuthorsButton":
+			"gameAuthors":
 			{
 				"graphics":
 				{
-					"url": "assets/images/button_b.png",
-					"url2": "assets/images/button_b_hover.png",
-					"url3": "assets/images/button_b_push.png",
+					"addiction": null,
+					"graphicsInstance": null,
+					"queue": 3,
 					"x": 75.0,
 					"y": 385.0,
+					"img": 
+					{
+						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b.png" },
+						"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b_hover.png" },
+						"push": {"x": 0.0, "y": 0.0, "url": "assets/images/button_b_push.png" }
+					},
 					"text": {
 						"buttonText":
 						{
@@ -1705,16 +1759,14 @@
 							"visible": true,
 							"selectable": false,
 							"queue": 0,
-							"height":100,
+							"height":200,
 							"width":100
 						}
-					},
-					"addiction": "startSceneButtonsWindow",
-					"queue": 0,
-					"graphicsInstance": null
+					}
 				}				
 			},
-			"citySceneStartJourneyButton":
+
+			"gameStartJourney":
 			{
 				"graphics":
 				{
@@ -1745,7 +1797,7 @@
 					"graphicsInstance": null
 				}				
 			},
-			"innWindowButtonHeroListUp":
+			"innUp":
 			{
 				"graphics":
 				{
@@ -1755,12 +1807,12 @@
 					"x": 105.0,
 					"y": 810.0,
 					"text" : null,
-					"addiction": "innWindow",
+					"addiction": "inn",
 					"queue" : 0,
 					"graphicsInstance": null
 				}				
 			},
-			"innWindowButtonHeroListDown":
+			"innDown":
 			{
 				"graphics":
 				{
@@ -1770,7 +1822,7 @@
 					"x": 25.0,
 					"y": 810.0,
 					"text" : null,
-					"addiction": "innWindow",
+					"addiction": "inn",
 					"queue" : 0,
 					"graphicsInstance": null
 				}		
@@ -1875,30 +1927,34 @@
 		
 		"window":
 		{
-			"startSceneButtonsWindow":
+			"startSceneWindow":
 			{
 				"graphics":
 				{
-					"url": "assets/images/startSceneButtonsWindow.png",
-					"url2": null,
-					"url3": null,
+					"addiction": null,
+					"graphicsInstance": null,
+					"queue": 0,
 					"x": 1300.0,
 					"y": 450.0,
-					"text" : null,
-					"addiction": "startSceneButtonsWindow",
-					"queue" : 0,
-					"graphicsInstance": null
+					"img": 
+					{
+						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/startSceneButtonsWindow.png" }
+					},
+					"text" : null
 				}				
 			},
 			"citySceneMainWindow":
 			{
 				"graphics":
 				{
-					"url": "assets/images/citySceneMainWindow.png",
-					"url2": null,
-					"url3": null,
+					"addiction": null,
+					"graphicsInstance": null,
 					"x": 170.0,
 					"y": 70.0,
+					"img": 
+					{
+						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/citySceneMainWindow.png" }
+					},
 					"text" : 
 					{
 						"nameWindow":
@@ -1915,10 +1971,7 @@
 							"height":50,
 							"width":350
 						}
-					},
-					"addiction": "citySceneMainWindow",
-					"queue" : 0,
-					"graphicsInstance": null
+					}
 				},
 				"ui":
 				{
@@ -1930,73 +1983,30 @@
 			{
 				"graphics":
 				{
-					"url": "assets/images/panelCityWindow.png",
-					"url2": null,
-					"url3": null,
+					"addiction": null,
+					"graphicsInstance": null,
 					"x": -5.0,
 					"y": 1010.0,
-					"text" : null,
-					"addiction": "panelCityWindow",
-					"queue" : 0,
-					"graphicsInstance": null
-				}
-			},
-
-			"innWindow":
-			{
-				"graphics":
-				{
-					"url": "assets/images/innWindow.png",
-					"url2": null,
-					"url3": null,
-					"x": 1600.0,
-					"y": 80.0,
-					"text" : 
+					"img": 
 					{
-						"nameWindow":
-						{
-							"text": "Inn",
-							"x": 20.0,
-							"y": -35.0,
-							"font": "Verdana",
-							"size": 32,
-							"color": "0xffffff",
-							"visible": true,
-							"selectable": false,
-							"queue": 1,
-							"height":50,
-							"width":50
-						},
-						"quantityHeroes":
-						{
-							"text": "0/0",
-							"x": 100.0,
-							"y": -35.0,
-							"font": "Verdana",
-							"size": 32,
-							"color": "0xffffff",
-							"visible": true,
-							"selectable": false,
-							"queue": 2,
-							"height":50,
-							"width":50
-						}
+						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/panelCityWindow.png" }
 					},
-					"addiction": "innWindow",
-					"queue" : 0,
-					"graphicsInstance": null
-				}				
+					"text" : null
+				}
 			},
 			
 			"innWindowHeroWindow":
 			{
 				"graphics":
 				{
-					"url": "assets/images/innWindowHeroWindow.png",
-					"url2": null,
-					"url3": null,
+					"addiction": null,
+					"graphicsInstance": null,
 					"x": 0.0,
 					"y": 0.0,
+					"img": 
+					{
+						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/innWindowHeroWindow.png" }
+					},
 					"text" : 
 					{
 						"nameWindow":
@@ -2009,7 +2019,6 @@
 							"color": "0x000000",
 							"visible": true,
 							"selectable": false,
-							"queue": 1,
 							"height":50,
 							"width":50
 						},
@@ -2023,7 +2032,6 @@
 							"color": "0x000000",
 							"visible": true,
 							"selectable": false,
-							"queue": 2,
 							"height":50,
 							"width":50
 						},
@@ -2037,7 +2045,6 @@
 							"color": "0x000000",
 							"visible": true,
 							"selectable": false,
-							"queue": 3,
 							"height":50,
 							"width":50
 						},
@@ -2051,14 +2058,10 @@
 							"color": "0x000000",
 							"visible": true,
 							"selectable": false,
-							"queue": 4,
 							"height":50,
 							"width":50
 						}
-					},
-					"addiction": "innWindowHeroWindow",
-					"queue" : 0,
-					"graphicsInstance": null
+					}
 				}
 			},
 

@@ -25,31 +25,38 @@ class SceneSystem
 	{
 		var id = this._createId();
 		var scene = new Scene( this, id, sceneName );
-		var value = null;
 
-		for( field in Reflect.fields( this._config ) )
-		{
-			if( field == sceneName )
-			{
-				value = Reflect.getProperty( this._config, field );
-				break;	
-			}
-		}
-		if( value == null )
+		var config:Dynamic = Reflect.getProperty( this._config, "startScene" );
+		if( config == null )
 			trace( "Error in SceneSystem._screateStartScene, scene name: " + sceneName + " not found in config container." );
 		
-		scene.setBackgroundImageURL( value.backgroundImageURL );
+		scene.setBackgroundImageURL( config.backgroundImageURL );
 
-		var entitySystem = this._parent.getSystem( "entity" );
-		for( key in Reflect.fields( value ) )
+		var entitySystem:EntitySystem = this._parent.getSystem( "entity" );
+		//create window
+		var windowsArray:Array<String> =  config.window;
+		for( i in 0...windowsArray.length )
 		{
-			if( key == "backgroundImageURL" )
-				continue;
+			var window:Entity = entitySystem.createEntity( "window", windowsArray[ i ], null );
+			entitySystem.addEntityToScene( window, scene );
+		}
+			
+		//create buttons
+		var buttonsArray:Array<String> = config.button;
+		for ( j in 0...buttonsArray.length )
+		{
+			var button:Entity = entitySystem.createEntity( "button", buttonsArray[ j ], null );
+			entitySystem.addEntityToScene( button, scene );
+		}		
+				
+		this._addScene( scene );
+		return scene;
+	}
 
-			var listEntities = Reflect.getProperty( value, key );
-			this._parent.getSystem( "entity" ).createEntitiesForScene(  scene, key, listEntities );
-		};
-
+	private function _createCityScene( sceneName:String ):Scene
+	{
+		var id = this._createId();
+		var scene = new Scene( this, id, sceneName );
 		if( sceneName == "cityScene" )
 		{
 			var building:Entity = null;
@@ -91,12 +98,47 @@ class SceneSystem
 			//trace ( building.getComponent( "inventory" ).getInventory() );
 			// set timer to next change heroes in recruit building;
 		}
-				
 		this._addScene( scene );
 		return scene;
 	}
 
-	private function _createDungeonChooseScene( sceneName:String ):Scene
+	private function _createChooseDungeonScene( sceneName:String ):Scene
+	{
+		var id = this._createId();
+		var scene = new Scene( this, id, sceneName );
+		//TODO: CONFIG;
+		this._addScene( scene );
+		return scene;
+	}
+
+	private function _createDungeonEasy( sceneName:String ):Scene
+	{
+		var id = this._createId();
+		var scene = new Scene( this, id, sceneName );
+		//TODO: CONFIG;
+		this._addScene( scene );
+		return scene;
+	}
+
+	private function _createdungeonMedium( sceneName:String ):Scene
+	{
+		var id = this._createId();
+		var scene = new Scene( this, id, sceneName );
+		//TODO: CONFIG;
+		this._addScene( scene );
+		return scene;
+	}
+
+	private function _createDungeonHard( sceneName:String ):Scene
+	{
+		var id = this._createId();
+		var scene = new Scene( this, id, sceneName );
+		//TODO: CONFIG;
+		this._addScene( scene );
+		return scene;
+	}
+
+	private function _createDungeonNightmare( sceneName:String ):Scene
 	{
 		var id = this._createId();
 		var scene = new Scene( this, id, sceneName );
@@ -129,8 +171,12 @@ class SceneSystem
 		switch( sceneName )
 		{
 			case "startScene": return this._createStartScene( sceneName );
-			case "cityScene": return this._createStartScene( sceneName );
-			case "chooseDungeonScene": return this._createStartScene( sceneName );
+			case "cityScene": return this._createCityScene( sceneName );
+			case "chooseDungeonScene": return this._createChooseDungeonScene( sceneName );
+			case "dungeonEasy" : return this._createDungeonEasy( sceneName );
+			case "dungeonMedium": return this._createdungeonMedium( sceneName );
+			case "dungeonHard": return this._createDungeonHard( sceneName );
+			case "dungeonNightmare": return this._createDungeonNightmare( sceneName );
 			default: trace( "Error in SceneSystem.createScene, scene name can't be: " + sceneName + "." );
 		}
 		return null;

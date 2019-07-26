@@ -4,14 +4,13 @@ import openfl.display.Sprite;
 
 class Graphics extends Component
 {
-	private var _url:String; // for buttons unpushed;
-	private var _url2:String; // for buttons pushed;
-	private var _url3:String;
+	private var _img:Dynamic; // { "img1": { "name" : "normal", "x": 0, "y": 0, "url": "//..." }, "img2": { name}}
+	private var _text:Dynamic; // { 'text1': { "text": "yuppei",x: 1, y:2 }, 'text2': { "text": "yuppieey", x: 1, y:2 } };
+
 	private var _x:Float;
 	private var _y:Float;
-	private var _text:Dynamic; // { 'text1': { "text": "yuppei",x: 1, y:2 }, 'text2': { "text": "yuppieey", x: 1, y:2 } };
+
 	private var _addiction:String;
-	private var _queue:Int;
 
 	private var _graphicsInstance:Sprite;
 
@@ -20,35 +19,33 @@ class Graphics extends Component
 	public function new( parent:Entity, id:String, params:Dynamic ):Void
 	{
 		super( parent, id, "graphics" );
-		this._url = params.url;
-		this._url2 = params.url2;
-		this._url3 = params.url3;
+		this._img = params.img;
+		this._text = params.text;
 		this._x = params.x;
 		this._y = params.y;
-		this._text = params.text;
 		this._addiction = params.addiction;
-		this._queue = params.queue;
 		this._graphicsInstance = params.graphicsInstance;
 	}
 
-	public function getUrl( value:Int ):String
+	public function moveTo( x:Float, y:Float ):Void
 	{
-		if( value == 0 )
-			return this._url;
-		else if( value == 1 )
-			return this._url2;
-		else
-			return this._url3;
+		this._x = x;
+		this._y = y;
+		this._graphicsInstance.x = x;
+		this._graphicsInstance.y = y;
 	}
 
-	public function setUrl( url:Int, value:String ):Void
+	public function move( x:Float, y:Float ):Void
 	{
-		if( url == 0 )
-			this._url = value;
-		else if( url == 1 )
-			this._url2 = value;
-		else
-			this._url3 = value;
+		this._x += x;
+		this._y += y;
+		this._graphicsInstance.x += x;
+		this._graphicsInstance.y += y;
+	}
+
+	public function getImg():Dynamic
+	{
+		return this._img;
 	}
 
 	public function getText():Dynamic
@@ -56,12 +53,7 @@ class Graphics extends Component
 		return this._text;
 	}
 
-	public function setText( value:Dynamic ):Void
-	{
-		this._text = value;
-	}
-
-	public function getCoordinates():Dynamic
+	public function gerCoordinates():Dynamic
 	{
 		return { "x": this._x, "y": this._y };
 	}
@@ -69,7 +61,18 @@ class Graphics extends Component
 	public function setCoordinates( x:Float, y:Float ):Void
 	{
 		this._x = x;
-		this._y = y;		
+		this._y = y;
+	}
+
+	public function getGrahicsCoordinates():Dynamic
+	{
+		return { "x": this._graphicsInstance.x, "y": this._graphicsInstance.y };
+	}
+
+	public function setGrahicsCoordinates( x:Float, y:Float ):Void
+	{
+		this._graphicsInstance.x = x;
+		this._graphicsInstance.y = y;		
 	}
 
 	public function getGraphicsInstance():Sprite

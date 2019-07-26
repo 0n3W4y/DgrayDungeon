@@ -60,8 +60,9 @@ class Skills extends Component
 			return;
 		}
 
-		var skillUpLvl = skill.upgradeLevel;
-		if( skillUpLvl < skill.maxUpgradeLevel )
+		var skillUpLvl:Int = skill.upgradeLevel;
+		var skillMaxUpgradeLvl:Int = skill.maxUpgradeLevel;
+		if( skillUpLvl < skillMaxUpgradeLvl )
 		{
 			//..
 			skill.upgradeLevel++;
@@ -168,7 +169,7 @@ class Skills extends Component
 
 	public function unChooseStaticSkill( name:String ):Bool
 	{
-		return this.chooseSkillToStatic( name );
+		return this.chooseStaticSkill( name );
 	}
 
 	public function chooseActiveSkill( name:String ):Void
