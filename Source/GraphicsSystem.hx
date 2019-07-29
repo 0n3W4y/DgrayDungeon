@@ -13,17 +13,27 @@ class GraphicsSystem
 {
 	private var _parent:Game;
 
+
+	private function _sortWithQueueText( a, b ):Int
+	{
+		if( a.queue > b.queue )
+			return 1;
+		else if( a.queue < b.queue )
+			return -1;
+		else
+			return 0;
+	}
+
 	private function _checkButton( name:String ):Bool
 	{	
 		// there is the function, we need to check button click and other's function to enable it or disable;
 		switch( name )
 		{
-			case "startSceneContinueButton": return true;
+			case "gameContinue": return true;
 			default: return false;
 		}
 	}
 	private function _createText( text:Dynamic ):TextField
-	//text = { "text1": { text:" bal-bla", "x": 0.0, "y": 0,0 } , "text2": { text: "bla-bla-bla", "x": 0.0, "y": 0.0 } }; 
 	{
         var txt = new TextField();
 
@@ -47,72 +57,76 @@ class GraphicsSystem
 
 	private function _createWindow( window:Entity ):Sprite
 	{
+		var sprite = new Sprite();
+		var textSprite = new Sprite();
 		var windowGraphics = window.getComponent( "graphics" );
 
-		var data = new Bitmap( Assets.getBitmapData( windowGraphics.getUrl( 0 ) ) );
-		window.addChild( data );
+		var normalData = new Bitmap( Assets.getBitmapData( windowGraphics.getImg().normal.url ) ); // normal -> background != null always;
+		normalData.x = windowGraphics.getImg().normal.x;
+		normalData.y = windowGraphics.getImg().normal.y;
+		sprite.addChild( normalData );
 
 		var coords = windowGraphics.getCoordinates();
-		window.x = coords.x;
-		window.y = coords.y;
+		sprite.x = coords.x;
+		sprite.y = coords.y;
 
-		return window;
+		var text = window.getComponent( "graphics" ).getText();
+		if( text != null )
+		{
+			var textArray:Array<Dynamic> = new Array();
+			for( key in Reflect.fields( text ) )
+			{
+				var value = Reflect.getProperty( text, key );
+				textArray.push( { "name": key, "value": value } );		
+			}
+			textArray.sort( this._sortWithQueueText );
+			for( i in 0...textArray.length )
+			{
+				var textField = this._createText( textArray[ i ].value );
+				textSprite.addChild( textField );
+			}
+			sprite.addChild( textSprite );
+			windowGraphics.setTextInstance( textSprite );
+		}
+
+		windowGraphics.setGraphicsInstance( sprite );
+		return sprite;
 	}
 
 	private function _createButton( button:Entity ):Sprite
 	{
+		var sprite:Sprite = new Sprite();
+		var textSprite = new Sprite();
 		var buttonGraphics = button.getComponent( "graphics" );
 
-		var data = new Bitmap( Assets.getBitmapData( buttonGraphics.getUrl( 0 ) ) );
-		var data2 = new Bitmap( Assets.getBitmapData( buttonGraphics.getUrl( 1 ) ) );
-		var data3 = new Bitmap( Assets.getBitmapData( buttonGraphics.getUrl( 2 ) ) );
+		var dataNormal = new Bitmap( Assets.getBitmapData( buttonGraphics.getImg().normal.url ) );
+		var dataHover = new Bitmap( Assets.getBitmapData( buttonGraphics.getImg().hover.url ) );
+		var dataPush = new Bitmap( Assets.getBitmapData( buttonGraphics.getImg().pushed.url ) );
 
-		data2.visible = false;
-		data3.visible = false;
+		dataNormal.x = buttonGraphics.getImg().normal.x;
+		dataNormal.y = buttonGraphics.getImg().normal.y;
 
-		button.addChild( data );
-		button.addChild( data2 );
-		button.addChild( data3 );
+		dataHover.x = buttonGraphics.getImg().hover.x;
+		dataHover.y = buttonGraphics.getImg().hover.y;
+
+		dataPush.x = buttonGraphics.getImg().pushed.x;
+		dataPush.y = buttonGraphics.getImg().pushed.y;
+
+		dataNormal.visible = true;
+		dataHover.visible = false;
+		dataPush.visible = false;
+
+		sprite.addChild( dataNormal );
+		sprite.addChild( dataHover );
+		sprite.addChild( dataPush );
 
 		var coords = buttonGraphics.getCoordinates();
-		button.x = coords.x;
-		button.y = coords.y;
+		sprite.x = coords.x;
+		sprite.y = coords.y;
 
-		
-		this._parent.getSystem( "event" ).addEvent( button.get( "name" ), button );
-		if( button.get( "name" ) == "startSceneContinueButton" )
-		{
-			var chekButton = this._checkButton( "startSceneContinueButton" );
-			if( chekButton )
-			{
-				//remove all events from button.
-				this._parent.getSystem( "event" ).removeEvent( button.get( "name" ), button, null );
-				button.alpha = 0.5;
-			}
-		}			
-		return button;
-	}
-
-	private function _createBuilding( object:Entity ):Sprite
-	{
-		if( object.get( "name" ) == "inn" )
-			return object;
-		var objectGraphics = object.getComponent( "graphics" );
-
-		var data = new Bitmap( Assets.getBitmapData( objectGraphics.getUrl( 0 ) ) );
-		var data2 = new Bitmap( Assets.getBitmapData( objectGraphics.getUrl( 1 ) ) );
-		object.addChild( data );
-		data2.visible = false;
-		object.addChild( data2 );
-
-		var coords = objectGraphics.getCoordinates();
-		object.x = coords.x;
-		object.y = coords.y;
-
-		var text = objectGraphics.getText();
+		var text:Dynamic = buttonGraphics.getText();
 		if( text != null )
 		{
-			var textSp = new Sprite();
 			var textArray:Array<Dynamic> = new Array();
 			for( key in Reflect.fields( text ) )
 			{
@@ -123,14 +137,79 @@ class GraphicsSystem
 
 			for( i in 0...textArray.length )
 			{
-				var textSprite = this._createText( textArray[ i ].value );
-				textSp.addChild( textSprite );
+				var newText = textArray[ i ];
+				var textField = this._createText( newText.value );
+				textSprite.addChild( textField );
 			}
-			textSp.alpha = 0;
-			this._parent.getSystem( "event" ).addEvent( object.get( "name" ), object );
-			object.addChild( textSp );
+
+			sprite.addChild( textSprite );
 		}
-		return object;
+		
+		this._parent.getSystem( "event" ).addEvent( button.get( "name" ), sprite );
+		if( button.get( "name" ) == "gameContinue" )
+		{
+			var chekButton = this._checkButton( "gameContinue" );
+			if( chekButton )
+			{
+				//remove all events from button.
+				this._parent.getSystem( "event" ).removeEvent( button.get( "name" ), sprite, null );
+				sprite.alpha = 0.5;
+			}
+		}			
+		return sprite;
+	}
+
+	private function _createBuilding( object:Entity ):Sprite
+	{
+		if( object.get( "name" ) == "inn" )
+			return null;
+
+		var buildingSprite:Sprite = new Sprite();
+		var textSprite:Sprite = new Sprite();
+		var objectGraphics:Dynamic = object.getComponent( "graphics" );
+
+		var normalData = new Bitmap( Assets.getBitmapData( objectGraphics.getImg().normal.url ) );
+		var hoverData = new Bitmap( Assets.getBitmapData( objectGraphics.getImg().hover.url ) );
+
+		normalData.visible = true;
+		hoverData.visible = false;
+
+		normalData.x = objectGraphics.getImg().normal.x;
+		normalData.y = objectGraphics.getImg().normal.y;
+
+		hoverData.x = objectGraphics.getImg().hover.x;
+		hoverData.y = objectGraphics.getImg().hover.y;
+
+		buildingSprite.addChild( normalData );
+		buildingSprite.addChild( hoverData );
+
+		var coords = objectGraphics.getCoordinates();
+		buildingSprite.x = coords.x;
+		buildingSprite.y = coords.y;
+
+		var text = objectGraphics.getText();
+		if( text != null )
+		{
+			var textArray:Array<Dynamic> = new Array();
+			for( key in Reflect.fields( text ) )
+			{
+				var value = Reflect.getProperty( text, key );
+				textArray.push( { "name": key, "value": value } );
+			}
+
+			textArray.sort( this._sortWithQueueText );
+			for( i in 0...textArray.length )
+			{
+				var textField = this._createText( textArray[ i ].value );
+				textSprite.addChild( textField );
+			}
+
+			textSprite.alpha = 0;
+			objectGraphics.setTextInstance( textSprite );
+			this._parent.getSystem( "event" ).addEvent( object.get( "name" ), object );
+		}
+		objectGraphics.setGraphicsInstance( buildingSprite );
+		return buildingSprite;
 	}
 
 	private function _drawStartScene( scene:Scene ):Void
@@ -142,7 +221,7 @@ class GraphicsSystem
 
 		//add UI objects to ui;
 		var sceneUiEntities:Dynamic = scene.getEntities( "ui" );
-		this.createUiObject( "startSceneButtonsWindow", sceneUiEntities );
+		this.createUiObject( "startSceneWindow", sceneUiEntities );
 		this._parent.getMainSprite().addChild( scene );
 	}
 
@@ -166,7 +245,6 @@ class GraphicsSystem
 		var sceneObjectEntities:Dynamic = scene.getEntities( "object" );
 		var buildingsList:Array<Entity> = sceneObjectEntities.buildings;
 
-		buildingsList.sort( this._sortWithQueueEntity );
 
 		for( i in 0...buildingsList.length )
 		{
@@ -203,25 +281,7 @@ class GraphicsSystem
 
 	}
 
-	private function _sortWithQueueEntity( a, b ):Int
-	{
-		if( a.getComponent( "graphics" ).getQueue() > b.getComponent( "graphics" ).getQueue() )
-			return 1;
-		else if( a.getComponent( "graphics" ).getQueue() < b.getComponent( "graphics" ).getQueue() )
-			return -1;
-		else
-			return 0;
-	}
 
-	private function _sortWithQueueText( a, b ):Int
-	{
-		if( a.queue > b.queue )
-			return 1;
-		else if( a.queue < b.queue )
-			return -1;
-		else
-			return 0;
-	}
 	
 
 	public function new( parent:Game ):Void
@@ -261,35 +321,11 @@ class GraphicsSystem
 		
 		for( i in 0...windows.length )
 		{
-			var windowTextArray:Dynamic = new Array();
-			var buttonsArray:Dynamic = new Array();
-			var buttonsTextArray:Dynamic = new Array();
-
 			var window = windows[ i ];
 			var windowName = window.get( "name" );
 			if( windowName == name )
 			{
 				var spriteWindow:Sprite = this._createWindow( window );
-				var text = window.getComponent( "graphics" ).getText();
-				if( text != null )
-				{
-					var textArray:Array<Dynamic> = new Array();
-					var ts:Sprite = new Sprite();
-					for( key in Reflect.fields( text ) )
-					{
-						var value = Reflect.getProperty( text, key );
-						textArray.push( { "name": key, "value": value } );				
-					}
-					textArray.sort( this._sortWithQueueText );
-					for( i in 0...textArray.length )
-					{
-						var newText = textArray[ i ];
-						var textSprite = this._createText( newText.value );
-						ts.addChild( textSprite );
-						windowTextArray.push( { "name": newText.name, "sprite": textSprite } );
-					}
-					spriteWindow.addChild( ts );	
-				}
 
 				for( j in 0...buttons.length )
 				{
@@ -298,33 +334,10 @@ class GraphicsSystem
 					if( buttonAddiction == name )
 					{
 						var spriteButton = this._createButton( button );
-						var text:Dynamic = button.getComponent( "graphics" ).getText();
-						if( text != null )
-						{
-							var textArray:Array<Dynamic> = new Array();
-							var ts:Sprite = new Sprite();
-							for( key in Reflect.fields( text ) )
-							{
-								var value = Reflect.getProperty( text, key );
-								textArray.push( { "name": key, "value": value } );
-							}
-							textArray.sort( this._sortWithQueueText );
-							for( i in 0...textArray.length )
-							{
-								var newText = textArray[ i ];
-								var textSprite = this._createText( newText.value );
-								ts.addChild( textSprite );
-								buttonsTextArray.push( { "name": newText.name, "sprite": textSprite } );
-							}
-							button.addChild( ts );
-							var bName:String = button.get( "name" );
-							buttonsArray.push( { "name": bName, "sprite": button, "text": buttonsTextArray } );
-							buttonsTextArray = new Array();
-						}
 						spriteWindow.addChild( spriteButton );
 					}
 				}
-				this._parent.getSystem( "ui" ).addUiObject( { "name": name, "window": spriteWindow, "textWindow": windowTextArray, "button": buttonsArray } );
+				this._parent.getSystem( "ui" ).addUiObject( { "name": name, "window": window } );
 			}
 		}		
 	}

@@ -1034,7 +1034,6 @@
 				{
 					"addiction": null,
 					"graphicsInstance": null,
-					"queue":0,
 					"x": 0.0,
 					"y": 0.0,
 					"img":
@@ -1597,44 +1596,11 @@
 
 		"button":
 		{
-			"buttonB":
-			{
-				"graphics":
-				{
-					"addiction": null,
-					"graphicsInstance": null,
-					"img": 
-					{
-						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b.png" },
-						"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b_hover.png" },
-						"push": {"x": 0.0, "y": 0.0, "url": "assets/images/button_b_push.png" }
-					},
-					"x": 0.0,
-					"y": 0.0,
-					"text": 
-					{
-						"buttonText":
-						{
-							"text": "",
-							"x": 0.0,
-							"y": 0.0,
-							"font": "Verdana",
-							"size": 58,
-							"color": "0x000000",
-							"visible": true,
-							"selectable": false,
-							"height":100,
-							"width":100
-						}
-					}
-				}
-			},
-
 			"gameStart": 
 			{
 				"graphics":
 				{
-					"addiction": null,
+					"addiction": "startSceneWindow",
 					"graphicsInstance": null,
 					"queue": 1,
 					"x": 75.0,
@@ -1643,7 +1609,7 @@
 					{
 						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b.png" },
 						"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b_hover.png" },
-						"push": {"x": 0.0, "y": 0.0, "url": "assets/images/button_b_push.png" }
+						"pushed": {"x": 0.0, "y": 0.0, "url": "assets/images/button_b_push.png" }
 					},
 					"text": 
 					{
@@ -1668,7 +1634,7 @@
 			{
 				"graphics":
 				{
-					"addiction": null,
+					"addiction": "startSceneWindow",
 					"graphicsInstance": null,
 					"queue": 0,
 					"x": 75.0,
@@ -1677,7 +1643,7 @@
 					{
 						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b.png" },
 						"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b_hover.png" },
-						"push": {"x": 0.0, "y": 0.0, "url": "assets/images/button_b_push.png" }
+						"pushed": {"x": 0.0, "y": 0.0, "url": "assets/images/button_b_push.png" }
 					},
 					"text": 
 					{
@@ -1702,7 +1668,7 @@
 			{
 				"graphics":
 				{
-					"addiction": null,
+					"addiction": "startSceneWindow",
 					"graphicsInstance": null,
 					"queue": 2,
 					"x": 75.0,
@@ -1711,7 +1677,7 @@
 					{
 						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b.png" },
 						"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b_hover.png" },
-						"push": {"x": 0.0, "y": 0.0, "url": "assets/images/button_b_push.png" }
+						"pushed": {"x": 0.0, "y": 0.0, "url": "assets/images/button_b_push.png" }
 					},
 					"text": 
 					{
@@ -1736,7 +1702,7 @@
 			{
 				"graphics":
 				{
-					"addiction": null,
+					"addiction": "startSceneWindow",
 					"graphicsInstance": null,
 					"queue": 3,
 					"x": 75.0,
@@ -1745,7 +1711,7 @@
 					{
 						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b.png" },
 						"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b_hover.png" },
-						"push": {"x": 0.0, "y": 0.0, "url": "assets/images/button_b_push.png" }
+						"pushed": {"x": 0.0, "y": 0.0, "url": "assets/images/button_b_push.png" }
 					},
 					"text": {
 						"buttonText":
@@ -1931,7 +1897,7 @@
 			{
 				"graphics":
 				{
-					"addiction": null,
+					"addiction": "startSceneWindow",
 					"graphicsInstance": null,
 					"queue": 0,
 					"x": 1300.0,

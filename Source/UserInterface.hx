@@ -17,11 +17,9 @@ class UserInterface extends Sprite
 
 	public function addUiObject( object:Dynamic ):Void //{ "name": name, "sprite": sprite }
 	{
-		//[{"name": "Window1","window":{window:entity},"textWindow":[{"name":newText.name,"sprite":textSprite}],
-		//"button":[{"name":"button1","sprite":button,"text":{"name":newText.name,"sprite":textSprite}]];
-		//{ "name": name, "window": spriteWindow, "textWindow": windowTextArray, "button": buttonsArray }
+		//{ "name": name, "window": spriteWindow };
 		this._objectsOnUi.push( object );
-		this.addChild( object.window );
+		this.addChild( object.window.getComponent( "graphics" ).getGraphicsInstance() );
 	}
 
 	public function removeUiObject( object:Entity ):Void
@@ -31,7 +29,7 @@ class UserInterface extends Sprite
 		{
 			if( name == this._objectsOnUi[ i ].name )
 			{
-				this.removeChild( this._objectsOnUi[ i ].window );
+				this.removeChild( this._objectsOnUi[ i ].window.getComponent( "graphics" ).getGraphicsInstance() );
 				this._objectsOnUi.splice( i, 1 );
 			}
 		}
@@ -45,7 +43,7 @@ class UserInterface extends Sprite
 			var object = this._objectsOnUi[ i ];
 			if( object.name == name )
 			{
-				var sprite:Sprite = object.window;
+				var sprite:Sprite = object.window.getComponent( "graphics" ).getGraphicsInstance();
 				sprite.visible = true;
 			}
 		}
@@ -58,7 +56,7 @@ class UserInterface extends Sprite
 			var object = this._objectsOnUi[ i ];
 			if( object.name == name )
 			{
-				var sprite:Sprite = object.window;
+				var sprite:Sprite = object.window.getComponent( "graphics" ).getGraphicsInstance();
 				sprite.visible = false;
 			}
 		}

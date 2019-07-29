@@ -4,7 +4,7 @@ import openfl.display.Sprite;
 
 class Graphics extends Component
 {
-	private var _img:Dynamic; // { "img1": { "name" : "normal", "x": 0, "y": 0, "url": "//..." }, "img2": { name}}
+	private var _img:Dynamic; // { "normal": { "x": 0, "y": 0, "url": "//..." }, "pushed": { x, y , url }};
 	private var _text:Dynamic; // { 'text1': { "text": "yuppei",x: 1, y:2 }, 'text2': { "text": "yuppieey", x: 1, y:2 } };
 
 	private var _x:Float;
@@ -13,6 +13,7 @@ class Graphics extends Component
 	private var _addiction:String;
 
 	private var _graphicsInstance:Sprite;
+	private var _textInstance:Sprite;
 
 
 
@@ -53,7 +54,7 @@ class Graphics extends Component
 		return this._text;
 	}
 
-	public function gerCoordinates():Dynamic
+	public function getCoordinates():Dynamic
 	{
 		return { "x": this._x, "y": this._y };
 	}
@@ -64,12 +65,12 @@ class Graphics extends Component
 		this._y = y;
 	}
 
-	public function getGrahicsCoordinates():Dynamic
+	public function getGraphicsCoordinates():Dynamic
 	{
 		return { "x": this._graphicsInstance.x, "y": this._graphicsInstance.y };
 	}
 
-	public function setGrahicsCoordinates( x:Float, y:Float ):Void
+	public function setGraphicsCoordinates( x:Float, y:Float ):Void
 	{
 		this._graphicsInstance.x = x;
 		this._graphicsInstance.y = y;		
@@ -85,13 +86,18 @@ class Graphics extends Component
 		this._graphicsInstance = gi;
 	}
 
+	public function getTextInstance():Sprite
+	{
+		return this._textInstance;
+	}
+
+	public function setTextInstance( ti:Sprite ):Void
+	{
+		this._textInstance = ti;
+	}
+
 	public function getAddiction():String
 	{
 		return this._addiction;
-	}
-
-	public function getQueue():Int
-	{
-		return this._queue;
 	}
 }

@@ -13,18 +13,34 @@ class EventSystem
 	private var _parent:Game;
 	private var _eventListeners:Array<Dynamic>;
 
+
+	private function _clickStartGame( e:MouseEvent ):Void
+	{
+			var newScene = this._parent.getSystem( "scene" ).createScene( "cityScene" );
+			this._parent.getSystem( "scene" ).doActiveScene( newScene );
+	}
+
+	private function _clickContinueGame( e:MouseEvent ):Void
+	{
+		//TODO: Load game if in Starts Scene. or just continue game and close "options" window;
+	}
+
+	private function _clickAuthorsGame( e:MouseEvent ):Void
+	{
+		//TODO : Open window or start titles;
+		trace( "Author: Alexey Power" );
+	}
+
+	private function _clickOptionsGame( e:MouseEvent ):Void
+	{
+		//TODO: Open options window
+		trace( "Andddddd opeeeeeeen options window... ( magic xD )" );
+	}
+
 	private function _clickButton( obj:Dynamic ):Void
 	{
 		switch( obj.get( "name" ) )
 		{
-			case "startSceneAuthorsButton": trace( "Authors button pushed." );
-			case "startSceneOptionsButton": trace( "Options button pushed." );
-			case "startSceneStartButton": 
-			{
-				//check for load file
-				var newScene = this._parent.getSystem( "scene" ).createScene( "cityScene" );
-				this._parent.getSystem( "scene" ).doActiveScene( newScene );
-			}
 			case "startSceneContinueButton": trace( "Continue button pushed" );
 			case "citySceneStartJourneyButton": 
 			{
@@ -71,12 +87,12 @@ class EventSystem
 		}
 	}
 
-	private function _addStartSceneButton( name:String, object:Sprite ):Void
+	private function _addButton( name:String, object:Sprite, clickFunction ):Void
 	{
 		var arrayOfEvents:Array<Dynamic> = new Array();
 
-		object.addEventListener( MouseEvent.CLICK, this._eventMouseClick );
-		arrayOfEvents.push( { "event": MouseEvent.CLICK, "eventFunction": this._eventMouseClick } );
+		object.addEventListener( MouseEvent.CLICK, clickFunction );
+		arrayOfEvents.push( { "event": MouseEvent.CLICK, "eventFunction": clickFunction } );
 
 		object.addEventListener( MouseEvent.MOUSE_OVER, this._eventMouseOver );
 		arrayOfEvents.push( { "event": MouseEvent.MOUSE_OVER , "eventFunction": this._eventMouseOver } );
@@ -136,34 +152,46 @@ class EventSystem
 		}	
 	}
 
+	private function _eventMouseOverBuilding( e:MouseEvent ):Void
+	{
+		var sprite:Sprite = e.target;
+		if( Std.is( sprite, TextField ) )
+		{
+			sprite.parent.parent.getChildAt( 1 ).visible = true; // new image;
+			sprite.parent.parent.getChildAt( 2 ).alpha = 1; // text
+		}		
+		else
+		{
+			sprite.getChildAt( 1 ).visible = true; // new image;
+			sprite.getChildAt( 2 ).alpha = 1; // text	
+		}
+	}
+
+	private function _eventMouseOutBuilding( e:MouseEvent ):Void
+	{
+		var sprite:Sprite = e.target;		
+		if( Std.is( sprite, TextField ) )
+		{
+			sprite.parent.parent.getChildAt( 1 ).visible = false;
+			sprite.parent.parent.getChildAt( 2 ).alpha = 0;	
+		}
+		else
+		{	
+			sprite.getChildAt( 1 ).visible = false;
+			sprite.getChildAt( 2 ).alpha = 0;			
+		}
+	}
+
 	private function _eventMouseOver( e:MouseEvent ):Void
 	{
 		var sprite:Sprite = e.target;
 		if( Std.is( sprite, TextField ) )
 		{
-			var obj:Dynamic = sprite.parent;
-			if( obj.parent.get( "type" ) == "building" )
-			{
-				sprite.parent.parent.getChildAt( 1 ).visible = true; // new image;
-				sprite.parent.parent.getChildAt( 2 ).alpha = 1; // text
-			}
-			else
-			{
-				sprite.parent.parent.getChildAt( 1 ).visible = true;
-			}			
+			sprite.parent.parent.getChildAt( 1 ).visible = true;		
 		}
 		else
 		{
-			var obj:Dynamic = e.target;
-			if( obj.get( "type" ) == "building" )
-			{
-				sprite.getChildAt( 1 ).visible = true; // new image;
-				sprite.getChildAt( 2 ).alpha = 1; // text
-			}
-			else
-			{
-				sprite.getChildAt( 1 ).visible = true;
-			}		
+			sprite.getChildAt( 1 ).visible = true;
 		}
 	}
 
@@ -172,46 +200,19 @@ class EventSystem
 		var sprite:Sprite = e.target;		
 		if( Std.is( sprite, TextField ) )
 		{
-			var obj:Dynamic = sprite.parent;
-			if( obj.parent.get( "type" ) == "building" )
-			{
-				sprite.parent.parent.getChildAt( 1 ).visible = false;
-				sprite.parent.parent.getChildAt( 2 ).alpha = 0;	
-			}
-			else
-			{
-				if( obj.parent.get( "name" ) == "chooseDungeonSceneDungeonButtonA" && obj.parent.getComponent( "ui" ).isChoosen() )
-				{
-					return;
-				}
-				sprite.parent.parent.getChildAt( 1 ).visible = false;
-				sprite.parent.parent.getChildAt( 2 ).visible = false;
-			}	
+			sprite.parent.parent.getChildAt( 1 ).visible = false;
+			sprite.parent.parent.getChildAt( 2 ).visible = false;
 		}
 		else
 		{	
-			var obj:Dynamic = e.target;
-			if( obj.get( "type" ) == "building" )
-			{
-				sprite.getChildAt( 1 ).visible = false;
-				sprite.getChildAt( 2 ).alpha = 0;
-			}
-			else
-			{
-				if( obj.get( "name" ) == "chooseDungeonSceneDungeonButtonA" && obj.getComponent( "ui" ).isChoosen() )
-				{
-					return;
-				}
-				sprite.getChildAt( 1 ).visible = false;
-				sprite.getChildAt( 2 ).visible = false;
-			}			
+			sprite.getChildAt( 1 ).visible = false;
+			sprite.getChildAt( 2 ).visible = false;		
 		}
 	}
 
 	private function _eventMouseDown( e:MouseEvent ):Void
 	{
 		var sprite:Sprite = e.target;
-		var entity:Dynamic = e.target;
 		if( Std.is( sprite, TextField ) )
 		{
 			sprite.parent.parent.getChildAt( 2 ).visible = true;
@@ -226,37 +227,13 @@ class EventSystem
 	private function _eventMouseUp( e:MouseEvent ):Void
 	{
 		var sprite:Sprite = e.target;
-		var entity:Dynamic = e.target;
+
 		if( Std.is( sprite, TextField ) )
 		{
-			if( entity.parent.parent.get( "name" ) == "chooseDungeonSceneDungeonButtonA" )
-			{
-				if( entity.parent.parent.getComponent( "ui" ).isChoosen() )
-				{
-					entity.parent.parent.getComponent( "ui" ).setIsChoosen( false );
-				}
-				else
-				{
-					entity.parent.parent.getComponent( "ui" ).setIsChoosen( true );
-					return;
-				}
-			}
 			sprite.parent.parent.getChildAt( 2 ).visible = false;			
 		}
 		else
 		{
-			if( entity.get( "name" ) == "chooseDungeonSceneDungeonButtonA" )
-			{
-				if( entity.getComponent( "ui" ).isChoosen() )
-				{
-					entity.getComponent( "ui" ).setIsChoosen( false );
-				}
-				else
-				{
-					entity.getComponent( "ui" ).setIsChoosen( true );
-					return;
-				}
-			}
 			sprite.getChildAt( 2 ).visible = false;
 		}
 	}
@@ -271,8 +248,15 @@ class EventSystem
 	{
 		switch( name )
 		{
-			case "startSceneStartButton", "startSceneContinueButton", "startSceneOptionsButton", "startSceneAuthorsButton", "innWindowButtonHeroListUp",  
-				 "innWindowButtonHeroListDown", "citySceneStartJourneyButton", "chooseDungeonSceneDungeonButtonA", "citySceneMainWindowExitButton" : this._addStartSceneButton( name, object );
+			case "gameStart": this._addButton( name, object, this._clickStartGame );
+			case "gameContinue": this._addButton( name, object, this._clickContinueGame );
+			case "gameOptions": this._addButton( name, object, this._clickOptionsGame );
+			case "gameAuthors": this._addButton( name, object, this._clickAuthorsGame );
+			case "innWindowButtonHeroListUp" : 
+			case "innWindowButtonHeroListDown":
+			case "citySceneStartJourneyButton":
+			case "chooseDungeonSceneDungeonButtonA":
+			case "citySceneMainWindowExitButton" :
 			case "hospital", "tavern", "academy", "recruits", "storage", "graveyard", "blacksmith", "hermit", "merchant", "questman", "fontain" : this._addCitySceneBuildings( name, object );
 			default: trace( "Error in EventSystem.addEvent, type of event can't be: " + name + "." );
 		}		
