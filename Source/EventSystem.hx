@@ -2,6 +2,7 @@ package;
 
 import openfl.display.Sprite;
 import openfl.events.MouseEvent;
+import openfl.display.DisplayObject;
 
 
 class EventSystem
@@ -15,18 +16,18 @@ class EventSystem
 		var entityName:String = entity.get( "name" );
 		switch( entityName )
 		{
-			case "startGame":
+			case "gameStart":
 			{
 				var newScene = this._parent.getSystem( "scene" ).createScene( "cityScene" );
 				this._parent.getSystem( "scene" ).doActiveScene( newScene );
 			}
-			case "continueGame": //TODO: Load game if in Starts Scene. or just continue game and close "options" window;
-			case "authorsGame":
+			case "gameContinue": //TODO: Load game if in Starts Scene. or just continue game and close "options" window;
+			case "gameAuthors":
 			{
 				//TODO : Open window or start titles;
 				trace( "Author: Alexey Power" );
 			}
-			case "optionsGame":
+			case "gameOptions":
 			{
 				//TODO: Open options window
 				trace( "Andddddd opeeeeeeen options window... ( magic xD )" );
@@ -125,13 +126,19 @@ class EventSystem
 		var entityType:String = entity.get( "type" );
 		var entityGraphics:Dynamic = entity.getComponent( "graphics" );
 		var entitySprite:Sprite = entityGraphics.getGraphicsInstance();
-		var entityTextSprite:Sprite = entityGraphics.getGraphicsText();
+		var entityTextSprite:Sprite = entityGraphics.getTextInstance();
 		switch( entityType )
 		{
 			case "building":
 			{
 				entitySprite.getChildAt( 1 ).visible = false; // hover invisible;
 				entityTextSprite.alpha = 0; // becase all text in building in 1 sprite have alpha = 1;
+			}
+			case "button":
+			{
+				var graphicsSprite:DisplayObject = entitySprite.getChildAt( 0 );
+				graphicsSprite.getChildAt( 1 ).visible = false; // hover invisible;
+				graphicsSprite.getChildAt( 2 ).visible = false; // unpushed visible;
 			}
 		}
 	}
@@ -141,13 +148,18 @@ class EventSystem
 		var entityType:String = entity.get( "type" );
 		var entityGraphics:Dynamic = entity.getComponent( "graphics" );
 		var entitySprite:Sprite = entityGraphics.getGraphicsInstance();
-		var entityTextSprite:Sprite = entityGraphics.getGraphicsText();
+		var entityTextSprite:Sprite = entityGraphics.getTextInstance();
 		switch( entityType )
 		{
 			case "building":
 			{
 				entitySprite.getChildAt( 1 ).visible = true; // hover visible;
 				entityTextSprite.alpha = 1; // becase all text in building in 1 sprite have alpha = 0;
+			}
+			case "button":
+			{
+				var graphicsSprite:DisplayObject = entitySprite.getChildAt( 0 );
+				graphicsSprite.getChildAt( 1 ).visible = true; // hover visible;
 			}
 		}
 	}
@@ -157,12 +169,17 @@ class EventSystem
 		var entityType:String = entity.get( "type" );
 		var entityGraphics:Dynamic = entity.getComponent( "graphics" );
 		var entitySprite:Sprite = entityGraphics.getGraphicsInstance();
-		var entityTextSprite:Sprite = entityGraphics.getGraphicsText();
+		var entityTextSprite:Sprite = entityGraphics.getTextInstance();
 		switch( entityType )
 		{
 			case "building":
 			{
 
+			}
+			case "button":
+			{
+				var graphicsSprite:DisplayObject = entitySprite.getChildAt( 0 );
+				graphicsSprite.getChildAt( 2 ).visible = false; // unpushed visible;
 			}
 		}
 	}
@@ -172,12 +189,17 @@ class EventSystem
 		var entityType:String = entity.get( "type" );
 		var entityGraphics:Dynamic = entity.getComponent( "graphics" );
 		var entitySprite:Sprite = entityGraphics.getGraphicsInstance();
-		var entityTextSprite:Sprite = entityGraphics.getGraphicsText();
+		var entityTextSprite:Sprite = entityGraphics.getTextInstance();
 		switch( entityType )
 		{
 			case "building":
 			{
 
+			}
+			case "button":
+			{
+				var graphicsSprite:DisplayObject = entitySprite.getChildAt( 0 );
+				graphicsSprite.getChildAt( 2 ).visible = true; // pushed visible;
 			}
 		}
 	}
@@ -214,30 +236,30 @@ class EventSystem
 
 		if( eventName == null )
 		{
-			graphicsInstance.addEventListener( MouseEvent.CLICK, objectGraphics.mouseClick.bind( object ) );
+			graphicsInstance.addEventListener( MouseEvent.CLICK, objectGraphics.mouseClick.bind( objectGraphics ) );
 			objectGraphics.addEvent( "mCLICK" );
 
-			graphicsInstance.addEventListener( MouseEvent.MOUSE_OVER, objectGraphics.mouseOver.bind( object ) );
+			graphicsInstance.addEventListener( MouseEvent.MOUSE_OVER, objectGraphics.mouseOver.bind( objectGraphics ) );
 			objectGraphics.addEvent( "mOVER" );
 
-			graphicsInstance.addEventListener( MouseEvent.MOUSE_OUT, objectGraphics.mouseOut.bind( object ) );
+			graphicsInstance.addEventListener( MouseEvent.MOUSE_OUT, objectGraphics.mouseOut.bind( objectGraphics ) );
 			objectGraphics.addEvent( "mOUT" );
 
-			graphicsInstance.addEventListener( MouseEvent.MOUSE_DOWN, objectGraphics.mouseDown.bind( object ) );
+			graphicsInstance.addEventListener( MouseEvent.MOUSE_DOWN, objectGraphics.mouseDown.bind( objectGraphics ) );
 			objectGraphics.addEvent( "mDOWN" );
 
-			graphicsInstance.addEventListener( MouseEvent.MOUSE_UP, objectGraphics.mouseUp.bind( object ) );
+			graphicsInstance.addEventListener( MouseEvent.MOUSE_UP, objectGraphics.mouseUp.bind( objectGraphics ) );
 			objectGraphics.addEvent( "mUP" );	
 		}
 		else
 		{
 			switch( eventName ) 
 			{
-				case "mCLICK": { event = MouseEvent.CLICK; func = objectGraphics.mouseClick.bind( object ); } 
-				case "mOUT": { event = MouseEvent.MOUSE_OUT; func = objectGraphics.mouseOut.bind( object ); }
-				case "mOVER": { event = MouseEvent.MOUSE_OVER; func = objectGraphics.mouseOver.bind( object ); }
-				case "mUP": { event = MouseEvent.MOUSE_UP; func = objectGraphics.mouseUp.bind( object ); }
-				case "mDOWN": { event = MouseEvent.MOUSE_DOWN; func = objectGraphics.mouseDown.bind( object ); }
+				case "mCLICK": { event = MouseEvent.CLICK; func = objectGraphics.mouseClick.bind( objectGraphics ); } 
+				case "mOUT": { event = MouseEvent.MOUSE_OUT; func = objectGraphics.mouseOut.bind( objectGraphics ); }
+				case "mOVER": { event = MouseEvent.MOUSE_OVER; func = objectGraphics.mouseOver.bind( objectGraphics ); }
+				case "mUP": { event = MouseEvent.MOUSE_UP; func = objectGraphics.mouseUp.bind( objectGraphics ); }
+				case "mDOWN": { event = MouseEvent.MOUSE_DOWN; func = objectGraphics.mouseDown.bind( objectGraphics ); }
 			}
 			graphicsInstance.addEventListener( event, func );
 			objectGraphics.addEvent( eventName );	
@@ -254,11 +276,11 @@ class EventSystem
 		var func = null;
 		switch( eventName ) 
 		{
-			case "mCLICK": { event = MouseEvent.CLICK; func = objectGraphics.mouseClick; } 
-			case "mOUT": { event = MouseEvent.MOUSE_OUT; func = objectGraphics.mouseOut; }
-			case "mOVER": { event = MouseEvent.MOUSE_OVER; func = objectGraphics.mouseOver; }
-			case "mUP": { event = MouseEvent.MOUSE_UP; func = objectGraphics.mouseUp; }
-			case "mDOWN": { event = MouseEvent.MOUSE_DOWN; func = objectGraphics.mouseDown; }
+			case "mCLICK": { event = MouseEvent.CLICK; func = objectGraphics.mouseClick.bind( objectGraphics ) ; } 
+			case "mOUT": { event = MouseEvent.MOUSE_OUT; func = objectGraphics.mouseOut.bind( objectGraphics ); }
+			case "mOVER": { event = MouseEvent.MOUSE_OVER; func = objectGraphics.mouseOver.bind( objectGraphics ); }
+			case "mUP": { event = MouseEvent.MOUSE_UP; func = objectGraphics.mouseUp.bind( objectGraphics ); }
+			case "mDOWN": { event = MouseEvent.MOUSE_DOWN; func = objectGraphics.mouseDown.bind( objectGraphics ); }
 		}
 
 		for( i in 0...events.length )
@@ -267,11 +289,11 @@ class EventSystem
 			{
 				switch ( events[ i ] )
 				{
-					case "mCLICK": graphicsInstance.removeEventListener( MouseEvent.CLICK, objectGraphics.mouseClick );
-					case "mOUT": graphicsInstance.removeEventListener( MouseEvent.MOUSE_OUT, objectGraphics.mouseOut );
-					case "mOVER": graphicsInstance.removeEventListener( MouseEvent.MOUSE_OVER, objectGraphics.mouseOVER );
-					case "mUP": graphicsInstance.removeEventListener( MouseEvent.MOUSE_UP, objectGraphics.mouseUp );
-					case "mDOWN":  graphicsInstance.removeEventListener( MouseEvent.MOUSE_DOWN, objectGraphics.mouseDown );
+					case "mCLICK": graphicsInstance.removeEventListener( MouseEvent.CLICK, objectGraphics.mouseClick.bind( objectGraphics ) );
+					case "mOUT": graphicsInstance.removeEventListener( MouseEvent.MOUSE_OUT, objectGraphics.mouseOut.bind( objectGraphics ) );
+					case "mOVER": graphicsInstance.removeEventListener( MouseEvent.MOUSE_OVER, objectGraphics.mouseOver.bind( objectGraphics ) );
+					case "mUP": graphicsInstance.removeEventListener( MouseEvent.MOUSE_UP, objectGraphics.mouseUp.bind( objectGraphics ) );
+					case "mDOWN":  graphicsInstance.removeEventListener( MouseEvent.MOUSE_DOWN, objectGraphics.mouseDown.bind( objectGraphics ) );
 				}
 				objectGraphics.removeEvent( events[ i ] );
 			}

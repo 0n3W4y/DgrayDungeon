@@ -5,7 +5,7 @@
 		[
 			[
 				"Display",
-				"DisplayObjectContainer\tflash.display"
+				"DisplayObject\tflash.display"
 			],
 			[
 				"getB",
@@ -523,7 +523,7 @@
 			"file": "Source/UserInterface.hx",
 			"settings":
 			{
-				"buffer_size": 1530,
+				"buffer_size": 1549,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -532,7 +532,7 @@
 			"file": "Source/EventSystem.hx",
 			"settings":
 			{
-				"buffer_size": 9146,
+				"buffer_size": 9633,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -541,7 +541,7 @@
 			"file": "Source/GraphicsSystem.hx",
 			"settings":
 			{
-				"buffer_size": 10414,
+				"buffer_size": 11252,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -550,7 +550,7 @@
 			"file": "Source/Scene.hx",
 			"settings":
 			{
-				"buffer_size": 2271,
+				"buffer_size": 2261,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -559,7 +559,7 @@
 			"file": "Source/SceneSystem.hx",
 			"settings":
 			{
-				"buffer_size": 3439,
+				"buffer_size": 6894,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -568,7 +568,7 @@
 			"file": "Source/EntitySystem.hx",
 			"settings":
 			{
-				"buffer_size": 3269,
+				"buffer_size": 11957,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -577,7 +577,7 @@
 			"file": "Source/data.json",
 			"settings":
 			{
-				"buffer_size": 19782,
+				"buffer_size": 64579,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -800,15 +800,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1530,
+						"buffer_size": 1549,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1275,
-								1275
+								0,
+								0
 							]
 						],
 						"settings":
@@ -821,7 +821,7 @@
 						"translation.y": 60.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
@@ -830,15 +830,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 9146,
+						"buffer_size": 9633,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2196,
-								2196
+								3273,
+								3273
 							]
 						],
 						"settings":
@@ -848,7 +848,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 780.0,
+						"translation.y": 2160.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -860,15 +860,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 10414,
+						"buffer_size": 11252,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								10327,
-								10327
+								0,
+								0
 							]
 						],
 						"settings":
@@ -890,15 +890,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2271,
+						"buffer_size": 2261,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1083,
-								1083
+								0,
+								0
 							]
 						],
 						"settings":
@@ -920,15 +920,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3439,
+						"buffer_size": 6894,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2772,
-								2772
+								0,
+								0
 							]
 						],
 						"settings":
@@ -941,7 +941,7 @@
 						"translation.y": 1800.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
@@ -950,15 +950,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3269,
+						"buffer_size": 11957,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								836,
-								836
+								0,
+								0
 							]
 						],
 						"settings":
@@ -971,7 +971,7 @@
 						"translation.y": 30.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
@@ -980,15 +980,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 19782,
+						"buffer_size": 64579,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								921,
-								921
+								0,
+								0
 							]
 						],
 						"settings":

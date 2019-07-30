@@ -894,9 +894,9 @@ ApplicationMain.create = function(config) {
 	ManifestResources.init(config);
 	var _this = app.meta;
 	if(__map_reserved["build"] != null) {
-		_this.setReserved("build","130");
+		_this.setReserved("build","44");
 	} else {
-		_this.h["build"] = "130";
+		_this.h["build"] = "44";
 	}
 	var _this1 = app.meta;
 	if(__map_reserved["company"] != null) {
@@ -4763,23 +4763,23 @@ EventSystem.prototype = {
 	,_clickButton: function(entity) {
 		var entityName = entity.get("name");
 		switch(entityName) {
-		case "authorsGame":
+		case "gameAuthors":
 			haxe_Log.trace("Author: Alexey Power",{ fileName : "EventSystem.hx", lineNumber : 27, className : "EventSystem", methodName : "_clickButton"});
 			break;
-		case "continueGame":
+		case "gameContinue":
+			break;
+		case "gameOptions":
+			haxe_Log.trace("Andddddd opeeeeeeen options window... ( magic xD )",{ fileName : "EventSystem.hx", lineNumber : 32, className : "EventSystem", methodName : "_clickButton"});
+			break;
+		case "gameStart":
+			var newScene = this._parent.getSystem("scene").createScene("cityScene");
+			this._parent.getSystem("scene").doActiveScene(newScene);
 			break;
 		case "innDown":
 			haxe_Log.trace("hero list down",{ fileName : "EventSystem.hx", lineNumber : 42, className : "EventSystem", methodName : "_clickButton"});
 			break;
 		case "innUp":
 			haxe_Log.trace("hero list up",{ fileName : "EventSystem.hx", lineNumber : 37, className : "EventSystem", methodName : "_clickButton"});
-			break;
-		case "optionsGame":
-			haxe_Log.trace("Andddddd opeeeeeeen options window... ( magic xD )",{ fileName : "EventSystem.hx", lineNumber : 32, className : "EventSystem", methodName : "_clickButton"});
-			break;
-		case "startGame":
-			var newScene = this._parent.getSystem("scene").createScene("cityScene");
-			this._parent.getSystem("scene").doActiveScene(newScene);
 			break;
 		case "startJourney":
 			var currentScene = this._parent.getSystem("scene").getActiveScene();
@@ -4877,7 +4877,7 @@ EventSystem.prototype = {
 		var entityType = entity.get("type");
 		var entityGraphics = entity.getComponent("graphics");
 		var entitySprite = entityGraphics.getGraphicsInstance();
-		var entityTextSprite = entityGraphics.getGraphicsText();
+		var entityTextSprite = entityGraphics.getTextInstance();
 		if(entityType == "building") {
 			entitySprite.getChildAt(1).set_visible(false);
 			entityTextSprite.set_alpha(0);
@@ -4887,7 +4887,7 @@ EventSystem.prototype = {
 		var entityType = entity.get("type");
 		var entityGraphics = entity.getComponent("graphics");
 		var entitySprite = entityGraphics.getGraphicsInstance();
-		var entityTextSprite = entityGraphics.getGraphicsText();
+		var entityTextSprite = entityGraphics.getTextInstance();
 		if(entityType == "building") {
 			entitySprite.getChildAt(1).set_visible(true);
 			entityTextSprite.set_alpha(1);
@@ -4897,14 +4897,14 @@ EventSystem.prototype = {
 		var entityType = entity.get("type");
 		var entityGraphics = entity.getComponent("graphics");
 		var entitySprite = entityGraphics.getGraphicsInstance();
-		var entityTextSprite = entityGraphics.getGraphicsText();
+		var entityTextSprite = entityGraphics.getTextInstance();
 		var tmp = entityType == "building";
 	}
 	,_mouseDown: function(entity) {
 		var entityType = entity.get("type");
 		var entityGraphics = entity.getComponent("graphics");
 		var entitySprite = entityGraphics.getGraphicsInstance();
-		var entityTextSprite = entityGraphics.getGraphicsText();
+		var entityTextSprite = entityGraphics.getTextInstance();
 		var tmp = entityType == "building";
 	}
 	,update: function(time) {
@@ -4926,37 +4926,37 @@ EventSystem.prototype = {
 		var event = null;
 		var func = null;
 		if(eventName == null) {
-			graphicsInstance.addEventListener("click",objectGraphics.mouseClick.bind(object));
+			graphicsInstance.addEventListener("click",objectGraphics.mouseClick.bind(objectGraphics));
 			objectGraphics.addEvent("mCLICK");
-			graphicsInstance.addEventListener("mouseOver",objectGraphics.mouseOver.bind(object));
+			graphicsInstance.addEventListener("mouseOver",objectGraphics.mouseOver.bind(objectGraphics));
 			objectGraphics.addEvent("mOVER");
-			graphicsInstance.addEventListener("mouseOut",objectGraphics.mouseOut.bind(object));
+			graphicsInstance.addEventListener("mouseOut",objectGraphics.mouseOut.bind(objectGraphics));
 			objectGraphics.addEvent("mOUT");
-			graphicsInstance.addEventListener("mouseDown",objectGraphics.mouseDown.bind(object));
+			graphicsInstance.addEventListener("mouseDown",objectGraphics.mouseDown.bind(objectGraphics));
 			objectGraphics.addEvent("mDOWN");
-			graphicsInstance.addEventListener("mouseUp",objectGraphics.mouseUp.bind(object));
+			graphicsInstance.addEventListener("mouseUp",objectGraphics.mouseUp.bind(objectGraphics));
 			objectGraphics.addEvent("mUP");
 		} else {
 			switch(eventName) {
 			case "mCLICK":
 				event = "click";
-				func = objectGraphics.mouseClick.bind(object);
+				func = objectGraphics.mouseClick.bind(objectGraphics);
 				break;
 			case "mDOWN":
 				event = "mouseDown";
-				func = objectGraphics.mouseDown.bind(object);
+				func = objectGraphics.mouseDown.bind(objectGraphics);
 				break;
 			case "mOUT":
 				event = "mouseOut";
-				func = objectGraphics.mouseOut.bind(object);
+				func = objectGraphics.mouseOut.bind(objectGraphics);
 				break;
 			case "mOVER":
 				event = "mouseOver";
-				func = objectGraphics.mouseOver.bind(object);
+				func = objectGraphics.mouseOver.bind(objectGraphics);
 				break;
 			case "mUP":
 				event = "mouseUp";
-				func = objectGraphics.mouseUp.bind(object);
+				func = objectGraphics.mouseUp.bind(objectGraphics);
 				break;
 			}
 			graphicsInstance.addEventListener(event,func);
@@ -28369,7 +28369,7 @@ var lime_utils_AssetCache = function() {
 	this.audio = new haxe_ds_StringMap();
 	this.font = new haxe_ds_StringMap();
 	this.image = new haxe_ds_StringMap();
-	this.version = 977347;
+	this.version = 604024;
 };
 $hxClasses["lime.utils.AssetCache"] = lime_utils_AssetCache;
 lime_utils_AssetCache.__name__ = ["lime","utils","AssetCache"];
