@@ -1,77 +1,61 @@
 package;
 
 import openfl.display.Sprite;
-import openfl.display.Bitmap;
 import openfl.events.MouseEvent;
-import openfl.events.Event;
-import openfl.text.TextField;
 
 
 class EventSystem
 {
-	// Try TODO: world event function on game sprite. 
 	private var _parent:Game;
-	private var _eventListeners:Array<Dynamic>;
+	private var _listeners:Array<Entity>;
 
 
-	private function _clickStartGame( e:MouseEvent ):Void
+	private function _clickButton( entity:Entity ):Void
 	{
-			var newScene = this._parent.getSystem( "scene" ).createScene( "cityScene" );
-			this._parent.getSystem( "scene" ).doActiveScene( newScene );
-	}
-
-	private function _clickContinueGame( e:MouseEvent ):Void
-	{
-		//TODO: Load game if in Starts Scene. or just continue game and close "options" window;
-	}
-
-	private function _clickAuthorsGame( e:MouseEvent ):Void
-	{
-		//TODO : Open window or start titles;
-		trace( "Author: Alexey Power" );
-	}
-
-	private function _clickOptionsGame( e:MouseEvent ):Void
-	{
-		//TODO: Open options window
-		trace( "Andddddd opeeeeeeen options window... ( magic xD )" );
-	}
-
-	private function _clickButton( obj:Dynamic ):Void
-	{
-		switch( obj.get( "name" ) )
+		var entityName:String = entity.get( "name" );
+		switch( entityName )
 		{
-			case "startSceneContinueButton": trace( "Continue button pushed" );
-			case "citySceneStartJourneyButton": 
+			case "startGame":
 			{
-				var sceneSystem:SceneSystem = this._parent.getSystem( "scene" );
-				var activeScene = sceneSystem.getActiveScene();
-				var name = activeScene.getName();
-				if ( name == "cityScene" )
-				{
-					var dungeonScene = sceneSystem.getScene( "chooseDungeonScene" );
-					if( dungeonScene == null )
-					dungeonScene = sceneSystem.createScene( "chooseDungeonScene" );
-					dungeonScene.draw();
-					sceneSystem.switchScene( dungeonScene );
-					this._parent.getSystem( "ui" ).showUiObject( "innWindow" );
-					this._parent.getSystem( "ui" ).showUiObject( "panelCityWindow" );
-				}
-				else
-				{
-					//check full stack heroes, check choosen dungeon, check if total LVL heroes are lower then dungeon needed, confirm;
-					trace( " we go to fight... TODO." );
-				}
+				var newScene = this._parent.getSystem( "scene" ).createScene( "cityScene" );
+				this._parent.getSystem( "scene" ).doActiveScene( newScene );
 			}
-			case "citySceneMainWindowExitButton": this._parent.getSystem( "ui" ).hideUiObject( "citySceneMainWindow" );
-			default: trace( "Click this: " + obj.get( "name" ) );
+			case "continueGame": //TODO: Load game if in Starts Scene. or just continue game and close "options" window;
+			case "authorsGame":
+			{
+				//TODO : Open window or start titles;
+				trace( "Author: Alexey Power" );
+			}
+			case "optionsGame":
+			{
+				//TODO: Open options window
+				trace( "Andddddd opeeeeeeen options window... ( magic xD )" );
+			}
+			case "innUp":
+			{
+				//TODO: list up heroes in ui window INN;
+				trace( "hero list up" );
+			}
+			case "innDown":
+			{
+				//TODO: list down in ui window INN;
+				trace( "hero list down" );
+			}
+			case "startJourney":
+			{
+				var currentScene = this._parent.getSystem( "scene" ).getActiveScene();
+				var sceneName = currentScene.getName();
+				if( sceneName == "cityScene" )
+					trace( "go to scene choose dungeon" );
+			}
+			default: trace( "Error in EventSustem._clickButton, no button with name: " + entityName );
 		}
 	}
 
-	private function _clickBuilding( obj:Dynamic ):Void
+	private function _clickBuilding( entity:Entity ):Void
 	{
-		this._parent.getSystem( "ui" ).showUiObject( "citySceneMainWindow" );
-		switch( obj.get( "name" ) )
+		var entityName:String = entity.get( "name" );
+		switch( entityName )
 		{
 			case "hospital": {};
 			case "tavern":{};
@@ -83,217 +67,225 @@ class EventSystem
 			case "merchant": {};
 			case "questman": {};
 			case "fontain": {};
-			default: trace( "Click this: " + obj.get( "name" ) );
+			default: trace( "Click this: " + entityName );
 		}
 	}
 
-	private function _addButton( name:String, object:Sprite, clickFunction ):Void
+	private function _clickHero( entity:Entity ):Void
 	{
-		var arrayOfEvents:Array<Dynamic> = new Array();
 
-		object.addEventListener( MouseEvent.CLICK, clickFunction );
-		arrayOfEvents.push( { "event": MouseEvent.CLICK, "eventFunction": clickFunction } );
-
-		object.addEventListener( MouseEvent.MOUSE_OVER, this._eventMouseOver );
-		arrayOfEvents.push( { "event": MouseEvent.MOUSE_OVER , "eventFunction": this._eventMouseOver } );
-
-		object.addEventListener( MouseEvent.MOUSE_OUT, this._eventMouseOut );
-		arrayOfEvents.push( { "event": MouseEvent.MOUSE_OUT , "eventFunction": this._eventMouseOut} );
-
-		object.addEventListener( MouseEvent.MOUSE_DOWN, this._eventMouseDown );
-		arrayOfEvents.push( { "event": MouseEvent.MOUSE_DOWN , "eventFunction": this._eventMouseDown } );
-
-		object.addEventListener( MouseEvent.MOUSE_UP, this._eventMouseUp );
-		arrayOfEvents.push( { "event": MouseEvent.MOUSE_UP , "eventFunction": this._eventMouseUp} );
-
-		var listener = { "name": name, "events": arrayOfEvents };
-		this._eventListeners.push( listener );	
 	}
 
-	private function _addCitySceneBuildings( name:String, object:Sprite ):Void
+	private function _clickWindow ( entity:Entity ):Void
 	{
-		var arrayOfEvents:Array<Dynamic> = new Array();
 
-		object.addEventListener( MouseEvent.CLICK, this._eventMouseClick );
-		arrayOfEvents.push( { "event": MouseEvent.CLICK, "eventFunction": this._eventMouseClick} );
-
-		object.addEventListener( MouseEvent.MOUSE_OVER, this._eventMouseOver );
-		arrayOfEvents.push( { "event": MouseEvent.MOUSE_OVER, "eventFunction": this._eventMouseOver } );
-
-		object.addEventListener( MouseEvent.MOUSE_OUT, this._eventMouseOut );
-		arrayOfEvents.push( { "event": MouseEvent.MOUSE_OUT, "eventFunction": this._eventMouseOut } );
-
-		var listener = { "name": name, "events": arrayOfEvents };
-		this._eventListeners.push( listener );
 	}
 
-	//TODO: functions with click;
-
-	private function _eventMouseClick( e:MouseEvent ):Void
+	private function _doEvent( event:String, entity:Entity ):Void
 	{
-		var obj:Dynamic = e.target;
-		if( Std.is( e.target, TextField ) )
+		switch( event )
 		{
-			switch( obj.parent.parent.get( "type" ) )
+			case "mCLICK": this._mouseClick( entity );
+			case "mUP": this._mouseUp( entity );
+			case "mOUT": this._mouseOut( entity );
+			case "mDOWN": this._mouseDown( entity );
+			case "mOVER": this._mouseOver( entity );
+		}
+		entity.getComponent( "graphics" ).clearCurrentEvent();
+	}
+
+	private function _addToListeners( object ):Void
+	{
+		this._listeners.push( object );
+	}
+
+	private function _removeFromListeners( object ):Void
+	{
+		for( i in 0...this._listeners.length )
+		{
+			if( object.get( "id" ) == this._listeners[ i ].get( "id" ) )
+				this._listeners.splice( i, 1 );
+		}
+	}
+
+	private function _mouseClick( entity:Entity ):Void
+	{
+		var entityType:String = entity.get( "type" ); // hero, button, window, e.t.c;
+		switch( entityType )
+		{
+			case "window": this._clickWindow( entity );
+			case "button": this._clickButton( entity );
+			case "building": this._clickBuilding( entity );
+			case "hero": this._clickHero( entity );
+		}
+	}
+
+	private function _mouseOut( entity:Entity ):Void
+	{
+		var entityType:String = entity.get( "type" );
+		var entityGraphics:Dynamic = entity.getComponent( "graphics" );
+		var entitySprite:Sprite = entityGraphics.getGraphicsInstance();
+		var entityTextSprite:Sprite = entityGraphics.getGraphicsText();
+		switch( entityType )
+		{
+			case "building":
 			{
-				case "button": this._clickButton( obj.parent.parent );
-				case "building": this._clickBuilding( obj.parent.parent );
-				default: trace( "Click " + obj.get( "name" ) );
+				entitySprite.getChildAt( 1 ).visible = false; // hover invisible;
+				entityTextSprite.alpha = 0; // becase all text in building in 1 sprite have alpha = 1;
 			}
 		}
-		else
+	}
+
+	private function _mouseOver( entity:Entity ):Void
+	{
+		var entityType:String = entity.get( "type" );
+		var entityGraphics:Dynamic = entity.getComponent( "graphics" );
+		var entitySprite:Sprite = entityGraphics.getGraphicsInstance();
+		var entityTextSprite:Sprite = entityGraphics.getGraphicsText();
+		switch( entityType )
 		{
-			switch( obj.get( "type") )
+			case "building":
 			{
-				case "button": this._clickButton( obj );
-				case "building": this._clickBuilding( obj );
-				default: trace( "Click " + obj.get( "name" ) );
-			}			
-		}	
+				entitySprite.getChildAt( 1 ).visible = true; // hover visible;
+				entityTextSprite.alpha = 1; // becase all text in building in 1 sprite have alpha = 0;
+			}
+		}
 	}
 
-	private function _eventMouseOverBuilding( e:MouseEvent ):Void
+	private function _mouseUp( entity:Entity ):Void
 	{
-		var sprite:Sprite = e.target;
-		if( Std.is( sprite, TextField ) )
+		var entityType:String = entity.get( "type" );
+		var entityGraphics:Dynamic = entity.getComponent( "graphics" );
+		var entitySprite:Sprite = entityGraphics.getGraphicsInstance();
+		var entityTextSprite:Sprite = entityGraphics.getGraphicsText();
+		switch( entityType )
 		{
-			sprite.parent.parent.getChildAt( 1 ).visible = true; // new image;
-			sprite.parent.parent.getChildAt( 2 ).alpha = 1; // text
-		}		
-		else
-		{
-			sprite.getChildAt( 1 ).visible = true; // new image;
-			sprite.getChildAt( 2 ).alpha = 1; // text	
+			case "building":
+			{
+
+			}
 		}
 	}
 
-	private function _eventMouseOutBuilding( e:MouseEvent ):Void
+	private function _mouseDown( entity:Entity ):Void
 	{
-		var sprite:Sprite = e.target;		
-		if( Std.is( sprite, TextField ) )
+		var entityType:String = entity.get( "type" );
+		var entityGraphics:Dynamic = entity.getComponent( "graphics" );
+		var entitySprite:Sprite = entityGraphics.getGraphicsInstance();
+		var entityTextSprite:Sprite = entityGraphics.getGraphicsText();
+		switch( entityType )
 		{
-			sprite.parent.parent.getChildAt( 1 ).visible = false;
-			sprite.parent.parent.getChildAt( 2 ).alpha = 0;	
-		}
-		else
-		{	
-			sprite.getChildAt( 1 ).visible = false;
-			sprite.getChildAt( 2 ).alpha = 0;			
+			case "building":
+			{
+
+			}
 		}
 	}
 
-	private function _eventMouseOver( e:MouseEvent ):Void
-	{
-		var sprite:Sprite = e.target;
-		if( Std.is( sprite, TextField ) )
-		{
-			sprite.parent.parent.getChildAt( 1 ).visible = true;		
-		}
-		else
-		{
-			sprite.getChildAt( 1 ).visible = true;
-		}
-	}
 
-	private function _eventMouseOut( e:MouseEvent ):Void
-	{
-		var sprite:Sprite = e.target;		
-		if( Std.is( sprite, TextField ) )
-		{
-			sprite.parent.parent.getChildAt( 1 ).visible = false;
-			sprite.parent.parent.getChildAt( 2 ).visible = false;
-		}
-		else
-		{	
-			sprite.getChildAt( 1 ).visible = false;
-			sprite.getChildAt( 2 ).visible = false;		
-		}
-	}
-
-	private function _eventMouseDown( e:MouseEvent ):Void
-	{
-		var sprite:Sprite = e.target;
-		if( Std.is( sprite, TextField ) )
-		{
-			sprite.parent.parent.getChildAt( 2 ).visible = true;
-		}
-		else
-		{
-			sprite.getChildAt( 2 ).visible = true;
-		}
-
-	}
-
-	private function _eventMouseUp( e:MouseEvent ):Void
-	{
-		var sprite:Sprite = e.target;
-
-		if( Std.is( sprite, TextField ) )
-		{
-			sprite.parent.parent.getChildAt( 2 ).visible = false;			
-		}
-		else
-		{
-			sprite.getChildAt( 2 ).visible = false;
-		}
-	}
 
 	public function new( parent:Game ):Void
 	{
 		this._parent = parent;
-		this._eventListeners = new Array();
+		this._listeners = new Array();
 	}
 
-	public function addEvent( name:String, object:Sprite ):Void
+	public function update( time:Float ):Void
 	{
-		switch( name )
+		for( i in 0...this._listeners.length )
 		{
-			case "gameStart": this._addButton( name, object, this._clickStartGame );
-			case "gameContinue": this._addButton( name, object, this._clickContinueGame );
-			case "gameOptions": this._addButton( name, object, this._clickOptionsGame );
-			case "gameAuthors": this._addButton( name, object, this._clickAuthorsGame );
-			case "innWindowButtonHeroListUp" : 
-			case "innWindowButtonHeroListDown":
-			case "citySceneStartJourneyButton":
-			case "chooseDungeonSceneDungeonButtonA":
-			case "citySceneMainWindowExitButton" :
-			case "hospital", "tavern", "academy", "recruits", "storage", "graveyard", "blacksmith", "hermit", "merchant", "questman", "fontain" : this._addCitySceneBuildings( name, object );
-			default: trace( "Error in EventSystem.addEvent, type of event can't be: " + name + "." );
-		}		
+			var listener:Entity = this._listeners[ i ];
+			var graphics:Dynamic = listener.getComponent( "graphics" );
+			var event:String = graphics.getCurrentEvent();
+			if( event != null )
+				this._doEvent( event, listener );
+		}
+		
 	}
 
-	public function removeEvent( name:String, object:Sprite, eventName:String  ):Void
+	
+
+	public function addEvent( object:Entity, eventName:String ):Void
 	{
-		var newEvent = null;
+		var objectGraphics:Dynamic = object.getComponent( "graphics" );
+		var graphicsInstance:Sprite = objectGraphics.getGraphicsInstance();
+		var event = null;
+		var func = null;
+
+		if( eventName == null )
+		{
+			graphicsInstance.addEventListener( MouseEvent.CLICK, objectGraphics.mouseClick.bind( object ) );
+			objectGraphics.addEvent( "mCLICK" );
+
+			graphicsInstance.addEventListener( MouseEvent.MOUSE_OVER, objectGraphics.mouseOver.bind( object ) );
+			objectGraphics.addEvent( "mOVER" );
+
+			graphicsInstance.addEventListener( MouseEvent.MOUSE_OUT, objectGraphics.mouseOut.bind( object ) );
+			objectGraphics.addEvent( "mOUT" );
+
+			graphicsInstance.addEventListener( MouseEvent.MOUSE_DOWN, objectGraphics.mouseDown.bind( object ) );
+			objectGraphics.addEvent( "mDOWN" );
+
+			graphicsInstance.addEventListener( MouseEvent.MOUSE_UP, objectGraphics.mouseUp.bind( object ) );
+			objectGraphics.addEvent( "mUP" );	
+		}
+		else
+		{
+			switch( eventName ) 
+			{
+				case "mCLICK": { event = MouseEvent.CLICK; func = objectGraphics.mouseClick.bind( object ); } 
+				case "mOUT": { event = MouseEvent.MOUSE_OUT; func = objectGraphics.mouseOut.bind( object ); }
+				case "mOVER": { event = MouseEvent.MOUSE_OVER; func = objectGraphics.mouseOver.bind( object ); }
+				case "mUP": { event = MouseEvent.MOUSE_UP; func = objectGraphics.mouseUp.bind( object ); }
+				case "mDOWN": { event = MouseEvent.MOUSE_DOWN; func = objectGraphics.mouseDown.bind( object ); }
+			}
+			graphicsInstance.addEventListener( event, func );
+			objectGraphics.addEvent( eventName );	
+		}
+		this._addToListeners( object );	
+	}
+
+	public function removeEvent( object:Entity, eventName:String  ):Void
+	{
+		var objectGraphics:Dynamic = object.getComponent( "graphics" );
+		var graphicsInstance:Sprite = objectGraphics.getGraphicsInstance();
+		var events:Array<String> = objectGraphics.getEvents();
+		var event = null;
+		var func = null;
 		switch( eventName ) 
 		{
-			case "mCLICK": newEvent = MouseEvent.CLICK;
-			case "mOUT": newEvent = MouseEvent.MOUSE_OUT;
-			case "mOVER": newEvent = MouseEvent.MOUSE_OVER;
-			case "mUP": newEvent = MouseEvent.MOUSE_UP;
-			case "mDOWN": newEvent = MouseEvent.MOUSE_DOWN;
+			case "mCLICK": { event = MouseEvent.CLICK; func = objectGraphics.mouseClick; } 
+			case "mOUT": { event = MouseEvent.MOUSE_OUT; func = objectGraphics.mouseOut; }
+			case "mOVER": { event = MouseEvent.MOUSE_OVER; func = objectGraphics.mouseOver; }
+			case "mUP": { event = MouseEvent.MOUSE_UP; func = objectGraphics.mouseUp; }
+			case "mDOWN": { event = MouseEvent.MOUSE_DOWN; func = objectGraphics.mouseDown; }
 		}
-		//remove all; { "name": "button1", "events": [ { "event": MouseEvent.CLICK, "eventFunction": this._buttonClick } ] };
-		for( i in 0...this._eventListeners.length ) 
+
+		for( i in 0...events.length )
 		{
-			var listener = this._eventListeners[ i ];
-			if( name == listener.name )
+			if( eventName == null )
 			{
-				var array:Array<Dynamic> = listener.events;
-				for( j in 0...array.length )
+				switch ( events[ i ] )
 				{
-					if( newEvent == null )
-						object.removeEventListener( array[ j ].event, array[ j ].eventFunction );
-					else if( newEvent == array[ j ].event )
-					{
-						object.removeEventListener( array[ j ].event, array[ j ].eventFunction );
-						listener.events.splice( j, 1 );
-						break;
-					}
+					case "mCLICK": graphicsInstance.removeEventListener( MouseEvent.CLICK, objectGraphics.mouseClick );
+					case "mOUT": graphicsInstance.removeEventListener( MouseEvent.MOUSE_OUT, objectGraphics.mouseOut );
+					case "mOVER": graphicsInstance.removeEventListener( MouseEvent.MOUSE_OVER, objectGraphics.mouseOVER );
+					case "mUP": graphicsInstance.removeEventListener( MouseEvent.MOUSE_UP, objectGraphics.mouseUp );
+					case "mDOWN":  graphicsInstance.removeEventListener( MouseEvent.MOUSE_DOWN, objectGraphics.mouseDown );
 				}
-				this._eventListeners.splice( i, 1 ); //remove object totally;
-				break;
+				objectGraphics.removeEvent( events[ i ] );
 			}
-		}
+			else
+			{
+				if( eventName == events[ i ] )
+				{
+					graphicsInstance.removeEventListener( event, func );
+					objectGraphics.removeEvent( eventName );
+					if( objectGraphics.getEvents().length == 0 )
+						this._removeFromListeners( object );
+					break;
+				}
+			}			
+		}		
 	}
 }

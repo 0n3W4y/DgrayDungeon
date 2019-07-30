@@ -54,6 +54,7 @@ class Game
 	{
 		if( !this._onPause )
 		{
+			this._eventSystem.update( time );
 			this._sceneSystem.update( time );
 		}
 	}

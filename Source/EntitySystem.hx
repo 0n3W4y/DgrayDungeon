@@ -69,8 +69,6 @@ class EntitySystem
 	{
 		var hero = new Entity( null, id, type, name );
 		var config:Dynamic = this._config.heroes;
-		var traitConfig:Dynamic = this._config.trait;
-		var skillConfig:Dynamic = this._config.skill;
 		var heroType:Int = 0; // "common"
 		switch( params.rarity )
 		{
@@ -188,6 +186,7 @@ class EntitySystem
 						"maxNumOfNegativeStatic": value.maxNumOfNegativeStatic[ heroType ]
 					}
 					// TODO: generate traits and add it to component;
+					var traitConfig:Dynamic = this._config.trait;
 					component = this.createComponent( num, traits );
 
 				};
@@ -272,24 +271,6 @@ class EntitySystem
 			this.addComponentTo( component, hero );
 		}
 
-		for( obj in Reflect.fields( skillConfig ) )
-		{
-			if( obj == name )
-			{
-				skill = Reflect.getProperty( skillConfig, obj );
-				break;
-			}
-		}
-
-		for( box in Reflect.fields( traitConfig ) )
-		{
-			if( box == name )
-			{
-				trait = Reflect.getProperty( traitConfig, box );
-				break;
-			}
-		}
-
 		//Test for console.
 		trace( hero.get( "name" ) + "; " + hero.get( "type" ) + "; " + hero.getComponent( "name" ).get("fullName") + "; " + hero.getComponent( "name" ).get("rarity") );
 		//trace( hero.getComponent( "inventory").getInventory() );
@@ -300,6 +281,28 @@ class EntitySystem
 	{
 		this._parent = parent;
 		this._config = params;
+	}
+
+	public function generateHeroParams():Dynamic
+	{
+		var heroList:Array<String> = new Array();
+		for( key in Reflect.fields( this._config.heroes) )
+		{
+			heroList.push( key );
+		}
+
+		var randomHeroNum = Math.floor( Math.random() * ( heroList.length ) ); // heroList.length - 1 + 1 ;
+		var heroName = heroList[ randomHeroNum ];
+		var rarityNum = Math.floor( Math.random()*100 ); // 0 - 65%, 1 - 20%, 2 - 10%, 3 - 5%
+		var rarity:String = "common"; //0;
+		if( rarityNum < 10 )
+			rarity = "rare"; //2
+		else if( rarityNum >= 75 && rarityNum < 95 )
+			rarity = "uncommon"; //1;
+		else if( rarityNum >= 95 )
+			rarity = "legendary"; //3
+		var params = { "rarity": rarity, "name": heroName };
+		return params;
 	}
 
 	public function createEntity( type:String, name:String, params:Dynamic ):Entity
@@ -363,16 +366,6 @@ class EntitySystem
 			var object = this.createEntity( type, list[ i ], null );
 			this.addEntityToScene( object, scene );
 		}
-	}
-
-	public function getHeroList():Array<String>
-	{
-		var heroList:Array<String> = new Array();
-		for( key in Reflect.fields( _config.heroes) )
-		{
-			heroList.push( key );
-		}
-		return heroList;
 	}
 
 	public function getConfig():Dynamic

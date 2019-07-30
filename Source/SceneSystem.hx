@@ -23,6 +23,7 @@ class SceneSystem
 
 	private function _createStartScene( sceneName:String ):Scene //startgame screen;
 	{
+		var entitySystem:EntitySystem = this._parent.getSystem( "entity" );
 		var id = this._createId();
 		var scene = new Scene( this, id, sceneName );
 
@@ -32,7 +33,6 @@ class SceneSystem
 		
 		scene.setBackgroundImageURL( config.backgroundImageURL );
 
-		var entitySystem:EntitySystem = this._parent.getSystem( "entity" );
 		//create window
 		var windowsArray:Array<String> =  config.window;
 		for( i in 0...windowsArray.length )
@@ -55,49 +55,55 @@ class SceneSystem
 
 	private function _createCityScene( sceneName:String ):Scene
 	{
+		var entitySystem:EntitySystem = this._parent.getSystem( "entity" );
 		var id = this._createId();
 		var scene = new Scene( this, id, sceneName );
-		if( sceneName == "cityScene" )
+
+		var config:Dynamic = Reflect.getProperty( this._config, "cityScene" );
+		if( config == null )
+			trace( "Error in SceneSystem._screateCityScene, scene name: " + sceneName + " not found in config container." );
+
+		scene.setBackgroundImageURL( config.backgroundImageURL );
+		
+		var windowsArray:Array<String> =  config.window;
+		for( i in 0...windowsArray.length )
 		{
-			var building:Entity = null;
-			var buildingsArray:Array<Dynamic> = scene.getEntities( "object" ).buildings;
-			for( i in 0...buildingsArray.length )
+			var window:Entity = entitySystem.createEntity( "window", windowsArray[ i ], null );
+			entitySystem.addEntityToScene( window, scene );
+		}
+			
+		//create buttons
+		var buttonsArray:Array<String> = config.button;
+		for ( j in 0...buttonsArray.length )
+		{
+			var button:Entity = entitySystem.createEntity( "button", buttonsArray[ j ], null );
+			entitySystem.addEntityToScene( button, scene );
+		}
+
+
+		
+		var buildingsArray:Array<Dynamic> = config.building;
+		for( k in 0...buildingsArray.length )
+		{
+			var building:Entity = entitySystem.createEntity( "building", buildingsArray[ k ], null );
+			entitySystem.addEntityToScene( building, scene );
+			if( buildingsArray[ k ] == "recruits" )
 			{
-				var obj:Entity = buildingsArray[ i ];
-				if( obj.get( "name" ) == "recruits" )
+				var slots = building.getComponent( "inventory" ).getCurrentSlots();
+				//fill hero list with names of hero in config file ( data.json from entitysystem );
+
+				for( i in 0...slots )
 				{
-					building = obj;
-					break;
+					var params:Dynamic = entitySystem.generateHeroParams();
+					var hero = entitySystem.createEntity( "hero", params.name, params.rarity );
+					this._parent.getSystem( "entity" ).addEntityToScene( hero, scene );
+					// do this without check, because we have 1-st start and we have 4 slots at all.
+					building.getComponent( "inventory" ).setItemInSlot( hero, null );
+					// set timer to next change heroes in recruit building; 		
 				}
 			}
-			var slots = building.getComponent( "inventory" ).getCurrentSlots();
-
-			//fill hero list with names of hero in config file ( data.json from entitysystem );
-			var heroList:Array<String> = this._parent.getSystem( "entity" ).getHeroList();
-			
-
-			for( i in 0...slots )
-			{
-				var randomHeroNum = Math.floor( Math.random()*( heroList.length ) ); // heroList.length - 1 + 1 ;
-				var heroName = heroList[ randomHeroNum ];
-				var rarityNum = Math.floor( Math.random()*100 ); // 0 - 65%, 1 - 20%, 2 - 10%, 3 - 5%
-				var rarity:String = "common"; //0;
-				if( rarityNum < 10 )
-					rarity = "rare"; //2
-				else if( rarityNum >= 75 && rarityNum < 95 )
-					rarity = "uncommon"; //1;
-				else if( rarityNum >= 95 )
-					rarity = "legendary"; //3
-				var params = { "rarity": rarity };
-				var hero = this._parent.getSystem( "entity" ).createEntity( "hero", heroName, params );
-				this._parent.getSystem( "entity" ).addEntityToScene( hero, scene );
-
-				// do this without check, because we have 1-st start and we have 4 slots at all.
-				building.getComponent( "inventory" ).setItemInSlot( hero, null ); 		
-			}
-			//trace ( building.getComponent( "inventory" ).getInventory() );
-			// set timer to next change heroes in recruit building;
-		}
+		}		
+		//trace ( building.getComponent( "inventory" ).getInventory() );
 		this._addScene( scene );
 		return scene;
 	}

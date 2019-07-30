@@ -57,14 +57,18 @@ class GraphicsSystem
 
 	private function _createWindow( window:Entity ):Sprite
 	{
+		// Sprite - > child[0] = Sprite with graphics;
+		// Sprite - > child[1] = Sprite TextFields - > with queue;
 		var sprite = new Sprite();
+		var graphicsSprite:Sprite = new Sprite();
 		var textSprite = new Sprite();
 		var windowGraphics = window.getComponent( "graphics" );
 
 		var normalData = new Bitmap( Assets.getBitmapData( windowGraphics.getImg().normal.url ) ); // normal -> background != null always;
 		normalData.x = windowGraphics.getImg().normal.x;
 		normalData.y = windowGraphics.getImg().normal.y;
-		sprite.addChild( normalData );
+		graphicsSprite.addChild( normalData );
+		sprite.addChild( graphicsSprite );
 
 		var coords = windowGraphics.getCoordinates();
 		sprite.x = coords.x;
@@ -95,7 +99,10 @@ class GraphicsSystem
 
 	private function _createButton( button:Entity ):Sprite
 	{
+		// Sprite - > child[0] = Sprite with graphics;
+		// Sprite - > child[1] = Sprite TextFields - > with queue;
 		var sprite:Sprite = new Sprite();
+		var graphicsSprite:Sprite = new Sprite();
 		var textSprite = new Sprite();
 		var buttonGraphics = button.getComponent( "graphics" );
 
@@ -116,9 +123,10 @@ class GraphicsSystem
 		dataHover.visible = false;
 		dataPush.visible = false;
 
-		sprite.addChild( dataNormal );
-		sprite.addChild( dataHover );
-		sprite.addChild( dataPush );
+		graphicsSprite.addChild( dataNormal );
+		graphicsSprite.addChild( dataHover );
+		graphicsSprite.addChild( dataPush );
+		sprite.addChild( graphicsSprite );
 
 		var coords = buttonGraphics.getCoordinates();
 		sprite.x = coords.x;
@@ -141,28 +149,28 @@ class GraphicsSystem
 				var textField = this._createText( newText.value );
 				textSprite.addChild( textField );
 			}
-
+			buttonGraphics.setTextInstance( textSprite );
 			sprite.addChild( textSprite );
 		}
+		buttonGraphics.setGraphicsInstance( sprite );
 		
-		this._parent.getSystem( "event" ).addEvent( button.get( "name" ), sprite );
+		this._parent.getSystem( "event" ).addEvent( button, null );
 		if( button.get( "name" ) == "gameContinue" )
 		{
 			var chekButton = this._checkButton( "gameContinue" );
 			if( chekButton )
 			{
 				//remove all events from button.
-				this._parent.getSystem( "event" ).removeEvent( button.get( "name" ), sprite, null );
+				this._parent.getSystem( "event" ).removeEvent(  button, null );
 				sprite.alpha = 0.5;
 			}
-		}			
+		}
+		
 		return sprite;
 	}
 
 	private function _createBuilding( object:Entity ):Sprite
 	{
-		if( object.get( "name" ) == "inn" )
-			return null;
 
 		var buildingSprite:Sprite = new Sprite();
 		var textSprite:Sprite = new Sprite();
@@ -205,8 +213,14 @@ class GraphicsSystem
 			}
 
 			textSprite.alpha = 0;
+			if( object.get( "name" ) == "inn" )
+				textSprite.alpha = 1;
+
+			buildingSprite.addChild( textSprite );
 			objectGraphics.setTextInstance( textSprite );
-			this._parent.getSystem( "event" ).addEvent( object.get( "name" ), object );
+			this._parent.getSystem( "event" ).addEvent( object, "mCLICK" );
+			this._parent.getSystem( "event" ).addEvent( object, "mOUT" );
+			this._parent.getSystem( "event" ).addEvent( object, "mOVER" );
 		}
 		objectGraphics.setGraphicsInstance( buildingSprite );
 		return buildingSprite;

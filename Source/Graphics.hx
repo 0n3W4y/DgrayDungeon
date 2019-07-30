@@ -1,6 +1,7 @@
 package;
 
 import openfl.display.Sprite;
+import openfl.events.MouseEvent;
 
 class Graphics extends Component
 {
@@ -15,6 +16,9 @@ class Graphics extends Component
 	private var _graphicsInstance:Sprite;
 	private var _textInstance:Sprite;
 
+	private var _events:Array<String>;
+	private var _currentEvent:String;
+
 
 
 	public function new( parent:Entity, id:String, params:Dynamic ):Void
@@ -26,6 +30,8 @@ class Graphics extends Component
 		this._y = params.y;
 		this._addiction = params.addiction;
 		this._graphicsInstance = params.graphicsInstance;
+		this._events = new Array();
+		this._currentEvent = null;
 	}
 
 	public function moveTo( x:Float, y:Float ):Void
@@ -100,4 +106,59 @@ class Graphics extends Component
 	{
 		return this._addiction;
 	}
+
+	public function getCurrentEvent():String
+	{
+		return this._currentEvent;
+	}
+
+	public function clearCurrentEvent():Void
+	{
+		this._currentEvent = null;
+	}
+
+	public function getEvents():Array<String>
+	{
+		return this._events;
+	}
+
+	public function addEvent( event:String ):Void
+	{
+		this._events.push( event );
+	}
+
+	public function removeEvent( event:String ):Void
+	{	
+		for( i in 0...this._events.length )
+		{
+			if( this._events[ i ] == event )
+				this._events.splice( i, 1 );
+		}
+	}
+
+	public function mouseClick( e:MouseEvent ):Void
+	{
+		this._currentEvent = "mCLICK";
+	}
+
+	public function mouseUp( e:MouseEvent ):Void
+	{
+		this._currentEvent = "mUP";
+	}
+
+	public function mouseDown( e:MouseEvent ):Void
+	{
+		this._currentEvent = "mDOWN";
+	}
+
+	public function mouseOut( e:MouseEvent ):Void
+	{
+		this._currentEvent = "mOUT";
+	}
+
+	public function mouseOver( e:MouseEvent ):Void
+	{
+		this._currentEvent = "mOVER";
+	}
+
 }

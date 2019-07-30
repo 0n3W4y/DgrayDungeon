@@ -11,9 +11,9 @@
 		"cityScene": 
 		{
 			"backgroundImageURL": "assets/images/citySceneBackround.png",
-			"window": [ "innWindow", "innWindowHeroWindow", "panelCityWindow", "citySceneMainWindow" ],
-			"button": [ "innWindowButtonHeroListUp", "innWindowButtonHeroListDown", "citySceneStartJourneyButton", "citySceneMainWindowExitButton" ],
-			"building": [ "hospital", "academy", "hermit", "merchant", "storage", "graveyard", "recruits", "questman", "fontain", "blacksmith", "tavern", "inn" ]
+			"window": [ "innWindowHeroWindow", "panelCityWindow", "citySceneMainWindow" ],
+			"button": [ "innUp", "innDown" ],
+			"building": [ "hospital", "graveyard", "academy", "merchant", "questman", "fontain", "blacksmith", "hermit", "tavern", "recruits", "inn" ]
 		},
 
 		"chooseDungeonScene":
@@ -1178,7 +1178,8 @@
 					"y": 80.0,
 					"img": 
 					{
-						"normal": { "x": 1600.0, "y": 80.0, "url": "assets/images/innWindow.png" }
+						"normal": { "x": 0, "y": 0.0, "url": "assets/images/innWindow.png" },
+						"hover": { "x": 0, "y": 0.0, "url": "assets/images/innWindow.png" }
 					},
 					"text":
 					{
@@ -1192,8 +1193,9 @@
 							"color": "0xffffff",
 							"visible": true,
 							"selectable": false,
-							"height":50,
-							"width":50
+							"height": 50,
+							"width": 50,
+							"queue": 0
 						},
 						"quantityHeroes":
 						{
@@ -1205,8 +1207,9 @@
 							"color": "0xffffff",
 							"visible": true,
 							"selectable": false,
-							"height":50,
-							"width":50
+							"height": 50,
+							"width": 50,
+							"queue": 1
 						}
 					}					
 				}					
