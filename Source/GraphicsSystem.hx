@@ -59,7 +59,7 @@ class GraphicsSystem
 	{
 		// Sprite - > child[0] = Sprite with graphics;
 		// Sprite - > child[1] = Sprite TextFields - > with queue;
-		var sprite = new Sprite();
+		var sprite:Sprite = new Sprite();
 		var graphicsSprite:Sprite = new Sprite();
 		var textSprite = new Sprite();
 		var windowGraphics = window.getComponent( "graphics" );
@@ -90,7 +90,6 @@ class GraphicsSystem
 				textSprite.addChild( textField );
 			}
 			sprite.addChild( textSprite );
-			windowGraphics.setTextInstance( textSprite );
 		}
 
 		windowGraphics.setGraphicsInstance( sprite );
@@ -149,7 +148,6 @@ class GraphicsSystem
 				var textField = this._createText( newText.value );
 				textSprite.addChild( textField );
 			}
-			buttonGraphics.setTextInstance( textSprite );
 			sprite.addChild( textSprite );
 		}
 		buttonGraphics.setGraphicsInstance( sprite );
@@ -171,7 +169,7 @@ class GraphicsSystem
 
 	private function _createBuilding( object:Entity ):Sprite
 	{
-
+		var sprite:Sprite = new Sprite();
 		var buildingSprite:Sprite = new Sprite();
 		var textSprite:Sprite = new Sprite();
 		var objectGraphics:Dynamic = object.getComponent( "graphics" );
@@ -191,9 +189,11 @@ class GraphicsSystem
 		buildingSprite.addChild( normalData );
 		buildingSprite.addChild( hoverData );
 
+		sprite.addChild( buildingSprite );
+
 		var coords = objectGraphics.getCoordinates();
-		buildingSprite.x = coords.x;
-		buildingSprite.y = coords.y;
+		sprite.x = coords.x;
+		sprite.y = coords.y;
 
 		var text = objectGraphics.getText();
 		if( text != null )
@@ -216,14 +216,13 @@ class GraphicsSystem
 			if( object.get( "name" ) == "inn" )
 				textSprite.alpha = 1;
 
-			buildingSprite.addChild( textSprite );
-			objectGraphics.setTextInstance( textSprite );
-			this._parent.getSystem( "event" ).addEvent( object, "mCLICK" );
-			this._parent.getSystem( "event" ).addEvent( object, "mOUT" );
-			this._parent.getSystem( "event" ).addEvent( object, "mOVER" );
+			sprite.addChild( textSprite );
 		}
-		objectGraphics.setGraphicsInstance( buildingSprite );
-		return buildingSprite;
+		objectGraphics.setGraphicsInstance( sprite );
+		this._parent.getSystem( "event" ).addEvent( object, "mCLICK" );
+		this._parent.getSystem( "event" ).addEvent( object, "mOUT" );
+		this._parent.getSystem( "event" ).addEvent( object, "mOVER" );
+		return sprite;
 	}
 
 	private function _drawStartScene( scene:Scene ):Void
@@ -231,12 +230,12 @@ class GraphicsSystem
 		//add bacground on scene;
 		var backgroundURL = scene.getBackgroundImageURL();
 		var bitmap = new Bitmap( Assets.getBitmapData ( backgroundURL ) );
-		scene.addChild( bitmap );
+		scene.getSprite().addChild( bitmap );
 
 		//add UI objects to ui;
 		var sceneUiEntities:Dynamic = scene.getEntities( "ui" );
 		this.createUiObject( "startSceneWindow", sceneUiEntities );
-		this._parent.getMainSprite().addChild( scene );
+		this._parent.getMainSprite().addChild( scene.getSprite() );
 	}
 
 	private function _undrawStartScene( scene:Scene ):Void
@@ -247,14 +246,14 @@ class GraphicsSystem
 			var window = windowsList[ i ];
 			this._parent.getSystem( "ui" ).removeUiObject( window );
 		}
-		this._parent.getMainSprite().removeChild( scene );
+		this._parent.getMainSprite().removeChild( scene.getSprite() );
 	}
 
 	private function _drawCityScene( scene:Scene ):Void
 	{
 		var backgroundURL = scene.getBackgroundImageURL();
 		var bitmap = new Bitmap( Assets.getBitmapData ( backgroundURL ) );
-		scene.addChild( bitmap );
+		scene.getSprite().addChild( bitmap );
 
 		var sceneObjectEntities:Dynamic = scene.getEntities( "object" );
 		var buildingsList:Array<Entity> = sceneObjectEntities.buildings;
@@ -264,7 +263,7 @@ class GraphicsSystem
 		{
 			var object = buildingsList[ i ];
 			var sprite = this.createObject( object );
-			scene.addChild( sprite );
+			scene.getSprite().addChild( sprite );
 		}
 
 		var sceneUiEntities:Dynamic = scene.getEntities( "ui" );
@@ -275,19 +274,19 @@ class GraphicsSystem
 		this._parent.getSystem( "ui" ).hideUiObject( "citySceneMainWindow" );
 
 
-		this._parent.getMainSprite().addChild( scene );
+		this._parent.getMainSprite().addChild( scene.getSprite() );
 	}
 
 	private function _drawchooseDungeonScene( scene:Scene ):Void
 	{
 		var backgroundURL = scene.getBackgroundImageURL();
 		var bitmap = new Bitmap( Assets.getBitmapData ( backgroundURL ) );
-		scene.addChild( bitmap );
+		scene.getSprite().addChild( bitmap );
 
 		var sceneUiEntities:Dynamic = scene.getEntities( "ui" );
 		this.createUiObject( "dungeon1", sceneUiEntities );
 		this.createUiObject( "chooseHeroToDungeonWindow", sceneUiEntities );
-		this._parent.getMainSprite().addChild( scene );
+		this._parent.getMainSprite().addChild( scene.getSprite() );
 	}
 
 	private function _undrawCityScene( scene:Scene ):Void
@@ -347,7 +346,7 @@ class GraphicsSystem
 					var buttonAddiction = button.getComponent( "graphics" ).getAddiction();
 					if( buttonAddiction == name )
 					{
-						var spriteButton = this._createButton( button );
+						var spriteButton:Sprite = this._createButton( button );
 						spriteWindow.addChild( spriteButton );
 					}
 				}
@@ -369,7 +368,7 @@ class GraphicsSystem
 
 	public function hideScene( scene:Scene ):Void
 	{
-		scene.visible = false;
+		scene.getSprite().visible = false;
 		var list:Dynamic = scene.getEntities( "ui" );
 		var windows:Array<Entity> = list.windows;
 		for( i in 0...windows.length )
@@ -381,6 +380,6 @@ class GraphicsSystem
 
 	public function showScene( scene:Scene ):Void
 	{
-		scene.visible = true;
+		scene.getSprite().visible = true;
 	}
 }

@@ -2,16 +2,17 @@ package;
 
 import openfl.display.Sprite;
 
-class UserInterface extends Sprite
+class UserInterface
 {
 	private var _parent:Game;
 	private var _objectsOnUi:Array<Dynamic>; //store all sprites / bitmaps for fast remove;
+	private var _uiSprite:Sprite;
 
 	public function new( parent:Game ):Void
 	{
-		super();
 		this._parent = parent;
 		this._objectsOnUi = new Array();
+		this._uiSprite = new Sprite();
 		//this.alpha = 0.0;
 	}
 
@@ -19,7 +20,7 @@ class UserInterface extends Sprite
 	{
 		//{ "name": name, "window": spriteWindow };
 		this._objectsOnUi.push( object );
-		this.addChild( object.window.getComponent( "graphics" ).getGraphicsInstance() );
+		this._uiSprite.addChild( object.window.getComponent( "graphics" ).getGraphicsInstance() );
 	}
 
 	public function removeUiObject( object:Entity ):Void
@@ -29,7 +30,7 @@ class UserInterface extends Sprite
 		{
 			if( name == this._objectsOnUi[ i ].name )
 			{
-				this.removeChild( this._objectsOnUi[ i ].window.getComponent( "graphics" ).getGraphicsInstance() );
+				this._uiSprite.removeChild( this._objectsOnUi[ i ].window.getComponent( "graphics" ).getGraphicsInstance() );
 				this._objectsOnUi.splice( i, 1 );
 			}
 		}
@@ -60,5 +61,10 @@ class UserInterface extends Sprite
 				sprite.visible = false;
 			}
 		}
+	}
+
+	public function getUiSprite():Sprite
+	{
+		return this._uiSprite;
 	}
 }

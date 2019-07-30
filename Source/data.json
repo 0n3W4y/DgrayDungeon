@@ -1250,7 +1250,8 @@
 							"visible": true,
 							"selectable": false,
 							"height":100,
-							"width":100
+							"width":100,
+							"queue":0
 						},
 						"hint":
 						{
@@ -1263,7 +1264,8 @@
 							"visible": true,
 							"selectable": false,
 							"height":100,
-							"width":100
+							"width":100,
+							"queue":1
 						}
 					}					
 				},
@@ -1306,7 +1308,8 @@
 							"selectable": false,
 							"queue": 1,
 							"height":100,
-							"width":100
+							"width":100,
+							"queue":0
 						},
 						"hint":
 						{
@@ -1320,7 +1323,8 @@
 							"selectable": false,
 							"queue": 2,
 							"height":100,
-							"width":100
+							"width":100,
+							"queue":1
 						}
 					}
 				}
@@ -1351,7 +1355,8 @@
 							"selectable": false,
 							"queue": 1,
 							"height":100,
-							"width":100
+							"width":100,
+							"queue":0
 						},
 						"hint":
 						{
@@ -1365,7 +1370,8 @@
 							"selectable": false,
 							"queue": 2,
 							"height":100,
-							"width":100
+							"width":100,
+							"queue":1
 						}
 					}
 				}
@@ -1396,7 +1402,8 @@
 							"selectable": false,
 							"queue": 1,
 							"height":100,
-							"width":200
+							"width":200,
+							"queue":0
 						},
 						"hint":
 						{
@@ -1410,7 +1417,8 @@
 							"selectable": false,
 							"queue": 2,
 							"height":100,
-							"width":200
+							"width":200,
+							"queue":1
 						}
 					}
 				}
@@ -1441,7 +1449,8 @@
 							"selectable": false,
 							"queue": 1,
 							"height":100,
-							"width":100
+							"width":100,
+							"queue":0
 						},
 						"hint":
 						{
@@ -1455,7 +1464,8 @@
 							"selectable": false,
 							"queue": 2,
 							"height":100,
-							"width":100
+							"width":100,
+							"queue":1
 						}
 					}
 				}
@@ -1486,7 +1496,8 @@
 							"selectable": false,
 							"queue": 1,
 							"height":100,
-							"width":100
+							"width":100,
+							"queue":0
 						},
 						"hint":
 						{
@@ -1500,7 +1511,8 @@
 							"selectable": false,
 							"queue": 2,
 							"height":100,
-							"width":100
+							"width":100,
+							"queue":1
 						}
 					}
 				}
@@ -1531,7 +1543,8 @@
 							"selectable": false,
 							"queue": 1,
 							"height":100,
-							"width":200
+							"width":200,
+							"queue":0
 						},
 						"hint":
 						{
@@ -1545,7 +1558,8 @@
 							"selectable": false,
 							"queue": 2,
 							"height":50,
-							"width":100
+							"width":100,
+							"queue":1
 						}
 					}
 				}
@@ -1576,7 +1590,8 @@
 							"selectable": false,
 							"queue": 1,
 							"height":50,
-							"width":150
+							"width":150,
+							"queue":0
 						},
 						"hint":
 						{
@@ -1590,7 +1605,8 @@
 							"selectable": false,
 							"queue": 2,
 							"height":50,
-							"width":150
+							"width":150,
+							"queue":1
 						}
 					}
 				}
@@ -1626,8 +1642,8 @@
 							"color": "0x000000",
 							"visible": true,
 							"selectable": false,
-							"height":200,
-							"width":100,
+							"height":100,
+							"width":410,
 							"queue": 0
 						}
 					}
@@ -1661,8 +1677,9 @@
 							"visible": true,
 							"selectable": false,
 							"queue": 0,
-							"height":200,
-							"width":100
+							"height":100,
+							"width":410,
+							"queue":0
 						}
 					}
 				}				
@@ -1695,8 +1712,9 @@
 							"visible": true,
 							"selectable": false,
 							"queue": 0,
-							"height":200,
-							"width":100
+							"height":100,
+							"width":410,
+							"queue":0
 						}
 					}	
 				}									
@@ -1728,8 +1746,9 @@
 							"visible": true,
 							"selectable": false,
 							"queue": 0,
-							"height":200,
-							"width":100
+							"height":100,
+							"width":410,
+							"queue":0
 						}
 					}
 				}				
@@ -1758,7 +1777,8 @@
 							"selectable": false,
 							"queue": 0,
 							"height":40,
-							"width":140
+							"width":140,
+							"queue":0
 						}
 					},
 					"addiction": "panelCityWindow",
@@ -1938,7 +1958,8 @@
 							"selectable": false,
 							"queue": 1,
 							"height":50,
-							"width":350
+							"width":350,
+							"queue":0
 						}
 					}
 				},
@@ -1989,7 +2010,8 @@
 							"visible": true,
 							"selectable": false,
 							"height":50,
-							"width":50
+							"width":50,
+							"queue":0
 						},
 						"lvl":
 						{
@@ -2002,7 +2024,8 @@
 							"visible": true,
 							"selectable": false,
 							"height":50,
-							"width":50
+							"width":50,
+							"queue":1
 						},
 						"armorPower":
 						{
@@ -2015,7 +2038,8 @@
 							"visible": true,
 							"selectable": false,
 							"height":50,
-							"width":50
+							"width":50,
+							"queue":2
 						},
 						"attackPower":
 						{
@@ -2028,7 +2052,8 @@
 							"visible": true,
 							"selectable": false,
 							"height":50,
-							"width":50
+							"width":50,
+							"queue":3
 						}
 					}
 				}

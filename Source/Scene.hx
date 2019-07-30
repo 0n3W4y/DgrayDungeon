@@ -2,11 +2,12 @@ package;
 
 import openfl.display.Sprite;
 
-class Scene extends Sprite
+class Scene
 {
 	private var _parent:SceneSystem;
 	private var _id:String;
 	private var _name:String;
+	private var _sceneSprite:Sprite;
 
 	private var _aliveEntities:Dynamic;
 	private var _objectEntities:Dynamic;
@@ -16,7 +17,6 @@ class Scene extends Sprite
 
 	public function new( parent:SceneSystem, id:String, name:String ):Void
 	{
-		super();
 		this._parent = parent;
 		this._id = id;
 		this._name = name;
@@ -36,6 +36,7 @@ class Scene extends Sprite
 			"windows": new Array<Entity>(),
 			"buttons": new Array<Entity>()
 		};
+		this._sceneSprite = new Sprite();
 	}
 
 	public function update( time:Float ):Void
@@ -96,6 +97,11 @@ class Scene extends Sprite
 	public function setBackgroundImageURL( url:String ):Void
 	{
 		this._backgroundImageURL = url;
+	}
+
+	public function getSprite():Sprite
+	{
+		return this._sceneSprite;
 	}
 
 	public function getEntities( type:String ):Dynamic

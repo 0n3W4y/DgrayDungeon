@@ -3,6 +3,7 @@ package;
 import openfl.display.Sprite;
 import openfl.events.MouseEvent;
 import openfl.display.DisplayObject;
+import openfl.display.DisplayObjectContainer;
 
 
 class EventSystem
@@ -92,15 +93,21 @@ class EventSystem
 			case "mDOWN": this._mouseDown( entity );
 			case "mOVER": this._mouseOver( entity );
 		}
-		entity.getComponent( "graphics" ).clearCurrentEvent();
+		entity.getComponent( "graphics" ).doneCurrentEvent();
 	}
 
-	private function _addToListeners( object ):Void
+	private function _addToListeners( object:Entity ):Void
 	{
+		for( i in 0...this._listeners.length ) // chek if listener already in array;
+		{
+			var listener:Entity = this._listeners[ i ];
+			if( listener.get( "id" ) == object.get( "id" ) )
+				return;
+		}
 		this._listeners.push( object );
 	}
 
-	private function _removeFromListeners( object ):Void
+	private function _removeFromListeners( object:Entity ):Void
 	{
 		for( i in 0...this._listeners.length )
 		{
@@ -125,20 +132,19 @@ class EventSystem
 	{
 		var entityType:String = entity.get( "type" );
 		var entityGraphics:Dynamic = entity.getComponent( "graphics" );
-		var entitySprite:Sprite = entityGraphics.getGraphicsInstance();
-		var entityTextSprite:Sprite = entityGraphics.getTextInstance();
+		var entitySprite:Sprite = entityGraphics.getGraphicsInstance().getChildAt( 0 );
+		var entityTextSprite:Sprite = entityGraphics.getGraphicsInstance().getChildAt( 1 );
 		switch( entityType )
 		{
 			case "building":
 			{
-				entitySprite.getChildAt( 1 ).visible = false; // hover invisible;
-				entityTextSprite.alpha = 0; // becase all text in building in 1 sprite have alpha = 1;
+				//entitySprite.getChildAt( 1 ).visible = false; // hover invisible;
+				//entityTextSprite.alpha = 0; // becase all text in building in 1 sprite have alpha = 1;
 			}
 			case "button":
 			{
-				var graphicsSprite:DisplayObject = entitySprite.getChildAt( 0 );
-				graphicsSprite.getChildAt( 1 ).visible = false; // hover invisible;
-				graphicsSprite.getChildAt( 2 ).visible = false; // unpushed visible;
+				entitySprite.getChildAt( 1 ).visible = false; // hover invisible;
+				entitySprite.getChildAt( 2 ).visible = false; // unpushed visible;
 			}
 		}
 	}
@@ -147,19 +153,18 @@ class EventSystem
 	{
 		var entityType:String = entity.get( "type" );
 		var entityGraphics:Dynamic = entity.getComponent( "graphics" );
-		var entitySprite:Sprite = entityGraphics.getGraphicsInstance();
-		var entityTextSprite:Sprite = entityGraphics.getTextInstance();
+		var entitySprite:Sprite = entityGraphics.getGraphicsInstance().getChildAt( 0 );
+		var entityTextSprite:Sprite = entityGraphics.getGraphicsInstance().getChildAt( 1 );
 		switch( entityType )
 		{
 			case "building":
 			{
-				entitySprite.getChildAt( 1 ).visible = true; // hover visible;
-				entityTextSprite.alpha = 1; // becase all text in building in 1 sprite have alpha = 0;
+				//entitySprite.getChildAt( 1 ).visible = true; // hover visible;
+				//entityTextSprite.alpha = 1; // becase all text in building in 1 sprite have alpha = 0;
 			}
 			case "button":
 			{
-				var graphicsSprite:DisplayObject = entitySprite.getChildAt( 0 );
-				graphicsSprite.getChildAt( 1 ).visible = true; // hover visible;
+				entitySprite.getChildAt( 1 ).visible = true; // hover visible;
 			}
 		}
 	}
@@ -169,7 +174,7 @@ class EventSystem
 		var entityType:String = entity.get( "type" );
 		var entityGraphics:Dynamic = entity.getComponent( "graphics" );
 		var entitySprite:Sprite = entityGraphics.getGraphicsInstance();
-		var entityTextSprite:Sprite = entityGraphics.getTextInstance();
+		//var entityTextSprite:Sprite = entityGraphics.getTextInstance();
 		switch( entityType )
 		{
 			case "building":
@@ -178,8 +183,7 @@ class EventSystem
 			}
 			case "button":
 			{
-				var graphicsSprite:DisplayObject = entitySprite.getChildAt( 0 );
-				graphicsSprite.getChildAt( 2 ).visible = false; // unpushed visible;
+				//graphicsSprite.getChildAt( 2 ).visible = false; // unpushed visible;
 			}
 		}
 	}
@@ -189,7 +193,7 @@ class EventSystem
 		var entityType:String = entity.get( "type" );
 		var entityGraphics:Dynamic = entity.getComponent( "graphics" );
 		var entitySprite:Sprite = entityGraphics.getGraphicsInstance();
-		var entityTextSprite:Sprite = entityGraphics.getTextInstance();
+		//var entityTextSprite:Sprite = entityGraphics.getTextInstance();
 		switch( entityType )
 		{
 			case "building":
@@ -198,8 +202,7 @@ class EventSystem
 			}
 			case "button":
 			{
-				var graphicsSprite:DisplayObject = entitySprite.getChildAt( 0 );
-				graphicsSprite.getChildAt( 2 ).visible = true; // pushed visible;
+				//graphicsSprite.getChildAt( 2 ).visible = true; // pushed visible;
 			}
 		}
 	}
@@ -219,13 +222,12 @@ class EventSystem
 			var listener:Entity = this._listeners[ i ];
 			var graphics:Dynamic = listener.getComponent( "graphics" );
 			var event:String = graphics.getCurrentEvent();
-			if( event != null )
+			var isDone:Bool = graphics.isDoneCurrentEvent();
+			if( event != null && !isDone )
 				this._doEvent( event, listener );
 		}
 		
-	}
-
-	
+	}	
 
 	public function addEvent( object:Entity, eventName:String ):Void
 	{

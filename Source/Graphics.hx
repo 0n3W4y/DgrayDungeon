@@ -14,10 +14,10 @@ class Graphics extends Component
 	private var _addiction:String;
 
 	private var _graphicsInstance:Sprite;
-	private var _textInstance:Sprite;
 
 	private var _events:Array<String>;
 	private var _currentEvent:String;
+	private var _isCurrentEventDone:Bool;
 
 
 
@@ -32,6 +32,7 @@ class Graphics extends Component
 		this._graphicsInstance = params.graphicsInstance;
 		this._events = new Array();
 		this._currentEvent = null;
+		this._isCurrentEventDone = false;
 	}
 
 	public function moveTo( x:Float, y:Float ):Void
@@ -92,15 +93,6 @@ class Graphics extends Component
 		this._graphicsInstance = gi;
 	}
 
-	public function getTextInstance():Sprite
-	{
-		return this._textInstance;
-	}
-
-	public function setTextInstance( ti:Sprite ):Void
-	{
-		this._textInstance = ti;
-	}
 
 	public function getAddiction():String
 	{
@@ -112,9 +104,14 @@ class Graphics extends Component
 		return this._currentEvent;
 	}
 
-	public function clearCurrentEvent():Void
+	public function doneCurrentEvent():Void
 	{
-		this._currentEvent = null;
+		this._isCurrentEventDone = true;
+	}
+
+	public function isDoneCurrentEvent():Bool
+	{
+		return this._isCurrentEventDone;
 	}
 
 	public function getEvents():Array<String>
@@ -138,27 +135,42 @@ class Graphics extends Component
 
 	public function mouseClick( e:MouseEvent ):Void
 	{
+		if( this._currentEvent == "mCLICK" && this._isCurrentEventDone )
+			return;
 		this._currentEvent = "mCLICK";
+		this._isCurrentEventDone = false;
 	}
 
 	public function mouseUp( e:MouseEvent ):Void
 	{
+		if( this._currentEvent == "mUP" && this._isCurrentEventDone )
+			return;
 		this._currentEvent = "mUP";
+		this._isCurrentEventDone = false;
 	}
 
 	public function mouseDown( e:MouseEvent ):Void
 	{
+		if( this._currentEvent == "mDOWN" && this._isCurrentEventDone )
+			return;
 		this._currentEvent = "mDOWN";
+		this._isCurrentEventDone = false;
 	}
 
 	public function mouseOut( e:MouseEvent ):Void
 	{
+		if( this._currentEvent == "mOUT" && this._isCurrentEventDone )
+			return;
 		this._currentEvent = "mOUT";
+		this._isCurrentEventDone = false;
 	}
 
 	public function mouseOver( e:MouseEvent ):Void
 	{
+		if( this._currentEvent == "mOVER" && this._isCurrentEventDone )
+			return;
 		this._currentEvent = "mOVER";
+		this._isCurrentEventDone = false;
 	}
 
 }

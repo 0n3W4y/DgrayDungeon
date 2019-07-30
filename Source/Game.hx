@@ -1,8 +1,8 @@
 package;
 
-import openfl.display.Sprite;
 import haxe.Timer;
 import openfl.system.System;
+import openfl.display.Sprite;
 
 class Game
 {
@@ -46,7 +46,7 @@ class Game
 				delta = this._doubleDelta;
 			}
 			this._update( delta );
-			this._lastTime = Date.now().getTime();			
+			this._lastTime = this._currentTime;	
 		}
 	}
 
@@ -89,8 +89,8 @@ class Game
 		this._width = width;
 
 		this._mainSprite = new Sprite();
-		mainSprite.addChild( this._mainSprite );
-		mainSprite.addChild( this._userInterface );
+		this._enterSprite.addChild( this._mainSprite );
+		this._enterSprite.addChild( this._userInterface.getUiSprite() );
 
 		this._calculateDelta();
 		this._gameStart = Date.now().getTime();
