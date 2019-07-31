@@ -14,7 +14,42 @@ class EntitySystem
 		return id ;
 	}
 
-	private function _createUiType( type:String, name:String, id:String, params:Dynamic ):Entity
+	private function _createWindow( id:String, type:String, name:String, params:Dynamic ):Entity
+	{
+		var entity:Entity = new Entity( this, id, type, name );
+		var config:Dynamic = this._config.window;
+		var windowConfig:Dynamic = null;
+		for( key in Reflect.fields( config ) )
+		{
+			if( key == name )
+			{
+				windowConfig = Reflect.getProperty( config, key );
+				break;
+			}
+		}
+
+		if( windowConfig == null )
+		{
+			trace( "Error in EntitySystem._createWindow, no config for window whith name: " + name );
+			return null;
+		}
+
+		for( obj in Reflect.fields( windowConfig.config ) )
+		{
+			var value = Reflect.getProperty( windowConfig.config, obj );
+			var component:Component = this.createComponent( obj, value );
+			this.addComponentTo( component, entity );
+		}
+		return entity;
+	}
+
+	private function _createButton( id:String, type:String, name:String, params:Dynamic ):Entity
+	{
+		var entity:Entity = new Entity( this, id, type, name );
+		var config:Dynamic = params;
+	}
+
+	private function _createUiType( id:String, type:String, name:String,  params:Dynamic ):Entity
 	{
 		var uiObject = new Entity( this, id, type, name );
 		var config:Dynamic = this._config.window;
@@ -40,7 +75,7 @@ class EntitySystem
 		return uiObject;
 	}
 
-	private function _createBuilding( type:String, name:String, id:String, params:Dynamic ):Entity
+	private function _createBuilding( id:String, type:String, name:String, params:Dynamic ):Entity
 	{
 		var building = new Entity( this, id, type, name );
 		var config:Dynamic = this._config.building;
@@ -65,7 +100,7 @@ class EntitySystem
 		return building;
 	}
 
-	private function _createHero( type:String, name:String, id:String, params:Dynamic ):Entity
+	private function _createHero( id:String, type:String, name:String, params:Dynamic ):Entity
 	{
 		var hero = new Entity( null, id, type, name );
 		var config:Dynamic = this._config.heroes;
@@ -305,17 +340,22 @@ class EntitySystem
 		return params;
 	}
 
-	public function createEntity( type:String, name:String, params:Dynamic ):Entity
+	public function createEntity( type:String, name:String, params:Dynamic, scene:Scene ):Entity
 	{
 		var id = this._createId();
+		var entity:Entity = null;
 		switch( type )
 		{
-			case "window", "button" : return this._createUiType( type, name, id, params );
-			case "building" : return this._createBuilding( type, name, id, params );
-			case "hero": return this._createHero( type, name, id, params );
+			case "window" : entity = this._createWindow( id, type, name, params );
+			case "button" : entity = this._createButton( id, type, name, params );
+			case "building" : entity = this._createBuilding( id, type, name, params );
+			case "hero": entity = this._createHero( id, type, name, params );
 			default: trace( "Error in EntitySystem.createEntity, can't find entity with type: " + type + "." );
 		};
-		return null;
+		if( scene != null )
+			this.addEntityToScene( entity, scene );
+
+		return entity;
 	}
 
 	public function addComponentTo( component:Component, entity:Entity ):Void

@@ -50,6 +50,7 @@ class EventSystem
 				if( sceneName == "cityScene" )
 					trace( "go to scene choose dungeon" );
 			}
+			case "citySceneMainWindowClose" : this._parent.getSystem( "ui" ).hideUiObject( "citySceneMainWindow" );
 			default: trace( "Error in EventSustem._clickButton, no button with name: " + entityName );
 		}
 	}
@@ -57,6 +58,7 @@ class EventSystem
 	private function _clickBuilding( entity:Entity ):Void
 	{
 		var entityName:String = entity.get( "name" );
+		this._parent.getSystem( "ui" ).showUiObject( "citySceneMainWindow" );
 		switch( entityName )
 		{
 			case "hospital": {};
@@ -138,8 +140,8 @@ class EventSystem
 		{
 			case "building":
 			{
-				//entitySprite.getChildAt( 1 ).visible = false; // hover invisible;
-				//entityTextSprite.alpha = 0; // becase all text in building in 1 sprite have alpha = 1;
+				entitySprite.getChildAt( 1 ).visible = false; // hover invisible;
+				entityTextSprite.alpha = 0; // becase all text in building in 1 sprite have alpha = 1;
 			}
 			case "button":
 			{
@@ -159,8 +161,8 @@ class EventSystem
 		{
 			case "building":
 			{
-				//entitySprite.getChildAt( 1 ).visible = true; // hover visible;
-				//entityTextSprite.alpha = 1; // becase all text in building in 1 sprite have alpha = 0;
+				entitySprite.getChildAt( 1 ).visible = true; // hover visible;
+				entityTextSprite.alpha = 1; // becase all text in building in 1 sprite have alpha = 0;
 			}
 			case "button":
 			{
@@ -173,17 +175,14 @@ class EventSystem
 	{
 		var entityType:String = entity.get( "type" );
 		var entityGraphics:Dynamic = entity.getComponent( "graphics" );
-		var entitySprite:Sprite = entityGraphics.getGraphicsInstance();
-		//var entityTextSprite:Sprite = entityGraphics.getTextInstance();
+		var entitySprite:Sprite = entityGraphics.getGraphicsInstance().getChildAt( 0 );
+		var entityTextSprite:Sprite = entityGraphics.getGraphicsInstance().getChildAt( 1 );
 		switch( entityType )
 		{
-			case "building":
-			{
-
-			}
+			case "building": {}//do nothing;
 			case "button":
 			{
-				//graphicsSprite.getChildAt( 2 ).visible = false; // unpushed visible;
+				entitySprite.getChildAt( 2 ).visible = false; // unpushed visible;
 			}
 		}
 	}
@@ -192,8 +191,8 @@ class EventSystem
 	{
 		var entityType:String = entity.get( "type" );
 		var entityGraphics:Dynamic = entity.getComponent( "graphics" );
-		var entitySprite:Sprite = entityGraphics.getGraphicsInstance();
-		//var entityTextSprite:Sprite = entityGraphics.getTextInstance();
+		var entitySprite:Sprite = entityGraphics.getGraphicsInstance().getChildAt( 0 );
+		var entityTextSprite:Sprite = entityGraphics.getGraphicsInstance().getChildAt( 1 );
 		switch( entityType )
 		{
 			case "building":
@@ -202,7 +201,7 @@ class EventSystem
 			}
 			case "button":
 			{
-				//graphicsSprite.getChildAt( 2 ).visible = true; // pushed visible;
+				entitySprite.getChildAt( 2 ).visible = true; // pushed visible;
 			}
 		}
 	}

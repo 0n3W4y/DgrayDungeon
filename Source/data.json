@@ -5,14 +5,12 @@
 		{
 			"backgroundImageURL": "assets/images/background_game.png",
 			"window": [ "startSceneWindow" ],
-			"button": [ "gameAuthors", "gameOptions", "gameContinue", "gameStart"]
 		},
 
 		"cityScene": 
 		{
 			"backgroundImageURL": "assets/images/citySceneBackround.png",
-			"window": [ "innWindowHeroWindow", "panelCityWindow", "citySceneMainWindow" ],
-			"button": [ "innUp", "innDown" ],
+			"window": [ "panelCityWindow", "citySceneMainWindow", "innWindow" ],
 			"building": [ "hospital", "graveyard", "academy", "merchant", "questman", "fontain", "blacksmith", "hermit", "tavern", "recruits", "inn" ]
 		},
 
@@ -1169,49 +1167,6 @@
 					{
 						"slot1": { "name": null, "type": "slot", "item": null, "restriction": "hero", "isAvailable": false, "isStorable": false, "maxSize": null, "currentSize": null }
 					}
-				},
-				"graphics":
-				{
-					"addiction": "inn",
-					"graphicsInstance": null,
-					"x": 1600.0,
-					"y": 80.0,
-					"img": 
-					{
-						"normal": { "x": 0, "y": 0.0, "url": "assets/images/innWindow.png" },
-						"hover": { "x": 0, "y": 0.0, "url": "assets/images/innWindow.png" }
-					},
-					"text":
-					{
-						"nameWindow":
-						{
-							"text": "Inn",
-							"x": 20.0,
-							"y": -35.0,
-							"font": "Verdana",
-							"size": 32,
-							"color": "0xffffff",
-							"visible": true,
-							"selectable": false,
-							"height": 50,
-							"width": 50,
-							"queue": 0
-						},
-						"quantityHeroes":
-						{
-							"text": "0/0",
-							"x": 100.0,
-							"y": -35.0,
-							"font": "Verdana",
-							"size": 32,
-							"color": "0xffffff",
-							"visible": true,
-							"selectable": false,
-							"height": 50,
-							"width": 50,
-							"queue": 1
-						}
-					}					
 				}					
 			},
 
@@ -1613,511 +1568,572 @@
 			}
 		},
 
-		"button":
-		{
-			"gameStart": 
-			{
-				"graphics":
-				{
-					"addiction": "startSceneWindow",
-					"graphicsInstance": null,
-					"queue": 1,
-					"x": 75.0,
-					"y": 145.0,
-					"img": 
-					{
-						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b.png" },
-						"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b_hover.png" },
-						"pushed": {"x": 0.0, "y": 0.0, "url": "assets/images/button_b_push.png" }
-					},
-					"text": 
-					{
-						"buttonText":
-						{
-							"text": "New",
-							"x": 0.0,
-							"y": 0.0,
-							"font": "Verdana",
-							"size": 58,
-							"color": "0x000000",
-							"visible": true,
-							"selectable": false,
-							"height":100,
-							"width":410,
-							"queue": 0
-						}
-					}
-				}				
-			},
-			"gameContinue":
-			{
-				"graphics":
-				{
-					"addiction": "startSceneWindow",
-					"graphicsInstance": null,
-					"queue": 0,
-					"x": 75.0,
-					"y": 25.0,
-					"img": 
-					{
-						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b.png" },
-						"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b_hover.png" },
-						"pushed": {"x": 0.0, "y": 0.0, "url": "assets/images/button_b_push.png" }
-					},
-					"text": 
-					{
-						"buttonText":
-						{
-							"text": "Continue",
-							"x": 0.0,
-							"y": 0.0,
-							"font": "Verdana",
-							"size": 64,
-							"color": "0x000000",
-							"visible": true,
-							"selectable": false,
-							"queue": 0,
-							"height":100,
-							"width":410,
-							"queue":0
-						}
-					}
-				}				
-			},
-			"gameOptions": 
-			{
-				"graphics":
-				{
-					"addiction": "startSceneWindow",
-					"graphicsInstance": null,
-					"queue": 2,
-					"x": 75.0,
-					"y": 265.0,
-					"img": 
-					{
-						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b.png" },
-						"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b_hover.png" },
-						"pushed": {"x": 0.0, "y": 0.0, "url": "assets/images/button_b_push.png" }
-					},
-					"text": 
-					{
-						"buttonText":
-						{
-							"text": "Options",
-							"x": 0.0,
-							"y": 0.0,
-							"font": "Verdana",
-							"size": 64,
-							"color": "0x000000",
-							"visible": true,
-							"selectable": false,
-							"queue": 0,
-							"height":100,
-							"width":410,
-							"queue":0
-						}
-					}	
-				}									
-			},
-			"gameAuthors":
-			{
-				"graphics":
-				{
-					"addiction": "startSceneWindow",
-					"graphicsInstance": null,
-					"queue": 3,
-					"x": 75.0,
-					"y": 385.0,
-					"img": 
-					{
-						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b.png" },
-						"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b_hover.png" },
-						"pushed": {"x": 0.0, "y": 0.0, "url": "assets/images/button_b_push.png" }
-					},
-					"text": {
-						"buttonText":
-						{
-							"text": "Authors",
-							"x": 0.0,
-							"y": 0.0,
-							"font": "Verdana",
-							"size": 64,
-							"color": "0x000000",
-							"visible": true,
-							"selectable": false,
-							"queue": 0,
-							"height":100,
-							"width":410,
-							"queue":0
-						}
-					}
-				}				
-			},
-
-			"gameStartJourney":
-			{
-				"graphics":
-				{
-					"url": "assets/images/button_a.png",
-					"url2": "assets/images/button_a_hover.png",
-					"url3": "assets/images/button_a_push.png",
-					"x": 860.0,
-					"y": 5.0,
-					"text" : 
-					{
-						"buttonText":
-						{
-							"text": "START",
-							"x": 75.0,
-							"y": 5.0,
-							"font": "Verdana",
-							"size": 38,
-							"color": "0xffffff",
-							"visible": true,
-							"selectable": false,
-							"queue": 0,
-							"height":40,
-							"width":140,
-							"queue":0
-						}
-					},
-					"addiction": "panelCityWindow",
-					"queue" : 0,
-					"graphicsInstance": null
-				}				
-			},
-			"innUp":
-			{
-				"graphics":
-				{
-					"url": "assets/images/button_c.png",
-					"url2": "assets/images/button_c_hover.png",
-					"url3": "assets/images/button_c_push.png",
-					"x": 105.0,
-					"y": 810.0,
-					"text" : null,
-					"addiction": "inn",
-					"queue" : 0,
-					"graphicsInstance": null
-				}				
-			},
-			"innDown":
-			{
-				"graphics":
-				{
-					"url": "assets/images/button_d.png",
-					"url2": "assets/images/button_d_push.png",
-					"url3": "assets/images/button_d_hover.png",
-					"x": 25.0,
-					"y": 810.0,
-					"text" : null,
-					"addiction": "inn",
-					"queue" : 0,
-					"graphicsInstance": null
-				}		
-			},
-
-			"chooseDungeonSceneDungeonButtonA":
-			{
-				"graphics":
-				{
-					"url": "assets/images/button_dungeon_a.png",
-					"url2": "assets/images/button_dungeon_a.png",
-					"url3": "assets/images/button_dungeon_a_choose.png",
-					"x": -50.0,
-					"y": 100.0,
-					"text" : null,
-					"addiction": "dungeon1",
-					"queue" : 0,
-					"graphicsInstance": null
-				},
-				"ui":{}			
-			},
-			"chooseDungeonSceneDungeonButtonB":
-			{
-				"graphics":
-				{
-					"url": "assets/images/button_dungeon_b.png",
-					"url2": "assets/images/button_dungeon_b.png",
-					"url3": "assets/images/button_dungeon_b_choose.png",
-					"x": 0.0,
-					"y": 0.0,
-					"text" : null,
-					"addiction": "dungeon1",
-					"queue" : 0,
-					"graphicsInstance": null
-				},
-				"ui":{}			
-			},
-			"chooseDungeonSceneDungeonButtonC":
-			{
-				"graphics":
-				{
-					"url": "assets/images/button_dungeon_c.png",
-					"url2": "assets/images/button_dungeon_c.png",
-					"url3": "assets/images/button_dungeon_c_choose.png",
-					"x": 0.0,
-					"y": 0.0,
-					"text" : null,
-					"addiction": "dungeon1",
-					"queue" : 0,
-					"graphicsInstance": null
-				},
-				"ui":{}			
-			},
-			"chooseDungeonSceneDungeonButtonD":
-			{
-				"graphics":
-				{
-					"url": "assets/images/button_dungeon_d.png",
-					"url2": "assets/images/button_dungeon_d.png",
-					"url3": "assets/images/button_dungeon_d_choose.png",
-					"x": 0.0,
-					"y": 0.0,
-					"text" : null,
-					"addiction": "dungeon1",
-					"queue" : 0,
-					"graphicsInstance": null
-				},
-				"ui":{}		
-			},
-				
-			"chooseDungeonBackToCityButton":
-			{
-				"graphics":
-				{
-					"url": "assets/images/backToCityButton.png",
-					"url2": "assets/images/backToCityButton_hover.png",
-					"url3": "assets/images/backToCityButton_push.png",
-					"x": 100.0,
-					"y": 150.0,
-					"text" : null,
-					"addiction": null,
-					"queue" : 0,
-					"graphicsInstance": null
-				}
-			},
-			"citySceneMainWindowExitButton":
-			{
-				"graphics":
-				{
-					"url": "assets/images/citySceneMainWindowExitButton.png",
-					"url2": "assets/images/citySceneMainWindowExitButton.png",
-					"url3": "assets/images/citySceneMainWindowExitButton_push.png",
-					"x": 1000.0,
-					"y": 10.0,
-					"text" : null,
-					"addiction": "citySceneMainWindow",
-					"queue" : 0,
-					"graphicsInstance": null
-				}
-			}
-		},
-		
 		"window":
 		{
 			"startSceneWindow":
 			{
-				"graphics":
+				"config":
 				{
-					"addiction": "startSceneWindow",
-					"graphicsInstance": null,
-					"queue": 0,
-					"x": 1300.0,
-					"y": 450.0,
-					"img": 
+					"graphics":
 					{
-						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/startSceneButtonsWindow.png" }
-					},
-					"text" : null
-				}				
-			},
-			"citySceneMainWindow":
-			{
-				"graphics":
-				{
-					"addiction": null,
-					"graphicsInstance": null,
-					"x": 170.0,
-					"y": 70.0,
-					"img": 
-					{
-						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/citySceneMainWindow.png" }
-					},
-					"text" : 
-					{
-						"nameWindow":
+						"queue": 0,
+						"x": 1300.0,
+						"y": 450.0,
+						"img": 
 						{
-							"text": "The real estate",
-							"x": 0.0,
-							"y": 0.0,
-							"font": "Verdana",
-							"size": 48,
-							"color": "0xffffff",
-							"visible": true,
-							"selectable": false,
-							"queue": 1,
-							"height":50,
-							"width":350,
-							"queue":0
-						}
+							"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/startSceneButtonsWindow.png" }
+						},
+						"text" : null
 					}
 				},
-				"ui":
+				"button": 
 				{
-
+					"gameStart": 
+					{
+						"graphics":
+						{
+							"queue": 0,
+							"x": 75.0,
+							"y": 145.0,
+							"img": 
+							{
+								"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b.png" },
+								"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b_hover.png" },
+								"pushed": {"x": 0.0, "y": 0.0, "url": "assets/images/button_b_push.png" }
+							},
+							"text": 
+							{
+								"buttonText":
+								{
+									"text": "New",
+									"x": 0.0,
+									"y": 0.0,
+									"font": "Verdana",
+									"size": 58,
+									"color": "0x000000",
+									"visible": true,
+									"selectable": false,
+									"height":100,
+									"width":410,
+									"queue": 0
+								}
+							}
+						}				
+					},
+					"gameContinue":
+					{
+						"graphics":
+						{
+							"queue": 0,
+							"x": 75.0,
+							"y": 25.0,
+							"img": 
+							{
+								"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b.png" },
+								"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b_hover.png" },
+								"pushed": {"x": 0.0, "y": 0.0, "url": "assets/images/button_b_push.png" }
+							},
+							"text": 
+							{
+								"buttonText":
+								{
+									"text": "Continue",
+									"x": 0.0,
+									"y": 0.0,
+									"font": "Verdana",
+									"size": 64,
+									"color": "0x000000",
+									"visible": true,
+									"selectable": false,
+									"queue": 0,
+									"height":100,
+									"width":410,
+									"queue":0
+								}
+							}
+						}				
+					},
+					"gameOptions": 
+					{
+						"graphics":
+						{
+							"queue": 0,
+							"x": 75.0,
+							"y": 265.0,
+							"img": 
+							{
+								"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b.png" },
+								"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b_hover.png" },
+								"pushed": {"x": 0.0, "y": 0.0, "url": "assets/images/button_b_push.png" }
+							},
+							"text": 
+							{
+								"buttonText":
+								{
+									"text": "Options",
+									"x": 0.0,
+									"y": 0.0,
+									"font": "Verdana",
+									"size": 64,
+									"color": "0x000000",
+									"visible": true,
+									"selectable": false,
+									"queue": 0,
+									"height":100,
+									"width":410,
+									"queue":0
+								}
+							}	
+						}									
+					},
+					"gameAuthors":
+					{
+						"graphics":
+						{
+							"queue": 0,
+							"x": 75.0,
+							"y": 385.0,
+							"img": 
+							{
+								"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b.png" },
+								"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b_hover.png" },
+								"pushed": {"x": 0.0, "y": 0.0, "url": "assets/images/button_b_push.png" }
+							},
+							"text": {
+								"buttonText":
+								{
+									"text": "Authors",
+									"x": 0.0,
+									"y": 0.0,
+									"font": "Verdana",
+									"size": 64,
+									"color": "0x000000",
+									"visible": true,
+									"selectable": false,
+									"queue": 0,
+									"height":100,
+									"width":410,
+									"queue":0
+								}
+							}
+						}				
+					}
 				}
 			},
+
+
+
+
+
+
+
+			"citySceneMainWindow":
+			{
+				"config": 
+				{
+					"graphics":
+					{
+						"queue": 0,
+						"x": 170.0,
+						"y": 70.0,
+						"img": 
+						{
+							"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/citySceneMainWindow.png" }
+						},
+						"text" : 
+						{
+							"nameWindow":
+							{
+								"text": "The real estate",
+								"x": 0.0,
+								"y": 0.0,
+								"font": "Verdana",
+								"size": 48,
+								"color": "0xffffff",
+								"visible": true,
+								"selectable": false,
+								"queue": 1,
+								"height":50,
+								"width":350,
+								"queue":0
+							}
+						}
+					},						
+					"ui":
+					{
+						"parentWindow": null
+					}
+				},
+				"button": null
+			},
+
+
+			"recruitWindow":
+			{
+				"config": 
+				{
+					"graphics":
+					{
+						"queue": 1,
+						"x":0,
+						"y":0,
+						"img": 
+						{
+							"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/recruitWindow.png" }
+						},
+						"text":
+						{
+							"nameWindow":
+							{
+								"text": "Recruits",
+								"x": 0.0,
+								"y": 0.0,
+								"font": "Verdana",
+								"size": 48,
+								"color": "0xffffff",
+								"visible": true,
+								"selectable": false,
+								"queue": 0,
+								"height":50,
+								"width":350,
+								"queue":0
+							}
+						}
+					},
+					"ui":
+					{
+						"parentWindow": "citySceneMainWindow"
+					}
+				},
+				"button":
+				{
+					"recruitWindowClose":
+					{
+						"graphics":
+						{
+							"queue" : 0,
+							"img":
+							{
+								"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/citySceneMainWindowExitButton.png" },
+								"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/citySceneMainWindowExitButton.png" },
+								"push": { "x": 0.0, "y": 0.0, "url": "assets/images/citySceneMainWindowExitButton_push.png" }
+							},									
+							"x": 1000.0,
+							"y": 0.0,
+							"text" : null								
+						}
+					}								
+				}				
+			},
+
+
+
+
+			"innWindow":
+			{
+				"config":
+				{
+					"graphics":
+					{
+						"queue":0,
+						"x": 1600.0,
+						"y": 80.0,
+						"img": 
+						{
+							"normal": { "x": 0, "y": 0.0, "url": "assets/images/innWindow.png" }
+						},
+						"text":
+						{
+							"nameWindow":
+							{
+								"text": "Inn",
+								"x": 20.0,
+								"y": -35.0,
+								"font": "Verdana",
+								"size": 32,
+								"color": "0xffffff",
+								"visible": true,
+								"selectable": false,
+								"height": 50,
+								"width": 50,
+								"queue": 0
+							},
+							"quantityHeroes":
+							{
+								"text": "0/0",
+								"x": 100.0,
+								"y": -35.0,
+								"font": "Verdana",
+								"size": 32,
+								"color": "0xffffff",
+								"visible": true,
+								"selectable": false,
+								"height": 50,
+								"width": 50,
+								"queue": 1
+							}
+						}					
+					}
+				},
+				"button":
+				{
+					"innUp":
+					{
+						"graphics":
+						{
+							"x": 105.0,
+							"y": 810.0,
+							"img": 
+							{
+								"normal": { "x": 0, "y": 0.0, "url": "assets/images/button_c.png" },
+								"hover": { "x": 0, "y": 0.0, "url": "assets/images/button_c_hover.png" },
+								"pushed": { "x": 0, "y": 0.0, "url": "assets/images/button_c_push.png" }
+							},
+							"text" : null,
+							"queue" : 0,
+						}				
+					},
+					"innDown":
+					{
+						"graphics":
+						{
+							"x": 25.0,
+							"y": 810.0,
+							"img": 
+							{
+								"normal": { "x": 0, "y": 0.0, "url": "assets/images/button_d.png" },
+								"hover": { "x": 0, "y": 0.0, "url": "assets/images/button_d_hover.png" },
+								"pushed": { "x": 0, "y": 0.0, "url": "assets/images/button_d_push.png" }
+							},
+							"text" : null,
+							"queue" : 0,
+						}		
+					}
+				}
+			},
+
+
+
+
 
 			"panelCityWindow":
 			{
-				"graphics":
+
+				"config":
 				{
-					"addiction": null,
-					"graphicsInstance": null,
-					"x": -5.0,
-					"y": 1010.0,
-					"img": 
+					"graphics":
 					{
-						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/panelCityWindow.png" }
-					},
-					"text" : null
-				}
-			},
-			
-			"innWindowHeroWindow":
-			{
-				"graphics":
+						"queue": 0,
+						"x": -1.0,
+						"y": 1010.0,
+						"img": 
+						{
+							"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/panelCityWindow.png" }
+						},
+						"text" : null
+					}
+				},
+				"button":
 				{
-					"addiction": null,
-					"graphicsInstance": null,
-					"x": 0.0,
-					"y": 0.0,
-					"img": 
+					"gameStartJourney":
 					{
-						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/innWindowHeroWindow.png" }
+						"graphics":
+						{
+							"queue" : 0,
+							"x": 860.0,
+							"y": 5.0,
+							"img": 
+							{
+								"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/button_a.png" },
+								"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/button_a_hover.png" },
+								"pushed": { "x": 0.0, "y": 0.0, "url": "assets/images/button_a_push.png" }
+							},
+							"text" : 
+							{
+								"buttonText":
+								{
+									"text": "START",
+									"x": 75.0,
+									"y": 5.0,
+									"font": "Verdana",
+									"size": 38,
+									"color": "0xffffff",
+									"visible": true,
+									"selectable": false,
+									"queue": 0,
+									"height":40,
+									"width":140,
+									"queue":0
+								}
+							}
+						}				
 					},
-					"text" : 
+					"chooseDungeonBackToCityButton":
 					{
-						"nameWindow":
+						"graphics":
 						{
-							"text": "Empty",
-							"x": 0.0,
-							"y": 0.0,
-							"font": "Verdana",
-							"size": 22,
-							"color": "0x000000",
-							"visible": true,
-							"selectable": false,
-							"height":50,
-							"width":50,
-							"queue":0
-						},
-						"lvl":
-						{
-							"text": "1",
-							"x": 0.0,
-							"y": 0.0,
-							"font": "Verdana",
-							"size": 22,
-							"color": "0x000000",
-							"visible": true,
-							"selectable": false,
-							"height":50,
-							"width":50,
-							"queue":1
-						},
-						"armorPower":
-						{
-							"text": "0",
-							"x": 0.0,
-							"y": 0.0,
-							"font": "Verdana",
-							"size": 22,
-							"color": "0x000000",
-							"visible": true,
-							"selectable": false,
-							"height":50,
-							"width":50,
-							"queue":2
-						},
-						"attackPower":
-						{
-							"text": "0",
-							"x": 0.0,
-							"y": 0.0,
-							"font": "Verdana",
-							"size": 22,
-							"color": "0x000000",
-							"visible": true,
-							"selectable": false,
-							"height":50,
-							"width":50,
-							"queue":3
+							"x": 100.0,
+							"y": 150.0,
+							"img": 
+							{
+								"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/backToCityButton.png" },
+								"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/backToCityButton_hover.png" },
+								"pushed": { "x": 0.0, "y": 0.0, "url": "assets/images/backToCityButton_push.png" }
+							},
+							"text" : null,
+							"queue" : 0
+
 						}
 					}
-				}
-			},
-
-			"dungeon1":
-			{
-				"graphics":
-				{
-					"url": "assets/images/dungeonWindow.png",
-					"url2": null,
-					"url3": null,
-					"x": 700.0,
-					"y": 400.0,
-					"text" : 
-					{
-						"nameWindow":
-						{
-							"text": "The real path of truth",
-							"x": 15.0,
-							"y": 10.0,
-							"font": "Verdana",
-							"size": 22,
-							"color": "0xffffff",
-							"visible": true,
-							"selectable": false,
-							"queue": 1,
-							"height":20,
-							"width":250
-						},
-						"lvl":
-						{
-							"text": "1",
-							"x": 350.0,
-							"y": 10.0,
-							"font": "Verdana",
-							"size": 22,
-							"color": "0xfffff0",
-							"visible": true,
-							"selectable": false,
-							"queue": 2,
-							"height":30,
-							"width":10
-						}
-					},
-					"addiction": "dungeon1",
-					"queue": 0,
-					"graphicsInstance": null
 				}
 			},
 
 			"chooseHeroToDungeonWindow":
 			{
-				"graphics":
+				"config":
 				{
-					"url": "assets/images/dungeonSceneHeroesToDungeon.png",
-					"url2": null,
-					"url3": null,
-					"x": 685.0,
-					"y": 820.0,
-					"text": null,
-					"addiction": "chooseHeroToDungeonWindow",
-					"queue" : 0,
-					"graphicsInstance": null
+					"graphics":
+					{
+						"img": 
+						{
+							"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/dungeonSceneHeroesToDungeon.png" }
+						},
+						"x": 685.0,
+						"y": 820.0,
+						"text": null,
+						"queue" : 0
+					}
+				},
+				"buttons":null,					
+			},
+
+
+
+			"dungeonOne":
+			{
+				"config":
+				{
+					"graphics":
+					{
+						"queue": 0,
+						"x": 700.0,
+						"y": 400.0,
+						"img": 
+						{
+							"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/dungeonWindow.png" }
+						},
+						"text" : 
+						{
+							"nameWindow":
+							{
+								"text": "The real path of truth",
+								"x": 15.0,
+								"y": 10.0,
+								"font": "Verdana",
+								"size": 22,
+								"color": "0xffffff",
+								"visible": true,
+								"selectable": false,
+								"queue": 1,
+								"height":20,
+								"width":250
+							},
+							"lvl":
+							{
+								"text": "1",
+								"x": 350.0,
+								"y": 10.0,
+								"font": "Verdana",
+								"size": 22,
+								"color": "0xfffff0",
+								"visible": true,
+								"selectable": false,
+								"queue": 2,
+								"height":30,
+								"width":10
+							}
+						}
+					}
+				},
+				"button":
+				{
+					"dungeonOneButtonA":
+					{
+						"graphics":
+						{
+							"img": 
+							{
+								"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/button_dungeon_a.png" },
+								"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/button_dungeon_a.png" },
+								"pushed": { "x": 0.0, "y": 0.0, "url": "assets/images/button_dungeon_a_choose.png" }
+							},
+							"x": -50.0,
+							"y": 100.0,
+							"text" : null,
+							"queue" : 0
+						},
+						"ui":
+						{
+							"parentWindow": null
+						}			
+					},
+					"dungeonOneButtonB":
+					{
+						"graphics":
+						{
+							"img": 
+							{
+								"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/button_dungeon_b.png" },
+								"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/button_dungeon_b.png" },
+								"pushed": { "x": 0.0, "y": 0.0, "url": "assets/images/button_dungeon_b_choose.png" }
+							},
+							"x": 0.0,
+							"y": 0.0,
+							"text" : null,
+							"queue" : 0
+						},
+						"ui":
+						{
+							"parentWindow": null
+						}			
+					},
+					"dungeonOneButtonC":
+					{
+						"graphics":
+						{
+							"img": 
+							{
+								"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/button_dungeon_c.png" },
+								"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/button_dungeon_c.png" },
+								"pushed": { "x": 0.0, "y": 0.0, "url": "assets/images/button_dungeon_c_choose.png" }
+							},
+							"x": 0.0,
+							"y": 0.0,
+							"text" : null,
+							"queue" : 0
+						},
+						"ui":{}			
+					},
+					"dungeonOneButtonD":
+					{
+						"graphics":
+						{
+							"img": 
+							{
+								"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/button_dungeon_d.png" },
+								"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/button_dungeon_d.png" },
+								"pushed": { "x": 0.0, "y": 0.0, "url": "assets/images/button_dungeon_d_choose.png" }
+							},
+							"x": 0.0,
+							"y": 0.0,
+							"text" : null,
+							"queue" : 0
+						},
+						"ui":
+						{
+							"parentWindow": null
+						}		
+					}
 				}
 			}
 		}

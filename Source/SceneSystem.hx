@@ -37,51 +37,30 @@ class SceneSystem
 		var windowsArray:Array<String> =  config.window;
 		for( i in 0...windowsArray.length )
 		{
-			var window:Entity = entitySystem.createEntity( "window", windowsArray[ i ], null );
+			var windowName:String = windowsArray[ i ];
+			var window:Entity = entitySystem.createEntity( "window", windowName, null );
 			entitySystem.addEntityToScene( window, scene );
+			var buttons:Dynamic = this._parent.getSystem( "entity ").getConfig();
 		}
-			
-		//create buttons
-		var buttonsArray:Array<String> = config.button;
-		for ( j in 0...buttonsArray.length )
-		{
-			var button:Entity = entitySystem.createEntity( "button", buttonsArray[ j ], null );
-			entitySystem.addEntityToScene( button, scene );
-		}		
-				
+
+		
 		this._addScene( scene );
 		return scene;
 	}
 
-	private function _createCityScene( sceneName:String ):Scene
+	private function _createCityScene():Scene
 	{
 		var entitySystem:EntitySystem = this._parent.getSystem( "entity" );
 		var id = this._createId();
-		var scene = new Scene( this, id, sceneName );
+		var scene = new Scene( this, id, "cityScene" );
 
 		var config:Dynamic = Reflect.getProperty( this._config, "cityScene" );
 		if( config == null )
-			trace( "Error in SceneSystem._screateCityScene, scene name: " + sceneName + " not found in config container." );
+			trace( "Error in SceneSystem._screateCityScene, scene not found in config container." );
 
 		scene.setBackgroundImageURL( config.backgroundImageURL );
 		
-		var windowsArray:Array<String> =  config.window;
-		for( i in 0...windowsArray.length )
-		{
-			var window:Entity = entitySystem.createEntity( "window", windowsArray[ i ], null );
-			entitySystem.addEntityToScene( window, scene );
-		}
-			
-		//create buttons
-		var buttonsArray:Array<String> = config.button;
-		for ( j in 0...buttonsArray.length )
-		{
-			var button:Entity = entitySystem.createEntity( "button", buttonsArray[ j ], null );
-			entitySystem.addEntityToScene( button, scene );
-		}
-
-
-		
+		// create all buildings.
 		var buildingsArray:Array<Dynamic> = config.building;
 		for( k in 0...buildingsArray.length )
 		{
@@ -102,7 +81,15 @@ class SceneSystem
 					// set timer to next change heroes in recruit building; 		
 				}
 			}
-		}		
+		}
+
+		var windowsArray:Array<String> =  config.window;
+		var windowConfig:Dynamic = this._parent.getSystem( "entity" ).getConfig().window;
+		for( i in 0...windowsArray.length )
+		{
+			var window:Entity = entitySystem.createEntity( "window", windowsArray[ i ], null );
+			entitySystem.addEntityToScene( window, scene );
+		}	
 		//trace ( building.getComponent( "inventory" ).getInventory() );
 		this._addScene( scene );
 		return scene;

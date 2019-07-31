@@ -10,8 +10,8 @@ class Graphics extends Component
 
 	private var _x:Float;
 	private var _y:Float;
+	private var _queue:Int;
 
-	private var _addiction:String;
 
 	private var _graphicsInstance:Sprite;
 
@@ -28,8 +28,8 @@ class Graphics extends Component
 		this._text = params.text;
 		this._x = params.x;
 		this._y = params.y;
-		this._addiction = params.addiction;
-		this._graphicsInstance = params.graphicsInstance;
+		this._queue = params.queue;
+		this._graphicsInstance = null;
 		this._events = new Array();
 		this._currentEvent = null;
 		this._isCurrentEventDone = false;
@@ -59,6 +59,11 @@ class Graphics extends Component
 	public function getText():Dynamic
 	{
 		return this._text;
+	}
+
+	public function getQueue():Int
+	{
+		return this._queue;
 	}
 
 	public function getCoordinates():Dynamic
@@ -91,12 +96,6 @@ class Graphics extends Component
 	public function setGraphicsInstance( gi:Sprite ):Void
 	{
 		this._graphicsInstance = gi;
-	}
-
-
-	public function getAddiction():String
-	{
-		return this._addiction;
 	}
 
 	public function getCurrentEvent():String

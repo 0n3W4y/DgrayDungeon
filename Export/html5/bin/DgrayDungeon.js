@@ -894,9 +894,9 @@ ApplicationMain.create = function(config) {
 	ManifestResources.init(config);
 	var _this = app.meta;
 	if(__map_reserved["build"] != null) {
-		_this.setReserved("build","45");
+		_this.setReserved("build","132");
 	} else {
-		_this.h["build"] = "45";
+		_this.h["build"] = "132";
 	}
 	var _this1 = app.meta;
 	if(__map_reserved["company"] != null) {
@@ -4889,6 +4889,8 @@ EventSystem.prototype = {
 		var entityTextSprite = entityGraphics.getGraphicsInstance().getChildAt(1);
 		switch(entityType) {
 		case "building":
+			entitySprite.getChildAt(1).set_visible(false);
+			entityTextSprite.set_alpha(0);
 			break;
 		case "button":
 			entitySprite.getChildAt(1).set_visible(false);
@@ -4903,6 +4905,8 @@ EventSystem.prototype = {
 		var entityTextSprite = entityGraphics.getGraphicsInstance().getChildAt(1);
 		switch(entityType) {
 		case "building":
+			entitySprite.getChildAt(1).set_visible(true);
+			entityTextSprite.set_alpha(1);
 			break;
 		case "button":
 			entitySprite.getChildAt(1).set_visible(true);
@@ -4912,22 +4916,26 @@ EventSystem.prototype = {
 	,_mouseUp: function(entity) {
 		var entityType = entity.get("type");
 		var entityGraphics = entity.getComponent("graphics");
-		var entitySprite = entityGraphics.getGraphicsInstance();
+		var entitySprite = entityGraphics.getGraphicsInstance().getChildAt(0);
+		var entityTextSprite = entityGraphics.getGraphicsInstance().getChildAt(1);
 		switch(entityType) {
 		case "building":
 			break;
 		case "button":
+			entitySprite.getChildAt(2).set_visible(false);
 			break;
 		}
 	}
 	,_mouseDown: function(entity) {
 		var entityType = entity.get("type");
 		var entityGraphics = entity.getComponent("graphics");
-		var entitySprite = entityGraphics.getGraphicsInstance();
+		var entitySprite = entityGraphics.getGraphicsInstance().getChildAt(0);
+		var entityTextSprite = entityGraphics.getGraphicsInstance().getChildAt(1);
 		switch(entityType) {
 		case "building":
 			break;
 		case "button":
+			entitySprite.getChildAt(2).set_visible(true);
 			break;
 		}
 	}
@@ -5563,6 +5571,9 @@ GraphicsSystem.prototype = {
 			sprite.addChild(textSprite);
 		}
 		objectGraphics.setGraphicsInstance(sprite);
+		if(object.get("name") == "inn") {
+			return sprite;
+		}
 		this._parent.getSystem("event").addEvent(object,"mCLICK");
 		this._parent.getSystem("event").addEvent(object,"mOUT");
 		this._parent.getSystem("event").addEvent(object,"mOVER");
@@ -5632,7 +5643,7 @@ GraphicsSystem.prototype = {
 			this._drawStartScene(scene);
 			break;
 		default:
-			haxe_Log.trace("Can't draw scene with name: " + sceneName + ".",{ fileName : "GraphicsSystem.hx", lineNumber : 313, className : "GraphicsSystem", methodName : "drawScene"});
+			haxe_Log.trace("Can't draw scene with name: " + sceneName + ".",{ fileName : "GraphicsSystem.hx", lineNumber : 315, className : "GraphicsSystem", methodName : "drawScene"});
 		}
 	}
 	,undrawScene: function(scene) {
@@ -5645,7 +5656,7 @@ GraphicsSystem.prototype = {
 			this._undrawStartScene(scene);
 			break;
 		default:
-			haxe_Log.trace("Can't sraw scene with name: " + sceneName + ".",{ fileName : "GraphicsSystem.hx", lineNumber : 324, className : "GraphicsSystem", methodName : "undrawScene"});
+			haxe_Log.trace("Can't sraw scene with name: " + sceneName + ".",{ fileName : "GraphicsSystem.hx", lineNumber : 326, className : "GraphicsSystem", methodName : "undrawScene"});
 		}
 	}
 	,createUiObject: function(name,list) {
@@ -5679,7 +5690,7 @@ GraphicsSystem.prototype = {
 		if(type == "building") {
 			return this._createBuilding(object);
 		} else {
-			haxe_Log.trace("Error GraphicsSystem.createObject, object type: " + type + ", can't be found.",{ fileName : "GraphicsSystem.hx", lineNumber : 364, className : "GraphicsSystem", methodName : "createObject"});
+			haxe_Log.trace("Error GraphicsSystem.createObject, object type: " + type + ", can't be found.",{ fileName : "GraphicsSystem.hx", lineNumber : 366, className : "GraphicsSystem", methodName : "createObject"});
 		}
 		return null;
 	}
@@ -28417,7 +28428,7 @@ var lime_utils_AssetCache = function() {
 	this.audio = new haxe_ds_StringMap();
 	this.font = new haxe_ds_StringMap();
 	this.image = new haxe_ds_StringMap();
-	this.version = 127076;
+	this.version = 543470;
 };
 $hxClasses["lime.utils.AssetCache"] = lime_utils_AssetCache;
 lime_utils_AssetCache.__name__ = ["lime","utils","AssetCache"];

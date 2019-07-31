@@ -2,15 +2,17 @@ package;
 
 class UI extends Component
 {
-	private var _isChoosen:Bool = false;
-	//private var _currentChildOpen:String = null;
-	// this is child window is opened on parent window;
-
+	private var _isChoosen:Bool;
+	private var _parentWindow:String;
+	private var _currentOpen:String;
 
 
 	public function new( parent:Entity, id:String, params:Dynamic ):Void
 	{
 		super( parent, id, "ui" );
+		this._isChoosen = false;
+		this._parentWindow = params.parentWindow;
+		this._currentOpen = null;
 	}
 
 	public function isChoosen():Bool
@@ -18,8 +20,11 @@ class UI extends Component
 		return this._isChoosen;
 	}
 
-	public function setIsChoosen( value:Bool ):Void
+	public function setIsChoosen():Void
 	{
-		this._isChoosen = value;
+		if( this._isChoosen )
+			this._isChoosen = false;
+		else
+			this._isChoosen = true;
 	}
 }

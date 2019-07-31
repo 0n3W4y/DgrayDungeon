@@ -219,9 +219,17 @@ class GraphicsSystem
 			sprite.addChild( textSprite );
 		}
 		objectGraphics.setGraphicsInstance( sprite );
+		if( object.get( "name" ) == "inn" )
+			return sprite;
 		this._parent.getSystem( "event" ).addEvent( object, "mCLICK" );
 		this._parent.getSystem( "event" ).addEvent( object, "mOUT" );
 		this._parent.getSystem( "event" ).addEvent( object, "mOVER" );
+		return sprite;
+	}
+
+	private function _createUiObject( object:Entity ):Sprite
+	{
+		var sprite = new Sprite();
 		return sprite;
 	}
 
@@ -272,7 +280,6 @@ class GraphicsSystem
 		this.createUiObject( "panelCityWindow", sceneUiEntities );
 		this.createUiObject( "citySceneMainWindow", sceneUiEntities );
 		this._parent.getSystem( "ui" ).hideUiObject( "citySceneMainWindow" );
-
 
 		this._parent.getMainSprite().addChild( scene.getSprite() );
 	}
@@ -328,7 +335,6 @@ class GraphicsSystem
 	public function createUiObject( name:String, list:Dynamic ):Void
 	{
 		//TODO: rebuild function;
-		//[{"name": "Window1","window":{window:entity},"text":[{"text1":{text}}],"button":[{"button1":{button1},"text":{text}]];
 		var windows:Array<Entity> = list.windows;
 		var buttons:Array<Entity> = list.buttons;
 		
@@ -355,12 +361,36 @@ class GraphicsSystem
 		}		
 	}
 
+	public function drawObject( object:Entity ):Void
+	{
+		// this function get  raw entity, and create graphics for it, add on UI, if it UI type, or just put it on activeScene sprite;
+		var type:String = object.get( "type" );
+		switch( type )
+		{
+			case "window":
+			case "building":
+			default: trace( "Error in GraphicsSystem.drawObject, object type: " + type + ", can't be found." );
+		}
+	}
+
+	public function undrawObject( object:Entity ):Void
+	{
+		var type:String = object.get( "type" );
+		switch( type )
+		{
+			case "window":
+			case "building":
+			default: trace( "Error in GraphicsSystem.undrawObject, object type: " + type + ", can't be found." );
+		}
+	}
+
 	public function createObject( object:Entity ):Sprite
 	{
 		var type = object.get( "type" );
 		switch( type )
 		{
 			case "building": return this._createBuilding( object );
+			case "window": return this._createUiObject( object );
 			default: trace( "Error GraphicsSystem.createObject, object type: " + type + ", can't be found." );
 		}
 		return null;
