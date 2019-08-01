@@ -21,15 +21,15 @@ class SceneSystem
 		this._scenesArray.push( scene );
 	}
 
-	private function _createStartScene( sceneName:String ):Scene //startgame screen;
+	private function _createStartScene():Scene //startgame screen;
 	{
 		var entitySystem:EntitySystem = this._parent.getSystem( "entity" );
 		var id = this._createId();
-		var scene = new Scene( this, id, sceneName );
+		var scene = new Scene( this, id, "startScene" );
 
 		var config:Dynamic = Reflect.getProperty( this._config, "startScene" );
 		if( config == null )
-			trace( "Error in SceneSystem._screateStartScene, scene name: " + sceneName + " not found in config container." );
+			trace( "Error in SceneSystem._screateStartScene, scene 'startScene' not found in config container." );
 		
 		scene.setBackgroundImageURL( config.backgroundImageURL );
 
@@ -37,12 +37,17 @@ class SceneSystem
 		var windowsArray:Array<String> =  config.window;
 		for( i in 0...windowsArray.length )
 		{
-			var windowName:String = windowsArray[ i ];
-			var window:Entity = entitySystem.createEntity( "window", windowName, null );
+			var window:Entity = entitySystem.createEntity( "window", windowsArray[ i ], null );
 			entitySystem.addEntityToScene( window, scene );
-			var buttons:Dynamic = this._parent.getSystem( "entity ").getConfig();
 		}
 
+		var buttonArray:Array<String> = config.button;
+
+		for( j in 0...buttonArray.length )
+		{
+			var button:Entity = entitySystem.createEntity( "button", buttonArray[ j ], null );
+			entitySystem.addEntityToScene( button, scene );
+		}
 		
 		this._addScene( scene );
 		return scene;
@@ -73,8 +78,7 @@ class SceneSystem
 
 				for( i in 0...slots )
 				{
-					var params:Dynamic = entitySystem.generateHeroParams();
-					var hero = entitySystem.createEntity( "hero", params.name, params.rarity );
+					var hero = entitySystem.createEntity( "hero", null, null );
 					this._parent.getSystem( "entity" ).addEntityToScene( hero, scene );
 					// do this without check, because we have 1-st start and we have 4 slots at all.
 					building.getComponent( "inventory" ).setItemInSlot( hero, null );
@@ -89,16 +93,23 @@ class SceneSystem
 		{
 			var window:Entity = entitySystem.createEntity( "window", windowsArray[ i ], null );
 			entitySystem.addEntityToScene( window, scene );
+		}
+
+		var buttonArray:Array<String> = config.button;
+		for( j in 0...buttonArray.length )
+		{
+			var button:Entity = entitySystem.createEntity( "button", buttonArray[ j ], null );
+			entitySystem.addEntityToScene( button, scene );
 		}	
 		//trace ( building.getComponent( "inventory" ).getInventory() );
 		this._addScene( scene );
 		return scene;
 	}
 
-	private function _createChooseDungeonScene( sceneName:String ):Scene
+	private function _createChooseDungeonScene():Scene
 	{
 		var id = this._createId();
-		var scene = new Scene( this, id, sceneName );
+		var scene = new Scene( this, id, "schooSeDungeonScene" );
 		//TODO: CONFIG;
 		this._addScene( scene );
 		return scene;
@@ -163,9 +174,9 @@ class SceneSystem
 	{
 		switch( sceneName )
 		{
-			case "startScene": return this._createStartScene( sceneName );
-			case "cityScene": return this._createCityScene( sceneName );
-			case "chooseDungeonScene": return this._createChooseDungeonScene( sceneName );
+			case "startScene": return this._createStartScene();
+			case "cityScene": return this._createCityScene();
+			case "chooseDungeonScene": return this._createChooseDungeonScene();
 			case "dungeonEasy" : return this._createDungeonEasy( sceneName );
 			case "dungeonMedium": return this._createdungeonMedium( sceneName );
 			case "dungeonHard": return this._createDungeonHard( sceneName );

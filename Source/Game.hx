@@ -48,15 +48,20 @@ class Game
 			this._update( delta );
 			this._lastTime = this._currentTime;	
 		}
+		this._sUpdate();
 	}
 
 	private function _update( time:Float ):Void
 	{
 		if( !this._onPause )
 		{
-			this._eventSystem.update( time );
 			this._sceneSystem.update( time );
 		}
+	}
+
+	private function _sUpdate():Void
+	{
+		this._eventSystem.update();
 	}
 
 	private function _parseData():Dynamic

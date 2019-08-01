@@ -28,13 +28,13 @@ class Scene
 		};
 		this._objectEntities = 
 		{
-			"buildings": new Array<Entity>(),
-			"treasures": new Array<Entity>()
+			"building": new Array<Entity>(),
+			"treasure": new Array<Entity>()
 		};
 		this._uiEntities = 
 		{
-			"windows": new Array<Entity>(),
-			"buttons": new Array<Entity>()
+			"window": new Array<Entity>(),
+			"button": new Array<Entity>()
 		};
 		this._sceneSprite = new Sprite();
 	}

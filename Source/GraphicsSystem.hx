@@ -24,6 +24,18 @@ class GraphicsSystem
 			return 0;
 	}
 
+	private function _sortWithQueueWindow( a:Entity, b:Entity ):Int
+	{
+		var aQueue = a.getComponent( "graphics" ).getQueue();
+		var bQueue = b.getComponent( "graphics" ).getQueue();
+		if( aQueue > bQueue )
+			return 1;
+		else if( aQueue < bQueue )
+			return -1;
+		else
+			return 0;
+	}
+
 	private function _checkButton( name:String ):Bool
 	{	
 		// there is the function, we need to check button click and other's function to enable it or disable;
@@ -63,11 +75,15 @@ class GraphicsSystem
 		var graphicsSprite:Sprite = new Sprite();
 		var textSprite = new Sprite();
 		var windowGraphics = window.getComponent( "graphics" );
+		var normalData = null;
 
-		var normalData = new Bitmap( Assets.getBitmapData( windowGraphics.getImg().normal.url ) ); // normal -> background != null always;
-		normalData.x = windowGraphics.getImg().normal.x;
-		normalData.y = windowGraphics.getImg().normal.y;
-		graphicsSprite.addChild( normalData );
+		if( windowGraphics.getImg() != null )
+		{
+			normalData = new Bitmap( Assets.getBitmapData( windowGraphics.getImg().normal.url ) ); // normal -> background != null always;
+			normalData.x = windowGraphics.getImg().normal.x;
+			normalData.y = windowGraphics.getImg().normal.y;
+			graphicsSprite.addChild( normalData );
+		}
 		sprite.addChild( graphicsSprite );
 
 		var coords = windowGraphics.getCoordinates();
@@ -242,17 +258,16 @@ class GraphicsSystem
 
 		//add UI objects to ui;
 		var sceneUiEntities:Dynamic = scene.getEntities( "ui" );
-		this.createUiObject( "startSceneWindow", sceneUiEntities );
+		this.createUiObject( sceneUiEntities );
 		this._parent.getMainSprite().addChild( scene.getSprite() );
 	}
 
 	private function _undrawStartScene( scene:Scene ):Void
 	{
-		var windowsList:Array<Entity> = scene.getEntities( "ui" ).windows;
+		var windowsList:Array<Entity> = scene.getEntities( "ui" ).window;
 		for( i in 0...windowsList.length )
 		{
-			var window = windowsList[ i ];
-			this._parent.getSystem( "ui" ).removeUiObject( window );
+			this._parent.getSystem( "ui" ).removeUiObject( windowsList[ i ].get( "name" ) );
 		}
 		this._parent.getMainSprite().removeChild( scene.getSprite() );
 	}
@@ -264,22 +279,24 @@ class GraphicsSystem
 		scene.getSprite().addChild( bitmap );
 
 		var sceneObjectEntities:Dynamic = scene.getEntities( "object" );
-		var buildingsList:Array<Entity> = sceneObjectEntities.buildings;
+		var buildingsList:Array<Entity> = sceneObjectEntities.building;
 
 
 		for( i in 0...buildingsList.length )
 		{
-			var object = buildingsList[ i ];
+			var object:Entity = buildingsList[ i ];
+			if( object.get( "name") == "inn" || object.get( "name") == "storage" )
+				continue;
 			var sprite = this.createObject( object );
 			scene.getSprite().addChild( sprite );
 		}
 
 		var sceneUiEntities:Dynamic = scene.getEntities( "ui" );
-		//here we create only that window, whom see all time;
-		this.createUiObject( "innWindow", sceneUiEntities );
-		this.createUiObject( "panelCityWindow", sceneUiEntities );
-		this.createUiObject( "citySceneMainWindow", sceneUiEntities );
-		this._parent.getSystem( "ui" ).hideUiObject( "citySceneMainWindow" );
+		var uiSystem:UserInterface = this._parent.getSystem( "ui" );
+		this.createUiObject( sceneUiEntities );
+
+		uiSystem.hideUiObject( "citySceneMainWindow" );
+		uiSystem.hideUiObject( "recruitWindow" );
 
 		this._parent.getMainSprite().addChild( scene.getSprite() );
 	}
@@ -291,8 +308,7 @@ class GraphicsSystem
 		scene.getSprite().addChild( bitmap );
 
 		var sceneUiEntities:Dynamic = scene.getEntities( "ui" );
-		this.createUiObject( "dungeon1", sceneUiEntities );
-		this.createUiObject( "chooseHeroToDungeonWindow", sceneUiEntities );
+		this.createUiObject( sceneUiEntities );
 		this._parent.getMainSprite().addChild( scene.getSprite() );
 	}
 
@@ -332,32 +348,29 @@ class GraphicsSystem
 		}
 	}
 
-	public function createUiObject( name:String, list:Dynamic ):Void
+	public function createUiObject( list:Dynamic ):Void
 	{
 		//TODO: rebuild function;
-		var windows:Array<Entity> = list.windows;
-		var buttons:Array<Entity> = list.buttons;
+		var windows:Array<Entity> = list.window;
+		var buttons:Array<Entity> = list.button;
+		windows.sort( this._sortWithQueueWindow );
 		
 		for( i in 0...windows.length )
 		{
 			var window = windows[ i ];
 			var windowName = window.get( "name" );
-			if( windowName == name )
+			var spriteWindow:Sprite = this._createWindow( window );
+			for( j in 0...buttons.length )
 			{
-				var spriteWindow:Sprite = this._createWindow( window );
-
-				for( j in 0...buttons.length )
+				var button = buttons[ j ];
+				var buttonParent = button.getComponent( "ui" ).getParentWindow();
+				if( buttonParent == windowName )
 				{
-					var button = buttons[ j ];
-					var buttonAddiction = button.getComponent( "graphics" ).getAddiction();
-					if( buttonAddiction == name )
-					{
-						var spriteButton:Sprite = this._createButton( button );
-						spriteWindow.addChild( spriteButton );
-					}
+					var spriteButton:Sprite = this._createButton( button );
+					spriteWindow.addChild( spriteButton );
 				}
-				this._parent.getSystem( "ui" ).addUiObject( { "name": name, "window": window } );
 			}
+			this._parent.getSystem( "ui" ).addUiObject( { "name": windowName, "window": spriteWindow } );
 		}		
 	}
 

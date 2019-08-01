@@ -27,4 +27,9 @@ class UI extends Component
 		else
 			this._isChoosen = true;
 	}
+
+	public function getParentWindow():String
+	{
+		return this._parentWindow;
+	}
 }

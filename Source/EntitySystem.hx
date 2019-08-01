@@ -14,42 +14,7 @@ class EntitySystem
 		return id ;
 	}
 
-	private function _createWindow( id:String, type:String, name:String, params:Dynamic ):Entity
-	{
-		var entity:Entity = new Entity( this, id, type, name );
-		var config:Dynamic = this._config.window;
-		var windowConfig:Dynamic = null;
-		for( key in Reflect.fields( config ) )
-		{
-			if( key == name )
-			{
-				windowConfig = Reflect.getProperty( config, key );
-				break;
-			}
-		}
-
-		if( windowConfig == null )
-		{
-			trace( "Error in EntitySystem._createWindow, no config for window whith name: " + name );
-			return null;
-		}
-
-		for( obj in Reflect.fields( windowConfig.config ) )
-		{
-			var value = Reflect.getProperty( windowConfig.config, obj );
-			var component:Component = this.createComponent( obj, value );
-			this.addComponentTo( component, entity );
-		}
-		return entity;
-	}
-
-	private function _createButton( id:String, type:String, name:String, params:Dynamic ):Entity
-	{
-		var entity:Entity = new Entity( this, id, type, name );
-		var config:Dynamic = params;
-	}
-
-	private function _createUiType( id:String, type:String, name:String,  params:Dynamic ):Entity
+	private function _createWindowButtonType( id:String, type:String, name:String,  params:Dynamic ):Entity
 	{
 		var uiObject = new Entity( this, id, type, name );
 		var config:Dynamic = this._config.window;
@@ -100,18 +65,39 @@ class EntitySystem
 		return building;
 	}
 
-	private function _createHero( id:String, type:String, name:String, params:Dynamic ):Entity
+	private function _generateHeroParams():Dynamic
 	{
-		var hero = new Entity( null, id, type, name );
-		var config:Dynamic = this._config.heroes;
-		var heroType:Int = 0; // "common"
-		switch( params.rarity )
+		var heroList:Array<String> = new Array();
+		for( key in Reflect.fields( this._config.hero) )
 		{
-			case "uncommon": heroType = 1; // "uncommon", 
-			case "rare": heroType = 2; //"rare", 
-			case "legendary": heroType = 3; //"legendary"
+			heroList.push( key );
 		}
 
+		var randomHeroNum = Math.floor( Math.random() * ( heroList.length ) ); // heroList.length - 1 + 1 ;
+		var heroName = heroList[ randomHeroNum ];
+		var rarityNum = Math.floor( Math.random() * 100 ); // 0 - 65%, 1 - 20%, 2 - 10%, 3 - 5%
+		var rarity:Int = 0;
+		if( rarityNum < 10 )
+			rarity = 2;
+		else if( rarityNum >= 75 && rarityNum < 95 )
+			rarity = 1;
+		else if( rarityNum >= 95 )
+			rarity = 3;
+		var params:Dynamic = { "rarity": rarity, "name": heroName };
+		return params;
+	}
+
+	private function _createHero( id:String, type:String, name:String, params:Dynamic ):Entity
+	{
+		if( params == null )
+			params = this._generateHeroParams();
+
+		if( name == null )
+			name = params.name;
+
+		var hero = new Entity( null, id, type, name );
+		var config:Dynamic = this._config.hero;
+		var heroType:Int = params.rarity; // "common"-0, "uncommon"-1, "rare"-2, "legendary"-3;
 		var heroConfig:Dynamic = null;
 		var heroTypeConfig:Dynamic = null;
 		var skill:Dynamic = null;
@@ -132,6 +118,7 @@ class EntitySystem
 			var component:Dynamic = null;
 			switch( num )
 			{
+				case "event": component = this.createComponent( num, value );
 				case "name": 
 				{
 					var names:Array<String> = [ "Alex", "Sally", "Edward", "Bob", "Alice", "Odry", "Cooper", "Ann" ];
@@ -318,44 +305,18 @@ class EntitySystem
 		this._config = params;
 	}
 
-	public function generateHeroParams():Dynamic
-	{
-		var heroList:Array<String> = new Array();
-		for( key in Reflect.fields( this._config.heroes) )
-		{
-			heroList.push( key );
-		}
 
-		var randomHeroNum = Math.floor( Math.random() * ( heroList.length ) ); // heroList.length - 1 + 1 ;
-		var heroName = heroList[ randomHeroNum ];
-		var rarityNum = Math.floor( Math.random()*100 ); // 0 - 65%, 1 - 20%, 2 - 10%, 3 - 5%
-		var rarity:String = "common"; //0;
-		if( rarityNum < 10 )
-			rarity = "rare"; //2
-		else if( rarityNum >= 75 && rarityNum < 95 )
-			rarity = "uncommon"; //1;
-		else if( rarityNum >= 95 )
-			rarity = "legendary"; //3
-		var params = { "rarity": rarity, "name": heroName };
-		return params;
-	}
-
-	public function createEntity( type:String, name:String, params:Dynamic, scene:Scene ):Entity
+	public function createEntity( type:String, name:String, params:Dynamic ):Entity
 	{
 		var id = this._createId();
-		var entity:Entity = null;
 		switch( type )
 		{
-			case "window" : entity = this._createWindow( id, type, name, params );
-			case "button" : entity = this._createButton( id, type, name, params );
-			case "building" : entity = this._createBuilding( id, type, name, params );
-			case "hero": entity = this._createHero( id, type, name, params );
+			case "window", "button" : return this._createWindowButtonType( id, type, name, params );
+			case "building" : return this._createBuilding( id, type, name, params );
+			case "hero": return this._createHero( id, type, name, params );
 			default: trace( "Error in EntitySystem.createEntity, can't find entity with type: " + type + "." );
 		};
-		if( scene != null )
-			this.addEntityToScene( entity, scene );
-
-		return entity;
+		return null;
 	}
 
 	public function addComponentTo( component:Component, entity:Entity ):Void
@@ -377,6 +338,7 @@ class EntitySystem
 			case "stats": component = new Stats( null, id, params );
 			case "traits": component = new Traits( null, id, params );
 			case "experience": component = new Experience( null, id, params );
+			case "event": component = new Event( null, id, params );
 			default: trace( "Error in EntitySystem.createComponent, component with name: '" + componentName + "' does not exist." );
 		}
 		return component;
@@ -388,10 +350,11 @@ class EntitySystem
 		var type = entity.get( "type" );
 		switch( type )
 		{
-			case "window": scene.getEntities( "ui" ).windows.push( entity );
-			case "button": scene.getEntities( "ui" ).buttons.push( entity );
-			case "building": scene.getEntities( "object" ).buildings.push( entity );
+			case "window": scene.getEntities( "ui" ).window.push( entity );
+			case "button": scene.getEntities( "ui" ).button.push( entity );
+			case "building": scene.getEntities( "object" ).building.push( entity );
 			case "hero": scene.getEntities( "alive" ).hero.push( entity );
+			case "enemy": scene.getEntities( "alive" ).enemy.push( entity );
 			default: trace( "Error in Scene.addEntity, can't add entity with name: " + entity.get( "name" ) + ", and type: " + type + "." );
 		}
 	}
