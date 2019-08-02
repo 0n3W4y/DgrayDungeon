@@ -29,7 +29,7 @@ class UserInterface
 			}
 		}
 		this._objectsOnUi.push( object );
-		this._uiSprite.addChild( object.window );
+		this._uiSprite.addChild( object.window.getComponent( "graphics" ).getGraphicsInstance() );
 	}
 
 	public function removeUiObject( object:String ):Void
@@ -38,7 +38,7 @@ class UserInterface
 		{
 			if( object == this._objectsOnUi[ i ].name )
 			{
-				this._uiSprite.removeChild( this._objectsOnUi[ i ].window );
+				this._uiSprite.removeChild( this._objectsOnUi[ i ].window.getComponent( "graphics" ).getGraphicsInstance() );
 				this._objectsOnUi.splice( i, 1 );
 			}
 		}
@@ -52,7 +52,7 @@ class UserInterface
 			var object = this._objectsOnUi[ i ];
 			if( object.name == name )
 			{
-				var sprite:Sprite = object.window;
+				var sprite:Sprite = object.window.getComponent( "graphics" ).getGraphicsInstance();
 				sprite.visible = true;
 			}
 		}
@@ -65,7 +65,7 @@ class UserInterface
 			var object = this._objectsOnUi[ i ];
 			if( object.name == name )
 			{
-				var sprite:Sprite = object.window;
+				var sprite:Sprite = object.window.getComponent( "graphics" ).getGraphicsInstance();
 				sprite.visible = false;
 			}
 		}
@@ -74,5 +74,17 @@ class UserInterface
 	public function getUiSprite():Sprite
 	{
 		return this._uiSprite;
+	}
+
+	public function getWindow( window:String ):Entity
+	{
+		for( i in 0...this._objectsOnUi.length )
+		{
+			var obj:Dynamic = this._objectsOnUi[ i ];
+			if( obj.name == window )
+				return obj.window;
+		}
+		trace( "Error in UserInterface.getWindow, no window with name " + window );
+		return null;
 	}
 }

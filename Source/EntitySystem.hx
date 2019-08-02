@@ -294,7 +294,7 @@ class EntitySystem
 		}
 
 		//Test for console.
-		trace( hero.get( "name" ) + "; " + hero.get( "type" ) + "; " + hero.getComponent( "name" ).get("fullName") + "; " + hero.getComponent( "name" ).get("rarity") );
+		//trace( hero.get( "name" ) + "; " + hero.get( "type" ) + "; " + hero.getComponent( "name" ).get("fullName") + "; " + hero.getComponent( "name" ).get("rarity") );
 		//trace( hero.getComponent( "inventory").getInventory() );
 		return hero;
 	}

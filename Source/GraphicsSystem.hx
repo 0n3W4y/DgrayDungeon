@@ -370,7 +370,7 @@ class GraphicsSystem
 					spriteWindow.addChild( spriteButton );
 				}
 			}
-			this._parent.getSystem( "ui" ).addUiObject( { "name": windowName, "window": spriteWindow } );
+			this._parent.getSystem( "ui" ).addUiObject( { "name": windowName, "window": window } );
 		}		
 	}
 

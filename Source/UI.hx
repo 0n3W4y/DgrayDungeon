@@ -32,4 +32,14 @@ class UI extends Component
 	{
 		return this._parentWindow;
 	}
+
+	public function getCurrentOpen():String
+	{
+		return this._currentOpen;
+	}
+
+	public function setCurrentOpen( value:String ):Void
+	{
+		this._currentOpen = value;
+	}
 }

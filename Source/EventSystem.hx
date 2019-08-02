@@ -15,12 +15,14 @@ class EventSystem
 	private function _clickButton( entity:Entity ):Void
 	{
 		var entityName:String = entity.get( "name" );
+		var ui:UserInterface = this._parent.getSystem( "ui" );
+		var sceneSystem:SceneSystem = this._parent.getSystem( "scene" );
 		switch( entityName )
 		{
 			case "gameStart":
 			{
-				var newScene = this._parent.getSystem( "scene" ).createScene( "cityScene" );
-				this._parent.getSystem( "scene" ).doActiveScene( newScene );
+				var newScene = sceneSystem.createScene( "cityScene" );
+				sceneSystem.doActiveScene( newScene );
 			}
 			case "gameContinue": //TODO: Load game if in Starts Scene. or just continue game and close "options" window;
 			case "gameAuthors":
@@ -43,14 +45,24 @@ class EventSystem
 				//TODO: list down in ui window INN;
 				trace( "hero list down" );
 			}
-			case "startJourney":
+			case "startStartJourney":
 			{
 				var currentScene = this._parent.getSystem( "scene" ).getActiveScene();
 				var sceneName = currentScene.getName();
 				if( sceneName == "cityScene" )
 					trace( "go to scene choose dungeon" );
+				else
+				{
+					//TODO: check all heroes in window, check choose dungeon, if OK -> open inventory + merchant;
+				}
 			}
-			case "citySceneMainWindowClose" : this._parent.getSystem( "ui" ).hideUiObject( "citySceneMainWindow" );
+			case "citySceneMainWindowClose" :
+			{
+				var window:Entity = ui.getWindow( "citySceneMainWindow" );
+				var currentOpen:String = window.getComponent( "ui" ).getCurrentOpen();
+				ui.hideUiObject( currentOpen );
+				ui.hideUiObject( "citySceneMainWindow" );
+			} 
 			default: trace( "Error in EventSustem._clickButton, no button with name: " + entityName );
 		}
 	}
@@ -62,20 +74,83 @@ class EventSystem
 
 		switch( entityName )
 		{
-			case "hospital": {};
-			case "tavern":{};
-			case "recruits" : 
+			case "academy":
 			{
-				//showUiObject( "citySceneMainWindow" );
-				//showUiObject( "recruitWindow" );
+				var window:Entity = ui.getWindow( "citySceneMainWindow" );
+				window.getComponent( "ui" ).setCurrentOpen( "recruitWindow" );
+				ui.showUiObject( "citySceneMainWindow" );
+				ui.showUiObject( "recruitWindow" );
 			};
-			case "storage": {};
-			case "graveyard": {};
-			case "blacksmith": {};
-			case "hermit": {};
-			case "merchant": {};
-			case "questman": {};
-			case "fontain": {};
+			case "hospital": 
+			{
+				var window:Entity = ui.getWindow( "citySceneMainWindow" );
+				window.getComponent( "ui" ).setCurrentOpen( "recruitWindow" );
+				ui.showUiObject( "citySceneMainWindow" );
+				ui.showUiObject( "recruitWindow" );
+			};
+			case "tavern":
+			{
+				var window:Entity = ui.getWindow( "citySceneMainWindow" );
+				window.getComponent( "ui" ).setCurrentOpen( "recruitWindow" );
+				ui.showUiObject( "citySceneMainWindow" );
+				ui.showUiObject( "recruitWindow" );
+			};
+			case "recruits": 
+			{
+				var window:Entity = ui.getWindow( "citySceneMainWindow" );
+				window.getComponent( "ui" ).setCurrentOpen( "recruitWindow" );
+				ui.showUiObject( "citySceneMainWindow" );
+				ui.showUiObject( "recruitWindow" );
+			};
+			case "storage": 
+			{
+				var window:Entity = ui.getWindow( "citySceneMainWindow" );
+				window.getComponent( "ui" ).setCurrentOpen( "recruitWindow" );
+				ui.showUiObject( "citySceneMainWindow" );
+				ui.showUiObject( "recruitWindow" );
+			};
+			case "graveyard": 
+			{
+				var window:Entity = ui.getWindow( "citySceneMainWindow" );
+				window.getComponent( "ui" ).setCurrentOpen( "recruitWindow" );
+				ui.showUiObject( "citySceneMainWindow" );
+				ui.showUiObject( "recruitWindow" );
+			};
+			case "blacksmith": 
+			{
+				var window:Entity = ui.getWindow( "citySceneMainWindow" );
+				window.getComponent( "ui" ).setCurrentOpen( "recruitWindow" );
+				ui.showUiObject( "citySceneMainWindow" );
+				ui.showUiObject( "recruitWindow" );
+			};
+			case "hermit": 
+			{
+				var window:Entity = ui.getWindow( "citySceneMainWindow" );
+				window.getComponent( "ui" ).setCurrentOpen( "recruitWindow" );
+				ui.showUiObject( "citySceneMainWindow" );
+				ui.showUiObject( "recruitWindow" );
+			};
+			case "merchant": 
+			{
+				var window:Entity = ui.getWindow( "citySceneMainWindow" );
+				window.getComponent( "ui" ).setCurrentOpen( "recruitWindow" );
+				ui.showUiObject( "citySceneMainWindow" );
+				ui.showUiObject( "recruitWindow" );
+			};
+			case "questman": 
+			{
+				var window:Entity = ui.getWindow( "citySceneMainWindow" );
+				window.getComponent( "ui" ).setCurrentOpen( "recruitWindow" );
+				ui.showUiObject( "citySceneMainWindow" );
+				ui.showUiObject( "recruitWindow" );
+			};
+			case "fontain": 
+			{
+				var window:Entity = ui.getWindow( "citySceneMainWindow" );
+				window.getComponent( "ui" ).setCurrentOpen( "recruitWindow" );
+				ui.showUiObject( "citySceneMainWindow" );
+				ui.showUiObject( "recruitWindow" );
+			};
 			default: trace( "Click this: " + entityName );
 		}
 	}
@@ -189,7 +264,6 @@ class EventSystem
 			case "button":
 			{
 				entitySprite.getChildAt( 2 ).visible = false; // unpushed visible;
-				trace( "mUP" );
 			}
 		}
 	}

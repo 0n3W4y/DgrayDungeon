@@ -1607,8 +1607,8 @@
 				"graphics":
 				{
 					"queue": 0,
-					"x": 160.0,
-					"y": 40.0,
+					"x": 150.0,
+					"y": 20.0,
 					"img": 
 					{
 						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/citySceneMainWindow.png" }
@@ -1618,16 +1618,16 @@
 						"nameWindow":
 						{
 							"text": "The real estate",
-							"x": 10.0,
-							"y": -60.0,
+							"x": 30.0,
+							"y": 10.0,
 							"font": "Verdana",
 							"size": 48,
-							"color": "0xffffff",
+							"color": "0x000000",
 							"visible": true,
 							"selectable": false,
 							"queue": 1,
 							"height":50,
-							"width":350,
+							"width":400,
 							"queue":0
 						}
 					}
@@ -1645,8 +1645,8 @@
 				"graphics":
 				{
 					"queue": 1,
-					"x":165,
-					"y":65,
+					"x":168,
+					"y":110,
 					"img": 
 					{
 						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/recruitWindow.png" }
@@ -1683,7 +1683,7 @@
 				{
 					"queue":0,
 					"x": 1600.0,
-					"y": 80.0,
+					"y": 90.0,
 					"img": 
 					{
 						"normal": { "x": 0, "y": 0.0, "url": "assets/images/innWindow.png" }
@@ -1732,8 +1732,8 @@
 				"graphics":
 				{
 					"queue": 0,
-					"x": -1.0,
-					"y": 1010.0,
+					"x": -5.0,
+					"y": 1012.0,
 					"img": 
 					{
 						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/panelCityWindow.png" }
@@ -2008,8 +2008,8 @@
 						"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/citySceneMainWindowExitButton.png" },
 						"pushed": { "x": 0.0, "y": 0.0, "url": "assets/images/citySceneMainWindowExitButton_push.png" }
 					},									
-					"x": 1300.0,
-					"y": 10.0,
+					"x": 1340.0,
+					"y": 30.0,
 					"text" : null								
 				},
 				"ui":
