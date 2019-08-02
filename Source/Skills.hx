@@ -16,6 +16,8 @@ class Skills extends Component
 	private var _maxStaticCampingSkills:Int = 0;
 	private var _currentStaticCampingSkills:Int = 0;
 
+	private var _choosenSkill:String;
+
 	public function new( parent:Entity, id:String, params:Dynamic ):Void
 	{
 		super( parent, id, "skills" );
@@ -28,8 +30,7 @@ class Skills extends Component
 		this._active = new Array();
 		this._passive = new Array();
 		this._camping = new Array();
-
-
+		this._choosenSkill = null;
 	}
 
 	private function _levelupSkill( name:String, config:Dynamic ):Void
@@ -257,6 +258,16 @@ class Skills extends Component
 			case "camping": return this._camping;
 			default: { trace( "Error in Skills.getSkills, can't get array of skills with type: " + type); return null; };
 		}
+	}
+
+	public function getChoosenSkill():String
+	{
+		return this._choosenSkill;
+	}
+
+	public function setChooselSkill( skill:String ):Void
+	{
+		this._choosenSkill = skill;
 	}
 
 }

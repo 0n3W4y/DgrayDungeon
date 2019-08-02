@@ -14,6 +14,8 @@ class EventSystem
 
 	private function _clickButton( entity:Entity ):Void
 	{
+		// graphics component -> graphicsInstance have child[0] - graphics, child[1] - text
+		// text child -> 0, 1, 2, 3 - by queue;
 		var entityName:String = entity.get( "name" );
 		var ui:UserInterface = this._parent.getSystem( "ui" );
 		var sceneSystem:SceneSystem = this._parent.getSystem( "scene" );

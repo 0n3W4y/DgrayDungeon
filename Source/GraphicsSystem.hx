@@ -116,31 +116,31 @@ class GraphicsSystem
 	{
 		// Sprite - > child[0] = Sprite with graphics;
 		// Sprite - > child[1] = Sprite TextFields - > with queue;
+		var isHide:Bool = false;
+		if( button.get( "name" ) == "recruitWindowHeroButtonOne" )
+			isHide = true;
+
 		var sprite:Sprite = new Sprite();
 		var graphicsSprite:Sprite = new Sprite();
 		var textSprite = new Sprite();
 		var buttonGraphics = button.getComponent( "graphics" );
 
-		var dataNormal = new Bitmap( Assets.getBitmapData( buttonGraphics.getImg().normal.url ) );
-		var dataHover = new Bitmap( Assets.getBitmapData( buttonGraphics.getImg().hover.url ) );
-		var dataPush = new Bitmap( Assets.getBitmapData( buttonGraphics.getImg().pushed.url ) );
+		var imageContainer:Dynamic =  buttonGraphics.getImg();
 
-		dataNormal.x = buttonGraphics.getImg().normal.x;
-		dataNormal.y = buttonGraphics.getImg().normal.y;
+		for( key in Reflect.fields( imageContainer ) )
+		{
+			var value = Reflect.getProperty( imageContainer, key );
+			// all keys are 1, 2, 3, 4, 5, they r have static order, so i ca use it;
+			// 0 - normal, 1 - hover , 2 - pushed, ( 3 - portrait, 4 - level - for special button );
+			var data:Bitmap = new Bitmap( Assets.getBitmapData( value.url ) );
+			data.x = value.x;
+			data.y = value.y;
+			data.visible = false;
+			if( key == "0" && !isHide )
+				data.visible = true;
 
-		dataHover.x = buttonGraphics.getImg().hover.x;
-		dataHover.y = buttonGraphics.getImg().hover.y;
-
-		dataPush.x = buttonGraphics.getImg().pushed.x;
-		dataPush.y = buttonGraphics.getImg().pushed.y;
-
-		dataNormal.visible = true;
-		dataHover.visible = false;
-		dataPush.visible = false;
-
-		graphicsSprite.addChild( dataNormal );
-		graphicsSprite.addChild( dataHover );
-		graphicsSprite.addChild( dataPush );
+			graphicsSprite.addChild( data );
+		}
 		sprite.addChild( graphicsSprite );
 
 		var coords = buttonGraphics.getCoordinates();
@@ -164,6 +164,8 @@ class GraphicsSystem
 				var textField = this._createText( newText.value );
 				textSprite.addChild( textField );
 			}
+			if( isHide )
+				textSprite.visible = false;
 			sprite.addChild( textSprite );
 		}
 		buttonGraphics.setGraphicsInstance( sprite );

@@ -12,7 +12,7 @@
 		{
 			"backgroundImageURL": "assets/images/citySceneBackround.png",
 			"window": [ "panelCityWindow", "citySceneMainWindow", "innWindow", "recruitWindow" ],
-			"button": [ "gameStartJourney", "innUp", "innDown", "citySceneMainWindowClose" ],
+			"button": [ "gameStartJourney", "innUp", "innDown", "citySceneMainWindowClose", "recruitWindowHeroButtonOne" ],
 			"building": [ "hospital", "graveyard", "academy", "merchant", "questman", "fontain", "blacksmith", "hermit", "tavern", "recruits", "inn" ]
 		},
 
@@ -1814,9 +1814,9 @@
 				{
 					"img": 
 					{
-						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/button_dungeon_d.png" },
-						"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/button_dungeon_d.png" },
-						"pushed": { "x": 0.0, "y": 0.0, "url": "assets/images/button_dungeon_d_choose.png" }
+						"0": { "x": 0.0, "y": 0.0, "url": "assets/images/button_dungeon_d.png" },
+						"1": { "x": 0.0, "y": 0.0, "url": "assets/images/button_dungeon_d.png" },
+						"2": { "x": 0.0, "y": 0.0, "url": "assets/images/button_dungeon_d_choose.png" }
 					},
 					"x": 0.0,
 					"y": 0.0,
@@ -1836,9 +1836,9 @@
 				{
 					"img": 
 					{
-						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/button_dungeon_a.png" },
-						"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/button_dungeon_a.png" },
-						"pushed": { "x": 0.0, "y": 0.0, "url": "assets/images/button_dungeon_a_choose.png" }
+						"0": { "x": 0.0, "y": 0.0, "url": "assets/images/button_dungeon_a.png" },
+						"1": { "x": 0.0, "y": 0.0, "url": "assets/images/button_dungeon_a.png" },
+						"2": { "x": 0.0, "y": 0.0, "url": "assets/images/button_dungeon_a_choose.png" }
 					},
 					"x": -50.0,
 					"y": 100.0,
@@ -1857,9 +1857,9 @@
 				{
 					"img": 
 					{
-						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/button_dungeon_b.png" },
-						"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/button_dungeon_b.png" },
-						"pushed": { "x": 0.0, "y": 0.0, "url": "assets/images/button_dungeon_b_choose.png" }
+						"0": { "x": 0.0, "y": 0.0, "url": "assets/images/button_dungeon_b.png" },
+						"1": { "x": 0.0, "y": 0.0, "url": "assets/images/button_dungeon_b.png" },
+						"2": { "x": 0.0, "y": 0.0, "url": "assets/images/button_dungeon_b_choose.png" }
 					},
 					"x": 0.0,
 					"y": 0.0,
@@ -1878,9 +1878,9 @@
 				{
 					"img": 
 					{
-						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/button_dungeon_c.png" },
-						"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/button_dungeon_c.png" },
-						"pushed": { "x": 0.0, "y": 0.0, "url": "assets/images/button_dungeon_c_choose.png" }
+						"0": { "x": 0.0, "y": 0.0, "url": "assets/images/button_dungeon_c.png" },
+						"1": { "x": 0.0, "y": 0.0, "url": "assets/images/button_dungeon_c.png" },
+						"2": { "x": 0.0, "y": 0.0, "url": "assets/images/button_dungeon_c_choose.png" }
 					},
 					"x": 0.0,
 					"y": 0.0,
@@ -1901,9 +1901,9 @@
 					"y": 150.0,
 					"img": 
 					{
-						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/backToCityButton.png" },
-						"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/backToCityButton_hover.png" },
-						"pushed": { "x": 0.0, "y": 0.0, "url": "assets/images/backToCityButton_push.png" }
+						"0": { "x": 0.0, "y": 0.0, "url": "assets/images/backToCityButton.png" },
+						"1": { "x": 0.0, "y": 0.0, "url": "assets/images/backToCityButton_hover.png" },
+						"2": { "x": 0.0, "y": 0.0, "url": "assets/images/backToCityButton_push.png" }
 					},
 					"text" : null,
 					"queue" : 0
@@ -1924,9 +1924,9 @@
 					"y": 5.0,
 					"img": 
 					{
-						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/button_a.png" },
-						"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/button_a_hover.png" },
-						"pushed": { "x": 0.0, "y": 0.0, "url": "assets/images/button_a_push.png" }
+						"0": { "x": 0.0, "y": 0.0, "url": "assets/images/button_a.png" },
+						"1": { "x": 0.0, "y": 0.0, "url": "assets/images/button_a_hover.png" },
+						"2": { "x": 0.0, "y": 0.0, "url": "assets/images/button_a_push.png" }
 					},
 					"text" : 
 					{
@@ -1962,9 +1962,9 @@
 					"y": 810.0,
 					"img": 
 					{
-						"normal": { "x": 0, "y": 0.0, "url": "assets/images/button_c.png" },
-						"hover": { "x": 0, "y": 0.0, "url": "assets/images/button_c_hover.png" },
-						"pushed": { "x": 0, "y": 0.0, "url": "assets/images/button_c_push.png" }
+						"0": { "x": 0, "y": 0.0, "url": "assets/images/button_c.png" },
+						"1": { "x": 0, "y": 0.0, "url": "assets/images/button_c_hover.png" },
+						"2": { "x": 0, "y": 0.0, "url": "assets/images/button_c_push.png" }
 					},
 					"text" : null,
 					"queue" : 0
@@ -1983,9 +1983,9 @@
 					"y": 810.0,
 					"img": 
 					{
-						"normal": { "x": 0, "y": 0.0, "url": "assets/images/button_d.png" },
-						"hover": { "x": 0, "y": 0.0, "url": "assets/images/button_d_hover.png" },
-						"pushed": { "x": 0, "y": 0.0, "url": "assets/images/button_d_push.png" }
+						"0": { "x": 0, "y": 0.0, "url": "assets/images/button_d.png" },
+						"1": { "x": 0, "y": 0.0, "url": "assets/images/button_d_hover.png" },
+						"2": { "x": 0, "y": 0.0, "url": "assets/images/button_d_push.png" }
 					},
 					"text" : null,
 					"queue" : 0
@@ -2004,9 +2004,9 @@
 					"queue" : 0,
 					"img":
 					{
-						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/citySceneMainWindowExitButton.png" },
-						"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/citySceneMainWindowExitButton.png" },
-						"pushed": { "x": 0.0, "y": 0.0, "url": "assets/images/citySceneMainWindowExitButton_push.png" }
+						"0": { "x": 0.0, "y": 0.0, "url": "assets/images/citySceneMainWindowExitButton.png" },
+						"1": { "x": 0.0, "y": 0.0, "url": "assets/images/citySceneMainWindowExitButton.png" },
+						"2": { "x": 0.0, "y": 0.0, "url": "assets/images/citySceneMainWindowExitButton_push.png" }
 					},									
 					"x": 1340.0,
 					"y": 30.0,
@@ -2027,9 +2027,9 @@
 					"y": 145.0,
 					"img": 
 					{
-						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b.png" },
-						"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b_hover.png" },
-						"pushed": {"x": 0.0, "y": 0.0, "url": "assets/images/button_b_push.png" }
+						"0": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b.png" },
+						"1": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b_hover.png" },
+						"2": {"x": 0.0, "y": 0.0, "url": "assets/images/button_b_push.png" }
 					},
 					"text": 
 					{
@@ -2064,9 +2064,9 @@
 					"y": 25.0,
 					"img": 
 					{
-						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b.png" },
-						"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b_hover.png" },
-						"pushed": {"x": 0.0, "y": 0.0, "url": "assets/images/button_b_push.png" }
+						"0": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b.png" },
+						"1": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b_hover.png" },
+						"2": {"x": 0.0, "y": 0.0, "url": "assets/images/button_b_push.png" }
 					},
 					"text": 
 					{
@@ -2102,9 +2102,9 @@
 					"y": 265.0,
 					"img": 
 					{
-						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b.png" },
-						"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b_hover.png" },
-						"pushed": {"x": 0.0, "y": 0.0, "url": "assets/images/button_b_push.png" }
+						"0": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b.png" },
+						"1": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b_hover.png" },
+						"2": {"x": 0.0, "y": 0.0, "url": "assets/images/button_b_push.png" }
 					},
 					"text": 
 					{
@@ -2140,9 +2140,9 @@
 					"y": 385.0,
 					"img": 
 					{
-						"normal": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b.png" },
-						"hover": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b_hover.png" },
-						"pushed": {"x": 0.0, "y": 0.0, "url": "assets/images/button_b_push.png" }
+						"0": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b.png" },
+						"1": { "x": 0.0, "y": 0.0, "url": "assets/images/button_b_hover.png" },
+						"2": {"x": 0.0, "y": 0.0, "url": "assets/images/button_b_push.png" }
 					},
 					"text": {
 						"buttonText":
@@ -2166,7 +2166,62 @@
 				{
 					"parentWindow": "startSceneWindow"
 				}				
-			}	
+			},
+
+			"recruitWindowHeroButtonOne":
+			{
+				"event":{},
+				"graphics":
+				{
+					"queue": 0,
+					"x": 500.0,
+					"y": 20.0,
+					"img": 
+					{
+						"0": { "x": 0.0, "y": 0.0, "url": "assets/images/recruitWindowHero.png" },
+						"1": { "x": 0.0, "y": 0.0, "url": "assets/images/recruitWindowHero.png" },
+						"2": {"x": 0.0, "y": 0.0, "url": "assets/images/recruitWindowHero.png" },
+						"3": {"x": 50.0, "y": 5.0, "url": "assets/images/recruitWindowHeroPicture.png" },
+						"4": {"x": 20.0, "y": 10.0, "url": "assets/images/recruitWindowHeroLevel.png" }
+					},
+					"text": {
+						"name":
+						{
+							"text": "Alex Power",
+							"x": 0.0,
+							"y": 0.0,
+							"font": "Verdana",
+							"size": 34,
+							"color": "0xffffff",
+							"visible": true,
+							"selectable": false,
+							"queue": 0,
+							"height":40,
+							"width":100,
+							"queue":0
+						},
+						"type":
+						{
+							"text": "Picker",
+							"x": 0.0,
+							"y": 0.0,
+							"font": "Verdana",
+							"size": 40,
+							"color": "0xffffff",
+							"visible": true,
+							"selectable": false,
+							"queue": 0,
+							"height":45,
+							"width":80,
+							"queue":0
+						}
+					}
+				},
+				"ui":
+				{
+					"parentWindow": "recruitWindow"
+				}
+			}
 		}
 	},
 
