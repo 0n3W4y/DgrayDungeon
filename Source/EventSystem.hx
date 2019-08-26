@@ -35,7 +35,7 @@ class EventSystem
 			case "gameOptions":
 			{
 				//TODO: Open options window
-				trace( "Andddddd opeeeeeeen options window... ( magic xD )" );
+				trace( "Aaaaaaaaaaand opeeeeeeen options window... ( magic xD )" );
 			}
 			case "innUp":
 			{
@@ -62,7 +62,8 @@ class EventSystem
 			{
 				var window:Entity = ui.getWindow( "citySceneMainWindow" );
 				var currentOpen:String = window.getComponent( "ui" ).getCurrentOpen();
-				ui.hideUiObject( currentOpen );
+				if( currentOpen != null )
+					ui.hideUiObject( currentOpen );
 				ui.hideUiObject( "citySceneMainWindow" );
 			} 
 			default: trace( "Error in EventSustem._clickButton, no button with name: " + entityName );
@@ -79,27 +80,37 @@ class EventSystem
 			case "academy":
 			{
 				var window:Entity = ui.getWindow( "citySceneMainWindow" );
-				window.getComponent( "ui" ).setCurrentOpen( "recruitWindow" );
+				var currentOpen:String = window.getComponent( "ui" ).getCurrentOpen();
+				if( currentOpen != null )
+					ui.hideUiObject( currentOpen );
+				window.getComponent( "ui" ).setCurrentOpen( null );
 				ui.showUiObject( "citySceneMainWindow" );
-				ui.showUiObject( "recruitWindow" );
 			};
 			case "hospital": 
 			{
 				var window:Entity = ui.getWindow( "citySceneMainWindow" );
-				window.getComponent( "ui" ).setCurrentOpen( "recruitWindow" );
+				var currentOpen:String = window.getComponent( "ui" ).getCurrentOpen();
+				if( currentOpen != null )
+					ui.hideUiObject( currentOpen );
+				window.getComponent( "ui" ).setCurrentOpen( null );
 				ui.showUiObject( "citySceneMainWindow" );
-				ui.showUiObject( "recruitWindow" );
 			};
 			case "tavern":
 			{
 				var window:Entity = ui.getWindow( "citySceneMainWindow" );
-				window.getComponent( "ui" ).setCurrentOpen( "recruitWindow" );
+				var currentOpen:String = window.getComponent( "ui" ).getCurrentOpen();
+				if( currentOpen != null )
+					ui.hideUiObject( currentOpen );
+				window.getComponent( "ui" ).setCurrentOpen( null );
 				ui.showUiObject( "citySceneMainWindow" );
-				ui.showUiObject( "recruitWindow" );
 			};
 			case "recruits": 
 			{
 				var window:Entity = ui.getWindow( "citySceneMainWindow" );
+				var currentOpen:String = window.getComponent( "ui" ).getCurrentOpen();
+				if( currentOpen != null )
+					ui.hideUiObject( currentOpen );
+
 				window.getComponent( "ui" ).setCurrentOpen( "recruitWindow" );
 				ui.showUiObject( "citySceneMainWindow" );
 				ui.showUiObject( "recruitWindow" );
@@ -107,51 +118,66 @@ class EventSystem
 			case "storage": 
 			{
 				var window:Entity = ui.getWindow( "citySceneMainWindow" );
-				window.getComponent( "ui" ).setCurrentOpen( "recruitWindow" );
+				var currentOpen:String = window.getComponent( "ui" ).getCurrentOpen();
+				if( currentOpen != null )
+					ui.hideUiObject( currentOpen );
+				window.getComponent( "ui" ).setCurrentOpen( null );
 				ui.showUiObject( "citySceneMainWindow" );
-				ui.showUiObject( "recruitWindow" );
 			};
 			case "graveyard": 
 			{
 				var window:Entity = ui.getWindow( "citySceneMainWindow" );
-				window.getComponent( "ui" ).setCurrentOpen( "recruitWindow" );
+				var currentOpen:String = window.getComponent( "ui" ).getCurrentOpen();
+				if( currentOpen != null )
+					ui.hideUiObject( currentOpen );
+				window.getComponent( "ui" ).setCurrentOpen( null );
 				ui.showUiObject( "citySceneMainWindow" );
-				ui.showUiObject( "recruitWindow" );
 			};
 			case "blacksmith": 
 			{
 				var window:Entity = ui.getWindow( "citySceneMainWindow" );
-				window.getComponent( "ui" ).setCurrentOpen( "recruitWindow" );
+				var currentOpen:String = window.getComponent( "ui" ).getCurrentOpen();
+				if( currentOpen != null )
+					ui.hideUiObject( currentOpen );
+				window.getComponent( "ui" ).setCurrentOpen( null );
 				ui.showUiObject( "citySceneMainWindow" );
-				ui.showUiObject( "recruitWindow" );
 			};
 			case "hermit": 
 			{
 				var window:Entity = ui.getWindow( "citySceneMainWindow" );
-				window.getComponent( "ui" ).setCurrentOpen( "recruitWindow" );
+				var currentOpen:String = window.getComponent( "ui" ).getCurrentOpen();
+				if( currentOpen != null )
+					ui.hideUiObject( currentOpen );
+				window.getComponent( "ui" ).setCurrentOpen( null );
 				ui.showUiObject( "citySceneMainWindow" );
-				ui.showUiObject( "recruitWindow" );
 			};
 			case "merchant": 
 			{
 				var window:Entity = ui.getWindow( "citySceneMainWindow" );
-				window.getComponent( "ui" ).setCurrentOpen( "recruitWindow" );
+				var currentOpen:String = window.getComponent( "ui" ).getCurrentOpen();
+				if( currentOpen != null )
+					ui.hideUiObject( currentOpen );
+				window.getComponent( "ui" ).setCurrentOpen( null );
 				ui.showUiObject( "citySceneMainWindow" );
-				ui.showUiObject( "recruitWindow" );
 			};
 			case "questman": 
 			{
 				var window:Entity = ui.getWindow( "citySceneMainWindow" );
-				window.getComponent( "ui" ).setCurrentOpen( "recruitWindow" );
+				var currentOpen:String = window.getComponent( "ui" ).getCurrentOpen();
+				if( currentOpen != null )
+					ui.hideUiObject( currentOpen );
+				window.getComponent( "ui" ).setCurrentOpen( null );
 				ui.showUiObject( "citySceneMainWindow" );
-				ui.showUiObject( "recruitWindow" );
 			};
 			case "fontain": 
 			{
 				var window:Entity = ui.getWindow( "citySceneMainWindow" );
-				window.getComponent( "ui" ).setCurrentOpen( "recruitWindow" );
+				var currentOpen:String = window.getComponent( "ui" ).getCurrentOpen();
+				if( currentOpen != null )
+					ui.hideUiObject( currentOpen );
+				window.getComponent( "ui" ).setCurrentOpen( null );
 				ui.showUiObject( "citySceneMainWindow" );
-				ui.showUiObject( "recruitWindow" );
+
 			};
 			default: trace( "Click this: " + entityName );
 		}

@@ -126,16 +126,16 @@ class EntitySystem
 					var newName:String = names[ Math.floor( Math.random() * names.length ) ];
 					var newSurname:String = surnames[ Math.floor( Math.random() * surnames.length ) ];
 					// genderNames;
-					var name:Dynamic = 
+					var nameConfig:Dynamic = 
 					{
 						"name": newName,
 						"surname": newSurname,
 						"rank": null,
-						"type": "Crossbowman",
+						"type": name,
 						"rarity": value.rarity[ heroType ]
 					};
 					//TODO: Generate name;
-					component = this.createComponent( num, name );
+					component = this.createComponent( num, nameConfig );
 				}
 				case "experience":
 				{
