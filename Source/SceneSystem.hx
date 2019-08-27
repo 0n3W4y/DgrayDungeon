@@ -93,6 +93,14 @@ class SceneSystem
 		{
 			var window:Entity = entitySystem.createEntity( "window", windowsArray[ i ], null );
 			entitySystem.addEntityToScene( window, scene );
+			if( windowsArray[ i ] == "recruitWindow" )
+			{
+				for( i in 0...6 )
+				{
+					var heroButton:Entity = entitySystem.createEntity( "button", "recruitWindowHeroButton", null );
+				}
+				
+			}
 		}
 
 		var buttonArray:Array<String> = config.button;

@@ -16,7 +16,7 @@ class EntitySystem
 
 	private function _createWindowButtonType( id:String, type:String, name:String,  params:Dynamic ):Entity
 	{
-		var uiObject = new Entity( this, id, type, name );
+		var uiObject:Entity = new Entity( this, id, type, name );
 		var config:Dynamic = this._config.window;
 		if( type == "button" )
 			config = this._config.button;
@@ -37,6 +37,7 @@ class EntitySystem
 			var component = this.createComponent( key, value );
 			this.addComponentTo( component, uiObject );
 		}
+
 		return uiObject;
 	}
 

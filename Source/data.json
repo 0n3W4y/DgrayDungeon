@@ -2168,7 +2168,7 @@
 				}				
 			},
 
-			"recruitWindowHeroButtonOne":
+			"recruitWindowHeroButton":
 			{
 				"event":{},
 				"graphics":
@@ -2180,9 +2180,9 @@
 					{
 						"0": { "x": 0.0, "y": 0.0, "url": "assets/images/recruitWindowHero.png" },
 						"1": { "x": 0.0, "y": 0.0, "url": "assets/images/recruitWindowHero.png" },
-						"2": {"x": 0.0, "y": 0.0, "url": "assets/images/recruitWindowHero.png" },
-						"3": {"x": 50.0, "y": 5.0, "url": "assets/images/recruitWindowHeroPicture.png" },
-						"4": {"x": 20.0, "y": 10.0, "url": "assets/images/recruitWindowHeroLevel.png" }
+						"2": { "x": 0.0, "y": 0.0, "url": "assets/images/recruitWindowHero.png" },
+						"3": { "x": 50.0, "y": 5.0, "url": "assets/images/recruitWindowHeroPicture.png" },
+						"4": { "x": 20.0, "y": 10.0, "url": "assets/images/recruitWindowHeroLevel.png" }
 					},
 					"text": {
 						"name":
