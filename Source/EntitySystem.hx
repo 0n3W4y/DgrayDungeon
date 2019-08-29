@@ -33,15 +33,9 @@ class EntitySystem
 
 		for( key in Reflect.fields( uiObjectConfig ) )
 		{
-			var value = Reflect.getProperty( uiObjectConfig, key );
+			var componentValue:Dynamic;
+			var value:Dynamic = Reflect.getProperty( uiObjectConfig, key );
 			var paramsValue:Dynamic = Reflect.getProperty( params, key );
-			if( paramsValue != null )
-			{
-				for( num in Reflect.fields( paramsValue ) )
-				{
-					//TODO: set values to component params.
-				}
-			}
 			var component = this.createComponent( key, value );
 			this.addComponentTo( component, uiObject );
 		}

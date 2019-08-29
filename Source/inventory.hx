@@ -4,7 +4,8 @@ class Inventory extends Component
 {
 	private var _maxSlots:Int = 0;
 	private var _currentSlots:Int = 0;
-	private var _inventory:Array<Dynamic>;
+	private var _inventory:Array<Dynamic>; 
+	//{ "name": "slot1", type": "slot", "item": null, "restriction": "hero", "isAvailable": false, "isStorable": false, "maxSize": null, "currentSize": null }
 
 	public function new( parent:Entity, id:String, params:Dynamic ):Void
 	{

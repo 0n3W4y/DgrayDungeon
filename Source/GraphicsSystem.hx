@@ -67,87 +67,36 @@ class GraphicsSystem
         return txt;
 	}
 
-	private function _createWindow( window:Entity ):Sprite
+
+	private function _createGraphicsForObject( object ):Sprite
 	{
-		// Sprite - > child[0] = Sprite with graphics;
-		// Sprite - > child[1] = Sprite TextFields - > with queue;
-		var sprite:Sprite = new Sprite();
+		var objectGraphics = object.getComponent( "graphics" );
+		var objectType:String = object.get( "type" );
 		var graphicsSprite:Sprite = new Sprite();
-		var textSprite = new Sprite();
-		var windowGraphics = window.getComponent( "graphics" );
-		var normalData = null;
-
-		if( windowGraphics.getImg() != null )
-		{
-			normalData = new Bitmap( Assets.getBitmapData( windowGraphics.getImg().normal.url ) ); // normal -> background != null always;
-			normalData.x = windowGraphics.getImg().normal.x;
-			normalData.y = windowGraphics.getImg().normal.y;
-			graphicsSprite.addChild( normalData );
-		}
-		sprite.addChild( graphicsSprite );
-
-		var coords = windowGraphics.getCoordinates();
-		sprite.x = coords.x;
-		sprite.y = coords.y;
-
-		var text = window.getComponent( "graphics" ).getText();
-		if( text != null )
-		{
-			var textArray:Array<Dynamic> = new Array();
-			for( key in Reflect.fields( text ) )
-			{
-				var value = Reflect.getProperty( text, key );
-				textArray.push( { "name": key, "value": value } );		
-			}
-			textArray.sort( this._sortWithQueueText );
-			for( i in 0...textArray.length )
-			{
-				var textField = this._createText( textArray[ i ].value );
-				textSprite.addChild( textField );
-			}
-			sprite.addChild( textSprite );
-		}
-
-		windowGraphics.setGraphicsInstance( sprite );
-		return sprite;
-	}
-
-	private function _createButton( button:Entity ):Sprite
-	{
-		// Sprite - > child[0] = Sprite with graphics;
-		// Sprite - > child[1] = Sprite TextFields - > with queue;
-		var isHide:Bool = false;
-		if( button.get( "name" ) == "recruitWindowHeroButtonOne" )
-			isHide = true;
-
-		var sprite:Sprite = new Sprite();
-		var graphicsSprite:Sprite = new Sprite();
-		var textSprite = new Sprite();
-		var buttonGraphics = button.getComponent( "graphics" );
-
-		var imageContainer:Dynamic =  buttonGraphics.getImg();
+		var imageContainer:Dynamic =  objectGraphics.getImg();
 
 		for( key in Reflect.fields( imageContainer ) )
 		{
 			var value = Reflect.getProperty( imageContainer, key );
-			// all keys are 1, 2, 3, 4, 5, they r have static order, so i ca use it;
-			// 0 - normal, 1 - hover , 2 - pushed, ( 3 - portrait, 4 - level - for special button );
 			var data:Bitmap = new Bitmap( Assets.getBitmapData( value.url ) );
 			data.x = value.x;
 			data.y = value.y;
-			data.visible = false;
-			if( key == "0" && !isHide )
+			
+			if( key == "0" && objectType == "button" )
 				data.visible = true;
+			else if( objectType == "button" )
+				data.visible = false;
 
 			graphicsSprite.addChild( data );
 		}
-		sprite.addChild( graphicsSprite );
+		return graphicsSprite;
+	}
 
-		var coords = buttonGraphics.getCoordinates();
-		sprite.x = coords.x;
-		sprite.y = coords.y;
-
-		var text:Dynamic = buttonGraphics.getText();
+	private function _createTextForObject( object ):Sprite
+	{
+		var objectGraphics = object.getComponent( "graphics" );
+		var textSprite = new Sprite();
+		var text:Dynamic = objectGraphics.getText();
 		if( text != null )
 		{
 			var textArray:Array<Dynamic> = new Array();
@@ -164,24 +113,52 @@ class GraphicsSystem
 				var textField = this._createText( newText.value );
 				textSprite.addChild( textField );
 			}
-			if( isHide )
-				textSprite.visible = false;
-			sprite.addChild( textSprite );
 		}
+		return textSprite;
+	}
+
+	private function _createWindowButton( object:Entity ):Sprite
+	{
+		// Sprite - > child[0] = Sprite with graphics;
+		// Sprite - > child[1] = Sprite TextFields - > with queue;
+		// all keys are 1, 2, 3, 4, 5, they r have static order, so i ca use it;
+		// 0 - normal, 1 - hover , 2 - pushed, ( 3 - portrait, 4 - level - for special button );
+		var objectType:String = object.get( "type" );
+		var objectName:String = object.get( "name" );
+		var isHide:Bool = false;
+		if( objectName == "recruitWindowHeroButton" )
+			isHide = true;
+
+		var sprite:Sprite = new Sprite();
+		var graphicsSprite:Sprite = this._createGraphicsForObject( object );
+		var textSprite:Sprite = this._createTextForObject( object );
+		var buttonGraphics = object.getComponent( "graphics" );
+
+		sprite.addChild( graphicsSprite );
+		sprite.addChild( textSprite );
+
+		var coords = buttonGraphics.getCoordinates();
+		sprite.x = coords.x;
+		sprite.y = coords.y;
+
 		buttonGraphics.setGraphicsInstance( sprite );
-		
-		this._parent.getSystem( "event" ).addEvent( button, null );
-		if( button.get( "name" ) == "gameContinue" )
+		if( objectType == "button" )
 		{
-			var chekButton = this._checkButton( "gameContinue" );
-			if( chekButton )
+			this._parent.getSystem( "event" ).addEvent( object, null );
+			if( object.get( "name" ) == "gameContinue" )
 			{
-				//remove all events from button.
-				this._parent.getSystem( "event" ).removeEvent(  button, null );
-				sprite.alpha = 0.5;
+				var chekButton = this._checkButton( "gameContinue" );
+				if( chekButton )
+				{
+					//remove all events from button.
+					this._parent.getSystem( "event" ).removeEvent(  object, null );
+					sprite.alpha = 0.5;
+				}
 			}
 		}
 		
+		if( isHide )
+			sprite.visible = false;
 		return sprite;
 	}
 
@@ -299,6 +276,27 @@ class GraphicsSystem
 
 		uiSystem.hideUiObject( "citySceneMainWindow" );
 		uiSystem.hideUiObject( "recruitWindow" );
+		var recruitWindow:Entity = uiSystem.getWindow( "recruitWindow" );
+		var recruitInentory:Dynamic = null;
+		var listOfBuildings:Array<Entity> = scene.getEntities( "object" ).building;
+		for( j in 0...listOfBuildings.length )
+		{
+			var building:Dynamic = listOfBuildings[ j ];
+			if( building.get( "name" ) == "recruits" )
+			{
+				trace( "do buttons for recruits done" );
+				recruitInentory = building.getComponent( "inventory" ).getInventory();
+				break;
+			}
+		}
+
+		if( recruitInentory != null ) //check for bug;
+		{
+			for( k in 0...recruitInentory.length )
+			{
+
+			}
+		}
 
 		this._parent.getMainSprite().addChild( scene.getSprite() );
 	}
@@ -361,14 +359,14 @@ class GraphicsSystem
 		{
 			var window = windows[ i ];
 			var windowName = window.get( "name" );
-			var spriteWindow:Sprite = this._createWindow( window );
+			var spriteWindow:Sprite = this._createWindowButton( window );
 			for( j in 0...buttons.length )
 			{
 				var button = buttons[ j ];
 				var buttonParent = button.getComponent( "ui" ).getParentWindow();
 				if( buttonParent == windowName )
 				{
-					var spriteButton:Sprite = this._createButton( button );
+					var spriteButton:Sprite = this._createWindowButton( button );
 					spriteWindow.addChild( spriteButton );
 				}
 			}
@@ -378,7 +376,7 @@ class GraphicsSystem
 
 	public function drawObject( object:Entity ):Void
 	{
-		// this function get  raw entity, and create graphics for it, add on UI, if it UI type, or just put it on activeScene sprite;
+		// just draw this object;
 		var type:String = object.get( "type" );
 		switch( type )
 		{
@@ -389,7 +387,7 @@ class GraphicsSystem
 	}
 
 	public function undrawObject( object:Entity ):Void
-	{
+	{ //undraw object - remove from ui and scene;
 		var type:String = object.get( "type" );
 		switch( type )
 		{
@@ -400,12 +398,12 @@ class GraphicsSystem
 	}
 
 	public function createObject( object:Entity ):Sprite
-	{
+	{	//just create object graphicsd and put it on ui or to scene;
 		var type = object.get( "type" );
 		switch( type )
 		{
 			case "building": return this._createBuilding( object );
-			case "window": return this._createUiObject( object );
+			case "window", "button": return this._createWindowButton( object );
 			default: trace( "Error GraphicsSystem.createObject, object type: " + type + ", can't be found." );
 		}
 		return null;

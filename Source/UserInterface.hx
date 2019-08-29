@@ -16,7 +16,7 @@ class UserInterface
 		//this.alpha = 0.0;
 	}
 
-	public function addUiObject( object:Dynamic ):Void //{ "name": name, "window": Sprite }
+	public function addUiObject( object:Dynamic ):Void //{ "name": name, "window": Entity }
 	{
 		//{ "name": name, "window": spriteWindow };
 		for( i in 0...this._objectsOnUi.length )

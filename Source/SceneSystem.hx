@@ -95,7 +95,21 @@ class SceneSystem
 			entitySystem.addEntityToScene( window, scene );
 			if( windowsArray[ i ] == "recruitWindow" )
 			{
-				for( i in 0...6 )
+				var listOfBuildings:Array<Entity> = scene.getEntities( "object" ).building;
+				var recruitBuilding:Entity = null;
+				for( i in 0...listOfBuildings.length )
+				{
+					var building:Entity = listOfBuildings[ i ];
+					var buildingName:String = building.get( "name" );
+					if( buildingName == "recruits" )
+					{
+						recruitBuilding = building;
+						break;
+					}
+				}
+
+				var slots:Int = recruitBuilding.getComponent( "inventory" ).getMaxSlots(); //choose max slots for max buttons;
+				for( i in 0...slots )
 				{
 					var heroButton:Entity = entitySystem.createEntity( "button", "recruitWindowHeroButton", null );
 				}
