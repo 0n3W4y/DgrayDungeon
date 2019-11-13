@@ -894,9 +894,9 @@ ApplicationMain.create = function(config) {
 	ManifestResources.init(config);
 	var _this = app.meta;
 	if(__map_reserved["build"] != null) {
-		_this.setReserved("build","196");
+		_this.setReserved("build","197");
 	} else {
-		_this.h["build"] = "196";
+		_this.h["build"] = "197";
 	}
 	var _this1 = app.meta;
 	if(__map_reserved["company"] != null) {
@@ -28655,7 +28655,7 @@ var lime_utils_AssetCache = function() {
 	this.audio = new haxe_ds_StringMap();
 	this.font = new haxe_ds_StringMap();
 	this.image = new haxe_ds_StringMap();
-	this.version = 59212;
+	this.version = 580420;
 };
 $hxClasses["lime.utils.AssetCache"] = lime_utils_AssetCache;
 lime_utils_AssetCache.__name__ = ["lime","utils","AssetCache"];
