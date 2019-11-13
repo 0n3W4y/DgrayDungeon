@@ -42,10 +42,10 @@
 					"needToFill":false,
 					"inventory":
 					{
-						"slot1": { "name": "slot0", "type": "weapon", "item": null, "restriction": "crossbowman", "isAvailable": true, "isStorable": false, "maxSize": null, "currentSize": null },
-						"slot2": { "name": "slot1", "type": "armor", "item": null, "restriction": 4, "isAvailable": true, "isStorable": false, "maxSize": null, "currentSize": null },
-						"slot3": { "name": "slot2", "type": "accessory1", "item": null, "restriction": null, "isAvailable": true, "isStorable": false, "maxSize": null, "currentSize": null },
-						"slot4": { "name": "slot3", "type": "accessory2", "item": null, "restriction": null, "isAvailable": true, "isStorable": false, "maxSize": null, "currentSize": null }
+						"slot1": { "name": "slot0", "type": "weapon", "item": null, "restriction": "crossbowman", "isAvailable": true },
+						"slot2": { "name": "slot1", "type": "armor", "item": null, "restriction": 4, "isAvailable": true },
+						"slot3": { "name": "slot2", "type": "accessory1", "item": null, "restriction": null, "isAvailable": true },
+						"slot4": { "name": "slot3", "type": "accessory2", "item": null, "restriction": null, "isAvailable": true }
 					}					
 				},
 
@@ -385,10 +385,10 @@
 					"needToFill":false,
 					"inventory":
 					{
-						"slot1": { "name": "slot0", "type": "weapon", "item": null, "restriction": "paladin", "isAvailable": true, "isStorable": false, "maxSize": null, "currentSize": null },
-						"slot2": { "name": "slot1", "type": "armor", "item": null, "restriction": 4, "isAvailable": true, "isStorable": false, "maxSize": null, "currentSize": null },
-						"slot3": { "name": "slot2", "type": "accessory1", "item": null, "restriction": null, "isAvailable": true, "isStorable": false, "maxSize": null, "currentSize": null },
-						"slot4": { "name": "slot3", "type": "accessory2", "item": null, "restriction": null, "isAvailable": true, "isStorable": false, "maxSize": null, "currentSize": null }
+						"slot1": { "name": "slot0", "type": "weapon", "item": null, "restriction": "paladin", "isAvailable": true},
+						"slot2": { "name": "slot1", "type": "armor", "item": null, "restriction": 4, "isAvailable": true},
+						"slot3": { "name": "slot2", "type": "accessory1", "item": null, "restriction": null, "isAvailable": true},
+						"slot4": { "name": "slot3", "type": "accessory2", "item": null, "restriction": null, "isAvailable": true}
 					}					
 				},
 
@@ -729,10 +729,10 @@
 					"needToFill":false,
 					"inventory":
 					{
-						"slot1": { "name": "slot0", "type": "weapon", "item": null, "restriction": "pyromancer", "isAvailable": true, "isStorable": false, "maxSize": null, "currentSize": null },
-						"slot2": { "name": "slot1", "type": "armor", "item": null, "restriction": 1, "isAvailable": true, "isStorable": false, "maxSize": null, "currentSize": null },
-						"slot3": { "name": "slot2", "type": "accessory1", "item": null, "restriction": null, "isAvailable": true, "isStorable": false, "maxSize": null, "currentSize": null },
-						"slot4": { "name": "slot3", "type": "accessory2", "item": null, "restriction": null, "isAvailable": true, "isStorable": false, "maxSize": null, "currentSize": null }
+						"slot1": { "name": "slot0", "type": "weapon", "item": null, "restriction": "pyromancer", "isAvailable": true },
+						"slot2": { "name": "slot1", "type": "armor", "item": null, "restriction": 1, "isAvailable": true },
+						"slot3": { "name": "slot2", "type": "accessory1", "item": null, "restriction": null, "isAvailable": true },
+						"slot4": { "name": "slot3", "type": "accessory2", "item": null, "restriction": null, "isAvailable": true }
 					}					
 				},
 
@@ -1172,7 +1172,7 @@
 					"currentSlots": 8,
 					"inventory":
 					{
-						"slot1": { "name": null, "type": "slot", "item": null, "restriction": "hero", "isAvailable": false, "isStorable": false, "maxSize": null, "currentSize": null }
+						"slot1": { "name": null, "type": "slot", "item": null, "restriction": "hero", "isAvailable": false }
 					}
 				}					
 			},
@@ -1240,7 +1240,7 @@
 					"needToFill":true,
 					"inventory":
 					{
-						"slot1": { "name": null, "type": "slot", "item": null, "restriction": "hero", "isAvailable": false, "isStorable": false, "maxSize": null, "currentSize": null }
+						"slot1": { "name": null, "type": "slot", "item": null, "restriction": "hero", "isAvailable": false }
 					}					
 
 				}

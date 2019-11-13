@@ -5,8 +5,12 @@ class Inventory extends Component
 	private var _maxSlots:Int = 0;
 	private var _currentSlots:Int = 0;
 	private var _inventory:Array<Dynamic>; 
-	//{ "name": "slot1", type": "slot", "item": null, "restriction": "hero", "isAvailable": false, "isStorable": false, "maxSize": null, "currentSize": null }
+	//{ "name": "slot1", type": "slot", "item": null, "restriction": "hero", "isAvailable": false }
 
+	private function _compareItems( itemA:Dynamic, itemB:Dynamic ):Bool
+	{
+		return false;
+	}
 	public function new( parent:Entity, id:String, params:Dynamic ):Void
 	{
 		super( parent, id, "inventory" );
@@ -81,29 +85,72 @@ class Inventory extends Component
 		return this._inventory;
 	}
 
-	public function setItemInSlot( item:Dynamic, slot:String ):Bool
+	public function setItemInSlot( item:Dynamic, slot:String ):Dynamic
 	{
-		// { "name": "slot1", type": "slot", "item": null, "restriction": "hero", "isAvailable": false, "isStorable": false, "maxSize": null, "currentSize": null }
-
-		for( i in 0...this._inventory.length )
+		// { "name": "slot1", type": "slot", "item": null, "restriction": "hero", "isAvailable": false }
+		if ( slot == null ) // do store item in free slot or add amout of item in slot;
 		{
-			var slotName = this._inventory[ i ].name;
-			if( slotName == slot )
+			var stored:Bool = false;
+			var freeSlot:Int = -1; // default no free slots;
+			for( i in 0...this._inventory.length )
 			{
-				if( this._inventory[ i ].item == null )
+				var oldItem:Dynamic = this._inventory[ i ];
+				if( oldItem != null )
 				{
-					this._inventory[ i ].item = item;
-					return true;
+					// chek for item in inventory which can be same with new item;
+					//compare it and ckech if it strable; if it storable, just + amount of items;
+					// if item amount max in slot - fill it to max, then change amount for newItem and drop window with return -1;
+					var compareItems:Bool = this._compareItems( oldItem, item );
+					if ( compareItems )
+					{
+						//chek if storeable;
+						//do ++
+						//check if max amount;
+						// return -1 or 1;
+						// stored == true;
+					}
+
+				}
+				else
+				{
+					if( freeSlot == -1 && this._inventory[ i ].isAvailable )
+						freeSlot = i;
 				}
 			}
-			else if( slot == null && this._inventory[ i ].item == null )
+			if ( !stored )
 			{
-				this._inventory[ i ].item = item;
-				return true;
+				if( freeSlot == -1 )
+					return 0; // error with add item in inventory;
+				else
+				{
+					this._inventory[ freeSlot ] = item; // add new item in inventory to free slot;
+					return 1; // no errors, all good;
+				}
+			}
+			return 1;
+		}
+		else
+		{
+			for( i in 0...this._inventory.length )
+			{
+				var slotName = this._inventory[ i ].name;
+				if( slotName == slot )
+				{
+					if( this._inventory[ i ].item == null && this._inventory[ i ].isAvailable )
+					{
+						this._inventory[ i ].item = item;
+						return 1;
+					}
+					else
+					{
+						var oldItem:Dynamic = this._inventory[ i ].item;
+						this._inventory[ i ].item = item;
+						return oldItem;
+					}
+				}
 			}
 		}
-		return false;
-		//TODO: Storable items in storable slot; this function must change 'isStorable' to true, do MaxSize and change current size;
+		return 0;
 	}
 
 	public function removeItemFromSlot( slot:String ):Dynamic
