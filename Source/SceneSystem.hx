@@ -82,7 +82,7 @@ class SceneSystem
 					this._parent.getSystem( "entity" ).addEntityToScene( hero, scene );
 					// do this without check, because we have 1-st start and we have 4 slots at all.
 					building.getComponent( "inventory" ).setItemInSlot( hero, null );
-					// set timer to next change heroes in recruit building; 		
+					//TODO: set timer to next change heroes in recruit building;	
 				}
 			}
 		}
@@ -112,6 +112,8 @@ class SceneSystem
 				for( i in 0...slots )
 				{
 					var heroButton:Entity = entitySystem.createEntity( "button", "recruitWindowHeroButton", null );
+					//TODO: add buttons, and change postition on W, add + size of button;
+					entitySystem.addEntityToScene( heroButton, scene );
 				}
 				
 			}
