@@ -112,7 +112,6 @@ class SceneSystem
 				for( i in 0...slots )
 				{
 					var heroButton:Entity = entitySystem.createEntity( "button", "recruitWindowHeroButton", null );
-					//TODO: add buttons, and change postition on W, add + size of button;
 					entitySystem.addEntityToScene( heroButton, scene );
 				}
 				

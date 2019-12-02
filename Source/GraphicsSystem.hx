@@ -284,7 +284,7 @@ class GraphicsSystem
 			var building:Dynamic = listOfBuildings[ j ];
 			if( building.get( "name" ) == "recruits" )
 			{
-				trace( "do buttons for recruits done" );
+				//trace( "do buttons for recruits done" );
 				recruitInentory = building.getComponent( "inventory" ).getInventory();
 				break;
 			}
@@ -294,9 +294,12 @@ class GraphicsSystem
 		{
 			for( k in 0...recruitInentory.length )
 			{
-
+				//TODO: ??
+				// Берем кнопки, заполняем кнопки героями. прежде чекаем героев. По количеству кнопок фигарим героев. как закначиваются герои - стоп, либо кнопки.
 			}
 		}
+		else
+			trace( "Error in GraphicsSystem._drawCityScene. Something went wrong, Inventory in recruits building = " + recruitInentory );
 
 		this._parent.getMainSprite().addChild( scene.getSprite() );
 	}
