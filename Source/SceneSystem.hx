@@ -58,6 +58,7 @@ class SceneSystem
 		var entitySystem:EntitySystem = this._parent.getSystem( "entity" );
 		var id = this._createId();
 		var scene = new Scene( this, id, "cityScene" );
+		var recruitBuilding:Entity = null; // building with name "recruit"
 
 		var config:Dynamic = Reflect.getProperty( this._config, "cityScene" );
 		if( config == null )
@@ -73,6 +74,7 @@ class SceneSystem
 			entitySystem.addEntityToScene( building, scene );
 			if( buildingsArray[ k ] == "recruits" )
 			{
+				recruitBuilding = building;
 				var slots = building.getComponent( "inventory" ).getCurrentSlots();
 				//fill hero list with names of hero in config file ( data.json from entitysystem );
 
@@ -87,42 +89,32 @@ class SceneSystem
 			}
 		}
 
-		var windowsArray:Array<String> =  config.window;
-		var windowConfig:Dynamic = this._parent.getSystem( "entity" ).getConfig().window;
+		var windowsArray:Array<String> = config.window;
+		//var windowConfig:Dynamic = this._parent.getSystem( "entity" ).getConfig().window;
 		for( i in 0...windowsArray.length )
 		{
 			var window:Entity = entitySystem.createEntity( "window", windowsArray[ i ], null );
 			entitySystem.addEntityToScene( window, scene );
-			if( windowsArray[ i ] == "recruitWindow" )
-			{
-				var listOfBuildings:Array<Entity> = scene.getEntities( "object" ).building;
-				var recruitBuilding:Entity = null;
-				for( i in 0...listOfBuildings.length )
-				{
-					var building:Entity = listOfBuildings[ i ];
-					var buildingName:String = building.get( "name" );
-					if( buildingName == "recruits" )
-					{
-						recruitBuilding = building;
-						break;
-					}
-				}
-
-				var slots:Int = recruitBuilding.getComponent( "inventory" ).getMaxSlots(); //choose max slots for max buttons;
-				for( i in 0...slots )
-				{
-					var heroButton:Entity = entitySystem.createEntity( "button", "recruitWindowHeroButton", null );
-					entitySystem.addEntityToScene( heroButton, scene );
-				}
-				
-			}
 		}
 
 		var buttonArray:Array<String> = config.button;
 		for( j in 0...buttonArray.length )
 		{
-			var button:Entity = entitySystem.createEntity( "button", buttonArray[ j ], null );
-			entitySystem.addEntityToScene( button, scene );
+			var newButton:String = buttonArray[ j ];
+			if( newButton == "recruitWindowHeroButton" )
+			{
+				var slots:Int = recruitBuilding.getComponent( "inventory" ).getMaxSlots(); //choose max slots for max buttons in recruit window ( building );
+				for( i in 0...slots )
+				{
+					var heroButton:Entity = entitySystem.createEntity( "button", newButton, null );
+					entitySystem.addEntityToScene( heroButton, scene );
+				}
+			}
+			else
+			{
+				var button:Entity = entitySystem.createEntity( "button", newButton, null );
+				entitySystem.addEntityToScene( button, scene );
+			}			
 		}	
 		//trace ( building.getComponent( "inventory" ).getInventory() );
 		this._addScene( scene );

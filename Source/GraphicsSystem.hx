@@ -237,25 +237,25 @@ class GraphicsSystem
 
 		//add UI objects to ui;
 		var sceneUiEntities:Dynamic = scene.getEntities( "ui" );
-		this.createUiObject( sceneUiEntities );
+		this.createUiObjects( sceneUiEntities );
 		this._parent.getMainSprite().addChild( scene.getSprite() );
 	}
 
-	private function _undrawStartScene( scene:Scene ):Void
+	private function _undrawUIfromScene( scene:Scene ):Void
 	{
 		var windowsList:Array<Entity> = scene.getEntities( "ui" ).window;
 		for( i in 0...windowsList.length )
 		{
 			this._parent.getSystem( "ui" ).removeUiObject( windowsList[ i ].get( "name" ) );
 		}
-		this._parent.getMainSprite().removeChild( scene.getSprite() );
 	}
 
 	private function _drawCityScene( scene:Scene ):Void
 	{
 		var backgroundURL = scene.getBackgroundImageURL();
+		var sceneSprite:Sprite = scene.getSprite();
 		var bitmap = new Bitmap( Assets.getBitmapData ( backgroundURL ) );
-		scene.getSprite().addChild( bitmap );
+		sceneSprite.addChild( bitmap );
 
 		var sceneObjectEntities:Dynamic = scene.getEntities( "object" );
 		var buildingsList:Array<Entity> = sceneObjectEntities.building;
@@ -264,15 +264,15 @@ class GraphicsSystem
 		for( i in 0...buildingsList.length )
 		{
 			var object:Entity = buildingsList[ i ];
-			if( object.get( "name") == "inn" || object.get( "name") == "storage" )
+			if( object.get( "name") == "inn" || object.get( "name" ) == "storage" )
 				continue;
 			var sprite = this.createObject( object );
-			scene.getSprite().addChild( sprite );
+			sceneSprite.addChild( sprite );
 		}
 
 		var sceneUiEntities:Dynamic = scene.getEntities( "ui" );
 		var uiSystem:UserInterface = this._parent.getSystem( "ui" );
-		this.createUiObject( sceneUiEntities );
+		this.createUiObjects( sceneUiEntities );
 
 		uiSystem.hideUiObject( "citySceneMainWindow" );
 		uiSystem.hideUiObject( "recruitWindow" );
@@ -311,17 +311,12 @@ class GraphicsSystem
 		scene.getSprite().addChild( bitmap );
 
 		var sceneUiEntities:Dynamic = scene.getEntities( "ui" );
-		this.createUiObject( sceneUiEntities );
+		this.createUiObjects( sceneUiEntities );
 		this._parent.getMainSprite().addChild( scene.getSprite() );
 	}
 
-	private function _undrawCityScene( scene:Scene ):Void
-	{
 
-	}
-
-
-	
+	//public
 
 	public function new( parent:Game ):Void
 	{
@@ -342,16 +337,11 @@ class GraphicsSystem
 
 	public function undrawScene( scene: Scene ):Void
 	{
-		var sceneName = scene.getName();
-		switch( sceneName )
-		{
-			case "startScene": this._undrawStartScene( scene );
-			case "cityScene": this._undrawCityScene( scene );
-			default: trace( "Can't sraw scene with name: " + sceneName + "." );
-		}
+		this._undrawUIfromScene( scene );
+		this._parent.getMainSprite().removeChild( scene.getSprite() );
 	}
 
-	public function createUiObject( list:Dynamic ):Void
+	public function createUiObjects( list:Dynamic ):Void
 	{
 		//TODO: rebuild function;
 		var windows:Array<Entity> = list.window;

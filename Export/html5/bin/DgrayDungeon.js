@@ -894,9 +894,9 @@ ApplicationMain.create = function(config) {
 	ManifestResources.init(config);
 	var _this = app.meta;
 	if(__map_reserved["build"] != null) {
-		_this.setReserved("build","202");
+		_this.setReserved("build","205");
 	} else {
-		_this.h["build"] = "202";
+		_this.h["build"] = "205";
 	}
 	var _this1 = app.meta;
 	if(__map_reserved["company"] != null) {
@@ -5696,10 +5696,10 @@ GraphicsSystem.prototype = {
 		var bitmap = new openfl_display_Bitmap(openfl_utils_Assets.getBitmapData(backgroundURL));
 		scene.getSprite().addChild(bitmap);
 		var sceneUiEntities = scene.getEntities("ui");
-		this.createUiObject(sceneUiEntities);
+		this.createUiObjects(sceneUiEntities);
 		this._parent.getMainSprite().addChild(scene.getSprite());
 	}
-	,_undrawStartScene: function(scene) {
+	,_undrawUIfromScene: function(scene) {
 		var windowsList = scene.getEntities("ui").window;
 		var _g1 = 0;
 		var _g = windowsList.length;
@@ -5707,12 +5707,12 @@ GraphicsSystem.prototype = {
 			var i = _g1++;
 			this._parent.getSystem("ui").removeUiObject(windowsList[i].get("name"));
 		}
-		this._parent.getMainSprite().removeChild(scene.getSprite());
 	}
 	,_drawCityScene: function(scene) {
 		var backgroundURL = scene.getBackgroundImageURL();
+		var sceneSprite = scene.getSprite();
 		var bitmap = new openfl_display_Bitmap(openfl_utils_Assets.getBitmapData(backgroundURL));
-		scene.getSprite().addChild(bitmap);
+		sceneSprite.addChild(bitmap);
 		var sceneObjectEntities = scene.getEntities("object");
 		var buildingsList = sceneObjectEntities.building;
 		var _g1 = 0;
@@ -5724,11 +5724,11 @@ GraphicsSystem.prototype = {
 				continue;
 			}
 			var sprite = this.createObject(object);
-			scene.getSprite().addChild(sprite);
+			sceneSprite.addChild(sprite);
 		}
 		var sceneUiEntities = scene.getEntities("ui");
 		var uiSystem = this._parent.getSystem("ui");
-		this.createUiObject(sceneUiEntities);
+		this.createUiObjects(sceneUiEntities);
 		uiSystem.hideUiObject("citySceneMainWindow");
 		uiSystem.hideUiObject("recruitWindow");
 		var recruitWindow = uiSystem.getWindow("recruitWindow");
@@ -5740,7 +5740,6 @@ GraphicsSystem.prototype = {
 			var j = _g11++;
 			var building = listOfBuildings[j];
 			if(building.get("name") == "recruits") {
-				haxe_Log.trace("do buttons for recruits done",{ fileName : "GraphicsSystem.hx", lineNumber : 287, className : "GraphicsSystem", methodName : "_drawCityScene"});
 				recruitInentory = building.getComponent("inventory").getInventory();
 				break;
 			}
@@ -5751,6 +5750,8 @@ GraphicsSystem.prototype = {
 			while(_g12 < _g3) {
 				var k = _g12++;
 			}
+		} else {
+			haxe_Log.trace("Error in GraphicsSystem._drawCityScene. Something went wrong, Inventory in recruits building = " + Std.string(recruitInentory),{ fileName : "GraphicsSystem.hx", lineNumber : 302, className : "GraphicsSystem", methodName : "_drawCityScene"});
 		}
 		this._parent.getMainSprite().addChild(scene.getSprite());
 	}
@@ -5759,10 +5760,8 @@ GraphicsSystem.prototype = {
 		var bitmap = new openfl_display_Bitmap(openfl_utils_Assets.getBitmapData(backgroundURL));
 		scene.getSprite().addChild(bitmap);
 		var sceneUiEntities = scene.getEntities("ui");
-		this.createUiObject(sceneUiEntities);
+		this.createUiObjects(sceneUiEntities);
 		this._parent.getMainSprite().addChild(scene.getSprite());
-	}
-	,_undrawCityScene: function(scene) {
 	}
 	,drawScene: function(scene) {
 		var sceneName = scene.getName();
@@ -5777,23 +5776,14 @@ GraphicsSystem.prototype = {
 			this._drawStartScene(scene);
 			break;
 		default:
-			haxe_Log.trace("Can't draw scene with name: " + sceneName + ".",{ fileName : "GraphicsSystem.hx", lineNumber : 336, className : "GraphicsSystem", methodName : "drawScene"});
+			haxe_Log.trace("Can't draw scene with name: " + sceneName + ".",{ fileName : "GraphicsSystem.hx", lineNumber : 334, className : "GraphicsSystem", methodName : "drawScene"});
 		}
 	}
 	,undrawScene: function(scene) {
-		var sceneName = scene.getName();
-		switch(sceneName) {
-		case "cityScene":
-			this._undrawCityScene(scene);
-			break;
-		case "startScene":
-			this._undrawStartScene(scene);
-			break;
-		default:
-			haxe_Log.trace("Can't sraw scene with name: " + sceneName + ".",{ fileName : "GraphicsSystem.hx", lineNumber : 347, className : "GraphicsSystem", methodName : "undrawScene"});
-		}
+		this._undrawUIfromScene(scene);
+		this._parent.getMainSprite().removeChild(scene.getSprite());
 	}
-	,createUiObject: function(list) {
+	,createUiObjects: function(list) {
 		var windows = list.window;
 		var buttons = list.button;
 		windows.sort($bind(this,this._sortWithQueueWindow));
@@ -5826,7 +5816,7 @@ GraphicsSystem.prototype = {
 		case "window":
 			break;
 		default:
-			haxe_Log.trace("Error in GraphicsSystem.drawObject, object type: " + type + ", can't be found.",{ fileName : "GraphicsSystem.hx", lineNumber : 385, className : "GraphicsSystem", methodName : "drawObject"});
+			haxe_Log.trace("Error in GraphicsSystem.drawObject, object type: " + type + ", can't be found.",{ fileName : "GraphicsSystem.hx", lineNumber : 378, className : "GraphicsSystem", methodName : "drawObject"});
 		}
 	}
 	,undrawObject: function(object) {
@@ -5837,7 +5827,7 @@ GraphicsSystem.prototype = {
 		case "window":
 			break;
 		default:
-			haxe_Log.trace("Error in GraphicsSystem.undrawObject, object type: " + type + ", can't be found.",{ fileName : "GraphicsSystem.hx", lineNumber : 396, className : "GraphicsSystem", methodName : "undrawObject"});
+			haxe_Log.trace("Error in GraphicsSystem.undrawObject, object type: " + type + ", can't be found.",{ fileName : "GraphicsSystem.hx", lineNumber : 389, className : "GraphicsSystem", methodName : "undrawObject"});
 		}
 	}
 	,createObject: function(object) {
@@ -5848,7 +5838,7 @@ GraphicsSystem.prototype = {
 		case "button":case "window":
 			return this._createWindowButton(object);
 		default:
-			haxe_Log.trace("Error GraphicsSystem.createObject, object type: " + type + ", can't be found.",{ fileName : "GraphicsSystem.hx", lineNumber : 407, className : "GraphicsSystem", methodName : "createObject"});
+			haxe_Log.trace("Error GraphicsSystem.createObject, object type: " + type + ", can't be found.",{ fileName : "GraphicsSystem.hx", lineNumber : 400, className : "GraphicsSystem", methodName : "createObject"});
 		}
 		return null;
 	}
@@ -6458,9 +6448,10 @@ SceneSystem.prototype = {
 		var entitySystem = this._parent.getSystem("entity");
 		var id = this._createId();
 		var scene = new Scene(this,id,"cityScene");
+		var recruitBuilding = null;
 		var config = Reflect.getProperty(this._config,"cityScene");
 		if(config == null) {
-			haxe_Log.trace("Error in SceneSystem._screateCityScene, scene not found in config container.",{ fileName : "SceneSystem.hx", lineNumber : 64, className : "SceneSystem", methodName : "_createCityScene"});
+			haxe_Log.trace("Error in SceneSystem._screateCityScene, scene not found in config container.",{ fileName : "SceneSystem.hx", lineNumber : 65, className : "SceneSystem", methodName : "_createCityScene"});
 		}
 		scene.setBackgroundImageURL(config.backgroundImageURL);
 		var buildingsArray = config.building;
@@ -6471,6 +6462,7 @@ SceneSystem.prototype = {
 			var building = entitySystem.createEntity("building",buildingsArray[k],null);
 			entitySystem.addEntityToScene(building,scene);
 			if(buildingsArray[k] == "recruits") {
+				recruitBuilding = building;
 				var slots = building.getComponent("inventory").getCurrentSlots();
 				var _g3 = 0;
 				var _g2 = slots;
@@ -6483,44 +6475,32 @@ SceneSystem.prototype = {
 			}
 		}
 		var windowsArray = config.window;
-		var windowConfig = this._parent.getSystem("entity").getConfig().window;
 		var _g11 = 0;
 		var _g4 = windowsArray.length;
 		while(_g11 < _g4) {
 			var i1 = _g11++;
 			var $window = entitySystem.createEntity("window",windowsArray[i1],null);
 			entitySystem.addEntityToScene($window,scene);
-			if(windowsArray[i1] == "recruitWindow") {
-				var listOfBuildings = scene.getEntities("object").building;
-				var recruitBuilding = null;
-				var _g31 = 0;
-				var _g21 = listOfBuildings.length;
-				while(_g31 < _g21) {
-					var i2 = _g31++;
-					var building1 = listOfBuildings[i2];
-					var buildingName = building1.get("name");
-					if(buildingName == "recruits") {
-						recruitBuilding = building1;
-						break;
-					}
-				}
-				var slots1 = recruitBuilding.getComponent("inventory").getMaxSlots();
-				var _g32 = 0;
-				var _g22 = slots1;
-				while(_g32 < _g22) {
-					var i3 = _g32++;
-					var heroButton = entitySystem.createEntity("button","recruitWindowHeroButton",null);
-					entitySystem.addEntityToScene(heroButton,scene);
-				}
-			}
 		}
 		var buttonArray = config.button;
 		var _g12 = 0;
 		var _g5 = buttonArray.length;
 		while(_g12 < _g5) {
 			var j = _g12++;
-			var button = entitySystem.createEntity("button",buttonArray[j],null);
-			entitySystem.addEntityToScene(button,scene);
+			var newButton = buttonArray[j];
+			if(newButton == "recruitWindowHeroButton") {
+				var slots1 = recruitBuilding.getComponent("inventory").getMaxSlots();
+				var _g31 = 0;
+				var _g21 = slots1;
+				while(_g31 < _g21) {
+					var i2 = _g31++;
+					var heroButton = entitySystem.createEntity("button",newButton,null);
+					entitySystem.addEntityToScene(heroButton,scene);
+				}
+			} else {
+				var button = entitySystem.createEntity("button",newButton,null);
+				entitySystem.addEntityToScene(button,scene);
+			}
 		}
 		this._addScene(scene);
 		return scene;
@@ -6581,7 +6561,7 @@ SceneSystem.prototype = {
 		case "startScene":
 			return this._createStartScene();
 		default:
-			haxe_Log.trace("Error in SceneSystem.createScene, scene name can't be: " + sceneName + ".",{ fileName : "SceneSystem.hx", lineNumber : 208, className : "SceneSystem", methodName : "createScene"});
+			haxe_Log.trace("Error in SceneSystem.createScene, scene name can't be: " + sceneName + ".",{ fileName : "SceneSystem.hx", lineNumber : 199, className : "SceneSystem", methodName : "createScene"});
 		}
 		return null;
 	}
@@ -28686,7 +28666,7 @@ var lime_utils_AssetCache = function() {
 	this.audio = new haxe_ds_StringMap();
 	this.font = new haxe_ds_StringMap();
 	this.image = new haxe_ds_StringMap();
-	this.version = 694930;
+	this.version = 444023;
 };
 $hxClasses["lime.utils.AssetCache"] = lime_utils_AssetCache;
 lime_utils_AssetCache.__name__ = ["lime","utils","AssetCache"];
