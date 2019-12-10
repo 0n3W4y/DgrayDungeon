@@ -127,7 +127,7 @@ class GraphicsSystem
 		var objectName:String = object.get( "name" );
 		var isHide:Bool = false;
 		if( objectName == "recruitWindowHeroButton" )
-			isHide = true;
+			isHide = false;
 
 		var sprite:Sprite = new Sprite();
 		var graphicsSprite:Sprite = this._createGraphicsForObject( object );
@@ -160,6 +160,11 @@ class GraphicsSystem
 		if( isHide )
 			sprite.visible = false;
 		return sprite;
+	}
+
+	private function _fillSpriteForHeroButtonRecruitWindow( hero:Entity, sprite:Sprite ):Void
+	{
+		//sprite - one of button;
 	}
 
 	private function _createBuilding( object:Entity ):Sprite
@@ -290,10 +295,13 @@ class GraphicsSystem
 			}
 		}
 
+		var listOfHeroButtons:Array<Entity> = null;
+
 		if( recruitInentory != null ) //check for bug;
 		{
 			for( k in 0...recruitInentory.length )
 			{
+
 				//TODO: ??
 				// Берем кнопки, заполняем кнопки героями. прежде чекаем героев. По количеству кнопок фигарим героев. как закначиваются герои - стоп, либо кнопки.
 			}

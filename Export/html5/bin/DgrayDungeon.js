@@ -894,9 +894,9 @@ ApplicationMain.create = function(config) {
 	ManifestResources.init(config);
 	var _this = app.meta;
 	if(__map_reserved["build"] != null) {
-		_this.setReserved("build","205");
+		_this.setReserved("build","210");
 	} else {
-		_this.h["build"] = "205";
+		_this.h["build"] = "210";
 	}
 	var _this1 = app.meta;
 	if(__map_reserved["company"] != null) {
@@ -4828,6 +4828,9 @@ Event.prototype = $extend(Component.prototype,{
 		this._currentEvent = "mOVER";
 		this._isCurrentEventDone = false;
 	}
+	,cleanEventList: function() {
+		this._events = [];
+	}
 	,__class__: Event
 });
 var EventSystem = function(parent) {
@@ -5171,9 +5174,9 @@ EventSystem.prototype = {
 	}
 	,removeEvent: function(object,eventName) {
 		var objectEvent = object.getComponent("event");
+		var events = objectEvent.getEvents();
 		var objectGraphics = object.getComponent("graphics");
 		var graphicsInstance = objectGraphics.getGraphicsInstance();
-		var events = objectEvent.getEvents();
 		var event = null;
 		var func = null;
 		switch(eventName) {
@@ -5221,7 +5224,7 @@ EventSystem.prototype = {
 					graphicsInstance.removeEventListener("mouseUp",objectEvent.mouseUp.bind(objectEvent));
 					break;
 				}
-				objectEvent.removeEvent(events[i]);
+				haxe_Log.trace(events[i] + ";  " + Std.string(object.get("name")) + "; " + events.length,{ fileName : "EventSystem.hx", lineNumber : 410, className : "EventSystem", methodName : "removeEvent"});
 			} else if(eventName == events[i]) {
 				graphicsInstance.removeEventListener(event,func);
 				objectEvent.removeEvent(eventName);
@@ -5230,6 +5233,10 @@ EventSystem.prototype = {
 				}
 				break;
 			}
+		}
+		if(eventName == null) {
+			objectEvent.cleanEventList();
+			this._removeFromListeners(object);
 		}
 	}
 	,__class__: EventSystem
@@ -5607,7 +5614,7 @@ GraphicsSystem.prototype = {
 		var objectName = object.get("name");
 		var isHide = false;
 		if(objectName == "recruitWindowHeroButton") {
-			isHide = true;
+			isHide = false;
 		}
 		var sprite = new openfl_display_Sprite();
 		var graphicsSprite = this._createGraphicsForObject(object);
@@ -5633,6 +5640,8 @@ GraphicsSystem.prototype = {
 			sprite.set_visible(false);
 		}
 		return sprite;
+	}
+	,_fillSpriteForHeroButtonRecruitWindow: function(hero,sprite) {
 	}
 	,_createBuilding: function(object) {
 		var sprite = new openfl_display_Sprite();
@@ -5744,6 +5753,7 @@ GraphicsSystem.prototype = {
 				break;
 			}
 		}
+		var listOfHeroButtons = null;
 		if(recruitInentory != null) {
 			var _g12 = 0;
 			var _g3 = recruitInentory.length;
@@ -5751,7 +5761,7 @@ GraphicsSystem.prototype = {
 				var k = _g12++;
 			}
 		} else {
-			haxe_Log.trace("Error in GraphicsSystem._drawCityScene. Something went wrong, Inventory in recruits building = " + Std.string(recruitInentory),{ fileName : "GraphicsSystem.hx", lineNumber : 302, className : "GraphicsSystem", methodName : "_drawCityScene"});
+			haxe_Log.trace("Error in GraphicsSystem._drawCityScene. Something went wrong, Inventory in recruits building = " + Std.string(recruitInentory),{ fileName : "GraphicsSystem.hx", lineNumber : 310, className : "GraphicsSystem", methodName : "_drawCityScene"});
 		}
 		this._parent.getMainSprite().addChild(scene.getSprite());
 	}
@@ -5776,7 +5786,7 @@ GraphicsSystem.prototype = {
 			this._drawStartScene(scene);
 			break;
 		default:
-			haxe_Log.trace("Can't draw scene with name: " + sceneName + ".",{ fileName : "GraphicsSystem.hx", lineNumber : 334, className : "GraphicsSystem", methodName : "drawScene"});
+			haxe_Log.trace("Can't draw scene with name: " + sceneName + ".",{ fileName : "GraphicsSystem.hx", lineNumber : 342, className : "GraphicsSystem", methodName : "drawScene"});
 		}
 	}
 	,undrawScene: function(scene) {
@@ -5816,7 +5826,7 @@ GraphicsSystem.prototype = {
 		case "window":
 			break;
 		default:
-			haxe_Log.trace("Error in GraphicsSystem.drawObject, object type: " + type + ", can't be found.",{ fileName : "GraphicsSystem.hx", lineNumber : 378, className : "GraphicsSystem", methodName : "drawObject"});
+			haxe_Log.trace("Error in GraphicsSystem.drawObject, object type: " + type + ", can't be found.",{ fileName : "GraphicsSystem.hx", lineNumber : 386, className : "GraphicsSystem", methodName : "drawObject"});
 		}
 	}
 	,undrawObject: function(object) {
@@ -5827,7 +5837,7 @@ GraphicsSystem.prototype = {
 		case "window":
 			break;
 		default:
-			haxe_Log.trace("Error in GraphicsSystem.undrawObject, object type: " + type + ", can't be found.",{ fileName : "GraphicsSystem.hx", lineNumber : 389, className : "GraphicsSystem", methodName : "undrawObject"});
+			haxe_Log.trace("Error in GraphicsSystem.undrawObject, object type: " + type + ", can't be found.",{ fileName : "GraphicsSystem.hx", lineNumber : 397, className : "GraphicsSystem", methodName : "undrawObject"});
 		}
 	}
 	,createObject: function(object) {
@@ -5838,7 +5848,7 @@ GraphicsSystem.prototype = {
 		case "button":case "window":
 			return this._createWindowButton(object);
 		default:
-			haxe_Log.trace("Error GraphicsSystem.createObject, object type: " + type + ", can't be found.",{ fileName : "GraphicsSystem.hx", lineNumber : 400, className : "GraphicsSystem", methodName : "createObject"});
+			haxe_Log.trace("Error GraphicsSystem.createObject, object type: " + type + ", can't be found.",{ fileName : "GraphicsSystem.hx", lineNumber : 408, className : "GraphicsSystem", methodName : "createObject"});
 		}
 		return null;
 	}
@@ -28666,7 +28676,7 @@ var lime_utils_AssetCache = function() {
 	this.audio = new haxe_ds_StringMap();
 	this.font = new haxe_ds_StringMap();
 	this.image = new haxe_ds_StringMap();
-	this.version = 444023;
+	this.version = 96820;
 };
 $hxClasses["lime.utils.AssetCache"] = lime_utils_AssetCache;
 lime_utils_AssetCache.__name__ = ["lime","utils","AssetCache"];

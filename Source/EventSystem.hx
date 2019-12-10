@@ -381,9 +381,9 @@ class EventSystem
 	public function removeEvent( object:Entity, eventName:String  ):Void
 	{
 		var objectEvent:Dynamic = object.getComponent( "event" );
+		var events:Array<String> = objectEvent.getEvents();
 		var objectGraphics:Graphics = object.getComponent( "graphics" );
 		var graphicsInstance:Sprite = objectGraphics.getGraphicsInstance();
-		var events:Array<String> = objectEvent.getEvents();
 		var event = null;
 		var func = null;
 		switch( eventName ) 
@@ -407,7 +407,7 @@ class EventSystem
 					case "mUP": graphicsInstance.removeEventListener( MouseEvent.MOUSE_UP, objectEvent.mouseUp.bind( objectEvent ) );
 					case "mDOWN":  graphicsInstance.removeEventListener( MouseEvent.MOUSE_DOWN, objectEvent.mouseDown.bind( objectEvent ) );
 				}
-				objectEvent.removeEvent( events[ i ] );
+				trace( events[ i ] + ";  " + object.get( "name" ) + "; " + events.length );
 			}
 			else
 			{
@@ -420,6 +420,12 @@ class EventSystem
 					break;
 				}
 			}			
-		}		
+		}
+
+		if( eventName == null )
+		{
+			objectEvent.cleanEventList();
+			this._removeFromListeners( object );
+		}
 	}
 }

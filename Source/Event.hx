@@ -93,4 +93,9 @@ class Event extends Component
 		this._isCurrentEventDone = false;
 	}
 
+	public function cleanEventList():Void
+	{
+		this._events = new Array();
+	}
+
 }
