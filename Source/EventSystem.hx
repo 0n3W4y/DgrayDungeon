@@ -27,11 +27,6 @@ class EventSystem
 				sceneSystem.doActiveScene( newScene );
 			}
 			case "gameContinue": //TODO: Load game if in Starts Scene. or just continue game and close "options" window;
-			case "gameAuthors":
-			{
-				//TODO : Open window or start titles;
-				trace( "Author: Alexey Power" );
-			}
 			case "gameOptions":
 			{
 				//TODO: Open options window
@@ -64,8 +59,39 @@ class EventSystem
 				var currentOpen:String = window.getComponent( "ui" ).getCurrentOpen();
 				if( currentOpen != null )
 					ui.hideUiObject( currentOpen );
+
+				if( currentOpen == "recruitWindow")
+				{
+					//TODO: clear choosen heroes to buy **;
+					// for( i in 0...buttons.length ) button.getComponent("ui").isChoosen(false);
+				}
 				ui.hideUiObject( "citySceneMainWindow" );
-			} 
+			}
+			case "recruitHeroButton":
+			{
+				//TODO: Button with check if some buttons with hero choose, then collect total price, check inventory money, check slots in inn - then do function buy;
+				var arrayOfButtons:Array<Entity> = sceneSystem.getActiveScene().getEntities( "ui" ).button; //choose active scene, because this button available on 1 scene;
+				var arrayOfChoosenbuttons:Array<Entity> = new Array();
+				for( i in 0...arrayOfButtons.length )
+				{
+					var button:Entity = arrayOfButtons[ i ];
+					if( button.get( "name") == "recruitWindowHeroButton" && button.getComponent( "ui" ).isChoosen() )
+					{
+						arrayOfChoosenbuttons.push( button );
+					}
+				}
+
+				if( arrayOfButtons.length > 0 )
+				{
+					//TODO: buy items in array -> TODO function buy something;
+				}
+				//trace( "i'm working (Recruit)" );
+				
+			}
+			case "recruitWindowHeroButton":
+			{
+				entity.getComponent( "ui" ).setIsChoosen();
+			}
 			default: trace( "Error in EventSustem._clickButton, no button with name: " + entityName );
 		}
 	}
@@ -254,8 +280,11 @@ class EventSystem
 			}
 			case "button":
 			{
-				entitySprite.getChildAt( 1 ).visible = false; // hover invisible;
-				entitySprite.getChildAt( 2 ).visible = false; // unpushed visible;
+				if( !entity.getComponent( "ui" ).isChoosen() )
+				{
+					entitySprite.getChildAt( 1 ).visible = false; // hover invisible;
+					entitySprite.getChildAt( 2 ).visible = false; // unpushed visible;
+				}				
 			}
 		}
 	}
@@ -291,7 +320,8 @@ class EventSystem
 			case "building": {}//do nothing;
 			case "button":
 			{
-				entitySprite.getChildAt( 2 ).visible = false; // unpushed visible;
+				if( !entity.getComponent( "ui" ).isChoosen() )
+					entitySprite.getChildAt( 2 ).visible = false; // unpushed invisible;
 			}
 		}
 	}
@@ -407,7 +437,7 @@ class EventSystem
 					case "mUP": graphicsInstance.removeEventListener( MouseEvent.MOUSE_UP, objectEvent.mouseUp.bind( objectEvent ) );
 					case "mDOWN":  graphicsInstance.removeEventListener( MouseEvent.MOUSE_DOWN, objectEvent.mouseDown.bind( objectEvent ) );
 				}
-				trace( events[ i ] + ";  " + object.get( "name" ) + "; " + events.length );
+				//trace( events[ i ] + ";  " + object.get( "name" ) + "; " + events.length );
 			}
 			else
 			{

@@ -5,14 +5,14 @@
 		{
 			"backgroundImageURL": "assets/images/background_game.png",
 			"window": [ "startSceneWindow" ],
-			"button": [ "gameContinue", "gameStart", "gameOptions", "gameAuthors" ]
+			"button": [ "gameContinue", "gameStart", "gameOptions" ]
 		},
 
 		"cityScene": 
 		{
 			"backgroundImageURL": "assets/images/citySceneBackround.png",
 			"window": [ "panelCityWindow", "citySceneMainWindow", "innWindow", "recruitWindow" ],
-			"button": [ "gameStartJourney", "innUp", "innDown", "citySceneMainWindowClose", "recruitWindowHeroButton" ],
+			"button": [ "gameStartJourney", "innUp", "innDown", "citySceneMainWindowClose", "recruitWindowHeroButton", "recruitHeroButton" ],
 			"building": [ "hospital", "graveyard", "academy", "merchant", "questman", "fontain", "blacksmith", "hermit", "tavern", "recruits", "inn" ]
 		},
 
@@ -1235,8 +1235,8 @@
 
 				"inventory":
 				{
-					"maxSlots": 6,
-					"currentSlots": 6,
+					"maxSlots": 4,
+					"currentSlots": 4,
 					"needToFill":true,
 					"inventory":
 					{
@@ -2174,22 +2174,22 @@
 				"graphics":
 				{
 					"queue": 0,
-					"x": 500.0,
+					"x": 720.0,
 					"y": 20.0,
 					"img": 
 					{
 						"0": { "x": 0.0, "y": 0.0, "url": "assets/images/recruitWindowHero.png" },
 						"1": { "x": 0.0, "y": 0.0, "url": "assets/images/recruitWindowHero.png" },
 						"2": { "x": 0.0, "y": 0.0, "url": "assets/images/recruitWindowHero.png" },
-						"3": { "x": 50.0, "y": 5.0, "url": "assets/images/recruitWindowHeroPicture.png" },
-						"4": { "x": 20.0, "y": 10.0, "url": "assets/images/recruitWindowHeroLevel.png" }
+						"3": { "x": 50.0, "y": 10.0, "url": "assets/images/recruitWindowHeroPicture.png" },
+						"4": { "x": 10.0, "y": 30.0, "url": "assets/images/recruitWindowHeroLevel.png" }
 					},
 					"text": {
 						"name":
 						{
 							"text": "N/A",
-							"x": 0.0,
-							"y": 0.0,
+							"x": 60.0,
+							"y": 40.0,
 							"font": "Verdana",
 							"size": 34,
 							"color": "0xffffff",
@@ -2203,8 +2203,8 @@
 						"type":
 						{
 							"text": "N/A",
-							"x": 0.0,
-							"y": 0.0,
+							"x": 60.0,
+							"y": 80.0,
 							"font": "Verdana",
 							"size": 40,
 							"color": "0xffffff",
@@ -2221,6 +2221,45 @@
 				{
 					"parentWindow": "recruitWindow"
 				}
+			},
+
+			"recruitHeroButton":
+			{
+				"event":{},
+				"graphics":
+				{
+					"queue" : 0,
+					"x": 800.0,
+					"y": 700.0,
+					"img": 
+					{
+						"0": { "x": 0.0, "y": 0.0, "url": "assets/images/button_a.png" },
+						"1": { "x": 0.0, "y": 0.0, "url": "assets/images/button_a_hover.png" },
+						"2": { "x": 0.0, "y": 0.0, "url": "assets/images/button_a_push.png" }
+					},
+					"text" : 
+					{
+						"buttonText":
+						{
+							"text": "Recruit",
+							"x": 75.0,
+							"y": 5.0,
+							"font": "Verdana",
+							"size": 30,
+							"color": "0xffffff",
+							"visible": true,
+							"selectable": false,
+							"queue": 0,
+							"height":40,
+							"width":140,
+							"queue":0
+						}
+					}
+				},
+				"ui":
+				{
+					"parentWindow": "recruitWindow"
+				}				
 			}
 		}
 	},

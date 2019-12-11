@@ -73,7 +73,7 @@ class GraphicsSystem
 		var objectGraphics = object.getComponent( "graphics" );
 		var objectType:String = object.get( "type" );
 		var graphicsSprite:Sprite = new Sprite();
-		var imageContainer:Dynamic =  objectGraphics.getImg();
+		var imageContainer:Dynamic = objectGraphics.getImg();
 
 		for( key in Reflect.fields( imageContainer ) )
 		{
@@ -83,6 +83,8 @@ class GraphicsSystem
 			data.y = value.y;
 			
 			if( key == "0" && objectType == "button" )
+				data.visible = true;
+			else if( key > "2" && objectType == "button" )
 				data.visible = true;
 			else if( objectType == "button" )
 				data.visible = false;
@@ -227,12 +229,6 @@ class GraphicsSystem
 		return sprite;
 	}
 
-	private function _createUiObject( object:Entity ):Sprite
-	{
-		var sprite = new Sprite();
-		return sprite;
-	}
-
 	private function _drawStartScene( scene:Scene ):Void
 	{
 		//add bacground on scene;
@@ -295,7 +291,17 @@ class GraphicsSystem
 			}
 		}
 
-		var listOfHeroButtons:Array<Entity> = null;
+		//do recruitWindowHeroButton;
+		var listOfHeroButtons:Array<Entity> = new Array();
+		var arrayOfSceneButtons:Array<Entity> = scene.getEntities( "ui" ).button;
+		for( l in 0...arrayOfSceneButtons.length )
+		{
+			//choose buttons with name "recruitButton"
+			var recruitButton:Entity = arrayOfSceneButtons[ l ];
+			if( recruitButton.get( "name" ) == "recruitWindowHeroButton" )
+				listOfHeroButtons.push( recruitButton ); // put all buttons in array;
+		}
+		
 
 		if( recruitInentory != null ) //check for bug;
 		{

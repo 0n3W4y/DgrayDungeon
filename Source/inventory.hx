@@ -2,8 +2,8 @@ package;
 
 class Inventory extends Component
 {
-	private var _maxSlots:Int = 0;
-	private var _currentSlots:Int = 0;
+	private var _maxSlots:Int = 0; //maximum number of slots;
+	private var _currentSlots:Int = 0; // current number of slots we have;
 	private var _inventory:Array<Dynamic>; 
 	//{ "name": "slot1", type": "slot", "item": null, "restriction": "hero", "isAvailable": false }
 
@@ -25,7 +25,7 @@ class Inventory extends Component
 				var j = 0;
 				for( i in 0...params.maxSlots )
 				{
-					var newValue = { "name": null, "type": null, "item": null, "restriction": null, "isAvailable": null, "isStorable": null, "maxSize": null, "currentSize": null };
+					var newValue = { "name": null, "type": null, "item": null, "restriction": null, "isAvailable": null };
 					for( key in Reflect.fields( value ) )
 					{
 						var keyValue = Reflect.getProperty( value, key );
@@ -85,22 +85,26 @@ class Inventory extends Component
 		return this._inventory;
 	}
 
-	public function setItemInSlot( item:Dynamic, slot:String ):Dynamic
+	public function setItemInSlot( newItem:Dynamic, slot:String ):Dynamic
 	{
 		// { "name": "slot1", type": "slot", "item": null, "restriction": "hero", "isAvailable": false }
 		if ( slot == null ) // do store item in free slot or add amout of item in slot;
 		{
 			var stored:Bool = false;
 			var freeSlot:Int = -1; // default no free slots;
+			//trace( newItem.get( "name" ) + "; worked in inventory with slot = " + slot );
 			for( i in 0...this._inventory.length )
 			{
-				var oldItem:Dynamic = this._inventory[ i ];
+				var newSlot:Dynamic = this._inventory[ i ];
+				var slotRestriction:String = newSlot.restriction;
+				var oldItem:Entity = this._inventory[ i ].item;
+				//trace( newSlot );
 				if( oldItem != null )
 				{
 					// chek for item in inventory which can be same with new item;
 					//compare it and ckech if it strable; if it storable, just + amount of items;
 					// if item amount max in slot - fill it to max, then change amount for newItem and drop window with return -1;
-					var compareItems:Bool = this._compareItems( oldItem, item );
+					var compareItems:Bool = this._compareItems( oldItem, newItem );
 					if ( compareItems )
 					{
 						//chek if storeable;
@@ -120,10 +124,13 @@ class Inventory extends Component
 			if ( !stored )
 			{
 				if( freeSlot == -1 )
+				{
 					return 0; // error with add item in inventory;
+				}
 				else
 				{
-					this._inventory[ freeSlot ] = item; // add new item in inventory to free slot;
+					this._inventory[ freeSlot ] = newItem; // add new item in inventory to free slot;
+					//trace( "Slot N " + freeSlot + "; Item with type: " + newItem.get( "type" ) );
 					return 1; // no errors, all good;
 				}
 			}
@@ -138,13 +145,13 @@ class Inventory extends Component
 				{
 					if( this._inventory[ i ].item == null && this._inventory[ i ].isAvailable )
 					{
-						this._inventory[ i ].item = item;
+						this._inventory[ i ].item = newItem;
 						return 1;
 					}
 					else
 					{
 						var oldItem:Dynamic = this._inventory[ i ].item;
-						this._inventory[ i ].item = item;
+						this._inventory[ i ].item = newItem;
 						return oldItem;
 					}
 				}
@@ -183,6 +190,7 @@ class Inventory extends Component
 			var value = Reflect.getProperty( prop, key );
 			Reflect.setProperty( newSlot, key, value );
 		}
+		//TODO: Check function to work;
 	}
 
 	public function getCurrentSlots():Int

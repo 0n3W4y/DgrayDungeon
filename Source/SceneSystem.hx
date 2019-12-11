@@ -72,19 +72,34 @@ class SceneSystem
 		{
 			var building:Entity = entitySystem.createEntity( "building", buildingsArray[ k ], null );
 			entitySystem.addEntityToScene( building, scene );
-			if( buildingsArray[ k ] == "recruits" )
+			switch( buildingsArray[ k ] )
 			{
-				recruitBuilding = building;
-				var slots = building.getComponent( "inventory" ).getCurrentSlots();
-				//fill hero list with names of hero in config file ( data.json from entitysystem );
-
-				for( i in 0...slots )
+				case "recruits":
 				{
-					var hero = entitySystem.createEntity( "hero", null, null );
-					this._parent.getSystem( "entity" ).addEntityToScene( hero, scene );
-					// do this without check, because we have 1-st start and we have 4 slots at all.
-					building.getComponent( "inventory" ).setItemInSlot( hero, null );
-					//TODO: set timer to next change heroes in recruit building;	
+					recruitBuilding = building;
+					var inventoryBuilding:Dynamic = building.getComponent( "inventory" ); //component enventory;
+					var slots = inventoryBuilding.getCurrentSlots();
+					//fill hero list with names of hero in config file ( data.json from entitysystem );
+
+					for( i in 0...slots )
+					{
+						//for first initializing we change inventory slots.available from "false" to "true";
+						var hero = entitySystem.createEntity( "hero", null, null );
+						this._parent.getSystem( "entity" ).addEntityToScene( hero, scene );
+
+						var checkStoreInInventory:Int = building.getComponent( "inventory" ).setItemInSlot( hero, null );
+						if( checkStoreInInventory == 0 ) //check function inventory to store heroes;
+							trace( "Error in SceneSystem._createCityScene with add Hero char in inventory to building in " + i + " round. " + checkStoreInInventory );
+						//TODO: set timer to next change heroes in recruit building;
+					}
+				}
+				case "storage":
+				{
+					trace( "Storage works" );
+				}
+				case "inn":
+				{
+					trace( "Inn works" );
 				}
 			}
 		}
