@@ -2,6 +2,8 @@ package;
 
 import openfl.Assets;
 import openfl.display.Sprite;
+import openfl.display.DisplayObject;
+import openfl.display.DisplayObjectContainer;
 import openfl.display.Bitmap;
 import openfl.text.TextFormat;
 import openfl.text.TextField;
@@ -164,6 +166,29 @@ class GraphicsSystem
 		return sprite;
 	}
 
+	private function _createButtonRecruitWindow( button:Entity, hero:Entity, num:Int ):Void
+	{
+		var uiSystem:UserInterface = this._parent.getSystem( "ui" );
+		var recruitWindow:Sprite = uiSystem.getWindow( "recruitWindow" );
+
+		var heroType:String = hero.get( "name" );
+		var heroName:String = hero.getComponent( "name" ).get( "fullName" );
+		var heroLevel:Int = hero.getComponent( "experience" ).get( "lvl" );
+
+		var buttonGraphicsComponent:Graphics = button.getComponent( "graphics" );
+		var buttonImg:Dynamic = buttonGraphicsComponent.getImg();
+		var buttonTxt:Dynamic = buttonGraphicsComponent.getText();
+		// { 'text1': { "text": "yuppei",x: 1, y:2 }, 'text2': { "text": "yuppieey", x: 1, y:2 } };
+		// { "0": { "x": 0, "y": 0, "url": "//..." }, "1": { x, y , url }};
+
+		var coords:Dynamic = buttonGraphicsComponent.getCoordinates();
+		coords.y += newButton.height * num;
+		buttonGraphicsComponent.setCoordinates( coords );
+		var newButton:Sprite = this._createWindowButton( button );
+		// sprite child[0] - graphics, child[0][0-2] - standart, child[0][3] - portrait hero, child[0][4] - hero level;
+		// sprite child[1] - text, child[1][0] - text hero name, child[1][0] - text hero class;
+	}
+
 	private function _fillSpriteForHeroButtonRecruitWindow( hero:Entity, sprite:Sprite ):Void
 	{
 		//sprite - one of button;
@@ -285,8 +310,7 @@ class GraphicsSystem
 			var building:Dynamic = listOfBuildings[ j ];
 			if( building.get( "name" ) == "recruits" )
 			{
-				//trace( "do buttons for recruits done" );
-				recruitInentory = building.getComponent( "inventory" ).getInventory();
+				recruitInentory = building.getComponent( "inventory" );
 				break;
 			}
 		}
@@ -302,14 +326,31 @@ class GraphicsSystem
 				listOfHeroButtons.push( recruitButton ); // put all buttons in array;
 		}
 		
-
+		//TODO: ??
+		// Берем кнопки, заполняем кнопки героями. прежде чекаем героев. По количеству кнопок фигарим героев. как закначиваются герои - стоп, либо кнопки.
 		if( recruitInentory != null ) //check for bug;
 		{
 			for( k in 0...recruitInentory.length )
 			{
+				var heroButton:Entity = listOfHeroButtons[ 0 ]; // because i'll splice array at '0' index every "k".
+				if( heroButton != null ) //check button;
+				{
 
-				//TODO: ??
-				// Берем кнопки, заполняем кнопки героями. прежде чекаем героев. По количеству кнопок фигарим героев. как закначиваются герои - стоп, либо кнопки.
+					var hero:Entity = recruitInentory.getItemInSlot( "slot" + k );
+					if( hero != null )
+					{
+						this._createButtonRecruitWindow( heroButton, hero, k );
+					}
+					else
+					{
+						break; // no heroes;
+						trace( "Warning, GraphicsSystem._drawCityScene, heroes are end for recruit window. " + k + "; " + hero );
+					}
+					
+				}
+				else
+					break; // no buttons;
+				
 			}
 		}
 		else

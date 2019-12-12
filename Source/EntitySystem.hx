@@ -5,6 +5,7 @@ class EntitySystem
 	private var _parent:Game;
 	private var _nextId:Int = 0;
 	private var _config:Dynamic;
+	private var _namesAlreadyInUse:Array<Dynamic>;
 
 
 	private function _createId():String
@@ -12,6 +13,47 @@ class EntitySystem
 		var id = "" + this._nextId;
 		this._nextId++;
 		return id ;
+	}
+
+	private function _createNameForHero( gender:String ):Array<String>
+	{
+		//TODO: genderNames;
+		//TODO: data names into config.json;
+		var names:Array<String> = [ "Alex", "Sally", "Edward", "Bob", "Alice", "Odry", "Cooper", "Ann", "Chris", "Jack", "Oxy", "Sea", "Dobby", "Dolly", "Saimon" ];
+		var surnames:Array<String> = [ "Oldrich", "Slowpoke", "Duckman", "Smith", "Oldman", "Cage", "Travolta", "Parker", "Stark", "Anderson", "Tears", "Gold", "Walker" ];
+		var number:Int = names.length + surnames.length;
+		var name:String = null;
+		var surname:String = null;
+		var done:Bool = false;
+		for( i in 0...number )
+		{
+			if( !done )
+			{
+				name = names[ Math.floor( Math.random() * names.length ) ];
+				surname = surnames[ Math.floor( Math.random() * surnames.length ) ];
+				for( j in 0...this._namesAlreadyInUse.length ) //check for doubles;
+				{
+					var usedName:Array<String> = this._namesAlreadyInUse[ i ];
+					if( usedName[ 0 ] == name && usedName[ 1 ] == surname )
+					{
+						done = false;
+						break;
+					}
+				}
+				done = true;
+			}
+			else
+			{
+				break;
+			}
+			
+		}
+		
+		var result:Array<String> = new Array<String>();
+		result.push( name );
+		result.push( surname );
+		this._namesAlreadyInUse.push( result );
+		return result;
 	}
 
 	private function _createWindowButtonType( id:String, type:String, name:String,  params:Dynamic ):Entity
@@ -124,11 +166,11 @@ class EntitySystem
 				case "event": component = this.createComponent( num, value );
 				case "name": 
 				{
-					var names:Array<String> = [ "Alex", "Sally", "Edward", "Bob", "Alice", "Odry", "Cooper", "Ann" ];
-					var surnames:Array<String> = [ "Oldrich", "Slowpoke", "Duckman", "Smith", "Oldman", "Cage", "Travolta", "Parker", "Stark", "Anderson" ];
-					var newName:String = names[ Math.floor( Math.random() * names.length ) ];
-					var newSurname:String = surnames[ Math.floor( Math.random() * surnames.length ) ];
+					var newNames:Array<String> = this._createNameForHero( null );
+					var newName:String = newNames[ 0 ];
+					var newSurname:String = newNames[ 1 ];
 					// genderNames;
+					
 					var nameConfig:Dynamic = 
 					{
 						"name": newName,
@@ -306,6 +348,7 @@ class EntitySystem
 	{
 		this._parent = parent;
 		this._config = params;
+		this._namesAlreadyInUse = new Array();
 	}
 
 

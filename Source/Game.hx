@@ -82,6 +82,8 @@ class Game
 
 	public function new( width:Int, height:Int, fps:Int, mainSprite:Sprite ):Void
 	{
+		//var value = sys.io.File.getContent( "C:/projects/DgrayDungeon/Source/data.json" );
+    	//var config = haxe.Json.parse( value );
 		var config = this._parseData();
 		this._entitySystem = new EntitySystem( this, config.entity );
 		this._sceneSystem = new SceneSystem( this, config.scene );

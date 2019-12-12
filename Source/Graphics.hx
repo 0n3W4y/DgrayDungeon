@@ -27,14 +27,6 @@ class Graphics extends Component
 		this._graphicsInstance = null;
 	}
 
-	public function moveTo( x:Float, y:Float ):Void
-	{
-		this._x = x;
-		this._y = y;
-		this._graphicsInstance.x = x;
-		this._graphicsInstance.y = y;
-	}
-
 	public function move( x:Float, y:Float ):Void
 	{
 		this._x += x;
@@ -48,9 +40,19 @@ class Graphics extends Component
 		return this._img;
 	}
 
+	public function setImg( value:Dynamic ):Void
+	{
+		this._img = value;
+	}
+
 	public function getText():Dynamic
 	{
 		return this._text;
+	}
+
+	public function setText( value:Dynamic ):Void
+	{
+		this._text = value;
 	}
 
 	public function getQueue():Int
@@ -63,10 +65,15 @@ class Graphics extends Component
 		return { "x": this._x, "y": this._y };
 	}
 
-	public function setCoordinates( x:Float, y:Float ):Void
+	public function setCoordinates( coords:Dyanmic ):Void
 	{
-		this._x = x;
-		this._y = y;
+		this._x = coords.x;
+		this._y = coords.y;
+		if( this._graphicsInstance != null )
+		{
+			this._graphicsInstance.x = coords.x;
+			this._graphicsInstance.y = coords.y;
+		}
 	}
 
 	public function getGraphicsCoordinates():Dynamic
@@ -74,10 +81,12 @@ class Graphics extends Component
 		return { "x": this._graphicsInstance.x, "y": this._graphicsInstance.y };
 	}
 
-	public function setGraphicsCoordinates( x:Float, y:Float ):Void
+	public function setGraphicsCoordinates( coords:Dynamic ):Void
 	{
-		this._graphicsInstance.x = x;
-		this._graphicsInstance.y = y;		
+		this._graphicsInstance.x = coords.x;
+		this._graphicsInstance.y = coords.y;
+		this._x = coords.x;
+		this._y = coords.y;
 	}
 
 	public function getGraphicsInstance():Sprite

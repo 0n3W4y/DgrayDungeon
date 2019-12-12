@@ -193,6 +193,21 @@ class Inventory extends Component
 		//TODO: Check function to work;
 	}
 
+	public function getItemInSlot( slot:String ):Dynamic
+	{
+		var item:Dynamic = null;
+		for( i in 0...this._inventory.length )
+		{
+			var slotName = this._inventory[ i ].name;
+			if ( slotName == slot )
+			{
+				item = this._inventory[ i ].item;
+				break;
+			}
+		}
+		return item;
+	}
+
 	public function getCurrentSlots():Int
 	{
 		return this._currentSlots;

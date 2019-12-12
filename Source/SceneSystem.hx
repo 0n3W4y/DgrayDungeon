@@ -77,13 +77,11 @@ class SceneSystem
 				case "recruits":
 				{
 					recruitBuilding = building;
-					var inventoryBuilding:Dynamic = building.getComponent( "inventory" ); //component enventory;
+					var inventoryBuilding:Dynamic = building.getComponent( "inventory" ); //component inventory;
 					var slots = inventoryBuilding.getCurrentSlots();
-					//fill hero list with names of hero in config file ( data.json from entitysystem );
 
 					for( i in 0...slots )
 					{
-						//for first initializing we change inventory slots.available from "false" to "true";
 						var hero = entitySystem.createEntity( "hero", null, null );
 						this._parent.getSystem( "entity" ).addEntityToScene( hero, scene );
 
