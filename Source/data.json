@@ -8,7 +8,7 @@
 
 		"cityScene": {
 			"backgroundImageURL": "assets/images/citySceneBackround.png",
-			"window": ["panelCityWindow", "citySceneMainWindow", "innWindow", "recruitWindow"],
+			"window": ["panelCityWindow", "citySceneMainWindow", "recruitWindow"],
 			"button": ["gameStartJourney", "innUp", "innDown", "citySceneMainWindowClose", "recruitWindowHeroButton", "recruitHeroButton"],
 			"building": ["hospital", "graveyard", "academy", "merchant", "questman", "fontain", "blacksmith", "hermit", "tavern", "recruits", "inn"]
 		},
@@ -1672,7 +1672,7 @@
 			},
 			"inn": {
 				"inventory": {
-					"slots": 20,
+					"maxSlots": 8,
 					"needToFill": true,
 					"currentSlots": 8,
 					"inventory": {
@@ -1682,6 +1682,52 @@
 							"item": null,
 							"restriction": "hero",
 							"isAvailable": false
+						}
+					}
+				},
+				"event": {},
+				"graphics": {
+					"queue": 0,
+					"x": 1600.0,
+					"y": 90.0,
+					"img": {
+						"normal": {
+							"x": 0.0,
+							"y": 0.0,
+							"url": "assets/images/innWindow.png"
+						},
+						"hover": {
+							"x": 0.0,
+							"y": 0.0,
+							"url": "assets/images/innWindow.png"
+						}
+					},
+					"text": {
+						"nameWindow": {
+							"text": "Inn",
+							"x": 20.0,
+							"y": -35.0,
+							"font": "Verdana",
+							"size": 32,
+							"color": "0xffffff",
+							"visible": true,
+							"selectable": false,
+							"height": 50,
+							"width": 50,
+							"queue": 0
+						},
+						"quantityHeroes": {
+							"text": "0/8",
+							"x": 100.0,
+							"y": -35.0,
+							"font": "Verdana",
+							"size": 32,
+							"color": "0xffffff",
+							"visible": true,
+							"selectable": false,
+							"height": 50,
+							"width": 50,
+							"queue": 1
 						}
 					}
 				}
@@ -1745,8 +1791,8 @@
 				},
 
 				"inventory": {
-					"maxSlots": 4,
-					"currentSlots": 4,
+					"maxSlots": 5,
+					"currentSlots": 5,
 					"needToFill": true,
 					"inventory": {
 						"slot1": {
@@ -1757,7 +1803,6 @@
 							"isAvailable": false
 						}
 					}
-
 				}
 			},
 			"blacksmith": {
@@ -2189,53 +2234,6 @@
 				},
 				"ui": {
 					"parentWindow": "citySceneMainWindow"
-				}
-			},
-
-			"innWindow": {
-				"event": {},
-				"graphics": {
-					"queue": 0,
-					"x": 1600.0,
-					"y": 90.0,
-					"img": {
-						"normal": {
-							"x": 0,
-							"y": 0.0,
-							"url": "assets/images/innWindow.png"
-						}
-					},
-					"text": {
-						"nameWindow": {
-							"text": "Inn",
-							"x": 20.0,
-							"y": -35.0,
-							"font": "Verdana",
-							"size": 32,
-							"color": "0xffffff",
-							"visible": true,
-							"selectable": false,
-							"height": 50,
-							"width": 50,
-							"queue": 0
-						},
-						"quantityHeroes": {
-							"text": "0/0",
-							"x": 100.0,
-							"y": -35.0,
-							"font": "Verdana",
-							"size": 32,
-							"color": "0xffffff",
-							"visible": true,
-							"selectable": false,
-							"height": 50,
-							"width": 50,
-							"queue": 1
-						}
-					}
-				},
-				"ui": {
-					"parentWindow": null
 				}
 			},
 
@@ -2794,42 +2792,42 @@
 							"url": "assets/images/recruitWindowHero.png"
 						},
 						"3": {
-							"x": 50.0,
-							"y": 10.0,
+							"x": 70.0,
+							"y": 15.0,
 							"url": "assets/images/recruitWindowHeroPicture.png"
 						},
 						"4": {
 							"x": 10.0,
-							"y": 30.0,
+							"y": 35.0,
 							"url": "assets/images/recruitWindowHeroLevel.png"
 						}
 					},
 					"text": {
 						"name": {
 							"text": "N/A",
-							"x": 60.0,
-							"y": 40.0,
+							"x": 200.0,
+							"y": 15.0,
 							"font": "Verdana",
 							"size": 34,
 							"color": "0xffffff",
 							"visible": true,
 							"selectable": false,
 							"height": 40,
-							"width": 100,
+							"width": 300,
 							"queue": 0
 						},
 						"type": {
 							"text": "N/A",
-							"x": 60.0,
-							"y": 80.0,
+							"x": 200.0,
+							"y": 50.0,
 							"font": "Verdana",
 							"size": 40,
 							"color": "0xffffff",
 							"visible": true,
 							"selectable": false,
 							"height": 45,
-							"width": 80,
-							"queue": 0
+							"width": 300,
+							"queue": 1
 						}
 					}
 				},
@@ -2840,8 +2838,8 @@
 				"event": {},
 				"graphics": {
 					"queue": 0,
-					"x": 800.0,
-					"y": 700.0,
+					"x": 980.0,
+					"y": 770.0,
 					"img": {
 						"0": {
 							"x": 0.0,
@@ -2863,7 +2861,7 @@
 						"buttonText": {
 							"text": "Recruit",
 							"x": 75.0,
-							"y": 5.0,
+							"y": 10.0,
 							"font": "Verdana",
 							"size": 30,
 							"color": "0xffffff",

@@ -65,7 +65,7 @@ class Graphics extends Component
 		return { "x": this._x, "y": this._y };
 	}
 
-	public function setCoordinates( coords:Dyanmic ):Void
+	public function setCoordinates( coords:Dynamic ):Void
 	{
 		this._x = coords.x;
 		this._y = coords.y;

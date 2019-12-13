@@ -25,7 +25,7 @@ class Inventory extends Component
 				var j = 0;
 				for( i in 0...params.maxSlots )
 				{
-					var newValue = { "name": null, "type": null, "item": null, "restriction": null, "isAvailable": null };
+					var newValue:Dynamic = { "name": null, "type": null, "item": null, "restriction": null, "isAvailable": null };
 					for( key in Reflect.fields( value ) )
 					{
 						var keyValue = Reflect.getProperty( value, key );
@@ -43,10 +43,17 @@ class Inventory extends Component
 				}
 				break;
 			}
-
-			this._inventory.push( value );
-		}		
-
+			else
+			{
+				var newValue:Dynamic = { "name": null, "type": null, "item": null, "restriction": null, "isAvailable": null };
+				for( key in Reflect.fields( value ) )
+				{
+					var keyValue = Reflect.getProperty( value, key );
+					Reflect.setProperty( newValue, key, keyValue );
+				}
+				this._inventory.push( newValue );
+			}			
+		}
 	}
 
 	public function changeAvailableSlot ( slot:String, value:Bool ):Void
@@ -129,7 +136,7 @@ class Inventory extends Component
 				}
 				else
 				{
-					this._inventory[ freeSlot ] = newItem; // add new item in inventory to free slot;
+					this._inventory[ freeSlot ].item = newItem; // add new item in inventory to free slot;
 					//trace( "Slot N " + freeSlot + "; Item with type: " + newItem.get( "type" ) );
 					return 1; // no errors, all good;
 				}
@@ -160,20 +167,37 @@ class Inventory extends Component
 		return 0;
 	}
 
-	public function removeItemFromSlot( slot:String ):Dynamic
+	public function removeItemFromSlot( item:Entity, slot:String ):Dynamic
 	{
-		var item:Dynamic = null;
-		for( i in 0...this._inventory.length )
+		var oldItem:Dynamic = null;
+		if( item == null )
 		{
-			var slotName = this._inventory[ i ].name;
-			if ( slotName == slot )
+			for( i in 0...this._inventory.length )
 			{
-				item = this._inventory[ i ].item;
-				this._inventory[ i ].item = null;
-				break;
+				var slotName:String = this._inventory[ i ].name;
+				if ( slotName == slot )
+				{
+					oldItem = this._inventory[ i ].item;
+					this._inventory[ i ].item = null;
+					break;
+				}
+			}	
+		}
+		else
+		{
+			for( j in 0...this._inventory.length )
+			{
+				var itemId:Int = item.get( "id" );
+				if ( itemId == this._inventory[ j ].item.get( "id" ) )
+				{
+					oldItem = this._inventory[ j ].item;
+					this._inventory[ j ].item = null;
+					break;
+				}
 			}
 		}
-		return item;
+		return oldItem;
+		
 	}
 
 	public function changePropSlotInventory( slot:String, prop:Dynamic ):Void

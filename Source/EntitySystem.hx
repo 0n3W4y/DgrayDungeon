@@ -33,20 +33,21 @@ class EntitySystem
 				surname = surnames[ Math.floor( Math.random() * surnames.length ) ];
 				for( j in 0...this._namesAlreadyInUse.length ) //check for doubles;
 				{
-					var usedName:Array<String> = this._namesAlreadyInUse[ i ];
+					var usedName:Array<String> = this._namesAlreadyInUse[ j ];
 					if( usedName[ 0 ] == name && usedName[ 1 ] == surname )
 					{
 						done = false;
 						break;
 					}
+					//test trace
+					//trace( "Used = " + usedName[ 0 ] + " " + usedName[ 1 ] + "New  = " + name + " " + surname );
 				}
 				done = true;
 			}
 			else
 			{
 				break;
-			}
-			
+			}			
 		}
 		
 		var result:Array<String> = new Array<String>();

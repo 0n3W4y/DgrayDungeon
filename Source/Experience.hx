@@ -31,7 +31,7 @@ class Experience extends Component
 
 	public function new( parent:Entity, id:String, params:Dynamic ):Void
 	{
-		super( parent, id, "experiance" );
+		super( parent, id, "experience" );
 		this._lvl = params.lvl;
 		this._expToNextLvl = params.expToNextLvl;
 		this._exp = params.exp;

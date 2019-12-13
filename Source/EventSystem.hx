@@ -12,6 +12,93 @@ class EventSystem
 	private var _listeners:Array<Entity>;
 
 
+	private function _buyRecruit( sceneSystem:SceneSystem ):Void
+	{
+		//TODO: Button with check if some buttons with hero choose, then collect total price, check inventory money, check slots in inn - then do function buy;
+		var arrayOfButtons:Array<Entity> = sceneSystem.getActiveScene().getEntities( "ui" ).button; //choose active scene, because this button available on 1 scene;
+		var arrayOfChoosenButtons:Array<Entity> = new Array();
+		for( i in 0...arrayOfButtons.length )
+		{
+			var button:Entity = arrayOfButtons[ i ];
+			if( button.get( "name" ) == "recruitWindowHeroButton" && button.getComponent( "ui" ).isChoosen() )
+			{
+				arrayOfChoosenButtons.push( button );
+			}
+		}
+
+		if( arrayOfChoosenButtons.length > 0 )
+		{
+			//TODO: buy items in array -> TODO function buy something;
+			var innBuildingInventory:Inventory = null;
+			var recruitBuildingInventory:Inventory = null;
+			var arrayOfBuildings:Array<Entity> = sceneSystem.getActiveScene().getEntities( "object" ).building;
+			for( j in 0...arrayOfBuildings.length )
+			{
+				var building:Entity = arrayOfBuildings[ j ];
+				if( building.get( "name" ) == "inn" )
+				{
+					innBuildingInventory = building.getComponent( "inventory" );
+					//trace( "inn inventory found");
+				}
+				else if( building.get( "name" ) == "recruits" )
+				{
+					recruitBuildingInventory = building.getComponent( "inventory" );
+					//trace( "recruit inventory found" );
+				}
+				else
+				{
+					if( innBuildingInventory != null && recruitBuildingInventory != null )
+						break;
+				}
+			}
+			var freeSlotsInInventory:Int = 0;
+			var innBuildingInventoryArray:Array<Dynamic> = innBuildingInventory.getInventory();
+			for( k in 0...innBuildingInventoryArray.length )
+			{
+				if( innBuildingInventoryArray[ k ].item == null )
+					freeSlotsInInventory++;
+			}
+			//trace ( "inventory = " + freeSlotsInInventory + "; length = " + arrayOfChoosenButtons.length + "; inventory = " + innBuildingInventoryArray );
+			if( freeSlotsInInventory >= arrayOfChoosenButtons.length )
+			{
+				var recruitBuildingInventoryArray:Array<Dynamic> = recruitBuildingInventory.getInventory();
+				var recruitArrayToTransfer:Array<Entity> = new Array<Entity>();
+				for( h in 0...recruitBuildingInventoryArray.length )
+				{
+					var recruit:Entity = recruitBuildingInventoryArray[ h ].item;
+					var recruitName:String = recruit.getComponent( "name" ).get( "fullName" );
+					var recruitType:String = recruit.get( "name" );
+					for( g in 0...arrayOfChoosenButtons.length )
+					{
+						var buttonGraphicsText:Dynamic = arrayOfChoosenButtons[ g ].getComponent( "graphics" ).getText();
+						var buttonRecruitName = buttonGraphicsText.name.text;
+						var buttonRecruitType = buttonGraphicsText.type.text;
+						if( recruitName == buttonRecruitName && recruitType == buttonRecruitType )
+						{
+							recruitArrayToTransfer.push( [ recruit, arrayOfChoosenButtons[ g ] ] );
+							break;
+						}
+					}
+				}
+				//trace( recruitArrayToTransfer );
+				for( l in 0...recruitArrayToTransfer.length )
+				{
+					var heroButtonArray:Entity = recruitArrayToTransfer[ l ];
+					innBuildingInventory.setItemInSlot( heroButtonArray[ 0 ], null ); // [ 0 ] - because we ha put recruit entity into array with button on 0 index;
+					recruitBuildingInventory.removeItemInSlot( heroButtonArray[ 0 ], null );
+					//TODO: create buttons for Inn ;
+					//TODO: remove buttons in recruit building;
+					trace( "heroes stored into inventory Inn" );
+				}
+				//trace( innBuildingInventoryArray );
+			}
+			else
+			{
+				//TODO: open widnow to user, can't recruit - inn slots are full;
+			}
+		}
+	}
+
 	private function _clickButton( entity:Entity ):Void
 	{
 		// graphics component -> graphicsInstance have child[0] - graphics, child[1] - text
@@ -67,26 +154,9 @@ class EventSystem
 				}
 				ui.hideUiObject( "citySceneMainWindow" );
 			}
-			case "recruitHeroButton":
+			case "recruitHeroButton": //buy recruit;
 			{
-				//TODO: Button with check if some buttons with hero choose, then collect total price, check inventory money, check slots in inn - then do function buy;
-				var arrayOfButtons:Array<Entity> = sceneSystem.getActiveScene().getEntities( "ui" ).button; //choose active scene, because this button available on 1 scene;
-				var arrayOfChoosenbuttons:Array<Entity> = new Array();
-				for( i in 0...arrayOfButtons.length )
-				{
-					var button:Entity = arrayOfButtons[ i ];
-					if( button.get( "name") == "recruitWindowHeroButton" && button.getComponent( "ui" ).isChoosen() )
-					{
-						arrayOfChoosenbuttons.push( button );
-					}
-				}
-
-				if( arrayOfButtons.length > 0 )
-				{
-					//TODO: buy items in array -> TODO function buy something;
-				}
-				//trace( "i'm working (Recruit)" );
-				
+				this._buyRecruit( sceneSystem );
 			}
 			case "recruitWindowHeroButton":
 			{

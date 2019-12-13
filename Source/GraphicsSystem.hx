@@ -169,7 +169,8 @@ class GraphicsSystem
 	private function _createButtonRecruitWindow( button:Entity, hero:Entity, num:Int ):Void
 	{
 		var uiSystem:UserInterface = this._parent.getSystem( "ui" );
-		var recruitWindow:Sprite = uiSystem.getWindow( "recruitWindow" );
+		var recruitWindow:Entity = uiSystem.getWindow( "recruitWindow" );
+		var recruitWindowGraphicsInstance:Sprite = recruitWindow.getComponent( "graphics" ).getGraphicsInstance();
 
 		var heroType:String = hero.get( "name" );
 		var heroName:String = hero.getComponent( "name" ).get( "fullName" );
@@ -180,11 +181,13 @@ class GraphicsSystem
 		var buttonTxt:Dynamic = buttonGraphicsComponent.getText();
 		// { 'text1': { "text": "yuppei",x: 1, y:2 }, 'text2': { "text": "yuppieey", x: 1, y:2 } };
 		// { "0": { "x": 0, "y": 0, "url": "//..." }, "1": { x, y , url }};
-
-		var coords:Dynamic = buttonGraphicsComponent.getCoordinates();
-		coords.y += newButton.height * num;
-		buttonGraphicsComponent.setCoordinates( coords );
+		buttonTxt.name.text = heroName;
+		buttonTxt.type.text = heroType;
 		var newButton:Sprite = this._createWindowButton( button );
+		newButton.y += newButton.height * num;
+
+		recruitWindowGraphicsInstance.addChild( newButton );
+		
 		// sprite child[0] - graphics, child[0][0-2] - standart, child[0][3] - portrait hero, child[0][4] - hero level;
 		// sprite child[1] - text, child[1][0] - text hero name, child[1][0] - text hero class;
 	}
@@ -290,8 +293,17 @@ class GraphicsSystem
 		for( i in 0...buildingsList.length )
 		{
 			var object:Entity = buildingsList[ i ];
-			if( object.get( "name") == "inn" || object.get( "name" ) == "storage" )
-				continue;
+			switch( object.get( "name" ) )
+			{
+				case "storage":
+				{
+					continue;
+				}
+				case "inn":
+				{
+					//TODO: Create 2 buttons to list heroes in inn inventory;
+				}
+			}
 			var sprite = this.createObject( object );
 			sceneSprite.addChild( sprite );
 		}
@@ -303,14 +315,14 @@ class GraphicsSystem
 		uiSystem.hideUiObject( "citySceneMainWindow" );
 		uiSystem.hideUiObject( "recruitWindow" );
 		var recruitWindow:Entity = uiSystem.getWindow( "recruitWindow" );
-		var recruitInentory:Dynamic = null;
+		var recruitInentoryComponent:Inventory = null;
 		var listOfBuildings:Array<Entity> = scene.getEntities( "object" ).building;
 		for( j in 0...listOfBuildings.length )
 		{
 			var building:Dynamic = listOfBuildings[ j ];
 			if( building.get( "name" ) == "recruits" )
 			{
-				recruitInentory = building.getComponent( "inventory" );
+				recruitInentoryComponent = building.getComponent( "inventory" );
 				break;
 			}
 		}
@@ -326,35 +338,35 @@ class GraphicsSystem
 				listOfHeroButtons.push( recruitButton ); // put all buttons in array;
 		}
 		
-		//TODO: ??
-		// Берем кнопки, заполняем кнопки героями. прежде чекаем героев. По количеству кнопок фигарим героев. как закначиваются герои - стоп, либо кнопки.
-		if( recruitInentory != null ) //check for bug;
+		var recruitInventory:Dynamic = recruitInentoryComponent.getInventory();
+		if( recruitInventory != null ) //check for bug;
 		{
-			for( k in 0...recruitInentory.length )
+			for( k in 0...recruitInventory.length )
 			{
-				var heroButton:Entity = listOfHeroButtons[ 0 ]; // because i'll splice array at '0' index every "k".
+				var heroButton:Entity = listOfHeroButtons[ k ];
 				if( heroButton != null ) //check button;
 				{
-
-					var hero:Entity = recruitInentory.getItemInSlot( "slot" + k );
+					var slot:String = "slot" + k;
+					var hero:Entity = recruitInentoryComponent.getItemInSlot( slot );
 					if( hero != null )
 					{
 						this._createButtonRecruitWindow( heroButton, hero, k );
 					}
 					else
 					{
-						break; // no heroes;
 						trace( "Warning, GraphicsSystem._drawCityScene, heroes are end for recruit window. " + k + "; " + hero );
-					}
-					
+						break; // no heroes;						
+					}					
 				}
 				else
+				{
+					trace( "Warning, GraphicsSystem._drawCityScene, buttons are end for recruit window. " + k + "; " + heroButton );
 					break; // no buttons;
-				
+				}				
 			}
 		}
 		else
-			trace( "Error in GraphicsSystem._drawCityScene. Something went wrong, Inventory in recruits building = " + recruitInentory );
+			trace( "Error in GraphicsSystem._drawCityScene. Something went wrong, Inventory in recruits building = " + recruitInventory );
 
 		this._parent.getMainSprite().addChild( scene.getSprite() );
 	}

@@ -13,6 +13,5 @@ class Main extends Sprite
 	{
 		super();
 		this._game = new Game( this._width, this._height, this._fps, this );
-		//TODO: extends sprite with entity class, then we can use  global click function to find this object and run function after click;
 	}
 }

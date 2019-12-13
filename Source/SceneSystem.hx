@@ -97,7 +97,7 @@ class SceneSystem
 				}
 				case "inn":
 				{
-					trace( "Inn works" );
+					
 				}
 			}
 		}
