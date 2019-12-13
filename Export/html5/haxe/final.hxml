@@ -1,9 +1,9 @@
 -main ApplicationMain 
 --macro openfl._internal.macros.ExtraParams.include()
--cp C:/HaxeToolkit/haxe/lib/openfl/8,9,5/src
+-cp C:/HaxeToolkit/haxe/lib/lime/openfl/8,9,5/src
 -D openfl=8.9.5
 --macro lime._internal.macros.DefineMacro.run()
--cp C:/HaxeToolkit/haxe/lib/lime/7,6,3/src
+-cp C:/HaxeToolkit/haxe/lib/lime/lime/7,6,3/src
 -D lime=7.6.3
 -cp Source
 -D tools=7.6.3

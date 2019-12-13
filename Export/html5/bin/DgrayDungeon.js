@@ -894,9 +894,9 @@ ApplicationMain.create = function(config) {
 	ManifestResources.init(config);
 	var _this = app.meta;
 	if(__map_reserved["build"] != null) {
-		_this.setReserved("build","292");
+		_this.setReserved("build","302");
 	} else {
-		_this.h["build"] = "292";
+		_this.h["build"] = "302";
 	}
 	var _this1 = app.meta;
 	if(__map_reserved["company"] != null) {
@@ -4127,17 +4127,20 @@ EventSystem.prototype = {
 						var buttonRecruitName = buttonGraphicsText.name.text;
 						var buttonRecruitType = buttonGraphicsText.type.text;
 						if(recruitName == buttonRecruitName && recruitType == buttonRecruitType) {
-							recruitArrayToTransfer.push(recruit);
+							var choosenButton = arrayOfChoosenButtons[g];
+							recruitArrayToTransfer.push([recruit,choosenButton]);
 							break;
 						}
 					}
 				}
-				haxe_Log.trace(recruitArrayToTransfer,{ fileName : "Source/EventSystem.hx", lineNumber : 83, className : "EventSystem", methodName : "_buyRecruit"});
 				var _g8 = 0;
-				var _g9 = arrayOfChoosenButtons.length;
+				var _g9 = recruitArrayToTransfer.length;
 				while(_g8 < _g9) {
 					var l = _g8++;
-					haxe_Log.trace("heroes stored into inventory Inn",{ fileName : "Source/EventSystem.hx", lineNumber : 89, className : "EventSystem", methodName : "_buyRecruit"});
+					var heroButtonArray = recruitArrayToTransfer[l];
+					innBuildingInventory.setItemInSlot(heroButtonArray[0],null);
+					recruitBuildingInventory.removeItemFromSlot(heroButtonArray[0],null);
+					haxe_Log.trace("heroes stored into inventory Inn",{ fileName : "Source/EventSystem.hx", lineNumber : 92, className : "EventSystem", methodName : "_buyRecruit"});
 				}
 			}
 		}
@@ -4159,17 +4162,17 @@ EventSystem.prototype = {
 		case "gameContinue":
 			break;
 		case "gameOptions":
-			haxe_Log.trace("Aaaaaaaaaaand opeeeeeeen options window... ( magic xD )",{ fileName : "Source/EventSystem.hx", lineNumber : 118, className : "EventSystem", methodName : "_clickButton"});
+			haxe_Log.trace("Aaaaaaaaaaand opeeeeeeen options window... ( magic xD )",{ fileName : "Source/EventSystem.hx", lineNumber : 121, className : "EventSystem", methodName : "_clickButton"});
 			break;
 		case "gameStart":
 			var newScene = sceneSystem.createScene("cityScene");
 			sceneSystem.doActiveScene(newScene);
 			break;
 		case "innDown":
-			haxe_Log.trace("hero list down",{ fileName : "Source/EventSystem.hx", lineNumber : 128, className : "EventSystem", methodName : "_clickButton"});
+			haxe_Log.trace("hero list down",{ fileName : "Source/EventSystem.hx", lineNumber : 131, className : "EventSystem", methodName : "_clickButton"});
 			break;
 		case "innUp":
-			haxe_Log.trace("hero list up",{ fileName : "Source/EventSystem.hx", lineNumber : 123, className : "EventSystem", methodName : "_clickButton"});
+			haxe_Log.trace("hero list up",{ fileName : "Source/EventSystem.hx", lineNumber : 126, className : "EventSystem", methodName : "_clickButton"});
 			break;
 		case "recruitHeroButton":
 			this._buyRecruit(sceneSystem);
@@ -4181,11 +4184,11 @@ EventSystem.prototype = {
 			var currentScene = this._parent.getSystem("scene").getActiveScene();
 			var sceneName = currentScene.getName();
 			if(sceneName == "cityScene") {
-				haxe_Log.trace("go to scene choose dungeon",{ fileName : "Source/EventSystem.hx", lineNumber : 135, className : "EventSystem", methodName : "_clickButton"});
+				haxe_Log.trace("go to scene choose dungeon",{ fileName : "Source/EventSystem.hx", lineNumber : 138, className : "EventSystem", methodName : "_clickButton"});
 			}
 			break;
 		default:
-			haxe_Log.trace("Error in EventSustem._clickButton, no button with name: " + entityName,{ fileName : "Source/EventSystem.hx", lineNumber : 163, className : "EventSystem", methodName : "_clickButton"});
+			haxe_Log.trace("Error in EventSustem._clickButton, no button with name: " + entityName,{ fileName : "Source/EventSystem.hx", lineNumber : 166, className : "EventSystem", methodName : "_clickButton"});
 		}
 	}
 	,_clickBuilding: function(entity) {
@@ -4293,7 +4296,7 @@ EventSystem.prototype = {
 			ui.showUiObject("citySceneMainWindow");
 			break;
 		default:
-			haxe_Log.trace("Click this: " + entityName,{ fileName : "Source/EventSystem.hx", lineNumber : 276, className : "EventSystem", methodName : "_clickBuilding"});
+			haxe_Log.trace("Click this: " + entityName,{ fileName : "Source/EventSystem.hx", lineNumber : 279, className : "EventSystem", methodName : "_clickBuilding"});
 		}
 	}
 	,_clickHero: function(entity) {
@@ -5422,20 +5425,34 @@ Inventory.prototype = $extend(Component.prototype,{
 		}
 		return 0;
 	}
-	,removeItemFromSlot: function(slot) {
-		var item = null;
-		var _g = 0;
-		var _g1 = this._inventory.length;
-		while(_g < _g1) {
-			var i = _g++;
-			var slotName = this._inventory[i].name;
-			if(slotName == slot) {
-				item = this._inventory[i].item;
-				this._inventory[i].item = null;
-				break;
+	,removeItemFromSlot: function(item,slot) {
+		var oldItem = null;
+		if(item == null) {
+			var _g = 0;
+			var _g1 = this._inventory.length;
+			while(_g < _g1) {
+				var i = _g++;
+				var slotName = this._inventory[i].name;
+				if(slotName == slot) {
+					oldItem = this._inventory[i].item;
+					this._inventory[i].item = null;
+					break;
+				}
+			}
+		} else {
+			var _g2 = 0;
+			var _g11 = this._inventory.length;
+			while(_g2 < _g11) {
+				var j = _g2++;
+				var itemId = item.get("id");
+				if(itemId == this._inventory[j].item.get("id")) {
+					oldItem = this._inventory[j].item;
+					this._inventory[j].item = null;
+					break;
+				}
 			}
 		}
-		return item;
+		return oldItem;
 	}
 	,changePropSlotInventory: function(slot,prop) {
 		var newSlot = null;
@@ -26606,7 +26623,7 @@ var lime_utils_AssetCache = function() {
 	this.audio = new haxe_ds_StringMap();
 	this.font = new haxe_ds_StringMap();
 	this.image = new haxe_ds_StringMap();
-	this.version = 683217;
+	this.version = 337763;
 };
 $hxClasses["lime.utils.AssetCache"] = lime_utils_AssetCache;
 lime_utils_AssetCache.__name__ = "lime.utils.AssetCache";

@@ -62,7 +62,7 @@ class EventSystem
 			if( freeSlotsInInventory >= arrayOfChoosenButtons.length )
 			{
 				var recruitBuildingInventoryArray:Array<Dynamic> = recruitBuildingInventory.getInventory();
-				var recruitArrayToTransfer:Array<Entity> = new Array<Entity>();
+				var recruitArrayToTransfer:Array<Dynamic> = new Array<Dynamic>();
 				for( h in 0...recruitBuildingInventoryArray.length )
 				{
 					var recruit:Entity = recruitBuildingInventoryArray[ h ].item;
@@ -75,7 +75,8 @@ class EventSystem
 						var buttonRecruitType = buttonGraphicsText.type.text;
 						if( recruitName == buttonRecruitName && recruitType == buttonRecruitType )
 						{
-							recruitArrayToTransfer.push( [ recruit, arrayOfChoosenButtons[ g ] ] );
+							var choosenButton:Entity = arrayOfChoosenButtons[ g ];
+							recruitArrayToTransfer.push( [ recruit, choosenButton ] );
 							break;
 						}
 					}
@@ -83,9 +84,9 @@ class EventSystem
 				//trace( recruitArrayToTransfer );
 				for( l in 0...recruitArrayToTransfer.length )
 				{
-					var heroButtonArray:Entity = recruitArrayToTransfer[ l ];
+					var heroButtonArray:Dynamic = recruitArrayToTransfer[ l ];
 					innBuildingInventory.setItemInSlot( heroButtonArray[ 0 ], null ); // [ 0 ] - because we ha put recruit entity into array with button on 0 index;
-					recruitBuildingInventory.removeItemInSlot( heroButtonArray[ 0 ], null );
+					recruitBuildingInventory.removeItemFromSlot( heroButtonArray[ 0 ], null );
 					//TODO: create buttons for Inn ;
 					//TODO: remove buttons in recruit building;
 					trace( "heroes stored into inventory Inn" );
