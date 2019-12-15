@@ -894,9 +894,9 @@ ApplicationMain.create = function(config) {
 	ManifestResources.init(config);
 	var _this = app.meta;
 	if(__map_reserved["build"] != null) {
-		_this.setReserved("build","302");
+		_this.setReserved("build","309");
 	} else {
-		_this.h["build"] = "302";
+		_this.h["build"] = "309";
 	}
 	var _this1 = app.meta;
 	if(__map_reserved["company"] != null) {
@@ -3981,6 +3981,44 @@ EntitySystem.prototype = {
 	,getConfig: function() {
 		return this._config;
 	}
+	,removeEntity: function(entity) {
+		var parentEntity = entity.get("parent");
+		var entityId = entity.get("id");
+		var entityArray = null;
+		if(((parentEntity) instanceof Scene)) {
+			var entityType = entity.get("type");
+			switch(entityType) {
+			case "button":
+				entityArray = parentEntity.getEntities("ui").button;
+				break;
+			case "hero":
+				entityArray = parentEntity.getEntities("alive").hero;
+				break;
+			case "window":
+				entityArray = parentEntity.getEntities("ui").window;
+				break;
+			default:
+				haxe_Log.trace("Error, EntitySystem.removeEntity. Can't remove entity with type: " + entityType,{ fileName : "Source/EntitySystem.hx", lineNumber : 450, className : "EntitySystem", methodName : "removeEntity"});
+			}
+			if(entityArray != null) {
+				var _g = 0;
+				var _g1 = entityArray.length;
+				while(_g < _g1) {
+					var i = _g++;
+					var oldEntity = entityArray[i];
+					if(oldEntity.get("id") == entityId) {
+						entityArray.splice(i,1);
+						return oldEntity;
+					}
+				}
+			} else {
+				haxe_Log.trace("Error in EntitySystem.removeEntity. entityArray = " + Std.string(entityArray),{ fileName : "Source/EntitySystem.hx", lineNumber : 467, className : "EntitySystem", methodName : "removeEntity"});
+				return null;
+			}
+		}
+		haxe_Log.trace("Error in EntitySystem.removeEntity. parentEntity = " + Std.string(parentEntity),{ fileName : "Source/EntitySystem.hx", lineNumber : 472, className : "EntitySystem", methodName : "removeEntity"});
+		return null;
+	}
 	,__class__: EntitySystem
 };
 var Event = function(parent,id,params) {
@@ -4117,6 +4155,9 @@ EventSystem.prototype = {
 				while(_g6 < _g7) {
 					var h = _g6++;
 					var recruit = recruitBuildingInventoryArray[h].item;
+					if(recruit == null) {
+						continue;
+					}
 					var recruitName = recruit.getComponent("name").get("fullName");
 					var recruitType = recruit.get("name");
 					var _g61 = 0;
@@ -4140,7 +4181,10 @@ EventSystem.prototype = {
 					var heroButtonArray = recruitArrayToTransfer[l];
 					innBuildingInventory.setItemInSlot(heroButtonArray[0],null);
 					recruitBuildingInventory.removeItemFromSlot(heroButtonArray[0],null);
-					haxe_Log.trace("heroes stored into inventory Inn",{ fileName : "Source/EventSystem.hx", lineNumber : 92, className : "EventSystem", methodName : "_buyRecruit"});
+					var uiSystem = this._parent.getSystem("ui");
+					var recruitWindow = uiSystem.getWindow("recruitWindow");
+					var recruitWindowSprite = recruitWindow.getComponent("graphics").getGraphicsInstance();
+					recruitWindowSprite.removeChild(heroButtonArray[1].getComponent("graphics").getGraphicsInstance());
 				}
 			}
 		}
@@ -4162,17 +4206,17 @@ EventSystem.prototype = {
 		case "gameContinue":
 			break;
 		case "gameOptions":
-			haxe_Log.trace("Aaaaaaaaaaand opeeeeeeen options window... ( magic xD )",{ fileName : "Source/EventSystem.hx", lineNumber : 121, className : "EventSystem", methodName : "_clickButton"});
+			haxe_Log.trace("Aaaaaaaaaaand opeeeeeeen options window... ( magic xD )",{ fileName : "Source/EventSystem.hx", lineNumber : 128, className : "EventSystem", methodName : "_clickButton"});
 			break;
 		case "gameStart":
 			var newScene = sceneSystem.createScene("cityScene");
 			sceneSystem.doActiveScene(newScene);
 			break;
 		case "innDown":
-			haxe_Log.trace("hero list down",{ fileName : "Source/EventSystem.hx", lineNumber : 131, className : "EventSystem", methodName : "_clickButton"});
+			haxe_Log.trace("hero list down",{ fileName : "Source/EventSystem.hx", lineNumber : 138, className : "EventSystem", methodName : "_clickButton"});
 			break;
 		case "innUp":
-			haxe_Log.trace("hero list up",{ fileName : "Source/EventSystem.hx", lineNumber : 126, className : "EventSystem", methodName : "_clickButton"});
+			haxe_Log.trace("hero list up",{ fileName : "Source/EventSystem.hx", lineNumber : 133, className : "EventSystem", methodName : "_clickButton"});
 			break;
 		case "recruitHeroButton":
 			this._buyRecruit(sceneSystem);
@@ -4184,11 +4228,11 @@ EventSystem.prototype = {
 			var currentScene = this._parent.getSystem("scene").getActiveScene();
 			var sceneName = currentScene.getName();
 			if(sceneName == "cityScene") {
-				haxe_Log.trace("go to scene choose dungeon",{ fileName : "Source/EventSystem.hx", lineNumber : 138, className : "EventSystem", methodName : "_clickButton"});
+				haxe_Log.trace("go to scene choose dungeon",{ fileName : "Source/EventSystem.hx", lineNumber : 145, className : "EventSystem", methodName : "_clickButton"});
 			}
 			break;
 		default:
-			haxe_Log.trace("Error in EventSustem._clickButton, no button with name: " + entityName,{ fileName : "Source/EventSystem.hx", lineNumber : 166, className : "EventSystem", methodName : "_clickButton"});
+			haxe_Log.trace("Error in EventSustem._clickButton, no button with name: " + entityName,{ fileName : "Source/EventSystem.hx", lineNumber : 173, className : "EventSystem", methodName : "_clickButton"});
 		}
 	}
 	,_clickBuilding: function(entity) {
@@ -4296,7 +4340,7 @@ EventSystem.prototype = {
 			ui.showUiObject("citySceneMainWindow");
 			break;
 		default:
-			haxe_Log.trace("Click this: " + entityName,{ fileName : "Source/EventSystem.hx", lineNumber : 279, className : "EventSystem", methodName : "_clickBuilding"});
+			haxe_Log.trace("Click this: " + entityName,{ fileName : "Source/EventSystem.hx", lineNumber : 286, className : "EventSystem", methodName : "_clickBuilding"});
 		}
 	}
 	,_clickHero: function(entity) {
@@ -26623,7 +26667,7 @@ var lime_utils_AssetCache = function() {
 	this.audio = new haxe_ds_StringMap();
 	this.font = new haxe_ds_StringMap();
 	this.image = new haxe_ds_StringMap();
-	this.version = 337763;
+	this.version = 281574;
 };
 $hxClasses["lime.utils.AssetCache"] = lime_utils_AssetCache;
 lime_utils_AssetCache.__name__ = "lime.utils.AssetCache";

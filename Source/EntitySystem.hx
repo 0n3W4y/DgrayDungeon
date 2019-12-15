@@ -422,4 +422,54 @@ class EntitySystem
 	{
 		return this._config;
 	}
+
+	public function removeEntity( entity:Entity ):Entity
+	{
+		var parentEntity:Scene = entity.get( "parent" ); //here we expect any Scene;
+		var entityId:Int = entity.get( "id" );
+		var entityArray:Array<Entity> = null;
+		if( Std.is( parentEntity, Scene ) )
+		{
+			var entityType:String = entity.get( "type" );
+			switch( entityType )
+			{
+				case "hero":
+				{
+					entityArray = parentEntity.getEntities( "alive" ).hero;
+				}
+				case "window": 
+				{
+					entityArray = parentEntity.getEntities( "ui" ).window;
+				}
+				case "button":
+				{
+					entityArray = parentEntity.getEntities( "ui" ).button;
+				}
+				default:
+				{
+					trace( "Error, EntitySystem.removeEntity. Can't remove entity with type: " + entityType );
+				}
+			}
+			if( entityArray != null )
+			{
+				for( i in 0...entityArray.length )
+				{
+					var oldEntity:Entity = entityArray[ i ];
+					if( oldEntity.get( "id" ) == entityId )
+					{
+						entityArray.splice( i, 1 );
+						return oldEntity;
+					}
+				}
+			}
+			else
+			{
+				trace( "Error in EntitySystem.removeEntity. entityArray = " + entityArray );
+				return null;
+			}
+
+		}
+		trace( "Error in EntitySystem.removeEntity. parentEntity = " + parentEntity );
+		return null;
+	}
 }
