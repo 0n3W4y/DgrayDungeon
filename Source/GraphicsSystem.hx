@@ -172,7 +172,7 @@ class GraphicsSystem
 		var recruitWindow:Entity = uiSystem.getWindow( "recruitWindow" );
 		var recruitWindowGraphicsInstance:Sprite = recruitWindow.getComponent( "graphics" ).getGraphicsInstance();
 
-		var heroType:String = hero.get( "name" );
+		var heroType:String = hero.getComponent( "name" ).get( "type" );
 		var heroName:String = hero.getComponent( "name" ).get( "fullName" );
 		var heroLevel:Int = hero.getComponent( "experience" ).get( "lvl" );
 
@@ -187,7 +187,7 @@ class GraphicsSystem
 		newButton.y += newButton.height * num;
 
 		recruitWindowGraphicsInstance.addChild( newButton );
-		
+		//TODO: hero lvl - draw image, draw hero picture;
 		// sprite child[0] - graphics, child[0][0-2] - standart, child[0][3] - portrait hero, child[0][4] - hero level;
 		// sprite child[1] - text, child[1][0] - text hero name, child[1][0] - text hero class;
 	}
