@@ -9,9 +9,9 @@ class Name extends Component
 	private var _rarity:String;
 
 
-	public function new( parent:Entity, id:String, params:Dynamic ):Void
+	public function new( parent:Entity, params:Dynamic ):Void
 	{
-		super( parent, id, "name" );
+		super( parent, "name" );
 		this.__name = params.name;
 		this._surname = params.surname;
 		this._rank = params.rank;

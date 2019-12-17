@@ -91,9 +91,9 @@ class Stats extends Component
 	private var _target:Dynamic; // { "first": 100, "second": 80, "third": 90, "fourth": 70 }
 
 
-	public function new( parent:Entity, id:String, params:Dynamic ):Void
+	public function new( parent:Entity, params:Dynamic ):Void
 	{
-		super( parent, id, "stats" );
+		super( parent, "stats" );
 		this._effects = new Array();
 		this._currentPosition = null;
 

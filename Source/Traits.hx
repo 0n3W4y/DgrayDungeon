@@ -17,9 +17,9 @@ class Traits extends Component
 
 
 
-	public function new( parent:Entity, id:String, params:Dynamic ):Void
+	public function new( parent:Entity, params:Dynamic ):Void
 	{
-		super( parent, id, "traits" );
+		super( parent, "traits" );
 		this._maxNumOfPositive = params.maxNumOfPositive;
 		this._maxNumOfNegative = params.maxNumOfNegative;
 		this._maxNumOfPositiveStatic = params.maxNumOfPositiveStatic;

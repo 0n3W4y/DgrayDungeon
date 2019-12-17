@@ -11,9 +11,9 @@ class Event extends Component
 
 
 
-	public function new(parent:Entity, id:String, params:Dynamic ):Void
+	public function new(parent:Entity, params:Dynamic ):Void
 	{
-		super( parent, id, "event" );
+		super( parent, "event" );
 		this._events = new Array();
 		this._currentEvent = null;
 		this._isCurrentEventDone = false;

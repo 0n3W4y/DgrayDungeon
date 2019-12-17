@@ -16,9 +16,9 @@ class Graphics extends Component
 
 
 
-	public function new( parent:Entity, id:String, params:Dynamic ):Void
+	public function new( parent:Entity, params:Dynamic ):Void
 	{
-		super( parent, id, "graphics" );
+		super( parent, "graphics" );
 		this._img = params.img;
 		this._text = params.text;
 		this._x = params.x;

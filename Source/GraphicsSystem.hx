@@ -77,22 +77,49 @@ class GraphicsSystem
 		var graphicsSprite:Sprite = new Sprite();
 		var imageContainer:Dynamic = objectGraphics.getImg();
 
-		for( key in Reflect.fields( imageContainer ) )
-		{
-			var value = Reflect.getProperty( imageContainer, key );
-			var data:Bitmap = new Bitmap( Assets.getBitmapData( value.url ) );
-			data.x = value.x;
-			data.y = value.y;
-			
-			if( key == "0" && objectType == "button" )
-				data.visible = true;
-			else if( key > "2" && objectType == "button" )
-				data.visible = true;
-			else if( objectType == "button" )
-				data.visible = false;
+		var oneData:Bitmap = new Bitmap( Assets.getBitmapData( imageContainer.one.url ) );
+		oneData.x = imageContainer.one.x;
+		oneData.y = imageContainer.one.y;
+		graphicsSprite.addChild( oneData );
 
-			graphicsSprite.addChild( data );
+		if( imageContainer.two.url != null )
+		{
+			var twoData:Bitmap = new Bitmap( Assets.getBitmapData( imageContainer.two.url ) );
+			twoData.x = imageContainer.two.x;
+			twoData.y = imageContainer.two.y;
+			if( objectType == "button" )
+				twoData.visible = false;
+
+			graphicsSprite.addChild( twoData );
 		}
+
+		if( imageContainer.three.url != null )
+		{
+			var threeData:Bitmap = new Bitmap( Assets.getBitmapData( imageContainer.three.url ) );
+			threeData.x = imageContainer.three.x;
+			threeData.y = imageContainer.three.y;
+			if( objectType == "button" )
+				threeData.visible = false;
+
+			graphicsSprite.addChild( threeData );
+		}
+
+		if( imageContainer.four.url != null )
+		{
+			var fourData:Bitmap = new Bitmap( Assets.getBitmapData( imageContainer.four.url ) );
+			fourData.x = imageContainer.four.x;
+			fourData.y = imageContainer.four.y;
+			graphicsSprite.addChild( fourData );
+		}
+
+		if( imageContainer.five.url != null )
+		{
+			var fiveData:Bitmap = new Bitmap( Assets.getBitmapData( imageContainer.five.url ) );
+			fiveData.x = imageContainer.five.x;
+			fiveData.y = imageContainer.five.y;
+			graphicsSprite.addChild( fiveData );
+		}
+		
 		return graphicsSprite;
 	}
 
@@ -101,23 +128,15 @@ class GraphicsSystem
 		var objectGraphics = object.getComponent( "graphics" );
 		var textSprite = new Sprite();
 		var text:Dynamic = objectGraphics.getText();
-		if( text != null )
-		{
-			var textArray:Array<Dynamic> = new Array();
-			for( key in Reflect.fields( text ) )
-			{
-				var value = Reflect.getProperty( text, key );
-				textArray.push( { "name": key, "value": value } );
-			}
-			textArray.sort( this._sortWithQueueText );
+		if( text == null )
+			return textSprite;
 
-			for( i in 0...textArray.length )
-			{
-				var newText = textArray[ i ];
-				var textField = this._createText( newText.value );
-				textSprite.addChild( textField );
-			}
-		}
+		if( text.first.font != null )
+			textSprite.addChild( this._createText( text.first ) );
+
+		if( text.second.font != null )
+			textSprite.addChild( this._createText( text.second ) );
+
 		return textSprite;
 	}
 
@@ -181,8 +200,8 @@ class GraphicsSystem
 		var buttonTxt:Dynamic = buttonGraphicsComponent.getText();
 		// { 'text1': { "text": "yuppei",x: 1, y:2 }, 'text2': { "text": "yuppieey", x: 1, y:2 } };
 		// { "0": { "x": 0, "y": 0, "url": "//..." }, "1": { x, y , url }};
-		buttonTxt.name.text = heroName;
-		buttonTxt.type.text = heroType;
+		buttonTxt.first.text = heroName;
+		buttonTxt.second.text = heroType;
 		var newButton:Sprite = this._createWindowButton( button );
 		newButton.y += newButton.height * num;
 
@@ -204,20 +223,20 @@ class GraphicsSystem
 		var textSprite:Sprite = new Sprite();
 		var objectGraphics:Dynamic = object.getComponent( "graphics" );
 
-		var normalData = new Bitmap( Assets.getBitmapData( objectGraphics.getImg().normal.url ) );
-		var hoverData = new Bitmap( Assets.getBitmapData( objectGraphics.getImg().hover.url ) );
+		var oneData = new Bitmap( Assets.getBitmapData( objectGraphics.getImg().one.url ) );
+		var twoData = new Bitmap( Assets.getBitmapData( objectGraphics.getImg().two.url ) );
 
-		normalData.visible = true;
-		hoverData.visible = false;
+		oneData.visible = true;
+		twoData.visible = false;
 
-		normalData.x = objectGraphics.getImg().normal.x;
-		normalData.y = objectGraphics.getImg().normal.y;
+		oneData.x = objectGraphics.getImg().one.x;
+		oneData.y = objectGraphics.getImg().one.y;
 
-		hoverData.x = objectGraphics.getImg().hover.x;
-		hoverData.y = objectGraphics.getImg().hover.y;
+		twoData.x = objectGraphics.getImg().two.x;
+		twoData.y = objectGraphics.getImg().two.y;
 
-		buildingSprite.addChild( normalData );
-		buildingSprite.addChild( hoverData );
+		buildingSprite.addChild( oneData );
+		buildingSprite.addChild( twoData );
 
 		sprite.addChild( buildingSprite );
 
@@ -228,19 +247,8 @@ class GraphicsSystem
 		var text = objectGraphics.getText();
 		if( text != null )
 		{
-			var textArray:Array<Dynamic> = new Array();
-			for( key in Reflect.fields( text ) )
-			{
-				var value = Reflect.getProperty( text, key );
-				textArray.push( { "name": key, "value": value } );
-			}
-
-			textArray.sort( this._sortWithQueueText );
-			for( i in 0...textArray.length )
-			{
-				var textField = this._createText( textArray[ i ].value );
-				textSprite.addChild( textField );
-			}
+			textSprite.addChild( this._createText( text.first ) );
+			textSprite.addChild( this._createText( text.second ) );
 
 			textSprite.alpha = 0;
 			if( object.get( "name" ) == "inn" )
@@ -248,9 +256,11 @@ class GraphicsSystem
 
 			sprite.addChild( textSprite );
 		}
+
 		objectGraphics.setGraphicsInstance( sprite );
 		if( object.get( "name" ) == "inn" )
 			return sprite;
+
 		this._parent.getSystem( "event" ).addEvent( object, "mCLICK" );
 		this._parent.getSystem( "event" ).addEvent( object, "mOUT" );
 		this._parent.getSystem( "event" ).addEvent( object, "mOVER" );

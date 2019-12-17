@@ -11,9 +11,9 @@ class Inventory extends Component
 	{
 		return false;
 	}
-	public function new( parent:Entity, id:String, params:Dynamic ):Void
+	public function new( parent:Entity, params:Dynamic ):Void
 	{
-		super( parent, id, "inventory" );
+		super( parent, "inventory" );
 		this._inventory = new Array();
 		this._maxSlots = params.maxSlots;
 		this._currentSlots = params.currentSlots;
@@ -185,14 +185,17 @@ class Inventory extends Component
 		}
 		else
 		{
+			var itemId:Int = item.get( "id" );
 			for( j in 0...this._inventory.length )
 			{
-				var itemId:Int = item.get( "id" );
-				if ( itemId == this._inventory[ j ].item.get( "id" ) )
+				if ( this._inventory[ j ].item != null )
 				{
-					oldItem = this._inventory[ j ].item;
-					this._inventory[ j ].item = null;
-					break;
+					if( itemId == this._inventory[ j ].item.get( "id" ) )
+					{
+						oldItem = this._inventory[ j ].item;
+						this._inventory[ j ].item = null;
+						break;
+					}					
 				}
 			}
 		}

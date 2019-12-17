@@ -76,10 +76,110 @@ class EntitySystem
 
 		for( key in Reflect.fields( uiObjectConfig ) )
 		{
-			var componentValue:Dynamic;
 			var value:Dynamic = Reflect.getProperty( uiObjectConfig, key );
-			var paramsValue:Dynamic = Reflect.getProperty( params, key );
-			var component = this.createComponent( key, value );
+			var component:Dynamic = null;
+			switch( key )
+			{
+				case "event":
+				{
+					var newEvent = {};
+					/*
+					for( obj in Reflect.fields( value ) )
+					{
+						var newValue = Reflect.getProperty( value, obj );
+						Reflect.setProperty( newEvent, obj, newValue );
+					}
+					*/
+					component = this.createComponent( "event", newEvent );
+				}
+				case "graphics": 
+				{
+					var newGraphics = { 
+						"queue": null, "x": null,"y": null, 
+							"img": { 
+								"one": { "x": null,	"y": null, "url": null },
+								"two": { "x": null,	"y": null, "url": null },
+								"three": { "x": null, "y": null, "url": null },
+								"four": { "x": null, "y": null, "url": null },
+								"five": { "x": null, "y": null, "url": null },
+							}, 
+							"text": {
+								"first": {	"text": null, "x": null, "y": null,	"font": null, "size": null,	"color": null, "visible": null,	"selectable": null,	"height": null,	"width": null, "queue": null },
+								"second": {	"text": null, "x": null, "y": null,	"font": null, "size": null,	"color": null, "visible": null,	"selectable": null,	"height": null,	"width": null, "queue": null }
+							}
+					};
+					for( obj in Reflect.fields( value ) )
+					{
+
+						var newValue:Dynamic = Reflect.getProperty( value, obj );
+						switch ( obj )
+						{
+							case "img":
+							{
+								if( newValue == null )
+								{
+									newGraphics.img = null;
+									continue;
+								}
+
+								for( box in Reflect.fields( newValue ) )
+								{
+									var result:Dynamic = Reflect.getProperty( newValue, box );
+									var valueToChange:Dynamic = Reflect.getProperty( newGraphics.img, box );
+									valueToChange.x = result.x;
+									valueToChange.y = result.y;
+									valueToChange.url = result.url;
+								}							
+							}
+							case "text":
+							{
+								if( newValue == null )
+								{
+									newGraphics.text = null;
+									continue;
+								}
+
+								for( box in Reflect.fields( newValue ) )
+								{
+									var result:Dynamic = Reflect.getProperty( newValue, box );
+									var valueToChange:Dynamic = Reflect.getProperty( newGraphics.text, box );
+									valueToChange.x = result.x;
+									valueToChange.y = result.y;
+									valueToChange.text = result.text;
+									valueToChange.font = result.font;
+									valueToChange.size = result.size;
+									valueToChange.color = result.color;
+									valueToChange.visible = result.visible;
+									valueToChange.selectable = result.selectable;
+									valueToChange.height = result.height;
+									valueToChange.width = result.width;
+									valueToChange.queue = result.queue;
+								}							
+							}
+							case "queue", "x", "y":
+							{
+								Reflect.setProperty( newGraphics, obj, newValue );
+							}
+						}
+					}
+					component = this.createComponent( "graphics", newGraphics );
+				}
+				case "ui":
+				{
+					var newUi:Dynamic = { "parentWindow": null };
+					for( obj in Reflect.fields( value ) )
+					{
+						var newValue = Reflect.getProperty( value, obj );
+						Reflect.setProperty( newUi, obj, newValue );
+					}
+					component = this.createComponent( "ui", newUi );
+				}
+				default:
+				{
+					trace( "Error in EntitySystem._createWindowButtonType. No key with name: " + key + " in config with type: " + type );
+				}
+			}
+			
 			this.addComponentTo( component, uiObject );
 		}
 
@@ -177,7 +277,7 @@ class EntitySystem
 						"name": newName,
 						"surname": newSurname,
 						"rank": null,
-						"type": name,
+						"type": value.type,
 						"rarity": value.rarity[ heroType ]
 					};
 					//TODO: Generate name;
@@ -373,19 +473,18 @@ class EntitySystem
 
 	public function createComponent( componentName:String, params:Dynamic ):Component
 	{
-		var id = this._createId();
 		var component:Component = null;
 		switch( componentName )
 		{
-			case "graphics": component = new Graphics( null, id, params );
-			case "ui": component = new UI( null, id, params );
-			case "name": component = new Name( null, id, params );
-			case "inventory": component = new Inventory( null, id, params );
-			case "skills": component = new Skills( null, id, params );
-			case "stats": component = new Stats( null, id, params );
-			case "traits": component = new Traits( null, id, params );
-			case "experience": component = new Experience( null, id, params );
-			case "event": component = new Event( null, id, params );
+			case "graphics": component = new Graphics( null, params );
+			case "ui": component = new UI( null, params );
+			case "name": component = new Name( null, params );
+			case "inventory": component = new Inventory( null, params );
+			case "skills": component = new Skills( null, params );
+			case "stats": component = new Stats( null, params );
+			case "traits": component = new Traits( null, params );
+			case "experience": component = new Experience( null, params );
+			case "event": component = new Event( null, params );
 			default: trace( "Error in EntitySystem.createComponent, component with name: '" + componentName + "' does not exist." );
 		}
 		return component;

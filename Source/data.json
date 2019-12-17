@@ -1552,7 +1552,7 @@
 						}
 					},
 					"text": {
-						"empty": {
+						"first": {
 							"text": "null",
 							"x": 100.0,
 							"y": 50.0,
@@ -1562,8 +1562,7 @@
 							"visible": true,
 							"selectable": false,
 							"height": 100,
-							"width": 100,
-							"queue": 0
+							"width": 100
 						}
 					}
 				}
@@ -1579,19 +1578,19 @@
 					"x": 650.0,
 					"y": 80.0,
 					"img": {
-						"normal": {
+						"one": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/hospital.png"
 						},
-						"hover": {
+						"two": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/hospital_m.png"
 						}
 					},
 					"text": {
-						"name": {
+						"first": {
 							"text": "Hospital",
 							"x": 100.0,
 							"y": 50.0,
@@ -1601,10 +1600,9 @@
 							"visible": true,
 							"selectable": false,
 							"height": 100,
-							"width": 100,
-							"queue": 0
+							"width": 100
 						},
-						"hint": {
+						"second": {
 							"text": "Make a health",
 							"x": 100.0,
 							"y": 100.0,
@@ -1614,8 +1612,7 @@
 							"visible": true,
 							"selectable": false,
 							"height": 100,
-							"width": 100,
-							"queue": 1
+							"width": 100
 						}
 					}
 				}
@@ -1629,19 +1626,19 @@
 					"x": 990.0,
 					"y": 330.0,
 					"img": {
-						"normal": {
+						"one": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/tavern.png"
 						},
-						"hover": {
+						"two": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/tavern_m.png"
 						}
 					},
 					"text": {
-						"name": {
+						"first": {
 							"text": "Tavern",
 							"x": 0.0,
 							"y": 0.0,
@@ -1651,10 +1648,9 @@
 							"visible": true,
 							"selectable": false,
 							"height": 100,
-							"width": 100,
-							"queue": 0
+							"width": 100
 						},
-						"hint": {
+						"second": {
 							"text": "Make a drink",
 							"x": 0.0,
 							"y": 0.0,
@@ -1664,8 +1660,7 @@
 							"visible": true,
 							"selectable": false,
 							"height": 100,
-							"width": 100,
-							"queue": 1
+							"width": 100
 						}
 					}
 				}
@@ -1691,19 +1686,19 @@
 					"x": 1600.0,
 					"y": 90.0,
 					"img": {
-						"normal": {
+						"one": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/innWindow.png"
 						},
-						"hover": {
+						"two": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/innWindow.png"
 						}
 					},
 					"text": {
-						"nameWindow": {
+						"first": {
 							"text": "Inn",
 							"x": 20.0,
 							"y": -35.0,
@@ -1713,10 +1708,9 @@
 							"visible": true,
 							"selectable": false,
 							"height": 50,
-							"width": 50,
-							"queue": 0
+							"width": 50
 						},
-						"quantityHeroes": {
+						"second": {
 							"text": "0/8",
 							"x": 100.0,
 							"y": -35.0,
@@ -1726,8 +1720,7 @@
 							"visible": true,
 							"selectable": false,
 							"height": 50,
-							"width": 50,
-							"queue": 1
+							"width": 50
 						}
 					}
 				}
@@ -1749,19 +1742,19 @@
 					"x": 1100.0,
 					"y": 500.0,
 					"img": {
-						"normal": {
+						"one": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/recruits.png"
 						},
-						"hover": {
+						"two": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/recruits_m.png"
 						}
 					},
 					"text": {
-						"name": {
+						"first": {
 							"text": "Recruit Coach",
 							"x": 0.0,
 							"y": 0.0,
@@ -1771,10 +1764,9 @@
 							"visible": true,
 							"selectable": false,
 							"height": 100,
-							"width": 100,
-							"queue": 0
+							"width": 100
 						},
-						"hint": {
+						"second": {
 							"text": "Train a new recruits",
 							"x": 0.0,
 							"y": 0.0,
@@ -1784,8 +1776,7 @@
 							"visible": true,
 							"selectable": false,
 							"height": 100,
-							"width": 100,
-							"queue": 1
+							"width": 100
 						}
 					}
 				},
@@ -1813,19 +1804,19 @@
 					"x": 100.0,
 					"y": 500.0,
 					"img": {
-						"normal": {
+						"one": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/blacksmith.png"
 						},
-						"hover": {
+						"two": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/blacksmith_m.png"
 						}
 					},
 					"text": {
-						"name": {
+						"first": {
 							"text": "BlackSmith",
 							"x": 0.0,
 							"y": 0.0,
@@ -1835,10 +1826,9 @@
 							"visible": true,
 							"selectable": false,
 							"height": 100,
-							"width": 100,
-							"queue": 0
+							"width": 100
 						},
-						"hint": {
+						"second": {
 							"text": "Make a new weapon",
 							"x": 0.0,
 							"y": 0.0,
@@ -1848,8 +1838,7 @@
 							"visible": true,
 							"selectable": false,
 							"height": 100,
-							"width": 100,
-							"queue": 1
+							"width": 100
 						}
 					}
 				}
@@ -1862,19 +1851,19 @@
 					"x": 300.0,
 					"y": 280.0,
 					"img": {
-						"normal": {
+						"one": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/merchant.png"
 						},
-						"hover": {
+						"two": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/merchant_m.png"
 						}
 					},
 					"text": {
-						"name": {
+						"first": {
 							"text": "Humble shop",
 							"x": 0.0,
 							"y": 0.0,
@@ -1884,10 +1873,9 @@
 							"visible": true,
 							"selectable": false,
 							"height": 100,
-							"width": 100,
-							"queue": 0
+							"width": 100
 						},
-						"hint": {
+						"second": {
 							"text": "Buy new stuff",
 							"x": 0.0,
 							"y": 0.0,
@@ -1897,8 +1885,7 @@
 							"visible": true,
 							"selectable": false,
 							"height": 100,
-							"width": 100,
-							"queue": 1
+							"width": 100
 						}
 					}
 				}
@@ -1911,19 +1898,19 @@
 					"x": 680.0,
 					"y": 400.0,
 					"img": {
-						"normal": {
+						"one": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/graveyard.png"
 						},
-						"hover": {
+						"two": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/graveyard_m.png"
 						}
 					},
 					"text": {
-						"name": {
+						"first": {
 							"text": "Graveyard",
 							"x": 200.0,
 							"y": 100.0,
@@ -1933,10 +1920,9 @@
 							"visible": true,
 							"selectable": false,
 							"height": 100,
-							"width": 200,
-							"queue": 0
+							"width": 200
 						},
-						"hint": {
+						"second": {
 							"text": "R.I.P.",
 							"x": 200.0,
 							"y": 150.0,
@@ -1946,8 +1932,7 @@
 							"visible": true,
 							"selectable": false,
 							"height": 100,
-							"width": 200,
-							"queue": 1
+							"width": 200
 						}
 					}
 				}
@@ -1960,19 +1945,19 @@
 					"x": 450.0,
 					"y": 100.0,
 					"img": {
-						"normal": {
+						"one": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/academy.png"
 						},
-						"hover": {
+						"two": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/academy_m.png"
 						}
 					},
 					"text": {
-						"name": {
+						"first": {
 							"text": "Skill academy",
 							"x": 0.0,
 							"y": 0.0,
@@ -1982,10 +1967,9 @@
 							"visible": true,
 							"selectable": false,
 							"height": 100,
-							"width": 100,
-							"queue": 0
+							"width": 100
 						},
-						"hint": {
+						"second": {
 							"text": "Learn new skills",
 							"x": 0.0,
 							"y": 0.0,
@@ -1995,8 +1979,7 @@
 							"visible": true,
 							"selectable": false,
 							"height": 100,
-							"width": 100,
-							"queue": 1
+							"width": 100
 						}
 					}
 				}
@@ -2009,19 +1992,19 @@
 					"x": 0.0,
 					"y": 600.0,
 					"img": {
-						"normal": {
+						"one": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/hermit.png"
 						},
-						"hover": {
+						"two": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/hermit_m.png"
 						}
 					},
 					"text": {
-						"name": {
+						"first": {
 							"text": "Hermit",
 							"x": 0.0,
 							"y": 0.0,
@@ -2031,10 +2014,9 @@
 							"visible": true,
 							"selectable": false,
 							"height": 100,
-							"width": 100,
-							"queue": 0
+							"width": 100
 						},
-						"hint": {
+						"second": {
 							"text": "Teach surviving",
 							"x": 0.0,
 							"y": 0.0,
@@ -2044,8 +2026,7 @@
 							"visible": true,
 							"selectable": false,
 							"height": 100,
-							"width": 100,
-							"queue": 1
+							"width": 100
 						}
 					}
 				}
@@ -2058,19 +2039,19 @@
 					"x": 550.0,
 					"y": 820.0,
 					"img": {
-						"normal": {
+						"one": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/questman.png"
 						},
-						"hover": {
+						"two": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/questman_m.png"
 						}
 					},
 					"text": {
-						"name": {
+						"first": {
 							"text": "Strange person",
 							"x": 50.0,
 							"y": 50.0,
@@ -2080,10 +2061,9 @@
 							"visible": true,
 							"selectable": false,
 							"height": 100,
-							"width": 200,
-							"queue": 0
+							"width": 200
 						},
-						"hint": {
+						"second": {
 							"text": "Collect new quests",
 							"x": 50.0,
 							"y": 100.0,
@@ -2093,8 +2073,7 @@
 							"visible": true,
 							"selectable": false,
 							"height": 50,
-							"width": 100,
-							"queue": 1
+							"width": 100
 						}
 					}
 				}
@@ -2107,19 +2086,19 @@
 					"x": 700.0,
 					"y": 690.0,
 					"img": {
-						"normal": {
+						"one": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/fontain.png"
 						},
-						"hover": {
+						"two": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/fontain_m.png"
 						}
 					},
 					"text": {
-						"name": {
+						"first": {
 							"text": "Fontain",
 							"x": 80.0,
 							"y": 100.0,
@@ -2129,10 +2108,9 @@
 							"visible": true,
 							"selectable": false,
 							"height": 50,
-							"width": 150,
-							"queue": 0
+							"width": 150
 						},
-						"hint": {
+						"second": {
 							"text": "Learn more",
 							"x": 80.0,
 							"y": 140.0,
@@ -2142,8 +2120,7 @@
 							"visible": true,
 							"selectable": false,
 							"height": 50,
-							"width": 150,
-							"queue": 1
+							"width": 150
 						}
 					}
 				}
@@ -2158,7 +2135,7 @@
 					"x": 1300.0,
 					"y": 450.0,
 					"img": {
-						"normal": {
+						"one": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/startSceneButtonsWindow.png"
@@ -2175,14 +2152,14 @@
 					"x": 150.0,
 					"y": 20.0,
 					"img": {
-						"normal": {
+						"one": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/citySceneMainWindow.png"
 						}
 					},
 					"text": {
-						"nameWindow": {
+						"first": {
 							"text": "The real estate",
 							"x": 30.0,
 							"y": 10.0,
@@ -2192,8 +2169,7 @@
 							"visible": true,
 							"selectable": false,
 							"height": 50,
-							"width": 400,
-							"queue": 0
+							"width": 400
 						}
 					}
 				},
@@ -2210,14 +2186,14 @@
 					"x": 168,
 					"y": 110,
 					"img": {
-						"normal": {
+						"one": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/recruitWindow.png"
 						}
 					},
 					"text": {
-						"nameWindow": {
+						"first": {
 							"text": "Recruits",
 							"x": 0.0,
 							"y": 0.0,
@@ -2227,8 +2203,7 @@
 							"visible": true,
 							"selectable": false,
 							"height": 50,
-							"width": 350,
-							"queue": 0
+							"width": 350
 						}
 					}
 				},
@@ -2244,7 +2219,7 @@
 					"x": -5.0,
 					"y": 1012.0,
 					"img": {
-						"normal": {
+						"one": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/panelCityWindow.png"
@@ -2258,7 +2233,7 @@
 				"event": {},
 				"graphics": {
 					"img": {
-						"normal": {
+						"one": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/dungeonSceneHeroesToDungeon.png"
@@ -2278,14 +2253,14 @@
 					"x": 700.0,
 					"y": 400.0,
 					"img": {
-						"normal": {
+						"one": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/dungeonWindow.png"
 						}
 					},
 					"text": {
-						"nameWindow": {
+						"first": {
 							"text": "The real path of truth",
 							"x": 15.0,
 							"y": 10.0,
@@ -2294,11 +2269,10 @@
 							"color": "0xffffff",
 							"visible": true,
 							"selectable": false,
-							"queue": 1,
 							"height": 20,
 							"width": 250
 						},
-						"lvl": {
+						"second": {
 							"text": "1",
 							"x": 350.0,
 							"y": 10.0,
@@ -2307,7 +2281,6 @@
 							"color": "0xfffff0",
 							"visible": true,
 							"selectable": false,
-							"queue": 2,
 							"height": 30,
 							"width": 10
 						}
@@ -2321,17 +2294,17 @@
 				"event": {},
 				"graphics": {
 					"img": {
-						"0": {
+						"one": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/button_dungeon_d.png"
 						},
-						"1": {
+						"two": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/button_dungeon_d.png"
 						},
-						"2": {
+						"three": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/button_dungeon_d_choose.png"
@@ -2351,17 +2324,17 @@
 				"event": {},
 				"graphics": {
 					"img": {
-						"0": {
+						"one": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/button_dungeon_a.png"
 						},
-						"1": {
+						"two": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/button_dungeon_a.png"
 						},
-						"2": {
+						"three": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/button_dungeon_a_choose.png"
@@ -2380,17 +2353,17 @@
 				"event": {},
 				"graphics": {
 					"img": {
-						"0": {
+						"one": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/button_dungeon_b.png"
 						},
-						"1": {
+						"two": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/button_dungeon_b.png"
 						},
-						"2": {
+						"three": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/button_dungeon_b_choose.png"
@@ -2409,17 +2382,17 @@
 				"event": {},
 				"graphics": {
 					"img": {
-						"0": {
+						"one": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/button_dungeon_c.png"
 						},
-						"1": {
+						"two": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/button_dungeon_c.png"
 						},
-						"2": {
+						"three": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/button_dungeon_c_choose.png"
@@ -2440,17 +2413,17 @@
 					"x": 100.0,
 					"y": 150.0,
 					"img": {
-						"0": {
+						"one": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/backToCityButton.png"
 						},
-						"1": {
+						"two": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/backToCityButton_hover.png"
 						},
-						"2": {
+						"three": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/backToCityButton_push.png"
@@ -2471,24 +2444,24 @@
 					"x": 860.0,
 					"y": 5.0,
 					"img": {
-						"0": {
+						"one": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/button_a.png"
 						},
-						"1": {
+						"two": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/button_a_hover.png"
 						},
-						"2": {
+						"three": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/button_a_push.png"
 						}
 					},
 					"text": {
-						"buttonText": {
+						"first": {
 							"text": "START",
 							"x": 75.0,
 							"y": 5.0,
@@ -2498,8 +2471,7 @@
 							"visible": true,
 							"selectable": false,
 							"height": 40,
-							"width": 140,
-							"queue": 0
+							"width": 140
 						}
 					}
 				},
@@ -2514,17 +2486,17 @@
 					"x": 105.0,
 					"y": 810.0,
 					"img": {
-						"0": {
+						"one": {
 							"x": 0,
 							"y": 0.0,
 							"url": "assets/images/button_c.png"
 						},
-						"1": {
+						"two": {
 							"x": 0,
 							"y": 0.0,
 							"url": "assets/images/button_c_hover.png"
 						},
-						"2": {
+						"three": {
 							"x": 0,
 							"y": 0.0,
 							"url": "assets/images/button_c_push.png"
@@ -2543,17 +2515,17 @@
 					"x": 25.0,
 					"y": 810.0,
 					"img": {
-						"0": {
+						"one": {
 							"x": 0,
 							"y": 0.0,
 							"url": "assets/images/button_d.png"
 						},
-						"1": {
+						"two": {
 							"x": 0,
 							"y": 0.0,
 							"url": "assets/images/button_d_hover.png"
 						},
-						"2": {
+						"three": {
 							"x": 0,
 							"y": 0.0,
 							"url": "assets/images/button_d_push.png"
@@ -2572,17 +2544,17 @@
 				"graphics": {
 					"queue": 0,
 					"img": {
-						"0": {
+						"one": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/citySceneMainWindowExitButton.png"
 						},
-						"1": {
+						"two": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/citySceneMainWindowExitButton.png"
 						},
-						"2": {
+						"three": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/citySceneMainWindowExitButton_push.png"
@@ -2603,24 +2575,24 @@
 					"x": 75.0,
 					"y": 145.0,
 					"img": {
-						"0": {
+						"one": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/button_b.png"
 						},
-						"1": {
+						"two": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/button_b_hover.png"
 						},
-						"2": {
+						"three": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/button_b_push.png"
 						}
 					},
 					"text": {
-						"buttonText": {
+						"first": {
 							"text": "New",
 							"x": 0.0,
 							"y": 0.0,
@@ -2630,8 +2602,7 @@
 							"visible": true,
 							"selectable": false,
 							"height": 100,
-							"width": 410,
-							"queue": 0
+							"width": 410
 						}
 					}
 				},
@@ -2646,24 +2617,24 @@
 					"x": 75.0,
 					"y": 25.0,
 					"img": {
-						"0": {
+						"one": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/button_b.png"
 						},
-						"1": {
+						"two": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/button_b_hover.png"
 						},
-						"2": {
+						"three": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/button_b_push.png"
 						}
 					},
 					"text": {
-						"buttonText": {
+						"first": {
 							"text": "Continue",
 							"x": 0.0,
 							"y": 0.0,
@@ -2673,8 +2644,7 @@
 							"visible": true,
 							"selectable": false,
 							"height": 100,
-							"width": 410,
-							"queue": 0
+							"width": 410
 						}
 					}
 				},
@@ -2689,24 +2659,24 @@
 					"x": 75.0,
 					"y": 265.0,
 					"img": {
-						"0": {
+						"one": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/button_b.png"
 						},
-						"1": {
+						"two": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/button_b_hover.png"
 						},
-						"2": {
+						"three": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/button_b_push.png"
 						}
 					},
 					"text": {
-						"buttonText": {
+						"first": {
 							"text": "Options",
 							"x": 0.0,
 							"y": 0.0,
@@ -2716,8 +2686,7 @@
 							"visible": true,
 							"selectable": false,
 							"height": 100,
-							"width": 410,
-							"queue": 0
+							"width": 410
 						}
 					}
 				},
@@ -2732,24 +2701,24 @@
 					"x": 75.0,
 					"y": 385.0,
 					"img": {
-						"0": {
+						"one": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/button_b.png"
 						},
-						"1": {
+						"two": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/button_b_hover.png"
 						},
-						"2": {
+						"three": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/button_b_push.png"
 						}
 					},
 					"text": {
-						"buttonText": {
+						"first": {
 							"text": "Authors",
 							"x": 0.0,
 							"y": 0.0,
@@ -2759,8 +2728,7 @@
 							"visible": true,
 							"selectable": false,
 							"height": 100,
-							"width": 410,
-							"queue": 0
+							"width": 410
 						}
 					}
 				},
@@ -2776,34 +2744,34 @@
 					"x": 720.0,
 					"y": 20.0,
 					"img": {
-						"0": {
+						"one": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/recruitWindowHero.png"
 						},
-						"1": {
+						"two": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/recruitWindowHero.png"
 						},
-						"2": {
+						"three": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/recruitWindowHero.png"
 						},
-						"3": {
+						"four": {
 							"x": 70.0,
 							"y": 15.0,
 							"url": "assets/images/recruitWindowHeroPicture.png"
 						},
-						"4": {
+						"five": {
 							"x": 10.0,
 							"y": 35.0,
 							"url": "assets/images/recruitWindowHeroLevel.png"
 						}
 					},
 					"text": {
-						"name": {
+						"first": {
 							"text": "N/A",
 							"x": 200.0,
 							"y": 15.0,
@@ -2813,10 +2781,9 @@
 							"visible": true,
 							"selectable": false,
 							"height": 40,
-							"width": 300,
-							"queue": 0
+							"width": 300
 						},
-						"type": {
+						"second": {
 							"text": "N/A",
 							"x": 200.0,
 							"y": 50.0,
@@ -2826,8 +2793,7 @@
 							"visible": true,
 							"selectable": false,
 							"height": 45,
-							"width": 300,
-							"queue": 1
+							"width": 300
 						}
 					}
 				},
@@ -2841,24 +2807,24 @@
 					"x": 980.0,
 					"y": 770.0,
 					"img": {
-						"0": {
+						"one": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/button_a.png"
 						},
-						"1": {
+						"two": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/button_a_hover.png"
 						},
-						"2": {
+						"three": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": "assets/images/button_a_push.png"
 						}
 					},
 					"text": {
-						"buttonText": {
+						"first": {
 							"text": "Recruit",
 							"x": 75.0,
 							"y": 10.0,
@@ -2868,8 +2834,7 @@
 							"visible": true,
 							"selectable": false,
 							"height": 40,
-							"width": 140,
-							"queue": 0
+							"width": 140
 						}
 					}
 				},

@@ -29,9 +29,9 @@ class Experience extends Component
 			statComponent.levelUp();
 	}
 
-	public function new( parent:Entity, id:String, params:Dynamic ):Void
+	public function new( parent:Entity, params:Dynamic ):Void
 	{
-		super( parent, id, "experience" );
+		super( parent, "experience" );
 		this._lvl = params.lvl;
 		this._expToNextLvl = params.expToNextLvl;
 		this._exp = params.exp;

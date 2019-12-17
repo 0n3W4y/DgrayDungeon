@@ -7,9 +7,9 @@ class UI extends Component
 	private var _currentOpen:String;
 
 
-	public function new( parent:Entity, id:String, params:Dynamic ):Void
+	public function new( parent:Entity, params:Dynamic ):Void
 	{
-		super( parent, id, "ui" );
+		super( parent, "ui" );
 		this._isChoosen = false;
 		this._parentWindow = params.parentWindow;
 		this._currentOpen = null;

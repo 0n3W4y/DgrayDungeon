@@ -26,22 +26,27 @@ class EventSystem
 			}
 		}
 
+
 		if( chooseButton.length == 0 ) // no buttons are choosen;
+		{
+			trace( "No buttons have been choosed, buttons array: " + sceneButtonsArray );
 			return;
+		}
 
 		// Find inventory of 2 buildings;
-		innInventory:Inventory = null;
-		recruitInventory:Inventory = null;
+		var innInventory:Inventory = null;
+		var recruitInventory:Inventory = null;
+		var arrayOfBuildings:Array<Entity> = sceneSystem.getActiveScene().getEntities( "object" ).building;
 		for( j in 0...arrayOfBuildings.length )
 		{
 			var building:Entity = arrayOfBuildings[ j ];
 			switch( building.get( "name" ) )
 			{
-				case "inn": innBuildingInventory = building.getComponent( "inventory" );
-				case "rectuit": recruitBuildingInventory = building.getComponent( "inventory" );
+				case "inn": innInventory = building.getComponent( "inventory" );
+				case "recruits": recruitInventory = building.getComponent( "inventory" );
 				default:
 				{
-					if( innBuildingInventory != null && recruitBuildingInventory != null )
+					if( innInventory != null && recruitInventory != null )
 						break;
 				}
 			}
@@ -49,10 +54,10 @@ class EventSystem
 
 		//check free slots on inn inventory;
 		var freeSlotsInInventory:Int = 0;
-		var innBuildingInventoryArray:Array<Dynamic> = innBuildingInventory.getInventory();
-		for( k in 0...innBuildingInventoryArray.length )
+		var innInventoryArray:Array<Dynamic> = innInventory.getInventory();
+		for( k in 0...innInventoryArray.length )
 		{
-			if( innBuildingInventoryArray[ k ].item == null && innBuildingInventoryArray[ k ].available )
+			if( innInventoryArray[ k ].item == null && innInventoryArray[ k ].isAvailable )
 				freeSlotsInInventory++;
 		}
 		if( freeSlotsInInventory == 0 )
@@ -62,21 +67,22 @@ class EventSystem
 			return;
 		}
 
-		var recruitBuildingInventoryArray:Array<Dynamic> = recruitBuildingInventory.getInventory();
+		var recruitInventoryArray:Array<Dynamic> = recruitInventory.getInventory();
 		var arrayForTransfer:Array<Dynamic> = new Array();
-		for( g in 0...choosenButton.length )
+		for( g in 0...chooseButton.length )
 		{
-			var heroButton:Entity = choosenButton[ g ];
-			var buttonText:Dynamic = button.getComponent( "graphics" ).getText();
-			var heroButtonName:String = buttonText.name.text;
-			var heroButtonType:String = buttonText.type.text;
-			for( f in 0...recruitBuildingInventoryArray.length )
+			var heroButton:Entity = chooseButton[ g ];
+			var buttonText:Dynamic = heroButton.getComponent( "graphics" ).getText();
+			var heroButtonName:String = buttonText.first.text;
+			var heroButtonType:String = buttonText.second.text;
+			for( f in 0...recruitInventoryArray.length )
 			{
-				var hero:Entity = recruitBuildingInventoryArray[ f ].item;
+				var hero:Entity = recruitInventoryArray[ f ].item;
 				if( hero == null )
 					continue;
 				var heroFullName:String = hero.getComponent( "name" ).get( "fullName" );
 				var heroType:String = hero.getComponent( "name" ).get( "type" );
+				//trace( "b: " + heroButtonName + "; h: " + heroFullName );
 				if( heroButtonName == heroFullName && heroButtonType == heroType )
 				{
 					arrayForTransfer.push( [ hero, heroButton ] );
@@ -91,17 +97,19 @@ class EventSystem
 		var recruitWindowSprite:Sprite = recruitWindow.getComponent( "graphics" ).getGraphicsInstance();
 		for( o in 0...arrayForTransfer.length )
 		{
+
 			var array:Array<Dynamic> = arrayForTransfer[ o ];
 			var transferHero:Entity = array[ 0 ]; // because hero entity in 0 index;
 			var buttonToKill:Entity = array[ 1 ];
-			innBuildingInventory.setItemInSlot( transferHero, null ); //set hero in first free slot;
-			recruitBuildingInventory.removeItemFromSlot( transferHero, null );
+			innInventory.setItemInSlot( transferHero, null ); //set hero in first free slot;
+			recruitInventory.removeItemFromSlot( transferHero, null );
 			var buttonSprite:Sprite = buttonToKill.getComponent( "graphics" ).getGraphicsInstance();
 			recruitWindowSprite.removeChild( buttonSprite );
-			this._parent.getSystem( "entity" ).removeEntity( heroButtonArray[ 1 ] );
+			this._parent.getSystem( "entity" ).removeEntity( buttonToKill );
 			//TODO: create buttons for Inn ;
 			//TODO: remove buttons in recruit building;
 		}
+
 
 	}
 
