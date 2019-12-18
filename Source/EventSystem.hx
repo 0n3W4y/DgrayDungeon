@@ -15,6 +15,7 @@ class EventSystem
 	private function _buyRecruit( sceneSystem:SceneSystem ):Void
 	{
 		//TODO: Button with check if some buttons with hero choose, then collect total price, check inventory money, check slots in inn - then do function buy;
+		var entitySystem:EntitySystem = this._parent.getSystem( "entity" );
 		var sceneButtonsArray:Array<Entity> = sceneSystem.getActiveScene().getEntities( "ui" ).button; // get active scene;
 		var chooseButton:Array<Dynamic> = new Array(); // put buttons with @choosen@ to array;
 		for( i in 0...sceneButtonsArray.length )
@@ -101,7 +102,8 @@ class EventSystem
 			recruitInventory.removeItemFromSlot( transferHero, null ); //remove hero from inventory;
 			var buttonSprite:Sprite = buttonToKill.getComponent( "graphics" ).getGraphicsInstance(); 
 			recruitWindowSprite.removeChild( buttonSprite );
-			this._parent.getSystem( "entity" ).removeEntity( buttonToKill );// kill button at all;
+			entitySystem.removeEntity( buttonToKill );// kill button at all;
+			entitySystem.createInnHeroButton( transferHero );
 			//TODO: create buttons for Inn ;
 		}
 

@@ -102,7 +102,7 @@ class Stats extends Component
 			var value:Float = Reflect.getProperty( params, key );
 			var value2:Dynamic = null;
 			if( key == "position" || key == "target" )
-				value2 = Reflect.getProperty( params, key );
+				continue;
 
 			switch( key )
 			{
@@ -139,10 +139,14 @@ class Stats extends Component
 				case "upDebuff": this._upDebuffResist = value;
 				case "upMove": this._upMoveResist = value;
 				case "upFire": this._upFireResist = value;
-				case "position": this._position = value2;
-				case "target": this._target = value2;
 				default: trace( "Error in Stats.setCurrent, name can't be: " + key );
 			}
+
+			var positionValue:Dynamic = params.position;
+			var targetValue:Dynamic = params.target;
+
+			this._position = { "first": positionValue.first, "second": positionValue.second, "third": positionValue.third, "fourth": positionValue.fourth };
+			this._target = { "first": targetValue.first, "second": targetValue.second, "third": targetValue.third, "fourth": targetValue.fourth };
 		}
 		this.reCalculateTotalStats();
 	}
@@ -216,6 +220,16 @@ class Stats extends Component
 			case "fire": {if( type == "total" ) return this._totalFireResist; else return this._currentFireResist;}
 			default: { trace( "Error in Stats.get, name can't be: " + name + ", with type: " + type ); return null; }
 		}
+	}
+
+	public function getPosition():Dynamic
+	{
+		return { "first": this._position.first, "second": this._position.second, "third": this._position.third, "fourth": this._position.fourth };
+	}
+
+	public function getTarget():Dynamic
+	{
+		return { "first": this.target.first, "second": this.target.second, "third": this.target.third, "fourth": this.target.fourth };
 	}
 
 	public function getEffects():Array<Dynamic>
@@ -520,9 +534,9 @@ class Stats extends Component
 		if( taritsComponent != null )
 		{
 			//TODO: firts do postive, than negative;
-			// some traits can be use is some dungeons, need to check dungeon;
-			var positiveTraits:Array<Dynamic> = this._parent.getComponent( "traits" ).getPositiveTraits();
-			var negativeTraits:Array<Dynamic> = this._parent.getComponent( "traits" ).getNegativeTraits();
+			// some traits can be use in some dungeons, need to check dungeon;
+			var positiveTraits:Array<Dynamic> = taritsComponent.getPositiveTraits();
+			var negativeTraits:Array<Dynamic> = taritsComponent.getNegativeTraits();
 		}
 		
 	}

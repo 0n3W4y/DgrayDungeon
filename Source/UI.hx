@@ -50,7 +50,7 @@ class UI extends Component
 		this._heroId = value;
 	}
 
-	public function gerHeroId():String
+	public function getHeroId():String
 	{
 		return this._heroId;
 	}

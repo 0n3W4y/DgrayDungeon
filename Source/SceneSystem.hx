@@ -82,7 +82,7 @@ class SceneSystem
 
 					for( i in 0...slots )
 					{
-						entitySystem.createHeroRecruitWithButton( scene );
+						entitySystem.createHeroRecruitWithButton( scene, building );
 					}
 					//TODO: set timer to next change heroes in recruit building;
 				}

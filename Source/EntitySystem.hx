@@ -517,7 +517,7 @@ class EntitySystem
 		}
 	}
 
-	public function createHeroRecruitWithButton( scene:Scene ):Void
+	public function createHeroRecruitWithButton( scene:Scene, building:Entity ):Void
 	{
 		var hero = this.createEntity( "hero", null, null );
 		this.addEntityToScene( hero, scene );
@@ -531,7 +531,7 @@ class EntitySystem
 
 		var checkStoreInInventory:Int = building.getComponent( "inventory" ).setItemInSlot( hero, null );
 		if( checkStoreInInventory == 0 ) //check function inventory to store hero;
-			trace( "Error in EntitySystem.createHeroRecruitWithButton with add Hero char in inventory to building in " + i + " round. " + checkStoreInInventory );
+			trace( "Error in EntitySystem.createHeroRecruitWithButton with add Hero char in inventory to building; " + checkStoreInInventory );
 
 		var button:Entity = this.createEntity( "button", "recruitWindowHeroButton", null );
 		var buttonText:Dynamic = button.getComponent( "graphics" ).getText();
@@ -553,6 +553,20 @@ class EntitySystem
 		*/
 		this.addEntityToScene( button, scene );
 
+	}
+
+	public function createInnHeroButton( hero:Entity ):Void
+	{
+		var scene:Scene = this._parent.getSystem( "scene" ).getActiveScene();
+		var heroNameComponent:Name = hero.getComponent( "name" );
+		var heroLvl:Int = hero.getComponent( "experience" ).get( "lvl" );
+		var heroName:String = heroNameComponent.get( "fullName" );
+		//var heroType:String = heroNameComponent.get( "type" );
+		var heroRarity:String = heroNameComponent.get( "rarity" );
+
+		var button:Entity = this.createEntity( "button", "innWindowHeroWindow", null );
+		
+		this.addEntityToScene( button, scene );
 	}
 
 	public function getConfig():Dynamic

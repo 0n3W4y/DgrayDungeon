@@ -9,7 +9,7 @@
 		"cityScene": {
 			"backgroundImageURL": "assets/images/citySceneBackround.png",
 			"window": ["panelCityWindow", "citySceneMainWindow", "recruitWindow"],
-			"button": ["gameStartJourney", "innUp", "innDown", "citySceneMainWindowClose" ],
+			"button": ["gameStartJourney", "innUp", "innDown", "citySceneMainWindowClose", "recruitHeroButton" ],
 			"building": ["hospital", "graveyard", "academy", "merchant", "questman", "fontain", "blacksmith", "hermit", "tavern", "recruits", "inn"]
 		},
 
@@ -2841,6 +2841,64 @@
 				"ui": {
 					"parentWindow": "recruitWindow"
 				}
+			},
+
+			"innWindowHeroWindow": {
+				"event": {},
+				"graphics": {
+					"queue": 0,
+					"x": 980.0,
+					"y": 770.0,
+					"img": {
+						"one": {
+							"x": 0.0,
+							"y": 0.0,
+							"url": "assets/images/innWindowHeroWindow.png"
+						},
+						"two": {
+							"x": 0.0,
+							"y": 0.0,
+							"url": "assets/images/innWindowHeroWindow.png"
+						},
+						"three": {
+							"x": 0.0,
+							"y": 0.0,
+							"url": "assets/images/innWindowHeroWindow.png"
+						},
+						"four": {
+							"x": 0.0,
+							"y": 0.0,
+							"url": null
+						}
+					},
+					"text": {
+						"first": {
+							"text": "N/A",
+							"x": 75.0,
+							"y": 10.0,
+							"font": "Verdana",
+							"size": 30,
+							"color": "0xffffff",
+							"visible": true,
+							"selectable": false,
+							"height": 34,
+							"width": 140
+						},
+						"second":{
+							"text": "30 12",
+							"x": 75.0,
+							"y": 10.0,
+							"font": "Verdana",
+							"size": 30,
+							"color": "0xffffff",
+							"visible": true,
+							"selectable": false,
+							"height": 34,
+							"width": 140
+						}
+					}
+				},
+				"ui": {}
 			}
 		}
 	},
