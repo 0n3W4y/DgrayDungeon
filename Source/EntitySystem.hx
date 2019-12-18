@@ -243,7 +243,7 @@ class EntitySystem
 
 		var hero = new Entity( null, id, type, name );
 		var config:Dynamic = this._config.hero;
-		var heroType:Int = params.rarity; // "common"-0, "uncommon"-1, "rare"-2, "legendary"-3;
+		var heroRarity:Int = params.rarity; // "common"-0, "uncommon"-1, "rare"-2, "legendary"-3;
 		var heroConfig:Dynamic = null;
 		var heroTypeConfig:Dynamic = null;
 		var skill:Dynamic = null;
@@ -278,7 +278,7 @@ class EntitySystem
 						"surname": newSurname,
 						"rank": null,
 						"type": value.type,
-						"rarity": value.rarity[ heroType ]
+						"rarity": value.rarity[ heroRarity ]
 					};
 					//TODO: Generate name;
 					component = this.createComponent( num, nameConfig );
@@ -289,7 +289,7 @@ class EntitySystem
 					{
 						"lvl": 1,
 						"exp": 0,
-						"expToNextLvl": value.expToNextLvl[ heroType ],
+						"expToNextLvl": value.expToNextLvl[ heroRarity ],
 						"maxLvl": 10
 					};
 					component = this.createComponent( num, experience );
@@ -307,40 +307,40 @@ class EntitySystem
 				{
 					var stats = 
 					{
-						"hp": value.hp[ heroType ],
-						"acc": value.acc[ heroType ],
-						"ddg": value.ddg[ heroType ], 
-						"cc": value.cc[ heroType ],
-						"def": value.def[ heroType ],
-						"dmg": value.dmg[ heroType ],
-						"spd": value.spd[ heroType ],
-						"cd": value.cd[ heroType ],
-						"stress": value.stress[ heroType ],
-						"stun": value.stun[ heroType ],
-						"poison": value.poison[ heroType ],
-						"bleed": value.bleed[ heroType ],
-						"diseas": value.diseas[ heroType ],
-						"debuff": value.debuff[ heroType ],
-						"move": value.move[ heroType ],
-						"fire": value.fire[ heroType ],
-						"upHp": value.upHp[ heroType ],
-						"upAcc": value.upAcc[ heroType ],
-						"upDdg": value.upDdg[ heroType ], 
-						"upCc": value.upCc[ heroType ],
-						"upDef": value.upDef[ heroType ],
-						"upDmg": value.upDmg[ heroType ],
-						"upSpd": value.upSpd[ heroType ],
-						"upCd": value.upCd[ heroType ],
-						"upStress": value.upStress[ heroType ],
-						"upStun": value.upStun[ heroType ],
-						"upPoison": value.upPpoison[ heroType ],
-						"upBleed": value.upBleed[ heroType ],
-						"upDiseas": value.upDiseas[ heroType ],
-						"upDebuff": value.upDebuff[ heroType ],
-						"upMove": value.upMove[ heroType ],
-						"upFire": value.upFire[ heroType ],
-						"position": value.position[ heroType ],
-						"target": value.target[ heroType ]
+						"hp": value.hp[ heroRarity ],
+						"acc": value.acc[ heroRarity ],
+						"ddg": value.ddg[ heroRarity ], 
+						"cc": value.cc[ heroRarity ],
+						"def": value.def[ heroRarity ],
+						"dmg": value.dmg[ heroRarity ],
+						"spd": value.spd[ heroRarity ],
+						"cd": value.cd[ heroRarity ],
+						"stress": value.stress[ heroRarity ],
+						"stun": value.stun[ heroRarity ],
+						"poison": value.poison[ heroRarity ],
+						"bleed": value.bleed[ heroRarity ],
+						"diseas": value.diseas[ heroRarity ],
+						"debuff": value.debuff[ heroRarity ],
+						"move": value.move[ heroRarity ],
+						"fire": value.fire[ heroRarity ],
+						"upHp": value.upHp[ heroRarity ],
+						"upAcc": value.upAcc[ heroRarity ],
+						"upDdg": value.upDdg[ heroRarity ], 
+						"upCc": value.upCc[ heroRarity ],
+						"upDef": value.upDef[ heroRarity ],
+						"upDmg": value.upDmg[ heroRarity ],
+						"upSpd": value.upSpd[ heroRarity ],
+						"upCd": value.upCd[ heroRarity ],
+						"upStress": value.upStress[ heroRarity ],
+						"upStun": value.upStun[ heroRarity ],
+						"upPoison": value.upPpoison[ heroRarity ],
+						"upBleed": value.upBleed[ heroRarity ],
+						"upDiseas": value.upDiseas[ heroRarity ],
+						"upDebuff": value.upDebuff[ heroRarity ],
+						"upMove": value.upMove[ heroRarity ],
+						"upFire": value.upFire[ heroRarity ],
+						"position": value.position[ heroRarity ],
+						"target": value.target[ heroRarity ]
 					};
 					component = this.createComponent( num, stats );
 				};
@@ -348,10 +348,10 @@ class EntitySystem
 				{
 					var traits = 
 					{
-						"maxNumOfPositive": value.maxNumOfPositive[ heroType ],
-						"maxNumOfNegative": value.maxNumOfNegative[ heroType ],
-						"maxNumOfPositiveStatic": value.maxNumOfPositiveStatic[ heroType ],
-						"maxNumOfNegativeStatic": value.maxNumOfNegativeStatic[ heroType ]
+						"maxNumOfPositive": value.maxNumOfPositive[ heroRarity ],
+						"maxNumOfNegative": value.maxNumOfNegative[ heroRarity ],
+						"maxNumOfPositiveStatic": value.maxNumOfPositiveStatic[ heroRarity ],
+						"maxNumOfNegativeStatic": value.maxNumOfNegativeStatic[ heroRarity ]
 					}
 					// TODO: generate traits and add it to component;
 					var traitConfig:Dynamic = this._config.trait;
@@ -360,17 +360,17 @@ class EntitySystem
 				};
 				case "skills":
 				{
-					var maxActive = value.active.maxActiveSkills[ heroType ];
-					var maxPassive = value.passive.maxPassiveSkills[ heroType ];
-					var maxCamping = value.camping.maxCampingSkills[ heroType ];
+					var maxActive = value.active.maxActiveSkills[ heroRarity ];
+					var maxPassive = value.passive.maxPassiveSkills[ heroRarity ];
+					var maxCamping = value.camping.maxCampingSkills[ heroRarity ];
 					var skills = 
 					{
 						"maxActiveSkills": maxActive,
-						"maxStaticActiveSkills": value.active.maxStaticActiveSkills[ heroType ],
+						"maxStaticActiveSkills": value.active.maxStaticActiveSkills[ heroRarity ],
 						"maxPassiveSkills": maxPassive,
-						"maxStaticPassiveSkills": value.passive.maxStaticPassiveSkills[ heroType ],
+						"maxStaticPassiveSkills": value.passive.maxStaticPassiveSkills[ heroRarity ],
 						"maxCampingSkills": maxCamping,
-						"maxStaticCampingSkills": value.camping.maxStaticCampingSkills[ heroType ]
+						"maxStaticCampingSkills": value.camping.maxStaticCampingSkills[ heroRarity ]
 					}
 					component = this.createComponent( num, skills );
 
@@ -434,7 +434,7 @@ class EntitySystem
 
 					
 				}
-				default : trace( "Error in EntitySystem._heroConfig, no key with name: " + num + ", in container with heroType: " + heroType );
+				default : trace( "Error in EntitySystem._heroConfig, no key with name: " + num + ", in container with heroType: " + heroRarity );
 			}
 			this.addComponentTo( component, hero );
 		}
@@ -515,6 +515,44 @@ class EntitySystem
 			var object = this.createEntity( type, list[ i ], null );
 			this.addEntityToScene( object, scene );
 		}
+	}
+
+	public function createHeroRecruitWithButton( scene:Scene ):Void
+	{
+		var hero = this.createEntity( "hero", null, null );
+		this.addEntityToScene( hero, scene );
+		var heroType:String = hero.getComponent( "name" ).get( "type" );
+		var heroName:String = hero.getComponent( "name" ).get( "fullName" );
+		var heroRarity:String = hero.getComponent( "name" ).get( "rarity" );
+		var heroLvl:Int = hero.getComponent( "experience" ).get( "lvl" );
+		var heroId:String = hero.get( "id" );
+		trace( heroRarity );
+		//var heroPicture:String = hero.getComponent( "graphics" ).getImg().one; // get picture ( portrait of hero );
+
+		var checkStoreInInventory:Int = building.getComponent( "inventory" ).setItemInSlot( hero, null );
+		if( checkStoreInInventory == 0 ) //check function inventory to store hero;
+			trace( "Error in EntitySystem.createHeroRecruitWithButton with add Hero char in inventory to building in " + i + " round. " + checkStoreInInventory );
+
+		var button:Entity = this.createEntity( "button", "recruitWindowHeroButton", null );
+		var buttonText:Dynamic = button.getComponent( "graphics" ).getText();
+		var buttonImg:Dynamic = button.getComponent( "graphics" ).getImg();
+		buttonText.first.text = heroName;
+		buttonText.second.text = heroType;
+		button.getComponent( "ui" ).setHeroId( heroId );
+		/*
+		var buttonImageUrlRarity:String = null;
+		switch( heroRarity )
+		{
+			case "common":{ buttonImageUrlRarity = "/commonRecruitButton.png" }
+			case "uncommon":{ buttonImageUrlRarity = "/uncommonRecruitButton.png" }
+			case "rare": { buttonImageUrlRarity = "/rareRecruitButton.png" }
+			case "legendary": { buttonImageUrlRarity = "/legendaryRecruitButton.png" }
+			default: { trace( "Error in EntitySystem.createHeroRecruitWithButton. Hero rarity can't be: " + heroRarity ) }
+		}
+		buttonImg.one.url = buttonImageUrlRarity;
+		*/
+		this.addEntityToScene( button, scene );
+
 	}
 
 	public function getConfig():Dynamic

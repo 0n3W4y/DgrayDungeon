@@ -82,14 +82,9 @@ class SceneSystem
 
 					for( i in 0...slots )
 					{
-						var hero = entitySystem.createEntity( "hero", null, null );
-						this._parent.getSystem( "entity" ).addEntityToScene( hero, scene );
-
-						var checkStoreInInventory:Int = building.getComponent( "inventory" ).setItemInSlot( hero, null );
-						if( checkStoreInInventory == 0 ) //check function inventory to store heroes;
-							trace( "Error in SceneSystem._createCityScene with add Hero char in inventory to building in " + i + " round. " + checkStoreInInventory );
-						//TODO: set timer to next change heroes in recruit building;
+						entitySystem.createHeroRecruitWithButton( scene );
 					}
+					//TODO: set timer to next change heroes in recruit building;
 				}
 				case "storage":
 				{

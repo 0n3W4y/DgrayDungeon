@@ -5,6 +5,7 @@ class UI extends Component
 	private var _isChoosen:Bool;
 	private var _parentWindow:String;
 	private var _currentOpen:String;
+	private var _heroId:String;
 
 
 	public function new( parent:Entity, params:Dynamic ):Void
@@ -13,6 +14,7 @@ class UI extends Component
 		this._isChoosen = false;
 		this._parentWindow = params.parentWindow;
 		this._currentOpen = null;
+		this._heroId = null;
 	}
 
 	public function isChoosen():Bool
@@ -41,5 +43,15 @@ class UI extends Component
 	public function setCurrentOpen( value:String ):Void
 	{
 		this._currentOpen = value;
+	}
+
+	public function setHeroId( value:String ):Void
+	{
+		this._heroId = value;
+	}
+
+	public function gerHeroId():String
+	{
+		return this._heroId;
 	}
 }

@@ -9,7 +9,7 @@
 		"cityScene": {
 			"backgroundImageURL": "assets/images/citySceneBackround.png",
 			"window": ["panelCityWindow", "citySceneMainWindow", "recruitWindow"],
-			"button": ["gameStartJourney", "innUp", "innDown", "citySceneMainWindowClose", "recruitWindowHeroButton", "recruitHeroButton"],
+			"button": ["gameStartJourney", "innUp", "innDown", "citySceneMainWindowClose" ],
 			"building": ["hospital", "graveyard", "academy", "merchant", "questman", "fontain", "blacksmith", "hermit", "tavern", "recruits", "inn"]
 		},
 

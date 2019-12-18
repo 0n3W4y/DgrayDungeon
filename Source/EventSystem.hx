@@ -72,18 +72,14 @@ class EventSystem
 		for( g in 0...chooseButton.length )
 		{
 			var heroButton:Entity = chooseButton[ g ];
-			var buttonText:Dynamic = heroButton.getComponent( "graphics" ).getText();
-			var heroButtonName:String = buttonText.first.text;
-			var heroButtonType:String = buttonText.second.text;
+			var buttonHeroId:String = heroButton.getComponent( "ui" ).getHeroId();
 			for( f in 0...recruitInventoryArray.length )
 			{
 				var hero:Entity = recruitInventoryArray[ f ].item;
 				if( hero == null )
 					continue;
-				var heroFullName:String = hero.getComponent( "name" ).get( "fullName" );
-				var heroType:String = hero.getComponent( "name" ).get( "type" );
-				//trace( "b: " + heroButtonName + "; h: " + heroFullName );
-				if( heroButtonName == heroFullName && heroButtonType == heroType )
+				var heroId:String = hero.get( "id" );
+				if( heroId == buttonHeroId )
 				{
 					arrayForTransfer.push( [ hero, heroButton ] );
 					break;
@@ -102,12 +98,11 @@ class EventSystem
 			var transferHero:Entity = array[ 0 ]; // because hero entity in 0 index;
 			var buttonToKill:Entity = array[ 1 ];
 			innInventory.setItemInSlot( transferHero, null ); //set hero in first free slot;
-			recruitInventory.removeItemFromSlot( transferHero, null );
-			var buttonSprite:Sprite = buttonToKill.getComponent( "graphics" ).getGraphicsInstance();
+			recruitInventory.removeItemFromSlot( transferHero, null ); //remove hero from inventory;
+			var buttonSprite:Sprite = buttonToKill.getComponent( "graphics" ).getGraphicsInstance(); 
 			recruitWindowSprite.removeChild( buttonSprite );
-			this._parent.getSystem( "entity" ).removeEntity( buttonToKill );
+			this._parent.getSystem( "entity" ).removeEntity( buttonToKill );// kill button at all;
 			//TODO: create buttons for Inn ;
-			//TODO: remove buttons in recruit building;
 		}
 
 
@@ -164,8 +159,13 @@ class EventSystem
 
 				if( currentOpen == "recruitWindow")
 				{
-					//TODO: clear choosen heroes to buy **;
-					// for( i in 0...buttons.length ) button.getComponent("ui").isChoosen(false);
+					var buttons:Array<Entity> = sceneSystem.getActiveScene().getEntities( "ui" ).button;
+					for( i in 0...buttons.length )
+					{
+						var button:Entity = buttons[ i ];
+						if( button.getComponent( "ui" ).isChoosen() && button.get( "name" ) ==  "recruitWindowHeroButton" )
+							button.getComponent( "ui" ).setIsChoosen();
+					}
 				}
 				ui.hideUiObject( "citySceneMainWindow" );
 			}
