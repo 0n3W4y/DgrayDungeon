@@ -55,7 +55,15 @@ class GraphicsSystem
         textFormat.font = text.font;
         textFormat.size = text.size;
         textFormat.color = text.color;
-        textFormat.align = TextFormatAlign.CENTER;
+        var align:Dynamic = null;
+        switch( text.align )
+        {
+        	case "left": align = TextFormatAlign.LEFT;
+        	case "right": align = TextFormatAlign.RIGHT;
+        	case "center": align = TextFormatAlign.CENTER;
+        	default: trace( "Error in GraphicsSystem._createText. Wrong align: " + text.align );
+        }
+        textFormat.align = align;
 
         txt.defaultTextFormat = textFormat;
         txt.visible = text.visible;
@@ -149,7 +157,7 @@ class GraphicsSystem
 		var objectType:String = object.get( "type" );
 		var objectName:String = object.get( "name" );
 		var isHide:Bool = false;
-		if( objectName == "recruitWindowHeroButton" )
+		if( objectName == "recruitWindowHeroButton" || objectName == "innWindowHeroButton" )
 			isHide = false;
 
 		var sprite:Sprite = new Sprite();

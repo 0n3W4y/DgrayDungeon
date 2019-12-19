@@ -28,8 +28,17 @@
 		"hero": {
 			"crossbowman": {
 				"event": {},
+				"misc": {
+					"buyPrice": 0,
+					"sellPrice": 0,
+					"restriction": null,
+					"storable": false,
+					"maxCapacity": 0,
+					"currentCapacity": 0
+				},
 				"inventory": {
-					"slots": 4,
+					"maxSlots": 4,
+					"currentSlots": 4,
 					"needToFill": false,
 					"inventory": {
 						"slot1": {
@@ -525,6 +534,7 @@
 					"text": {
 						"empty": {
 							"text": "null",
+							"align": "left",
 							"x": 100.0,
 							"y": 50.0,
 							"font": "Verdana",
@@ -541,8 +551,17 @@
 
 			"paladin": {
 				"event": {},
+				"misc": {
+					"buyPrice": 0,
+					"sellPrice": 0,
+					"restriction": null,
+					"storable": false,
+					"maxCapacity": 0,
+					"currentCapacity": 0
+				},
 				"inventory": {
-					"slots": 4,
+					"maxSlots": 4,
+					"currentSlots": 4,
 					"needToFill": false,
 					"inventory": {
 						"slot1": {
@@ -1040,6 +1059,7 @@
 					"text": {
 						"empty": {
 							"text": "null",
+							"align": "left",
 							"x": 100.0,
 							"y": 50.0,
 							"font": "Verdana",
@@ -1055,8 +1075,17 @@
 			},
 			"pyromancer": {
 				"event": {},
+				"misc": {
+					"buyPrice": 0,
+					"sellPrice": 0,
+					"restriction": null,
+					"storable": false,
+					"maxCapacity": 0,
+					"currentCapacity": 0
+				},
 				"inventory": {
-					"slots": 4,
+					"maxSlots": 4,
+					"currentSlots": 4,
 					"needToFill": false,
 					"inventory": {
 						"slot1": {
@@ -1554,6 +1583,7 @@
 					"text": {
 						"first": {
 							"text": "null",
+							"align": "left",
 							"x": 100.0,
 							"y": 50.0,
 							"font": "Verdana",
@@ -1592,6 +1622,7 @@
 					"text": {
 						"first": {
 							"text": "Hospital",
+							"align": "left",
 							"x": 100.0,
 							"y": 50.0,
 							"font": "Verdana",
@@ -1604,6 +1635,7 @@
 						},
 						"second": {
 							"text": "Make a health",
+							"align": "left",
 							"x": 100.0,
 							"y": 100.0,
 							"font": "Verdana",
@@ -1640,6 +1672,7 @@
 					"text": {
 						"first": {
 							"text": "Tavern",
+							"align": "left",
 							"x": 0.0,
 							"y": 0.0,
 							"font": "Verdana",
@@ -1652,6 +1685,7 @@
 						},
 						"second": {
 							"text": "Make a drink",
+							"align": "left",
 							"x": 0.0,
 							"y": 0.0,
 							"font": "Verdana",
@@ -1673,9 +1707,9 @@
 					"inventory": {
 						"slot1": {
 							"name": null,
-							"type": "slot",
+							"type": "hero",
 							"item": null,
-							"restriction": "hero",
+							"restriction": null,
 							"isAvailable": false
 						}
 					}
@@ -1700,6 +1734,7 @@
 					"text": {
 						"first": {
 							"text": "Inn",
+							"align": "left",
 							"x": 20.0,
 							"y": -35.0,
 							"font": "Verdana",
@@ -1712,6 +1747,7 @@
 						},
 						"second": {
 							"text": "0/8",
+							"align": "left",
 							"x": 100.0,
 							"y": -35.0,
 							"font": "Verdana",
@@ -1756,6 +1792,7 @@
 					"text": {
 						"first": {
 							"text": "Recruit Coach",
+							"align": "left",
 							"x": 0.0,
 							"y": 0.0,
 							"font": "Verdana",
@@ -1768,6 +1805,7 @@
 						},
 						"second": {
 							"text": "Train a new recruits",
+							"align": "left",
 							"x": 0.0,
 							"y": 0.0,
 							"font": "Verdana",
@@ -1788,9 +1826,9 @@
 					"inventory": {
 						"slot1": {
 							"name": null,
-							"type": "slot",
+							"type": "hero",
 							"item": null,
-							"restriction": "hero",
+							"restriction": null,
 							"isAvailable": false
 						}
 					}
@@ -1818,6 +1856,7 @@
 					"text": {
 						"first": {
 							"text": "BlackSmith",
+							"align": "left",
 							"x": 0.0,
 							"y": 0.0,
 							"font": "Verdana",
@@ -1830,6 +1869,7 @@
 						},
 						"second": {
 							"text": "Make a new weapon",
+							"align": "left",
 							"x": 0.0,
 							"y": 0.0,
 							"font": "Verdana",
@@ -1865,6 +1905,7 @@
 					"text": {
 						"first": {
 							"text": "Humble shop",
+							"align": "left",
 							"x": 0.0,
 							"y": 0.0,
 							"font": "Verdana",
@@ -1877,6 +1918,7 @@
 						},
 						"second": {
 							"text": "Buy new stuff",
+							"align": "left",
 							"x": 0.0,
 							"y": 0.0,
 							"font": "Verdana",
@@ -1912,6 +1954,7 @@
 					"text": {
 						"first": {
 							"text": "Graveyard",
+							"align": "left",
 							"x": 200.0,
 							"y": 100.0,
 							"font": "Verdana",
@@ -1924,6 +1967,7 @@
 						},
 						"second": {
 							"text": "R.I.P.",
+							"align": "left",
 							"x": 200.0,
 							"y": 150.0,
 							"font": "Verdana",
@@ -1959,6 +2003,7 @@
 					"text": {
 						"first": {
 							"text": "Skill academy",
+							"align": "left",
 							"x": 0.0,
 							"y": 0.0,
 							"font": "Verdana",
@@ -1971,6 +2016,7 @@
 						},
 						"second": {
 							"text": "Learn new skills",
+							"align": "left",
 							"x": 0.0,
 							"y": 0.0,
 							"font": "Verdana",
@@ -2006,6 +2052,7 @@
 					"text": {
 						"first": {
 							"text": "Hermit",
+							"align": "left",
 							"x": 0.0,
 							"y": 0.0,
 							"font": "Verdana",
@@ -2018,6 +2065,7 @@
 						},
 						"second": {
 							"text": "Teach surviving",
+							"align": "left",
 							"x": 0.0,
 							"y": 0.0,
 							"font": "Verdana",
@@ -2053,6 +2101,7 @@
 					"text": {
 						"first": {
 							"text": "Strange person",
+							"align": "left",
 							"x": 50.0,
 							"y": 50.0,
 							"font": "Verdana",
@@ -2065,6 +2114,7 @@
 						},
 						"second": {
 							"text": "Collect new quests",
+							"align": "left",
 							"x": 50.0,
 							"y": 100.0,
 							"font": "Verdana",
@@ -2100,6 +2150,7 @@
 					"text": {
 						"first": {
 							"text": "Fontain",
+							"align": "left",
 							"x": 80.0,
 							"y": 100.0,
 							"font": "Verdana",
@@ -2112,6 +2163,7 @@
 						},
 						"second": {
 							"text": "Learn more",
+							"align": "left",
 							"x": 80.0,
 							"y": 140.0,
 							"font": "Verdana",
@@ -2161,6 +2213,7 @@
 					"text": {
 						"first": {
 							"text": "The real estate",
+							"align": "left",
 							"x": 30.0,
 							"y": 10.0,
 							"font": "Verdana",
@@ -2195,6 +2248,7 @@
 					"text": {
 						"first": {
 							"text": "Recruits",
+							"align": "left",
 							"x": 0.0,
 							"y": 0.0,
 							"font": "Verdana",
@@ -2262,6 +2316,7 @@
 					"text": {
 						"first": {
 							"text": "The real path of truth",
+							"align": "center",
 							"x": 15.0,
 							"y": 10.0,
 							"font": "Verdana",
@@ -2274,6 +2329,7 @@
 						},
 						"second": {
 							"text": "1",
+							"align": "center",
 							"x": 350.0,
 							"y": 10.0,
 							"font": "Verdana",
@@ -2463,6 +2519,7 @@
 					"text": {
 						"first": {
 							"text": "START",
+							"align": "center",
 							"x": 75.0,
 							"y": 5.0,
 							"font": "Verdana",
@@ -2594,6 +2651,7 @@
 					"text": {
 						"first": {
 							"text": "New",
+							"align": "center",
 							"x": 0.0,
 							"y": 0.0,
 							"font": "Verdana",
@@ -2636,6 +2694,7 @@
 					"text": {
 						"first": {
 							"text": "Continue",
+							"align": "center",
 							"x": 0.0,
 							"y": 0.0,
 							"font": "Verdana",
@@ -2678,6 +2737,7 @@
 					"text": {
 						"first": {
 							"text": "Options",
+							"align": "center",
 							"x": 0.0,
 							"y": 0.0,
 							"font": "Verdana",
@@ -2720,6 +2780,7 @@
 					"text": {
 						"first": {
 							"text": "Authors",
+							"align": "center",
 							"x": 0.0,
 							"y": 0.0,
 							"font": "Verdana",
@@ -2773,6 +2834,7 @@
 					"text": {
 						"first": {
 							"text": "N/A",
+							"align": "left",
 							"x": 200.0,
 							"y": 15.0,
 							"font": "Verdana",
@@ -2785,6 +2847,7 @@
 						},
 						"second": {
 							"text": "N/A",
+							"align": "left",
 							"x": 200.0,
 							"y": 50.0,
 							"font": "Verdana",
@@ -2826,6 +2889,7 @@
 					"text": {
 						"first": {
 							"text": "Recruit",
+							"align": "center",
 							"x": 75.0,
 							"y": 10.0,
 							"font": "Verdana",
@@ -2843,29 +2907,34 @@
 				}
 			},
 
-			"innWindowHeroWindow": {
+			"innWindowHeroButton": {
 				"event": {},
 				"graphics": {
 					"queue": 0,
-					"x": 980.0,
-					"y": 770.0,
+					"x": 0.0,
+					"y": 10.0,
 					"img": {
 						"one": {
 							"x": 0.0,
 							"y": 0.0,
-							"url": "assets/images/innWindowHeroWindow.png"
+							"url": "assets/images/innWindowHeroButton.png"
 						},
 						"two": {
 							"x": 0.0,
 							"y": 0.0,
-							"url": "assets/images/innWindowHeroWindow.png"
+							"url": "assets/images/innWindowHeroButton.png"
 						},
 						"three": {
 							"x": 0.0,
 							"y": 0.0,
-							"url": "assets/images/innWindowHeroWindow.png"
+							"url": "assets/images/innWindowHeroButton.png"
 						},
 						"four": {
+							"x": 0.0,
+							"y": 0.0,
+							"url": null
+						},
+						"five": {
 							"x": 0.0,
 							"y": 0.0,
 							"url": null
@@ -2874,26 +2943,28 @@
 					"text": {
 						"first": {
 							"text": "N/A",
-							"x": 75.0,
-							"y": 10.0,
+							"align": "left",
+							"x": 116.0,
+							"y": 2.0,
 							"font": "Verdana",
-							"size": 30,
+							"size": 26,
 							"color": "0xffffff",
 							"visible": true,
 							"selectable": false,
-							"height": 34,
+							"height": 60,
 							"width": 140
 						},
 						"second":{
 							"text": "30 12",
-							"x": 75.0,
-							"y": 10.0,
+							"align": "left",
+							"x": 130.0,
+							"y": 60.0,
 							"font": "Verdana",
-							"size": 30,
+							"size": 40,
 							"color": "0xffffff",
 							"visible": true,
 							"selectable": false,
-							"height": 34,
+							"height": 40,
 							"width": 140
 						}
 					}

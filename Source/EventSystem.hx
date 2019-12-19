@@ -37,13 +37,14 @@ class EventSystem
 		// Find inventory of 2 buildings;
 		var innInventory:Inventory = null;
 		var recruitInventory:Inventory = null;
+		var innBuilding:Entity = null;
 		var arrayOfBuildings:Array<Entity> = sceneSystem.getActiveScene().getEntities( "object" ).building;
 		for( j in 0...arrayOfBuildings.length )
 		{
 			var building:Entity = arrayOfBuildings[ j ];
 			switch( building.get( "name" ) )
 			{
-				case "inn": innInventory = building.getComponent( "inventory" );
+				case "inn": { innInventory = building.getComponent( "inventory" ); innBuilding = building; }
 				case "recruits": recruitInventory = building.getComponent( "inventory" );
 				default:
 				{
@@ -92,6 +93,7 @@ class EventSystem
 		var uiSystem:UserInterface = this._parent.getSystem( "ui" );
 		var recruitWindow:Entity = uiSystem.getWindow( "recruitWindow" );
 		var recruitWindowSprite:Sprite = recruitWindow.getComponent( "graphics" ).getGraphicsInstance();
+		var innWindowSprite:Sprite = innBuilding.getComponent( "graphics" ).getGraphicsInstance();
 		for( o in 0...arrayForTransfer.length )
 		{
 
@@ -103,8 +105,22 @@ class EventSystem
 			var buttonSprite:Sprite = buttonToKill.getComponent( "graphics" ).getGraphicsInstance(); 
 			recruitWindowSprite.removeChild( buttonSprite );
 			entitySystem.removeEntity( buttonToKill );// kill button at all;
-			entitySystem.createInnHeroButton( transferHero );
-			//TODO: create buttons for Inn ;
+			var innButton:Entity = entitySystem.createInnHeroButton( transferHero );
+			var scene:Scene = sceneSystem.getActiveScene();
+			entitySystem.addEntityToScene( innButton, scene );
+			var innButtonSprite:Sprite = this._parent.getSystem( "graphics" ).createObject( innButton );
+			var multiplier:Int = -1; // because first we do mechanic, then graphic;
+			for( p in 0...innInventoryArray.length )
+			{
+				var slot:Dynamic = innInventoryArray[ p ];
+				if( slot.item != null )
+					multiplier++;
+			}
+			innButtonSprite.y += innButtonSprite.height * multiplier;
+			innWindowSprite.addChild( innButtonSprite );
+			//trace( multiplier + "; " + innButtonSprite.y + "; " + innWindowSprite + "; " + innButtonSprite );
+			//TODO;
+
 		}
 
 

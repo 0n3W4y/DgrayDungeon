@@ -229,7 +229,7 @@ class Stats extends Component
 
 	public function getTarget():Dynamic
 	{
-		return { "first": this.target.first, "second": this.target.second, "third": this.target.third, "fourth": this.target.fourth };
+		return { "first": this._target.first, "second": this._target.second, "third": this._target.third, "fourth": this._target.fourth };
 	}
 
 	public function getEffects():Array<Dynamic>

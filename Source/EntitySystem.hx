@@ -264,6 +264,17 @@ class EntitySystem
 			var component:Dynamic = null;
 			switch( num )
 			{
+				case "misc":{
+					var miscConfig:Dynamic = {
+						"buyPrice": value.buyPrice,
+						"sellPrice": value.sellPrice,
+						"restriction": value.restriction,
+						"storable": value.storable,
+						"maxCapacity": value.maxCapacity,
+						"currentCapacity": value.currentCapacity
+					}
+					component = this.createComponent( num, miscConfig );
+				}
 				case "event": component = this.createComponent( num, value );
 				case "name": 
 				{
@@ -485,6 +496,7 @@ class EntitySystem
 			case "traits": component = new Traits( null, params );
 			case "experience": component = new Experience( null, params );
 			case "event": component = new Event( null, params );
+			case "misc": component = new Misc( null, params );
 			default: trace( "Error in EntitySystem.createComponent, component with name: '" + componentName + "' does not exist." );
 		}
 		return component;
@@ -526,10 +538,10 @@ class EntitySystem
 		var heroRarity:String = hero.getComponent( "name" ).get( "rarity" );
 		var heroLvl:Int = hero.getComponent( "experience" ).get( "lvl" );
 		var heroId:String = hero.get( "id" );
-		trace( heroRarity );
 		//var heroPicture:String = hero.getComponent( "graphics" ).getImg().one; // get picture ( portrait of hero );
 
 		var checkStoreInInventory:Int = building.getComponent( "inventory" ).setItemInSlot( hero, null );
+		//trace( building.getComponent( "inventory" ).getFreeSlots() );
 		if( checkStoreInInventory == 0 ) //check function inventory to store hero;
 			trace( "Error in EntitySystem.createHeroRecruitWithButton with add Hero char in inventory to building; " + checkStoreInInventory );
 
@@ -555,18 +567,28 @@ class EntitySystem
 
 	}
 
-	public function createInnHeroButton( hero:Entity ):Void
+	public function createInnHeroButton( hero:Entity ):Entity
 	{
 		var scene:Scene = this._parent.getSystem( "scene" ).getActiveScene();
 		var heroNameComponent:Name = hero.getComponent( "name" );
 		var heroLvl:Int = hero.getComponent( "experience" ).get( "lvl" );
-		var heroName:String = heroNameComponent.get( "fullName" );
+		var heroName:String = heroNameComponent.get( "name" );
+		var heroSurname:String = heroNameComponent.get( "surname" );
+		var heroStats:Stats = hero.getComponent( "stats" );
+		var heroId:String = hero.get( "id" );
 		//var heroType:String = heroNameComponent.get( "type" );
 		var heroRarity:String = heroNameComponent.get( "rarity" );
 
-		var button:Entity = this.createEntity( "button", "innWindowHeroWindow", null );
+		var button:Entity = this.createEntity( "button", "innWindowHeroButton", null );
+		var buttonText:Dynamic = button.getComponent( "graphics" ).getText();
+		var buttonImg:Dynamic = button.getComponent( "graphics" ).getImg();
+
+		buttonText.first.text = heroName + "\n" + heroSurname;
+		buttonText.second.text = heroStats.get( "dmg", "total" ) + "   " + heroStats.get( "def", "total" );
+		button.getComponent( "ui" ).setHeroId( heroId );
 		
 		this.addEntityToScene( button, scene );
+		return button;
 	}
 
 	public function getConfig():Dynamic

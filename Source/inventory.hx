@@ -2,8 +2,11 @@ package;
 
 class Inventory extends Component
 {
+	//TODO: do restriction structure for hero inventory;
+
 	private var _maxSlots:Int = 0; //maximum number of slots;
 	private var _currentSlots:Int = 0; // current number of slots we have;
+	private var _freeSlots:Int = 0; // total free slots we have;
 	private var _inventory:Array<Dynamic>; 
 	//{ "name": "slot1", type": "slot", "item": null, "restriction": "hero", "isAvailable": false }
 
@@ -36,6 +39,7 @@ class Inventory extends Component
 					{
 						newValue.isAvailable = true;
 						j++;
+						this._freeSlots++;
 					}
 					else
 						newValue.isAvailable = false;
@@ -51,9 +55,11 @@ class Inventory extends Component
 					var keyValue = Reflect.getProperty( value, key );
 					Reflect.setProperty( newValue, key, keyValue );
 				}
+				this._freeSlots++;
 				this._inventory.push( newValue );
 			}			
 		}
+		//trace(this._currentSlots + "; free: " + this._freeSlots );
 	}
 
 	public function changeAvailableSlot ( slot:String, value:Bool ):Void
@@ -67,6 +73,7 @@ class Inventory extends Component
 				{
 					this._inventory[ i ].isAvailable = true;
 					this._currentSlots++;
+					this._freeSlots++;
 					break;
 				}
 			}
@@ -80,6 +87,7 @@ class Inventory extends Component
 				{
 					this._inventory[ i ].isAvailable = false;
 					this._currentSlots--;
+					this._freeSlots--;
 					break;
 				}
 			}
@@ -95,6 +103,7 @@ class Inventory extends Component
 	public function setItemInSlot( newItem:Dynamic, slot:String ):Dynamic
 	{
 		// { "name": "slot1", type": "slot", "item": null, "restriction": "hero", "isAvailable": false }
+		var newItemType:String = newItem.get( "type" );
 		if ( slot == null ) // do store item in free slot or add amout of item in slot;
 		{
 			var stored:Bool = false;
@@ -104,7 +113,10 @@ class Inventory extends Component
 			{
 				var newSlot:Dynamic = this._inventory[ i ];
 				var slotRestriction:String = newSlot.restriction;
-				var oldItem:Entity = this._inventory[ i ].item;
+				var checkrestriction:Bool = newItem.getComponent( "misc" ).checkRestriction( slotRestriction );
+				if( !checkrestriction )
+					continue;
+				var oldItem:Entity = newSlot.item;
 				//trace( newSlot );
 				if( oldItem != null )
 				{
@@ -124,7 +136,7 @@ class Inventory extends Component
 				}
 				else
 				{
-					if( freeSlot == -1 && this._inventory[ i ].isAvailable )
+					if( freeSlot == -1 && this._inventory[ i ].isAvailable ) // first free slot;
 						freeSlot = i;
 				}
 			}
@@ -138,6 +150,7 @@ class Inventory extends Component
 				{
 					this._inventory[ freeSlot ].item = newItem; // add new item in inventory to free slot;
 					//trace( "Slot N " + freeSlot + "; Item with type: " + newItem.get( "type" ) );
+					this._freeSlots--;
 					return 1; // no errors, all good;
 				}
 			}
@@ -150,15 +163,17 @@ class Inventory extends Component
 				var slotName = this._inventory[ i ].name;
 				if( slotName == slot )
 				{
-					if( this._inventory[ i ].item == null && this._inventory[ i ].isAvailable )
+					if( this._inventory[ i ].item == null && this._inventory[ i ].isAvailable && this._inventory[ i ].type == newItemType )
 					{
 						this._inventory[ i ].item = newItem;
+						this._freeSlots--;
 						return 1;
 					}
 					else
 					{
 						var oldItem:Dynamic = this._inventory[ i ].item;
 						this._inventory[ i ].item = newItem;
+						this._freeSlots--;
 						return oldItem;
 					}
 				}
@@ -179,6 +194,7 @@ class Inventory extends Component
 				{
 					oldItem = this._inventory[ i ].item;
 					this._inventory[ i ].item = null;
+					this._freeSlots++;
 					break;
 				}
 			}	
@@ -194,6 +210,7 @@ class Inventory extends Component
 					{
 						oldItem = this._inventory[ j ].item;
 						this._inventory[ j ].item = null;
+						this._freeSlots++;
 						break;
 					}					
 				}
@@ -243,6 +260,7 @@ class Inventory extends Component
 	public function setCurrentSlots( value:Int ):Void
 	{
 		this._currentSlots = value;
+		//TODO: Function, find last available slot and change property from false to true ( if value > currentSlots );
 	}
 
 	public function getMaxSlots():Int
@@ -250,8 +268,14 @@ class Inventory extends Component
 		return this._maxSlots;
 	}
 
-	public function setmaxSlots( value:Int ):Void
+	public function setMaxSlots( value:Int ):Void
 	{
 		this._maxSlots = value;
+		//TODO: function, copy last slot, and do default parametrs for it ( if value > maxSlots );
+	}
+
+	public function getFreeSlots():Int
+	{
+		return this._freeSlots;
 	}
 }
