@@ -2,8 +2,8 @@ package;
 
 import openfl.display.Sprite;
 import openfl.events.MouseEvent;
-import openfl.display.DisplayObject;
 import openfl.display.DisplayObjectContainer;
+import openfl.text.TextField;
 
 
 class EventSystem
@@ -30,7 +30,7 @@ class EventSystem
 
 		if( chooseButton.length == 0 ) // no buttons are choosen;
 		{
-			trace( "No buttons have been choosed, buttons array: " + sceneButtonsArray );
+			trace( "No buttons have been choosed" );
 			return;
 		}
 
@@ -116,11 +116,21 @@ class EventSystem
 				if( slot.item != null )
 					multiplier++;
 			}
-			innButtonSprite.y += innButtonSprite.height * multiplier;
+			if( multiplier == 0 )
+				innButtonSprite.y += innButtonSprite.height * multiplier;
+			else
+				innButtonSprite.y = innButtonSprite.height * multiplier;
 			innWindowSprite.addChild( innButtonSprite );
-			//trace( multiplier + "; " + innButtonSprite.y + "; " + innWindowSprite + "; " + innButtonSprite );
-			//TODO;
+			var text:String = ( multiplier + 1 ) + "/" + innInventoryArray.length;
+			innBuilding.getComponent( "graphics" ).getText().second = text;
+			var innSprite:DisplayObjectContainer = innBuilding.getComponent( "graphics" ).getGraphicsInstance();
+			var innSpriteTextField:TextField = innBuilding.getComponent( "graphics" ).getGraphicsInstance().getChildAt( 1 ).getChildAt( 1 );
+			var innTextSprite:DisplayObjectContainer = this._parent.getSystem( "graphics" ).createTextSprite( innBuilding );
+			innSpriteTextField.text = text;
+			//innSprite.removeChildAt( 1 );
+			//innSprite.addChildAt( innTextSprite, 1 ); // 1 - because textSprite in [1] index of childs;
 
+			//trace( multiplier + "; " + innButtonSprite.y + "; " + innWindowSprite + "; " + innButtonSprite );
 		}
 
 
@@ -474,7 +484,7 @@ class EventSystem
 	{
 		var objectEvent:Dynamic = object.getComponent( "event" );
 		var objectGraphics:Graphics = object.getComponent( "graphics" );
-		var graphicsInstance:Sprite = objectGraphics.getGraphicsInstance();
+		var graphicsInstance:DisplayObjectContainer = objectGraphics.getGraphicsInstance();
 		var event = null;
 		var func = null;
 
@@ -516,7 +526,7 @@ class EventSystem
 		var objectEvent:Dynamic = object.getComponent( "event" );
 		var events:Array<String> = objectEvent.getEvents();
 		var objectGraphics:Graphics = object.getComponent( "graphics" );
-		var graphicsInstance:Sprite = objectGraphics.getGraphicsInstance();
+		var graphicsInstance:DisplayObjectContainer = objectGraphics.getGraphicsInstance();
 		var event = null;
 		var func = null;
 		switch( eventName ) 

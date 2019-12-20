@@ -104,8 +104,8 @@ class EntitySystem
 								"five": { "x": null, "y": null, "url": null },
 							}, 
 							"text": {
-								"first": {	"text": null, "x": null, "y": null,	"font": null, "size": null,	"color": null, "visible": null,	"selectable": null,	"height": null,	"width": null, "queue": null },
-								"second": {	"text": null, "x": null, "y": null,	"font": null, "size": null,	"color": null, "visible": null,	"selectable": null,	"height": null,	"width": null, "queue": null }
+								"first": {	"text": null, "align": null, "x": null, "y": null,	"font": null, "size": null,	"color": null, "visible": null,	"selectable": null,	"height": null,	"width": null, "queue": null },
+								"second": {	"text": null, "align": null, "x": null, "y": null,	"font": null, "size": null,	"color": null, "visible": null,	"selectable": null,	"height": null,	"width": null, "queue": null }
 							}
 					};
 					for( obj in Reflect.fields( value ) )
@@ -154,6 +154,7 @@ class EntitySystem
 									valueToChange.height = result.height;
 									valueToChange.width = result.width;
 									valueToChange.queue = result.queue;
+									valueToChange.align = result.align;
 								}							
 							}
 							case "queue", "x", "y":

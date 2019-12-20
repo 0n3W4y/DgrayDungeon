@@ -61,7 +61,7 @@ class GraphicsSystem
         	case "left": align = TextFormatAlign.LEFT;
         	case "right": align = TextFormatAlign.RIGHT;
         	case "center": align = TextFormatAlign.CENTER;
-        	default: trace( "Error in GraphicsSystem._createText. Wrong align: " + text.align );
+        	default: trace( "Error in GraphicsSystem._createText. Wrong align: " + text.align + "; text: " + text.text + "; align: " + text.align );
         }
         textFormat.align = align;
 
@@ -78,11 +78,11 @@ class GraphicsSystem
 	}
 
 
-	private function _createGraphicsForObject( object ):Sprite
+	private function _createGraphicsForObject( object ):DisplayObjectContainer
 	{
 		var objectGraphics = object.getComponent( "graphics" );
 		var objectType:String = object.get( "type" );
-		var graphicsSprite:Sprite = new Sprite();
+		var graphicsSprite:DisplayObjectContainer = new Sprite();
 		var imageContainer:Dynamic = objectGraphics.getImg();
 
 		var oneData:Bitmap = new Bitmap( Assets.getBitmapData( imageContainer.one.url ) );
@@ -131,10 +131,10 @@ class GraphicsSystem
 		return graphicsSprite;
 	}
 
-	private function _createTextForObject( object ):Sprite
+	private function _createTextForObject( object ):DisplayObjectContainer
 	{
 		var objectGraphics = object.getComponent( "graphics" );
-		var textSprite = new Sprite();
+		var textSprite:DisplayObjectContainer = new Sprite();
 		var text:Dynamic = objectGraphics.getText();
 		if( text == null )
 			return textSprite;
@@ -148,7 +148,7 @@ class GraphicsSystem
 		return textSprite;
 	}
 
-	private function _createWindowButton( object:Entity ):Sprite
+	private function _createWindowButton( object:Entity ):DisplayObjectContainer
 	{
 		// Sprite - > child[0] = Sprite with graphics;
 		// Sprite - > child[1] = Sprite TextFields - > with queue;
@@ -160,9 +160,9 @@ class GraphicsSystem
 		if( objectName == "recruitWindowHeroButton" || objectName == "innWindowHeroButton" )
 			isHide = false;
 
-		var sprite:Sprite = new Sprite();
-		var graphicsSprite:Sprite = this._createGraphicsForObject( object );
-		var textSprite:Sprite = this._createTextForObject( object );
+		var sprite:DisplayObjectContainer = new Sprite();
+		var graphicsSprite:DisplayObjectContainer = this._createGraphicsForObject( object );
+		var textSprite:DisplayObjectContainer = this._createTextForObject( object );
 		var buttonGraphics = object.getComponent( "graphics" );
 
 		sprite.addChild( graphicsSprite );
@@ -210,7 +210,7 @@ class GraphicsSystem
 		// { "0": { "x": 0, "y": 0, "url": "//..." }, "1": { x, y , url }};
 		buttonTxt.first.text = heroName;
 		buttonTxt.second.text = heroType;
-		var newButton:Sprite = this._createWindowButton( button );
+		var newButton:DisplayObjectContainer = this._createWindowButton( button );
 		newButton.y += newButton.height * num;
 
 		recruitWindowGraphicsInstance.addChild( newButton );
@@ -437,14 +437,14 @@ class GraphicsSystem
 		{
 			var window = windows[ i ];
 			var windowName = window.get( "name" );
-			var spriteWindow:Sprite = this._createWindowButton( window );
+			var spriteWindow:DisplayObjectContainer = this._createWindowButton( window );
 			for( j in 0...buttons.length )
 			{
 				var button = buttons[ j ];
 				var buttonParent = button.getComponent( "ui" ).getParentWindow();
 				if( buttonParent == windowName )
 				{
-					var spriteButton:Sprite = this._createWindowButton( button );
+					var spriteButton:DisplayObjectContainer = this._createWindowButton( button );
 					spriteWindow.addChild( spriteButton );
 				}
 			}
@@ -475,7 +475,7 @@ class GraphicsSystem
 		}
 	}
 
-	public function createObject( object:Entity ):Sprite
+	public function createObject( object:Entity ):DisplayObjectContainer
 	{	//just create object graphicsd and put it on ui or to scene;
 		var type = object.get( "type" );
 		switch( type )
@@ -502,5 +502,10 @@ class GraphicsSystem
 	public function showScene( scene:Scene ):Void
 	{
 		scene.getSprite().visible = true;
+	}
+
+	public function createTextSprite( text:Dynamic ):DisplayObjectContainer
+	{
+		return this._createTextForObject( text );
 	}
 }

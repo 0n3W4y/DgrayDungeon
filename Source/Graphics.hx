@@ -1,6 +1,7 @@
 package;
 
 import openfl.display.Sprite;
+import openfl.display.DisplayObjectContainer;
 
 class Graphics extends Component
 {
@@ -12,7 +13,7 @@ class Graphics extends Component
 	private var _queue:Int;
 
 
-	private var _graphicsInstance:Sprite;
+	private var _graphicsInstance:DisplayObjectContainer;
 
 
 
@@ -89,7 +90,7 @@ class Graphics extends Component
 		this._y = coords.y;
 	}
 
-	public function getGraphicsInstance():Sprite
+	public function getGraphicsInstance():DisplayObjectContainer
 	{
 		return this._graphicsInstance;
 	}
