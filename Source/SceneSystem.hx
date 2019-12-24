@@ -132,7 +132,29 @@ class SceneSystem
 	private function _createChooseDungeonScene():Scene
 	{
 		var id = this._createId();
-		var scene = new Scene( this, id, "schooSeDungeonScene" );
+		var scene = new Scene( this, id, "chooseDungeonScene" );
+
+		var config:Dynamic = Reflect.getProperty( this._config, "chooseDungeonScene" );
+		if( config == null )
+			trace( "Error in SceneSystem._screateCityScene, scene not found in config container." );
+
+		scene.setBackgroundImageURL( config.backgroundImageURL );
+
+		var windowsArray:Array<String> = config.window;
+		for( i in 0...windowsArray.length )
+		{
+			var window:Entity = entitySystem.createEntity( "window", windowsArray[ i ], null );
+			entitySystem.addEntityToScene( window, scene );
+		}
+
+		var buttonArray:Array<String> = config.button;
+
+		for( j in 0...buttonArray.length )
+		{
+			var button:Entity = entitySystem.createEntity( "button", buttonArray[ j ], null );
+			entitySystem.addEntityToScene( button, scene );
+		}
+
 		//TODO: CONFIG;
 		this._addScene( scene );
 		return scene;
@@ -235,7 +257,7 @@ class SceneSystem
 		this._activeScene.draw();
 	}
 
-	public function switchScene( scene:Scene ):Void // this only hide active scene.
+	public function switchSceneTo( scene:Scene ):Void // this only hide active scene.
 	{
 		if( this._activeScene != null )
 		{

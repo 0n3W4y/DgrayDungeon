@@ -30,7 +30,7 @@ class EventSystem
 
 		if( chooseButton.length == 0 ) // no buttons are choosen;
 		{
-			trace( "No buttons have been choosed" );
+			//trace( "No buttons have been choosed" );
 			return;
 		}
 
@@ -65,7 +65,7 @@ class EventSystem
 		if( freeSlotsInInventory == 0 )
 		{
 			//open window with error" can't buy, cause no room in Inn for recruit";
-			trace( "No room in Inn for recruit." );
+			//trace( "No room in Inn for recruit." );
 			return;
 		}
 
@@ -120,6 +120,7 @@ class EventSystem
 				innButtonSprite.y += innButtonSprite.height * multiplier;
 			else
 				innButtonSprite.y = innButtonSprite.height * multiplier;
+
 			innWindowSprite.addChild( innButtonSprite );
 			var text:String = ( multiplier + 1 ) + "/" + innInventoryArray.length;
 			innBuilding.getComponent( "graphics" ).getText().second = text;
@@ -127,13 +128,8 @@ class EventSystem
 			var innSpriteTextField:TextField = innBuilding.getComponent( "graphics" ).getGraphicsInstance().getChildAt( 1 ).getChildAt( 1 );
 			var innTextSprite:DisplayObjectContainer = this._parent.getSystem( "graphics" ).createTextSprite( innBuilding );
 			innSpriteTextField.text = text;
-			//innSprite.removeChildAt( 1 );
-			//innSprite.addChildAt( innTextSprite, 1 ); // 1 - because textSprite in [1] index of childs;
-
 			//trace( multiplier + "; " + innButtonSprite.y + "; " + innWindowSprite + "; " + innButtonSprite );
 		}
-
-
 	}
 
 
@@ -167,15 +163,27 @@ class EventSystem
 				//TODO: list down in ui window INN;
 				trace( "hero list down" );
 			}
-			case "startStartJourney":
+			case "gameStartJourney":
 			{
-				var currentScene = this._parent.getSystem( "scene" ).getActiveScene();
+				var currentScene = sceneSystem.getActiveScene();
 				var sceneName = currentScene.getName();
 				if( sceneName == "cityScene" )
-					trace( "go to scene choose dungeon" );
+				{
+					//TODO: check chooseDungeonScene in scenes array; create scene if need, draw scene;
+					var chooseDungeonScene:Scene = sceneSystem.getScene( "chooseDungeonScene" );
+					if( chooseDungeonScene == null )
+					{
+
+					}
+					else
+					{
+						sceneSystem.switchSceneTo( "chooseDungeonScene" );
+					}
+				}
 				else
 				{
-					//TODO: check all heroes in window, check choose dungeon, if OK -> open inventory + merchant;
+					//TODO: check heroes in window ( check is choosen button on Inn window ) need 4 heroes to start journey, then check if choosen dungeon;
+					trace( "Ok" );
 				}
 			}
 			case "citySceneMainWindowClose" :
