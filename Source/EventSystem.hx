@@ -145,7 +145,7 @@ class EventSystem
 			case "gameStart":
 			{
 				var newScene = sceneSystem.createScene( "cityScene" );
-				sceneSystem.doActiveScene( newScene );
+				sceneSystem.switchSceneTo( newScene );
 			}
 			case "gameContinue": //TODO: Load game if in Starts Scene. or just continue game and close "options" window;
 			case "gameOptions":
@@ -173,11 +173,12 @@ class EventSystem
 					var chooseDungeonScene:Scene = sceneSystem.getScene( "chooseDungeonScene" );
 					if( chooseDungeonScene == null )
 					{
-
+						var newScene:Scene = sceneSystem.createScene( "chooseDungeonScene" );
+						sceneSystem.switchSceneTo( chooseDungeonScene );
 					}
 					else
 					{
-						sceneSystem.switchSceneTo( "chooseDungeonScene" );
+						sceneSystem.switchSceneTo( chooseDungeonScene );
 					}
 				}
 				else

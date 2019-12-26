@@ -894,9 +894,9 @@ ApplicationMain.create = function(config) {
 	ManifestResources.init(config);
 	var _this = app.meta;
 	if(__map_reserved["build"] != null) {
-		_this.setReserved("build","424");
+		_this.setReserved("build","433");
 	} else {
-		_this.h["build"] = "424";
+		_this.h["build"] = "433";
 	}
 	var _this1 = app.meta;
 	if(__map_reserved["company"] != null) {
@@ -4240,7 +4240,6 @@ EventSystem.prototype = {
 			}
 		}
 		if(chooseButton.length == 0) {
-			haxe_Log.trace("No buttons have been choosed, buttons array: " + Std.string(sceneButtonsArray),{ fileName : "Source/EventSystem.hx", lineNumber : 33, className : "EventSystem", methodName : "_buyRecruit"});
 			return;
 		}
 		var innInventory = null;
@@ -4277,7 +4276,6 @@ EventSystem.prototype = {
 			}
 		}
 		if(freeSlotsInInventory == 0) {
-			haxe_Log.trace("No room in Inn for recruit.",{ fileName : "Source/EventSystem.hx", lineNumber : 68, className : "EventSystem", methodName : "_buyRecruit"});
 			return;
 		}
 		var recruitInventoryArray = recruitInventory.getInventory();
@@ -4376,17 +4374,32 @@ EventSystem.prototype = {
 		case "gameContinue":
 			break;
 		case "gameOptions":
-			haxe_Log.trace("Aaaaaaaaaaand opeeeeeeen options window... ( magic xD )",{ fileName : "Source/EventSystem.hx", lineNumber : 158, className : "EventSystem", methodName : "_clickButton"});
+			haxe_Log.trace("Aaaaaaaaaaand opeeeeeeen options window... ( magic xD )",{ fileName : "Source/EventSystem.hx", lineNumber : 154, className : "EventSystem", methodName : "_clickButton"});
 			break;
 		case "gameStart":
 			var newScene = sceneSystem.createScene("cityScene");
-			sceneSystem.doActiveScene(newScene);
+			sceneSystem.switchSceneTo(newScene);
+			break;
+		case "gameStartJourney":
+			var currentScene = sceneSystem.getActiveScene();
+			var sceneName = currentScene.getName();
+			if(sceneName == "cityScene") {
+				var chooseDungeonScene = sceneSystem.getScene("chooseDungeonScene");
+				if(chooseDungeonScene == null) {
+					var newScene1 = sceneSystem.createScene("chooseDungeonScene");
+					sceneSystem.switchSceneTo(chooseDungeonScene);
+				} else {
+					sceneSystem.switchSceneTo(chooseDungeonScene);
+				}
+			} else {
+				haxe_Log.trace("Ok",{ fileName : "Source/EventSystem.hx", lineNumber : 187, className : "EventSystem", methodName : "_clickButton"});
+			}
 			break;
 		case "innDown":
-			haxe_Log.trace("hero list down",{ fileName : "Source/EventSystem.hx", lineNumber : 168, className : "EventSystem", methodName : "_clickButton"});
+			haxe_Log.trace("hero list down",{ fileName : "Source/EventSystem.hx", lineNumber : 164, className : "EventSystem", methodName : "_clickButton"});
 			break;
 		case "innUp":
-			haxe_Log.trace("hero list up",{ fileName : "Source/EventSystem.hx", lineNumber : 163, className : "EventSystem", methodName : "_clickButton"});
+			haxe_Log.trace("hero list up",{ fileName : "Source/EventSystem.hx", lineNumber : 159, className : "EventSystem", methodName : "_clickButton"});
 			break;
 		case "recruitHeroButton":
 			this._buyRecruit(sceneSystem);
@@ -4394,15 +4407,8 @@ EventSystem.prototype = {
 		case "recruitWindowHeroButton":
 			entity.getComponent("ui").setIsChoosen();
 			break;
-		case "startStartJourney":
-			var currentScene = this._parent.getSystem("scene").getActiveScene();
-			var sceneName = currentScene.getName();
-			if(sceneName == "cityScene") {
-				haxe_Log.trace("go to scene choose dungeon",{ fileName : "Source/EventSystem.hx", lineNumber : 175, className : "EventSystem", methodName : "_clickButton"});
-			}
-			break;
 		default:
-			haxe_Log.trace("Error in EventSustem._clickButton, no button with name: " + entityName,{ fileName : "Source/EventSystem.hx", lineNumber : 208, className : "EventSystem", methodName : "_clickButton"});
+			haxe_Log.trace("Error in EventSustem._clickButton, no button with name: " + entityName,{ fileName : "Source/EventSystem.hx", lineNumber : 217, className : "EventSystem", methodName : "_clickButton"});
 		}
 	}
 	,_clickBuilding: function(entity) {
@@ -4510,7 +4516,7 @@ EventSystem.prototype = {
 			ui.showUiObject("citySceneMainWindow");
 			break;
 		default:
-			haxe_Log.trace("Click this: " + entityName,{ fileName : "Source/EventSystem.hx", lineNumber : 321, className : "EventSystem", methodName : "_clickBuilding"});
+			haxe_Log.trace("Click this: " + entityName,{ fileName : "Source/EventSystem.hx", lineNumber : 330, className : "EventSystem", methodName : "_clickBuilding"});
 		}
 	}
 	,_clickHero: function(entity) {
@@ -4916,7 +4922,8 @@ Game.prototype = {
 	}
 	,_startGame: function() {
 		var scene = this._sceneSystem.createScene("startScene");
-		this._sceneSystem.doActiveScene(scene);
+		scene.draw();
+		this._sceneSystem.switchSceneTo(scene);
 		this.start();
 	}
 	,start: function() {
@@ -4959,7 +4966,7 @@ Game.prototype = {
 		case "ui":
 			return this._userInterface;
 		default:
-			haxe_Log.trace("error in Game.getSystem; system can't be: " + system + ".",{ fileName : "Source/Game.hx", lineNumber : 156, className : "Game", methodName : "getSystem"});
+			haxe_Log.trace("error in Game.getSystem; system can't be: " + system + ".",{ fileName : "Source/Game.hx", lineNumber : 157, className : "Game", methodName : "getSystem"});
 		}
 		return null;
 	}
@@ -6197,7 +6204,29 @@ SceneSystem.prototype = {
 	}
 	,_createChooseDungeonScene: function() {
 		var id = this._createId();
-		var scene = new Scene(this,id,"schooSeDungeonScene");
+		var scene = new Scene(this,id,"chooseDungeonScene");
+		var entitySystem = this._parent.getSystem("entity");
+		var config = Reflect.getProperty(this._config,"chooseDungeonScene");
+		if(config == null) {
+			haxe_Log.trace("Error in SceneSystem._screateCityScene, scene not found in config container.",{ fileName : "Source/SceneSystem.hx", lineNumber : 140, className : "SceneSystem", methodName : "_createChooseDungeonScene"});
+		}
+		scene.setBackgroundImageURL(config.backgroundImageURL);
+		var windowsArray = config.window;
+		var _g = 0;
+		var _g1 = windowsArray.length;
+		while(_g < _g1) {
+			var i = _g++;
+			var $window = entitySystem.createEntity("window",windowsArray[i],null);
+			entitySystem.addEntityToScene($window,scene);
+		}
+		var buttonArray = config.button;
+		var _g2 = 0;
+		var _g3 = buttonArray.length;
+		while(_g2 < _g3) {
+			var j = _g2++;
+			var button = entitySystem.createEntity("button",buttonArray[j],null);
+			entitySystem.addEntityToScene(button,scene);
+		}
 		this._addScene(scene);
 		return scene;
 	}
@@ -6251,7 +6280,7 @@ SceneSystem.prototype = {
 		case "startScene":
 			return this._createStartScene();
 		default:
-			haxe_Log.trace("Error in SceneSystem.createScene, scene name can't be: " + sceneName + ".",{ fileName : "Source/SceneSystem.hx", lineNumber : 207, className : "SceneSystem", methodName : "createScene"});
+			haxe_Log.trace("Error in SceneSystem.createScene, scene name can't be: " + sceneName + ".",{ fileName : "Source/SceneSystem.hx", lineNumber : 230, className : "SceneSystem", methodName : "createScene"});
 		}
 		return null;
 	}
@@ -6267,22 +6296,17 @@ SceneSystem.prototype = {
 			}
 		}
 	}
-	,doActiveScene: function(scene) {
-		if(this._activeScene != null) {
-			this._activeScene.unDraw();
-			this.removeScene(this._activeScene);
-			this._activeScene = null;
-		}
-		this._activeScene = scene;
-		this._activeScene.draw();
-	}
-	,switchScene: function(scene) {
+	,switchSceneTo: function(scene) {
 		if(this._activeScene != null) {
 			this._activeScene.hide();
 			this._activeScene = null;
 		}
 		this._activeScene = scene;
-		this._activeScene.show();
+		if(this.isSceneAlreadyCreated(scene.getId())) {
+			this._activeScene.show();
+		} else {
+			this._activeScene.draw();
+		}
 	}
 	,getParent: function() {
 		return this._parent;
@@ -6301,6 +6325,18 @@ SceneSystem.prototype = {
 			}
 		}
 		return null;
+	}
+	,isSceneAlreadyCreated: function(id) {
+		var _g = 0;
+		var _g1 = this._scenesArray.length;
+		while(_g < _g1) {
+			var i = _g++;
+			var sceneId = this._scenesArray[i].getId();
+			if(sceneId == id) {
+				return true;
+			}
+		}
+		return false;
 	}
 	,__class__: SceneSystem
 };
@@ -26929,7 +26965,7 @@ var lime_utils_AssetCache = function() {
 	this.audio = new haxe_ds_StringMap();
 	this.font = new haxe_ds_StringMap();
 	this.image = new haxe_ds_StringMap();
-	this.version = 611785;
+	this.version = 906397;
 };
 $hxClasses["lime.utils.AssetCache"] = lime_utils_AssetCache;
 lime_utils_AssetCache.__name__ = "lime.utils.AssetCache";

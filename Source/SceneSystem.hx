@@ -132,7 +132,8 @@ class SceneSystem
 	private function _createChooseDungeonScene():Scene
 	{
 		var id = this._createId();
-		var scene = new Scene( this, id, "chooseDungeonScene" );
+		var scene:Scene = new Scene( this, id, "chooseDungeonScene" );
+		var entitySystem:EntitySystem = this._parent.getSystem( "entity" );
 
 		var config:Dynamic = Reflect.getProperty( this._config, "chooseDungeonScene" );
 		if( config == null )
@@ -244,19 +245,6 @@ class SceneSystem
 		}
 	}
 
-	public function doActiveScene( scene:Scene ):Void // kill active scene;
-	{
-		if( this._activeScene != null )
-		{
-			this._activeScene.unDraw(); //remove scene;
-			this.removeScene( this._activeScene );
-			this._activeScene = null;
-			
-		}
-		this._activeScene = scene;
-		this._activeScene.draw();
-	}
-
 	public function switchSceneTo( scene:Scene ):Void // this only hide active scene.
 	{
 		if( this._activeScene != null )
@@ -266,7 +254,12 @@ class SceneSystem
 		}
 
 		this._activeScene = scene;
-		this._activeScene.show();
+		
+		if( this.isSceneAlreadyCreated( scene.getId() ) )
+			this._activeScene.show();
+		else
+			this._activeScene.draw();		
+		
 	}
 
 	public function getParent():Game
@@ -288,5 +281,16 @@ class SceneSystem
 				return this._scenesArray[ i ];
 		}
 		return null;
+	}
+
+	public function isSceneAlreadyCreated( id:String ):Bool
+	{
+		for( i in 0...this._scenesArray.length )
+		{
+			var sceneId = this._scenesArray[ i ].getId();
+			if( sceneId == id )
+				return true;
+		}
+		return false;
 	}
 }

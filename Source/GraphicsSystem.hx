@@ -491,7 +491,7 @@ class GraphicsSystem
 	{
 		scene.getSprite().visible = false;
 		var list:Dynamic = scene.getEntities( "ui" );
-		var windows:Array<Entity> = list.windows;
+		var windows:Array<Entity> = list.window;
 		for( i in 0...windows.length )
 		{
 			var name = windows[ i ].get( "name" );

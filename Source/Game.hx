@@ -73,7 +73,8 @@ class Game
 	private function _startGame():Void
 	{
 		var scene = this._sceneSystem.createScene( "startScene" );
-		this._sceneSystem.doActiveScene( scene );
+		scene.draw();
+		this._sceneSystem.switchSceneTo( scene );
 		this.start();
 	}
 
