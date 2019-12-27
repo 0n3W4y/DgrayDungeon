@@ -78,11 +78,11 @@ class GraphicsSystem
 	}
 
 
-	private function _createGraphicsForObject( object ):DisplayObjectContainer
+	private function _createGraphicsForObject( object ):Sprite
 	{
 		var objectGraphics = object.getComponent( "graphics" );
 		var objectType:String = object.get( "type" );
-		var graphicsSprite:DisplayObjectContainer = new Sprite();
+		var graphicsSprite:Sprite = new Sprite();
 		var imageContainer:Dynamic = objectGraphics.getImg();
 
 		var oneData:Bitmap = new Bitmap( Assets.getBitmapData( imageContainer.one.url ) );
@@ -131,10 +131,10 @@ class GraphicsSystem
 		return graphicsSprite;
 	}
 
-	private function _createTextForObject( object ):DisplayObjectContainer
+	private function _createTextForObject( object ):Sprite
 	{
 		var objectGraphics = object.getComponent( "graphics" );
-		var textSprite:DisplayObjectContainer = new Sprite();
+		var textSprite:Sprite = new Sprite();
 		var text:Dynamic = objectGraphics.getText();
 		if( text == null )
 			return textSprite;
@@ -148,7 +148,7 @@ class GraphicsSystem
 		return textSprite;
 	}
 
-	private function _createWindowButton( object:Entity ):DisplayObjectContainer
+	private function _createWindowButton( object:Entity ):Sprite
 	{
 		// Sprite - > child[0] = Sprite with graphics;
 		// Sprite - > child[1] = Sprite TextFields - > with queue;
@@ -160,9 +160,9 @@ class GraphicsSystem
 		if( objectName == "recruitWindowHeroButton" || objectName == "innWindowHeroButton" )
 			isHide = false;
 
-		var sprite:DisplayObjectContainer = new Sprite();
-		var graphicsSprite:DisplayObjectContainer = this._createGraphicsForObject( object );
-		var textSprite:DisplayObjectContainer = this._createTextForObject( object );
+		var sprite:Sprite = new Sprite();
+		var graphicsSprite:Sprite = this._createGraphicsForObject( object );
+		var textSprite:Sprite = this._createTextForObject( object );
 		var buttonGraphics = object.getComponent( "graphics" );
 
 		sprite.addChild( graphicsSprite );
@@ -475,7 +475,7 @@ class GraphicsSystem
 		}
 	}
 
-	public function createObject( object:Entity ):DisplayObjectContainer
+	public function createObject( object:Entity ):Sprite
 	{	//just create object graphicsd and put it on ui or to scene;
 		var type = object.get( "type" );
 		switch( type )
@@ -504,7 +504,7 @@ class GraphicsSystem
 		scene.getSprite().visible = true;
 	}
 
-	public function createTextSprite( text:Dynamic ):DisplayObjectContainer
+	public function createTextSprite( text:Dynamic ):Sprite
 	{
 		return this._createTextForObject( text );
 	}
