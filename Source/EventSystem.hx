@@ -146,6 +146,7 @@ class EventSystem
 			{
 				var newScene = sceneSystem.createScene( "cityScene" );
 				sceneSystem.switchSceneTo( newScene );
+				newScene.draw();
 			}
 			case "gameContinue": //TODO: Load game if in Starts Scene. or just continue game and close "options" window;
 			case "gameOptions":
