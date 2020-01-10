@@ -8,7 +8,7 @@ class GraphicsSystem
 	private var _sprite:Sprite; // для обращения к графике окна
 	private var _parent:Dynamic; // получить доступ к классу, в котором находится данный класс.
 	private var _preInited:Bool = false;
-	private var inited:Bool = false;
+	private var _inited:Bool = false;
 
 	public function new():Void
 	{
@@ -27,6 +27,7 @@ class GraphicsSystem
 		if( this._sprite == null )
 			return [ null, "Error in GraphicsSystem.init, sprite is NULL" ];
 
+		this._inited = true;
 		return [ true, null ];
 	}
 

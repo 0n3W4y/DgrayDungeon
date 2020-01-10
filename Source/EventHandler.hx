@@ -2,7 +2,6 @@ package;
 
 import openfl.display.Sprite;
 import openfl.events.MouseEvent;
-import openfl.display.DisplayObjectContainer;
 import openfl.text.TextField;
 
 
