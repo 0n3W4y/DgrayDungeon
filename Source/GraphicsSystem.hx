@@ -15,12 +15,8 @@ class GraphicsSystem
 
 	}
 
-	public function preInit( parent:Dynamic ):Array<Dynamic>
+	public function preInit():Array<Dynamic>
 	{
-		this._parent = parent;
-		if( this._parent == null )
-			return [ null, "Error in GraphicsSystem.init, parent is NULL" ];
-
 		this._preInited = true;
 		return [ true, null ];
 	}

@@ -8,6 +8,7 @@ class Event
 	private var _currentEvent:String;
 	private var _isCurrentEventDone:Bool;
 	private var _inited:Bool = false;
+	private var _preInited:Bool = false;
 
 
 	public function new():Void
@@ -15,12 +16,18 @@ class Event
 		
 	}
 
-	public function init():Void
+	public function preInit():Array<Dynamic>
 	{
 		this._events = new Array();
 		this._currentEvent = null;
 		this._isCurrentEventDone = false;
 		this._inited = true;
+		return [ true, null ];
+	}
+
+	public function init():Array<Dynamic>
+	{
+
 	}
 
 	public function getCurrentEvent():String
@@ -33,7 +40,7 @@ class Event
 		this._isCurrentEventDone = true;
 	}
 
-	public function isDoneCurrentEvent():Bool
+	public function isCurrentEventDone():Bool
 	{
 		return this._isCurrentEventDone;
 	}

@@ -8,11 +8,12 @@ class Game
 {
 	private var _enterSprite:Sprite;
 	private var _mainSprite:Sprite;
+
 	private var _entitySystem:EntitySystem;
 	private var _sceneSystem:SceneSystem;
 	private var _graphicsSystem:GraphicsSystem;
 	private var _userInterface:UserInterface;
-	private var _eventSystem:EventSystem;
+	private var _eventHandler:EventHandler;
 
 	private var _gameStart:Float;
 	private var _loopStartTime:Float;
@@ -55,13 +56,13 @@ class Game
 	{
 		if( !this._onPause )
 		{
-			this._sceneSystem.update( time );
+			//this._sceneSystem.update( time );
 		}
 	}
 
 	private function _sUpdate():Void
 	{
-		this._eventSystem.update();
+		this._eventHandler.update();
 	}
 
 	private function _parseData():Dynamic
@@ -72,10 +73,10 @@ class Game
 
 	private function _startGame():Void
 	{
-		var scene = this._sceneSystem.createScene( "startScene" );
-		scene.draw();
-		this._sceneSystem.switchSceneTo( scene );
-		this.start();
+		//var scene = this._sceneSystem.createScene( "startScene" );
+		//scene.draw();
+		//this._sceneSystem.switchSceneTo( scene );
+		//this.start();
 	}
 
 
@@ -134,7 +135,7 @@ class Game
 
 	public function exit():Void
 	{
-		System.exit(0);
+		System.exit( 0 );
 	}
 
 	public function changeFpsTo( fps:Int ):Void
@@ -165,7 +166,7 @@ class Game
 	}
 }
 /*
-var acc = 70;
+		var acc = 70;
         var dmg = [ 10, 12 ];
         var minDmg = dmg[0];
         var maxDmg = dmg[1];
