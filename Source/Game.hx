@@ -6,23 +6,23 @@ import openfl.display.Sprite;
 
 class Game
 {
-	private var _enterSprite:Sprite;
 	private var _mainSprite:Sprite;
-
-	private var _entitySystem:EntitySystem;
-	private var _sceneSystem:SceneSystem;
-	private var _graphicsSystem:GraphicsSystem;
-	private var _userInterface:UserInterface;
-	private var _eventHandler:EventHandler;
-
-	private var _gameStart:Float;
-	private var _loopStartTime:Float;
-
-	private var _onPause:Bool = false;
+	private var _scenesSprite:Sprite;
+	private var _uiSprite:Sprite;
 
 	private var _width:Int;
 	private var _height:Int;
+	private var _gameStart:Float;
 
+	private var _eventHandler:EventHandler;
+	private var _generatorSystem:GeneratorSystem;
+
+	
+
+	
+
+
+	private var _onPause:Bool = false;
 	private var _fps:Int;
 	private var _mainLoop:Timer;
 	private var _currentTime:Float;
@@ -65,45 +65,58 @@ class Game
 		this._eventHandler.update();
 	}
 
-	private function _parseData():Dynamic
+	private function _parseData( url:String ):Map<Int, Dynamic>
 	{
-		var conf = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/data.json" );
-		return conf;
+		var conf = ConfigJSON.json( url );
+		var result:Map<Int, Dynamic> = new Map<Int, Dynamic>();
+
+		for( key in Reflect.fields( conf ) )
+		{
+			var intKey:Int = Std.parseInt( key );
+			result[ intKey ] = Reflect.getProperty( conf, key );
+
+		}
+		return result;
 	}
 
 	private function _startGame():Void
 	{
-		//var scene = this._sceneSystem.createScene( "startScene" );
-		//scene.draw();
-		//this._sceneSystem.switchSceneTo( scene );
-		//this.start();
+		this._gameStart = Date.now().getTime();
+		this._calculateDelta();
+		this._lastTime = 0.0;
 	}
-
-
-
 
 	public function new( width:Int, height:Int, fps:Int, mainSprite:Sprite ):Void
 	{
-		//var value = sys.io.File.getContent( "C:/projects/DgrayDungeon/Source/data.json" );
-    	//var config = haxe.Json.parse( value );
-		var config = this._parseData();
-		this._entitySystem = new EntitySystem( this, config.entity );
-		this._sceneSystem = new SceneSystem( this, config.scene );
-		this._graphicsSystem = new GraphicsSystem( this );
-		this._userInterface = new UserInterface( this );
-		this._eventSystem = new EventSystem( this );
-		this._enterSprite = mainSprite;
 		this._fps = fps;
 		this._height = height;
 		this._width = width;
 
-		this._mainSprite = new Sprite();
-		this._enterSprite.addChild( this._mainSprite );
-		this._enterSprite.addChild( this._userInterface.getUiSprite() );
+		this._mainSprite = mainSprite;
+		this._scenesSprite = new Sprite();
+		this._uiSprite = new Sprite();
+		this._mainSprite.addChild( this._scenesSprite );
+		this._mainSprite.addChild( this._uiSprite );
 
-		this._calculateDelta();
-		this._gameStart = Date.now().getTime();
-		this._lastTime = 0.0;
+		this._eventHandler = new EventHandler();
+		var err = this._eventHandler.preInit( this );
+		if( err != "ok" )
+			throw "Error in Game.new. " + err;
+
+		this._generatorSystem = new GeneratorSystem();
+		err = this._generatorSystem.preInit( this );
+		if( err != "ok" )
+			throw "Error in Game.new. " + err;
+
+		var windowDeployMap:Map<Int, Dynamic> = this._parseData( "c:/projects/dgraydungeon/source/DeployWindow.json" );
+		var buttonDeployMap:Map<Int, Dynamic> = this._parseData( "c:/projects/dgraydungeon/source/DeployButton.json" );
+		var sceneDeployMap:Map<Int, Dynamic> = this._parseData( "c:/projects/dgraydungeon/source/DeployScene.json" );
+		var buildingDeployMap:Map<Int, Dynamic> = this._parseData( "c:/projects/dgraydungeon/source/DeployBuilding.json" );
+		var heroDeployMap:Map<Int, Dynamic> = this._parseData( "c:/projects/dgraydungeon/source/DeployHero.json" );
+		var itemDeployMap:Map<Int, Dynamic> = this._parseData( "c:/projects/dgraydungeon/source/DeployItem.json" );
+		//var enemyDeployMap:Map<Int, Dynamic> = this._parseData( "c:/projects/dgraydungeon/source/DeployEnemy.json" );
+
+
 		this._startGame();
 		
 		

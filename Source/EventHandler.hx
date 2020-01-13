@@ -5,12 +5,14 @@ import openfl.events.MouseEvent;
 import openfl.text.TextField;
 
 
-class EventSystem
+class EventHandler
 {
 	private var _parent:Game;
 	private var _listeners:Array<Entity>;
 
+	private var _preInited:Bool = false;
 
+	/*
 	private function _buyRecruit( sceneSystem:SceneSystem ):Void
 	{
 		//TODO: Button with check if some buttons with hero choose, then collect total price, check inventory money, check slots in inn - then do function buy;
@@ -130,7 +132,7 @@ class EventSystem
 			//trace( multiplier + "; " + innButtonSprite.y + "; " + innWindowSprite + "; " + innButtonSprite );
 		}
 	}
-
+*/
 
 	private function _clickButton( entity:Entity ):Void
 	{
@@ -471,20 +473,35 @@ class EventSystem
 
 	public function new( parent:Game ):Void
 	{
+
+	}
+
+	public function preInit( parent:Game ):String
+	{
 		this._parent = parent;
 		this._listeners = new Array();
+		if( this._parent == null )
+			return "Error in EventHandler.preInit. Parent - Game = NULL";
+
+		this._preInited = true;
+		return "ok";
+	}
+
+	public function init():Array<Dynamic>
+	{
+
 	}
 
 	public function update():Void
 	{
 		for( i in 0...this._listeners.length )
 		{
-			var listener:Entity = this._listeners[ i ];
-			var entityEvent:Event = listener.getComponent( "event" );
-			var event:String = entityEvent.getCurrentEvent();
-			var isDone:Bool = entityEvent.isDoneCurrentEvent();
-			if( event != null && !isDone )
-				this._doEvent( event, listener );
+			//var listener:Entity = this._listeners[ i ];
+			//var entityEvent:Event = listener.getComponent( "event" );
+			//var event:String = entityEvent.getCurrentEvent();
+			//var isDone:Bool = entityEvent.isDoneCurrentEvent();
+			//if( event != null && !isDone )
+			//	this._doEvent( event, listener );
 		}
 		
 	}	

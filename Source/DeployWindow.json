@@ -1,0 +1,88 @@
+{
+	"100":{
+		"name": "startSceneWindow",
+		"deployId": 100,
+		"imageURL": "assets/images/startSceneButtonsWindow.png",
+		"imageX": 0.0,
+		"imageY": 0.0,
+		"windowText": null,
+		"x": 0.0,
+		"y": 0.0
+	},
+
+	"101":{
+		"name": "citySceneMainWindow",
+		"deployId": 101,
+		"imageURL": "assets/images/citySceneMainWindow.png",
+		"imageX": 0.0,
+		"imageY": 0.0,
+		"windowText": "The real estate",
+		"windowTextSize": 48,
+		"windowTextColor": "0x000000",
+		"windowTextHeight": 50,
+		"windowTextWidth": 400,
+		"windowTextX": 30.0,
+		"windowTextY": 10.0,
+		"windowTextAlign": "left",
+		"x": 0.0,
+		"y": 0.0
+	},
+
+	"102":{
+		"name": "recruitWindow",
+		"deployId": 102,
+		"imageURL": "assets/images/recruitWindow.png",
+		"imageX": 0.0,
+		"imageY": 0.0,
+		"windowText": "Recruit Tower",
+		"windowTextSize": 48,
+		"windowTextColor": "0xffffff",
+		"windowTextHeight": 50,
+		"windowTextWidth": 350,
+		"windowTextX": 0.0,
+		"windowTextY": 0.0,
+		"windowTextAlign": "left",
+		"x": 168.0,
+		"y": 110.0
+	},
+
+	"103":{
+		"name": "panelCityWindow",
+		"deployId": 103,
+		"imageURL": "assets/images/panelCityWindow.png",
+		"imageX": 0.0,
+		"imageY": 0.0,
+		"windowText": null,
+		"x": -5.0,
+		"y": 1012.0
+	},
+
+	"104":{
+		"name": "chooseHeroToDungeonWindow",
+		"deployId": 104,
+		"imageURL": "assets/images/dungeonSceneHeroesToDungeon.png",
+		"imageX": 0.0,
+		"imageY": 0.0,
+		"windowText": null,
+		"x": 685.0,
+		"y": 820.0
+	},
+
+	"105":{
+		"name": "dungeonOne",
+		"deployId": 105,
+		"imageURL": "assets/images/dungeonWindow.png",
+		"imageX": 700.0,
+		"imageY": 400.0,
+		"windowText": "The real path of truth",
+		"windowTextSize": 22,
+		"windowTextColor": "0xffffff",
+		"windowTextHeight": 20,
+		"windowTextWidth": 250,
+		"windowTextX": 15.0,
+		"windowTextY": 10.0,
+		"windowTextAlign": "center",
+		"x": 700.0,
+		"y": 400.0
+	}
+}
