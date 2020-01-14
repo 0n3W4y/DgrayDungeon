@@ -25,21 +25,23 @@ class GeneratorSystem
 
 	}
 
-	public function preInit( parent:Game ):String
+	public function preInit():String
 	{
 		this._netxId = 0;
-		this._parent = parent;
-		if( this._parent == null )
-			return  "Error in GeneratorSystem.preInit. Parent is NULL";
-
 		this._preInited = true;
 		return "ok";
 	}
 
-	public function init( sceneDeploy:Map<Int, Dynamic>, buildingDeploy:Map<Int, Dynamic>, windowDeploy:Map<Int, Dynamic>, buttonDeploy:Map<Int, Dynamic>, heroDeploy:Map<Int, Dynamic>, itemDeploy:Map<Int, Dynamic> ):String
+	public function init(  parent:Game, sceneDeploy:Map<Int, Dynamic>, buildingDeploy:Map<Int, Dynamic>, windowDeploy:Map<Int, Dynamic>, buttonDeploy:Map<Int, Dynamic>, heroDeploy:Map<Int, Dynamic>, itemDeploy:Map<Int, Dynamic> ):String
 	{
 		if( !this._preInited )
 			return "Error in GeneratorSystem.init. PreInit function failed!!!";
+
+		this._parent = parent;
+		if( this._parent == null )
+			return  "Error in GeneratorSystem.preInit. Parent is NULL";
+		
+		//TODO: == null && !this.sceneDeploy.exist( 1000 ); // проверка на наличие нужного DeployId в этом объекте
 
 		this._sceneDeploy = sceneDeploy;
 		if( this._sceneDeploy == null )
@@ -74,22 +76,22 @@ class GeneratorSystem
 
 	}
 
-	public function generateHero():Array<Dynamic>
+	public function generateHero( type:String, deployId:Int ):Array<Dynamic>
 	{
 
 	}
 
-	public function generateBuilding():Array<Dynamic>
+	public function generateBuilding( name:String, deployId:Int ):Array<Dynamic>
 	{
 
 	}
 
-	public function generateItem():Array<Dynamic>
+	public function generateItem( type:String, deployId:Int ):Array<Dynamic>
 	{
 
 	}
 
-	public function generateScene():Array<Dynamic>
+	public function generateScene( name:String, deployId:Int ):Array<Dynamic>
 	{
 
 	}
@@ -99,7 +101,7 @@ class GeneratorSystem
 
 	}
 
-	public function generateButton():Array<Dynamic>
+	public function generateButton( name:String, deployId:Int ):Array<Dynamic>
 	{
 
 	}

@@ -1,0 +1,26 @@
+{
+	"1000":{
+		"name": "startScene",
+		"deployId": 1000,
+		"backgroundImageURL": "assets/images/background_game.png",
+		"window": [ "startSceneWindow" ],
+		"button": [ "gameContinue", "gameStart", "gameOptions" ]
+	},
+
+	"1001":{
+		"name": "cityScene",
+		"deployId": 1001,
+		"backgroundImageURL": "assets/images/citySceneBackround.png",
+		"window": [ "panelCityWindow", "citySceneMainWindow", "recruitWindow" ],
+		"button": [ "gameStartJourney", "innUp", "innDown", "citySceneMainWindowClose", "recruitHeroButton" ],
+		"building": [ "hospital", "graveyard", "academy", "merchant", "questman", "fontain", "blacksmith", "hermit", "tavern", "recruits", "inn" ]
+	},
+
+	"1002":{
+		"name": "chooseDungeonScene",
+		"deployId": 1002,
+		"backgroundImageURL": "assets/images/chooseDungeonSceneOne.png",
+		"window": [ "dungeon1", "chooseHeroToDungeonWindow" ],
+		"button": [ "chooseDungeonSceneDungeonButtonA", "chooseDungeonBackToCityButton" ]
+	}
+}

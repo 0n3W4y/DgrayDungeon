@@ -1,18 +1,20 @@
 {
-	"100":{
+	"3000":{
 		"name": "startSceneWindow",
-		"deployId": 100,
+		"deployId": 3000,
+		"x": 0.0,
+		"y": 0.0,
 		"imageURL": "assets/images/startSceneButtonsWindow.png",
 		"imageX": 0.0,
 		"imageY": 0.0,
-		"windowText": null,
-		"x": 0.0,
-		"y": 0.0
+		"windowText": null
 	},
 
-	"101":{
+	"3001":{
 		"name": "citySceneMainWindow",
-		"deployId": 101,
+		"deployId": 3001,
+		"x": 0.0,
+		"y": 0.0,
 		"imageURL": "assets/images/citySceneMainWindow.png",
 		"imageX": 0.0,
 		"imageY": 0.0,
@@ -23,14 +25,14 @@
 		"windowTextWidth": 400,
 		"windowTextX": 30.0,
 		"windowTextY": 10.0,
-		"windowTextAlign": "left",
-		"x": 0.0,
-		"y": 0.0
+		"windowTextAlign": "left"
 	},
 
-	"102":{
+	"3002":{
 		"name": "recruitWindow",
-		"deployId": 102,
+		"deployId": 3002,
+		"x": 168.0,
+		"y": 110.0,
 		"imageURL": "assets/images/recruitWindow.png",
 		"imageX": 0.0,
 		"imageY": 0.0,
@@ -41,39 +43,39 @@
 		"windowTextWidth": 350,
 		"windowTextX": 0.0,
 		"windowTextY": 0.0,
-		"windowTextAlign": "left",
-		"x": 168.0,
-		"y": 110.0
+		"windowTextAlign": "left"
 	},
 
-	"103":{
+	"3003":{
 		"name": "panelCityWindow",
-		"deployId": 103,
+		"deployId": 3003,
+		"x": -5.0,
+		"y": 1012.0,
 		"imageURL": "assets/images/panelCityWindow.png",
 		"imageX": 0.0,
 		"imageY": 0.0,
-		"windowText": null,
-		"x": -5.0,
-		"y": 1012.0
+		"windowText": null		
 	},
 
-	"104":{
+	"3004":{
 		"name": "chooseHeroToDungeonWindow",
-		"deployId": 104,
+		"deployId": 3004,
+		"x": 685.0,
+		"y": 820.0,
 		"imageURL": "assets/images/dungeonSceneHeroesToDungeon.png",
 		"imageX": 0.0,
 		"imageY": 0.0,
-		"windowText": null,
-		"x": 685.0,
-		"y": 820.0
+		"windowText": null		
 	},
 
-	"105":{
+	"3005":{
 		"name": "dungeonOne",
-		"deployId": 105,
+		"deployId": 3005,
+		"x": 700.0,
+		"y": 400.0,
 		"imageURL": "assets/images/dungeonWindow.png",
-		"imageX": 700.0,
-		"imageY": 400.0,
+		"imageX": 0.0,
+		"imageY": 0.0,
 		"windowText": "The real path of truth",
 		"windowTextSize": 22,
 		"windowTextColor": "0xffffff",
@@ -81,8 +83,6 @@
 		"windowTextWidth": 250,
 		"windowTextX": 15.0,
 		"windowTextY": 10.0,
-		"windowTextAlign": "center",
-		"x": 700.0,
-		"y": 400.0
+		"windowTextAlign": "center"		
 	}
 }

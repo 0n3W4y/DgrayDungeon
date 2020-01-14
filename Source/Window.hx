@@ -22,25 +22,50 @@ class Window
 
 	}
 
-	public function preInit():Array<Dynamic>
+	public function preInit():String
 	{
 		this._graphics = new GraphicsSystem();
-		var [ bool, err ] = this._graphics.preInit();
+		var err = this._graphics.preInit();
 		if( err != null )
 			throw "Error in Button.preInit. " + err;
 
 		this._preInited = true;
-		return [ true, null ];
+		return "ok";
 	}
 
-	public function init( id:Int, name:String, deployId:Int, sprite:Sprite ):Void
+	public function init( id:Int, name:String, deployId:Int, sprite:Sprite ):String
 	{
+		this._id = id;
+		if( this._id == null )
+			return "Error in Window.init. Id is NULL";
 
+		this._name = name;
+		if( this._name == null )
+			return "Error in Window.init. Name is NULL";
+
+		this._deployId = deployId;
+		if( this._deployId == null )
+			return "Error in Widnow.init. DeployID is NULL";
+
+		var err = this._graphics.init( sprite );
+		if( err != "ok" )
+			return "Error in Window.init. Window name: " + this._name + "; " + err;
+
+		this._buttonChildren = new Array();
+		this._status = "closed";
+
+		this._inited = true;
+		return "ok";
 	}
 
-	public function postInit():Void
+	public function postInit():String
 	{
+		if( !this._preInited && !this._inited )
+			return "Error in Window.postInit. Preinited and inited are FALSE!";
 
+		this._postInited = true;
+		return "ok";
+		
 	}
 
 	public function update( time:Float ):Void

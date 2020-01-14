@@ -7,10 +7,131 @@ import openfl.text.TextField;
 
 class EventHandler
 {
-	private var _parent:Game;
-	private var _listeners:Array<Entity>;
-
 	private var _preInited:Bool = false;
+	private var _inited:Bool = false;
+	private var _postInited:Bool = false;
+	private var _parent:Game;
+	private var _listeners:Array<Dynamic>;
+
+	public function new():Void
+	{
+
+	}
+
+	public function preInit():String
+	{
+		this._listeners = new Array();
+		this._preInited = true;
+		return "ok";
+	}
+
+	public function init( parent:Game ):String
+	{	
+		this._parent = parent;
+		if( this._parent == null )
+			return "Error in EventHandler.preInit. Parent - Game = NULL";
+		
+		this._inited = true;
+		return "ok";
+	}
+
+	public function postInit():String
+	{
+		this._postInited = true;
+		return "ok";
+	}
+
+	public function removeEvent( object:Dynamic, eventName:String ):Void
+	{
+		//var objectEvent:Dynamic = object.getComponent( "event" );
+		//var events:Array<String> = objectEvent.getEvents();
+		//var objectGraphics:Graphics = object.getComponent( "graphics" );
+		//var graphicsInstance:DisplayObjectContainer = objectGraphics.getGraphicsInstance();
+		var event = null;
+		var func = null;
+		switch( eventName ) 
+		{
+			case "mCLICK": { event = MouseEvent.CLICK; func = objectEvent.mouseClick.bind( objectEvent ) ; } 
+			case "mOUT": { event = MouseEvent.MOUSE_OUT; func = objectEvent.mouseOut.bind( objectEvent ); }
+			case "mOVER": { event = MouseEvent.MOUSE_OVER; func = objectEvent.mouseOver.bind( objectEvent ); }
+			case "mUP": { event = MouseEvent.MOUSE_UP; func = objectEvent.mouseUp.bind( objectEvent ); }
+			case "mDOWN": { event = MouseEvent.MOUSE_DOWN; func = objectEvent.mouseDown.bind( objectEvent ); }
+		}
+
+		for( i in 0...events.length )
+		{
+			if( eventName == null )
+			{
+				switch ( events[ i ] )
+				{
+					case "mCLICK": graphicsInstance.removeEventListener( MouseEvent.CLICK, objectEvent.mouseClick.bind( objectEvent ) );
+					case "mOUT": graphicsInstance.removeEventListener( MouseEvent.MOUSE_OUT, objectEvent.mouseOut.bind( objectEvent ) );
+					case "mOVER": graphicsInstance.removeEventListener( MouseEvent.MOUSE_OVER, objectEvent.mouseOver.bind( objectEvent ) );
+					case "mUP": graphicsInstance.removeEventListener( MouseEvent.MOUSE_UP, objectEvent.mouseUp.bind( objectEvent ) );
+					case "mDOWN":  graphicsInstance.removeEventListener( MouseEvent.MOUSE_DOWN, objectEvent.mouseDown.bind( objectEvent ) );
+				}
+				//trace( events[ i ] + ";  " + object.get( "name" ) + "; " + events.length );
+			}
+			else
+			{
+				if( eventName == events[ i ] )
+				{
+					graphicsInstance.removeEventListener( event, func );
+					objectEvent.removeEvent( eventName );
+					if( objectEvent.getEvents().length == 0 )
+						this._removeFromListeners( object );
+					break;
+				}
+			}			
+		}
+
+		if( eventName == null )
+		{
+			objectEvent.cleanEventList();
+			this._removeFromListeners( object );
+		}
+	}
+
+	public function addEvent( object:Dynamic, eventName:String ):Void
+	{
+		//var objectEvent:Dynamic = object.getComponent( "event" );
+		//var objectGraphics:Graphics = object.getComponent( "graphics" );
+		//var graphicsInstance:DisplayObjectContainer = objectGraphics.getGraphicsInstance();
+		var event = null;
+		var func = null;
+
+		if( eventName == null )
+		{
+			graphicsInstance.addEventListener( MouseEvent.CLICK, objectEvent.mouseClick.bind( objectEvent ) );
+			objectEvent.addEvent( "mCLICK" );
+
+			graphicsInstance.addEventListener( MouseEvent.MOUSE_OVER, objectEvent.mouseOver.bind( objectEvent ) );
+			objectEvent.addEvent( "mOVER" );
+
+			graphicsInstance.addEventListener( MouseEvent.MOUSE_OUT, objectEvent.mouseOut.bind( objectEvent ) );
+			objectEvent.addEvent( "mOUT" );
+
+			graphicsInstance.addEventListener( MouseEvent.MOUSE_DOWN, objectEvent.mouseDown.bind( objectEvent ) );
+			objectEvent.addEvent( "mDOWN" );
+
+			graphicsInstance.addEventListener( MouseEvent.MOUSE_UP, objectEvent.mouseUp.bind( objectEvent ) );
+			objectEvent.addEvent( "mUP" );	
+		}
+		else
+		{
+			switch( eventName ) 
+			{
+				case "mCLICK": { event = MouseEvent.CLICK; func = objectEvent.mouseClick.bind( objectEvent ); } 
+				case "mOUT": { event = MouseEvent.MOUSE_OUT; func = objectEvent.mouseOut.bind( objectEvent ); }
+				case "mOVER": { event = MouseEvent.MOUSE_OVER; func = objectEvent.mouseOver.bind( objectEvent ); }
+				case "mUP": { event = MouseEvent.MOUSE_UP; func = objectEvent.mouseUp.bind( objectEvent ); }
+				case "mDOWN": { event = MouseEvent.MOUSE_DOWN; func = objectEvent.mouseDown.bind( objectEvent ); }
+			}
+			graphicsInstance.addEventListener( event, func );
+			objectEvent.addEvent( eventName );	
+		}
+		this._addToListeners( object );	
+	}
 
 	/*
 	private function _buyRecruit( sceneSystem:SceneSystem ):Void
@@ -133,7 +254,7 @@ class EventHandler
 		}
 	}
 */
-
+/*
 	private function _clickButton( entity:Entity ):Void
 	{
 		// graphics component -> graphicsInstance have child[0] - graphics, child[1] - text
@@ -471,26 +592,7 @@ class EventHandler
 
 
 
-	public function new( parent:Game ):Void
-	{
 
-	}
-
-	public function preInit( parent:Game ):String
-	{
-		this._parent = parent;
-		this._listeners = new Array();
-		if( this._parent == null )
-			return "Error in EventHandler.preInit. Parent - Game = NULL";
-
-		this._preInited = true;
-		return "ok";
-	}
-
-	public function init():Array<Dynamic>
-	{
-
-	}
 
 	public function update():Void
 	{
@@ -506,95 +608,8 @@ class EventHandler
 		
 	}	
 
-	public function addEvent( object:Entity, eventName:String ):Void
-	{
-		var objectEvent:Dynamic = object.getComponent( "event" );
-		var objectGraphics:Graphics = object.getComponent( "graphics" );
-		var graphicsInstance:DisplayObjectContainer = objectGraphics.getGraphicsInstance();
-		var event = null;
-		var func = null;
+	
 
-		if( eventName == null )
-		{
-			graphicsInstance.addEventListener( MouseEvent.CLICK, objectEvent.mouseClick.bind( objectEvent ) );
-			objectEvent.addEvent( "mCLICK" );
-
-			graphicsInstance.addEventListener( MouseEvent.MOUSE_OVER, objectEvent.mouseOver.bind( objectEvent ) );
-			objectEvent.addEvent( "mOVER" );
-
-			graphicsInstance.addEventListener( MouseEvent.MOUSE_OUT, objectEvent.mouseOut.bind( objectEvent ) );
-			objectEvent.addEvent( "mOUT" );
-
-			graphicsInstance.addEventListener( MouseEvent.MOUSE_DOWN, objectEvent.mouseDown.bind( objectEvent ) );
-			objectEvent.addEvent( "mDOWN" );
-
-			graphicsInstance.addEventListener( MouseEvent.MOUSE_UP, objectEvent.mouseUp.bind( objectEvent ) );
-			objectEvent.addEvent( "mUP" );	
-		}
-		else
-		{
-			switch( eventName ) 
-			{
-				case "mCLICK": { event = MouseEvent.CLICK; func = objectEvent.mouseClick.bind( objectEvent ); } 
-				case "mOUT": { event = MouseEvent.MOUSE_OUT; func = objectEvent.mouseOut.bind( objectEvent ); }
-				case "mOVER": { event = MouseEvent.MOUSE_OVER; func = objectEvent.mouseOver.bind( objectEvent ); }
-				case "mUP": { event = MouseEvent.MOUSE_UP; func = objectEvent.mouseUp.bind( objectEvent ); }
-				case "mDOWN": { event = MouseEvent.MOUSE_DOWN; func = objectEvent.mouseDown.bind( objectEvent ); }
-			}
-			graphicsInstance.addEventListener( event, func );
-			objectEvent.addEvent( eventName );	
-		}
-		this._addToListeners( object );	
-	}
-
-	public function removeEvent( object:Entity, eventName:String  ):Void
-	{
-		var objectEvent:Dynamic = object.getComponent( "event" );
-		var events:Array<String> = objectEvent.getEvents();
-		var objectGraphics:Graphics = object.getComponent( "graphics" );
-		var graphicsInstance:DisplayObjectContainer = objectGraphics.getGraphicsInstance();
-		var event = null;
-		var func = null;
-		switch( eventName ) 
-		{
-			case "mCLICK": { event = MouseEvent.CLICK; func = objectEvent.mouseClick.bind( objectEvent ) ; } 
-			case "mOUT": { event = MouseEvent.MOUSE_OUT; func = objectEvent.mouseOut.bind( objectEvent ); }
-			case "mOVER": { event = MouseEvent.MOUSE_OVER; func = objectEvent.mouseOver.bind( objectEvent ); }
-			case "mUP": { event = MouseEvent.MOUSE_UP; func = objectEvent.mouseUp.bind( objectEvent ); }
-			case "mDOWN": { event = MouseEvent.MOUSE_DOWN; func = objectEvent.mouseDown.bind( objectEvent ); }
-		}
-
-		for( i in 0...events.length )
-		{
-			if( eventName == null )
-			{
-				switch ( events[ i ] )
-				{
-					case "mCLICK": graphicsInstance.removeEventListener( MouseEvent.CLICK, objectEvent.mouseClick.bind( objectEvent ) );
-					case "mOUT": graphicsInstance.removeEventListener( MouseEvent.MOUSE_OUT, objectEvent.mouseOut.bind( objectEvent ) );
-					case "mOVER": graphicsInstance.removeEventListener( MouseEvent.MOUSE_OVER, objectEvent.mouseOver.bind( objectEvent ) );
-					case "mUP": graphicsInstance.removeEventListener( MouseEvent.MOUSE_UP, objectEvent.mouseUp.bind( objectEvent ) );
-					case "mDOWN":  graphicsInstance.removeEventListener( MouseEvent.MOUSE_DOWN, objectEvent.mouseDown.bind( objectEvent ) );
-				}
-				//trace( events[ i ] + ";  " + object.get( "name" ) + "; " + events.length );
-			}
-			else
-			{
-				if( eventName == events[ i ] )
-				{
-					graphicsInstance.removeEventListener( event, func );
-					objectEvent.removeEvent( eventName );
-					if( objectEvent.getEvents().length == 0 )
-						this._removeFromListeners( object );
-					break;
-				}
-			}			
-		}
-
-		if( eventName == null )
-		{
-			objectEvent.cleanEventList();
-			this._removeFromListeners( object );
-		}
-	}
+	
+	*/
 }

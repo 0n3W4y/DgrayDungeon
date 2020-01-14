@@ -1,7 +1,9 @@
 {
-	"1000":{
+	"4000":{
 		"name": "dungeonButtonEasy",
-		"deployId": 1000,
+		"deployId": 4000,
+		"x": 0.0,
+		"y": 0.0,
 		"imageNormalURL": "assets/images/button_dungeon_a.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
@@ -14,9 +16,11 @@
 		"buttonText": null
 	},
 
-	"1001":{
+	"4001":{
 		"name": "dungeonButtonNormal",
-		"deployId": 1001,
+		"deployId": 4001,
+		"x": 0.0,
+		"y": 0.0,
 		"imageNormalURL": "assets/images/button_dungeon_b.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
@@ -29,9 +33,11 @@
 		"buttonText": null
 	},
 
-	"1002":{
+	"4002":{
 		"name": "dungeonButtonHard",
-		"deployId": 1002,
+		"deployId": 4002,
+		"x": 0.0,
+		"y": 0.0,
 		"imageNormalURL": "assets/images/button_dungeon_c.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
@@ -44,9 +50,11 @@
 		"buttonText": null
 	},
 
-	"1003":{
+	"4003":{
 		"name": "dungeonButtonExtreme",
-		"deployId": 1003,
+		"deployId": 4003,
+		"x": 0.0,
+		"y": 0.0,
 		"imageNormalURL": "assets/images/button_dungeon_d.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
@@ -59,9 +67,11 @@
 		"buttonText": null
 	},
 
-	"1004":{
+	"4004":{
 		"name": "dungeonButtonExtreme",
-		"deployId": 1004,
+		"deployId": 4004,
+		"x": 0.0,
+		"y": 0.0,
 		"imageNormalURL": "assets/images/button_dungeon_d.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,

@@ -7,7 +7,7 @@ import openfl.display.Sprite;
 class Game
 {
 	private var _mainSprite:Sprite;
-	private var _scenesSprite:Sprite;
+	private var _worldSprite:Sprite;
 	private var _uiSprite:Sprite;
 
 	private var _width:Int;
@@ -16,10 +16,6 @@ class Game
 
 	private var _eventHandler:EventHandler;
 	private var _generatorSystem:GeneratorSystem;
-
-	
-
-	
 
 
 	private var _onPause:Bool = false;
@@ -38,18 +34,17 @@ class Game
 
 	private function _tick():Void
 	{
-		//TODO: mathemathic tick with minimum time, graphics tick like FPS says;
 		this._currentTime = Date.now().getTime();
 		var delta:Float = this._currentTime - this._lastTime;
 
 		if ( delta >= this._delta ){
 			if( delta >= this._doubleDelta ){
-				delta = this._doubleDelta;
+				delta = this._doubleDelta; // Защита от скачков времени вперед.
 			}
 			this._update( delta );
 			this._lastTime = this._currentTime;	
 		}
-		this._sUpdate();
+		this._sUpdate(); // special update;
 	}
 
 	private function _update( time:Float ):Void
@@ -93,18 +88,20 @@ class Game
 		this._width = width;
 
 		this._mainSprite = mainSprite;
-		this._scenesSprite = new Sprite();
+		this._worldSprite = new Sprite();
 		this._uiSprite = new Sprite();
-		this._mainSprite.addChild( this._scenesSprite );
+		this._mainSprite.addChild( this._worldSprite );
 		this._mainSprite.addChild( this._uiSprite );
 
 		this._eventHandler = new EventHandler();
-		var err = this._eventHandler.preInit( this );
+		this._eventHandler.preInit();
+		var err = this._eventHandler.init( this );
 		if( err != "ok" )
 			throw "Error in Game.new. " + err;
 
 		this._generatorSystem = new GeneratorSystem();
-		err = this._generatorSystem.preInit( this );
+		this._generatorSystem.preInit();
+		err = this._generatorSystem.init( this );
 		if( err != "ok" )
 			throw "Error in Game.new. " + err;
 
