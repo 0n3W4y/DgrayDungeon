@@ -9,6 +9,8 @@ class Event
 	private var _isCurrentEventDone:Bool;
 	private var _inited:Bool = false;
 	private var _preInited:Bool = false;
+	private var _postInited:Bool = false;
+	private var _parent:Dynamic;
 
 
 	public function new():Void
@@ -16,18 +18,31 @@ class Event
 		
 	}
 
-	public function preInit():Array<Dynamic>
+	public function preInit():String
 	{
 		this._events = new Array();
 		this._currentEvent = null;
 		this._isCurrentEventDone = false;
-		this._inited = true;
-		return [ true, null ];
+		this._preInited = true;
+		return "ok";
 	}
 
-	public function init():Array<Dynamic>
+	public function init( parent:Dynamic ):String
 	{
+		this._parent = parent;
+		if( this._parent == null )
+			return "Error in EventSystem.init. Parent is NULL";
+		this._inited = true;
+		return "ok";
+	}
 
+	public function postInit():String
+	{
+		if( !this._inited )
+			return "Error in EventSystem.postInit. Init is FALSE";
+
+		this._postInited = true;
+		return "ok";
 	}
 
 	public function getCurrentEvent():String

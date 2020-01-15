@@ -9,12 +9,12 @@ class Window
 	private var _id:Int;
 	private var _deployId:Int;
 	private var _name:String;
+	private var _type:String;
 	private var _status:String; // opened, closed
 
 	private var _buttonChildren:Array<Button>;
 
 	private var _graphics:GraphicsSystem;
-
 
 
 	public function new():Void
@@ -29,12 +29,18 @@ class Window
 		if( err != null )
 			throw "Error in Button.preInit. " + err;
 
+		this._type = "window";
+		this._buttonChildren = new Array();
+		this._status = "close";
 		this._preInited = true;
 		return "ok";
 	}
 
 	public function init( id:Int, name:String, deployId:Int, sprite:Sprite ):String
 	{
+		if( !this._preInited )
+			return "Error in Window.init. Pre inited is FALSE";
+
 		this._id = id;
 		if( this._id == null )
 			return "Error in Window.init. Id is NULL";
@@ -47,12 +53,9 @@ class Window
 		if( this._deployId == null )
 			return "Error in Widnow.init. DeployID is NULL";
 
-		var err = this._graphics.init( sprite );
+		var err = this._graphics.init( this, sprite );
 		if( err != "ok" )
 			return "Error in Window.init. Window name: " + this._name + "; " + err;
-
-		this._buttonChildren = new Array();
-		this._status = "closed";
 
 		this._inited = true;
 		return "ok";
@@ -60,8 +63,8 @@ class Window
 
 	public function postInit():String
 	{
-		if( !this._preInited && !this._inited )
-			return "Error in Window.postInit. Preinited and inited are FALSE!";
+		if( !this._inited )
+			return "Error in Window.postInit. Init is FALSE!";
 
 		this._postInited = true;
 		return "ok";
@@ -95,6 +98,27 @@ class Window
 		if( oldButton != null )
 			return [ null, "Error in Window.appendChild. Button with name: '" + buttonName + "' not exist" ];
 	}
+
+	public function get( value:String ):Dynamic
+	{
+		switch( value )
+		{
+			case "id": return this._id;
+			case "deployId": return this._deployId;
+			case "name": return this._name;
+			case "type": return this._type;
+			case "graphics": return this._graphics;
+			case "sprite": return this._graphics.getSprite();
+			default: { trace( "Error in Window.get. Can't get " + value ); return null };
+		}
+	}
+
+
+
+
+	//PRIVATE
+
+
 	private function _checkChildForExist( button:Button ):Array<Dynamic>
 	{
 		var buttonId:String = button.getId();

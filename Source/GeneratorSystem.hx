@@ -27,7 +27,7 @@ class GeneratorSystem
 
 	public function preInit():String
 	{
-		this._netxId = 0;
+		this._nextId = 0;
 		this._preInited = true;
 		return "ok";
 	}

@@ -60,7 +60,7 @@ class Game
 		this._eventHandler.update();
 	}
 
-	private function _parseData( url:String ):Map<Int, Dynamic>
+	private function _parseData( url:Dynamic ):Map<Int, Dynamic>
 	{
 		var conf = ConfigJSON.json( url );
 		var result:Map<Int, Dynamic> = new Map<Int, Dynamic>();
@@ -93,6 +93,14 @@ class Game
 		this._mainSprite.addChild( this._worldSprite );
 		this._mainSprite.addChild( this._uiSprite );
 
+		var windowDeploy:Map<Int, Dynamic> = this._parseData( "c:/projects/dgraydungeon/source/DeployWindow.json" );
+		var buttonDeploy:Map<Int, Dynamic> = this._parseData( "c:/projects/dgraydungeon/source/DeployButton.json" );
+		var sceneDeploy:Map<Int, Dynamic> = this._parseData( "c:/projects/dgraydungeon/source/DeployScene.json" );
+		var buildingDeploy:Map<Int, Dynamic> = this._parseData( "c:/projects/dgraydungeon/source/DeployBuilding.json" );
+		var heroDeploy:Map<Int, Dynamic> = this._parseData( "c:/projects/dgraydungeon/source/DeployHero.json" );
+		var itemDeploy:Map<Int, Dynamic> = this._parseData( "c:/projects/dgraydungeon/source/DeployItem.json" );
+		//var enemyDeployMap:Map<Int, Dynamic> = this._parseData( "c:/projects/dgraydungeon/source/DeployEnemy.json" );
+
 		this._eventHandler = new EventHandler();
 		this._eventHandler.preInit();
 		var err = this._eventHandler.init( this );
@@ -101,17 +109,11 @@ class Game
 
 		this._generatorSystem = new GeneratorSystem();
 		this._generatorSystem.preInit();
-		err = this._generatorSystem.init( this );
+		err = this._generatorSystem.init( this, sceneDeploy, buildingDeploy, windowDeploy, buttonDeploy, heroDeploy, itemDeploy  );
 		if( err != "ok" )
 			throw "Error in Game.new. " + err;
 
-		var windowDeployMap:Map<Int, Dynamic> = this._parseData( "c:/projects/dgraydungeon/source/DeployWindow.json" );
-		var buttonDeployMap:Map<Int, Dynamic> = this._parseData( "c:/projects/dgraydungeon/source/DeployButton.json" );
-		var sceneDeployMap:Map<Int, Dynamic> = this._parseData( "c:/projects/dgraydungeon/source/DeployScene.json" );
-		var buildingDeployMap:Map<Int, Dynamic> = this._parseData( "c:/projects/dgraydungeon/source/DeployBuilding.json" );
-		var heroDeployMap:Map<Int, Dynamic> = this._parseData( "c:/projects/dgraydungeon/source/DeployHero.json" );
-		var itemDeployMap:Map<Int, Dynamic> = this._parseData( "c:/projects/dgraydungeon/source/DeployItem.json" );
-		//var enemyDeployMap:Map<Int, Dynamic> = this._parseData( "c:/projects/dgraydungeon/source/DeployEnemy.json" );
+		
 
 
 		this._startGame();
@@ -160,12 +162,12 @@ class Game
 	{
 		switch( system )
 		{
-			case "entity" : return this._entitySystem;
-			case "graphics": return this._graphicsSystem;
-			case "scene": return this._sceneSystem;
-			case "event": return this._eventSystem;
-			case "ui": return this._userInterface;
-			default: trace( "error in Game.getSystem; system can't be: " + system + "." );
+			case "generator" : return this._generatorSystem;
+			//case "graphics": return this._graphicsSystem;
+			//case "scene": return this._sceneSystem;
+			case "event": return this._eventHandler;
+			//case "ui": return this._userInterface;
+			default: trace( "Error in Game.getSystem; system can't be: " + system );
 		}
 		return null;
 	}

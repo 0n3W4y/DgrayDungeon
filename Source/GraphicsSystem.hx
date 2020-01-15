@@ -9,6 +9,7 @@ class GraphicsSystem
 	private var _parent:Dynamic; // получить доступ к классу, в котором находится данный класс.
 	private var _preInited:Bool = false;
 	private var _inited:Bool = false;
+	private var _postInited:Bool = false;
 
 	public function new():Void
 	{
@@ -21,13 +22,17 @@ class GraphicsSystem
 		return "ok";
 	}
 
-	public function init( sprite:Sprite ):String
+	public function init( parent:Dynamic, sprite:Sprite ):String
 	{
 		if( !this._preInited )
-			return "Error in GraphicsSystem.init. Is not PREINITED!";
+			return "Error in GraphicsSystem.init. Pre init is FALSE";
 		this._sprite = sprite;
 		if( this._sprite == null )
-			return  "Error in GraphicsSystem.init, sprite is NULL";
+			return  "Error in GraphicsSystem.init. Sprite is NULL";
+
+		this._parent = parent;
+		if( this._parent == null )
+			return "Error in GraphicsSystem.init. Parent is NULL";
 
 		this._inited = true;
 		return "ok";
@@ -36,14 +41,9 @@ class GraphicsSystem
 	public function postInit():String
 	{
 		if( !this.inited )
-			return "Error in GraphicsSystem.postInit. In not INITED!";
+			return "Error in GraphicsSystem.postInit. Init is FALSE";
 		this._postInited = true;
 		return "ok";
-	}
-
-	public function update():Void
-	{
-		
 	}
 
 	public function changeText( text:String, position:String ):String
@@ -72,6 +72,11 @@ class GraphicsSystem
 
 		textField.text = text;
 		return "ok";
+	}
+
+	public function getSprite():Sprite
+	{
+		return this._sprite;
 	}
 
 }
