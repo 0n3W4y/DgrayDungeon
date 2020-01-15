@@ -32,10 +32,10 @@ class GeneratorSystem
 		return "ok";
 	}
 
-	public function init(  parent:Game, sceneDeploy:Map<Int, Dynamic>, buildingDeploy:Map<Int, Dynamic>, windowDeploy:Map<Int, Dynamic>, buttonDeploy:Map<Int, Dynamic>, heroDeploy:Map<Int, Dynamic>, itemDeploy:Map<Int, Dynamic> ):String
+	public function init( parent:Game, sceneDeploy:Map<Int, Dynamic>, buildingDeploy:Map<Int, Dynamic>, windowDeploy:Map<Int, Dynamic>, buttonDeploy:Map<Int, Dynamic>, heroDeploy:Map<Int, Dynamic>, itemDeploy:Map<Int, Dynamic> ):String
 	{
 		if( !this._preInited )
-			return "Error in GeneratorSystem.init. PreInit function failed!!!";
+			return "Error in GeneratorSystem.init. Pre init is FALSE";
 
 		this._parent = parent;
 		if( this._parent == null )
@@ -73,38 +73,48 @@ class GeneratorSystem
 
 	public function postInit():String
 	{
+		if( !this._inited )
+			return "Error in GeneratorSystem.postInit. Init is FALSE";
 
+		this._postInited = true;
+		return "ok";
 	}
 
-	public function generateHero( type:String, deployId:Int ):Array<Dynamic>
+	public function generateHero( deployId:Int ):Array<Dynamic>
 	{
-
+		return [];
 	}
 
-	public function generateBuilding( name:String, deployId:Int ):Array<Dynamic>
+	public function generateBuilding( deployId:Int ):Array<Dynamic>
 	{
-
+		return [];
 	}
 
-	public function generateItem( type:String, deployId:Int ):Array<Dynamic>
+	public function generateItem( deployId:Int ):Array<Dynamic>
 	{
-
+		return [];
 	}
 
-	public function generateScene( name:String, deployId:Int ):Array<Dynamic>
+	public function generateScene( deployId:Int ):Array<Dynamic>
 	{
-
+		return [];
 	}
 
-	public function generateWindow( name:String, deployId:Int ):Array<Dynamic>
+	public function generateWindow( deployId:Int ):Array<Dynamic>
 	{
-
+		return [];
 	}
 
-	public function generateButton( name:String, deployId:Int ):Array<Dynamic>
+	public function generateButton( deployId:Int ):Array<Dynamic>
 	{
-
+		return [];
 	}
+
+
+
+
+
+	// PRIVATE
 
 	private function createId():Int
 	{

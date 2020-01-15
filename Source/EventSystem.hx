@@ -2,7 +2,7 @@ package;
 
 import openfl.events.MouseEvent;
 
-class Event
+class EventSystem
 {
 	private var _events:Array<String>;
 	private var _currentEvent:String;

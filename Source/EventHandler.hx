@@ -61,19 +61,41 @@ class EventHandler
 		return result;
 	}
 
+	public function update():Void
+	{
+		for( i in 0...this._listeners.length )
+		{
+			var listener:Dynamic = this._listeners[ i ];
+			var eventSystem:EventSystem = listener.get( "event" );
+			var currentEvent:String = eventSystem.getCurrentEvent();
+			var isDone:Bool = eventSystem.isCurrentEventDone();
+			if( currentEvent != null && !isDone )
+				this._doEvent( currentEvent, listener );
+		}
+		
+	}
+
+
+
+
+
+	// PRIVATE
+
+
 	private function _addEvent( object:Dynamic, eventName:String ):String
 	{
 		var sprite:Sprite = object.get( "sprite" );
-		var event:EventSystem = object.get( "event" );
+		var eventSystem:Dynamic = object.get( "event" );
 		switch( eventName ) 
 		{
-			case "mCLICK": { sprite.addEventListener( MouseEvent.CLICK, event.mouseClick.bind( event ) ); } 
-			case "mOUT": { event = MouseEvent.MOUSE_OUT; func = objectEvent.mouseOut.bind( objectEvent ); }
-			case "mOVER": { event = MouseEvent.MOUSE_OVER; func = objectEvent.mouseOver.bind( objectEvent ); }
-			case "mUP": { event = MouseEvent.MOUSE_UP; func = objectEvent.mouseUp.bind( objectEvent ); }
-			case "mDOWN": { event = MouseEvent.MOUSE_DOWN; func = objectEvent.mouseDown.bind( objectEvent ); }
+			case "mCLICK": sprite.removeEventListener( MouseEvent.CLICK, eventSystem.mouseClick.bind( eventSystem ) );
+			case "mOUT": sprite.removeEventListener( MouseEvent.MOUSE_OUT, eventSystem.mouseOut.bind( eventSystem ) );
+			case "mOVER": sprite.removeEventListener( MouseEvent.MOUSE_OVER, eventSystem.mouseOver.bind( eventSystem ) );
+			case "mUP": sprite.removeEventListener( MouseEvent.MOUSE_UP, eventSystem.mouseUp.bind( eventSystem ) );
+			case "mDOWN":  sprite.removeEventListener( MouseEvent.MOUSE_DOWN, eventSystem.mouseDown.bind( eventSystem ) );
+			default: return "Error in EventHandler._addEvent. Event can't be: " + eventName; 
 		}
-		event.addEvent( "eventName" );
+		eventSystem.addEvent( "eventName" );
 
 		this._addToListeners( object );	
 		return "ok";
@@ -84,24 +106,24 @@ class EventHandler
 		var sprite:Sprite = object.get( "sprite" );
 		if( sprite == null )
 			return "Error in EventHandler._addEvents. Sprite is Null";
-		var event:EventSystem = object.get( "event" );
-		if( event == null )
+		var eventSystem:Dynamic = object.get( "event" );
+		if( eventSystem == null )
 			return "Error in EventHandler._addEvents. EventSystem is Null";
 
-		sprite.addEventListener( MouseEvent.CLICK, event.mouseClick.bind( event ) );
-		event.addEvent( "mCLICK" );
+		sprite.addEventListener( MouseEvent.CLICK, eventSystem.mouseClick.bind( eventSystem ) );
+		eventSystem.addEvent( "mCLICK" );
 
-		sprite.addEventListener( MouseEvent.MOUSE_OVER, event.mouseOver.bind( event ) );
-		event.addEvent( "mOVER" );
+		sprite.addEventListener( MouseEvent.MOUSE_OVER, eventSystem.mouseOver.bind( eventSystem ) );
+		eventSystem.addEvent( "mOVER" );
 
-		sprite.addEventListener( MouseEvent.MOUSE_OUT, event.mouseOut.bind( event ) );
-		event.addEvent( "mOUT" );
+		sprite.addEventListener( MouseEvent.MOUSE_OUT, eventSystem.mouseOut.bind( eventSystem ) );
+		eventSystem.addEvent( "mOUT" );
 
-		sprite.addEventListener( MouseEvent.MOUSE_DOWN, event.mouseDown.bind( event ) );
-		event.addEvent( "mDOWN" );
+		sprite.addEventListener( MouseEvent.MOUSE_DOWN, eventSystem.mouseDown.bind( eventSystem ) );
+		eventSystem.addEvent( "mDOWN" );
 
-		sprite.addEventListener( MouseEvent.MOUSE_UP, event.mouseUp.bind( event ) );
-		event.addEvent( "mUP" );
+		sprite.addEventListener( MouseEvent.MOUSE_UP, eventSystem.mouseUp.bind( eventSystem ) );
+		eventSystem.addEvent( "mUP" );
 
 		this._addToListeners( object );
 		return "ok";
@@ -109,11 +131,55 @@ class EventHandler
 
 	private function _removeEvent( object:Dynamic, eventName:String ):String
 	{
+		var sprite:Sprite = object.get( "sprite" );
+		if( sprite == null )
+			return "Error in EventHandler._addEvents. Sprite is Null";
+		var eventSystem:Dynamic = object.get( "event" );
+		if( eventSystem == null )
+			return "Error in EventHandler._addEvents. EventSystem is Null";
+
+		switch( eventName ) 
+		{
+			case "mCLICK": sprite.removeEventListener( MouseEvent.CLICK, eventSystem.mouseClick.bind( eventSystem ) );
+			case "mOUT": sprite.removeEventListener( MouseEvent.MOUSE_OUT, eventSystem.mouseOut.bind( eventSystem ) );
+			case "mOVER": sprite.removeEventListener( MouseEvent.MOUSE_OVER, eventSystem.mouseOver.bind( eventSystem ) );
+			case "mUP": sprite.removeEventListener( MouseEvent.MOUSE_UP, eventSystem.mouseUp.bind( eventSystem ) );
+			case "mDOWN":  sprite.removeEventListener( MouseEvent.MOUSE_DOWN, eventSystem.mouseDown.bind( eventSystem ) );
+			default: return "Error in EventHandler._removeEvent. Event can't be: " + eventName;
+		}
+
+		eventSystem.removeEvent( eventName );
+		if( eventSystem.getEvents().length == 0 )
+			this._removeFromListeners( object );
+
 		return "ok";
 	}
 
 	private function _removeEvents( object:Dynamic ):String
 	{
+		var sprite:Sprite = object.get( "sprite" );
+		if( sprite == null )
+			return "Error in EventHandler._addEvents. Sprite is Null";
+		var eventSystem:Dynamic = object.get( "event" );
+		if( eventSystem == null )
+			return "Error in EventHandler._addEvents. EventSystem is Null";
+
+		var eventsArray:Array<String> = eventSystem.getEvents();
+		for( i in 0...eventsArray.length )
+		{
+			switch( eventsArray[ i ] ) 
+			{
+				case "mCLICK": sprite.removeEventListener( MouseEvent.CLICK, eventSystem.mouseClick.bind( eventSystem ) );
+				case "mOUT": sprite.removeEventListener( MouseEvent.MOUSE_OUT, eventSystem.mouseOut.bind( eventSystem ) );
+				case "mOVER": sprite.removeEventListener( MouseEvent.MOUSE_OVER, eventSystem.mouseOver.bind( eventSystem ) );
+				case "mUP": sprite.removeEventListener( MouseEvent.MOUSE_UP, eventSystem.mouseUp.bind( eventSystem ) );
+				case "mDOWN":  sprite.removeEventListener( MouseEvent.MOUSE_DOWN, eventSystem.mouseDown.bind( eventSystem ) );
+				default: return "Error in EventHandler._removeEvent. Event can't be: " + eventsArray[ i ];
+			}
+		}
+
+		eventSystem.cleanEventList();
+		this._removeFromListeners( object );
 		return "ok";
 	}
 
@@ -137,57 +203,243 @@ class EventHandler
 		}
 	}
 
+	private function _doEvent( event:String, object:Dynamic ):Void
+	{
+		switch( event )
+		{
+			case "mCLICK": this._mouseClick( object );
+			case "mUP": this._mouseUp( object );
+			case "mOUT": this._mouseOut( object );
+			case "mDOWN": this._mouseDown( object );
+			case "mOVER": this._mouseOver( object );
+			default: trace( "Error in EventHandler._doEvent. In object with name: '" + object.get( "name" ) + "', deploy id: '" + object.get( "deployId" ) + "' can't do event witn name: '" + event + "'" );
+		}
+		object.get( "event" ).doneCurrentEvent();
+	}
 
-	public function removeEvent( object:Dynamic, eventName:String ):String
+	private function _mouseClick( object:Dynamic ):Void
 	{
 		var objectType:String = object.get( "type" );
-		//var objectEvent:Dynamic = object.getComponent( "event" );
-		//var events:Array<String> = objectEvent.getEvents();
-		//var objectGraphics:Graphics = object.getComponent( "graphics" );
-		//var graphicsInstance:DisplayObjectContainer = objectGraphics.getGraphicsInstance();
-		var event = null;
-		var func = null;
-		switch( eventName ) 
+		switch( objectType )
 		{
-			case "mCLICK": { event = MouseEvent.CLICK; func = objectEvent.mouseClick.bind( objectEvent ) ; } 
-			case "mOUT": { event = MouseEvent.MOUSE_OUT; func = objectEvent.mouseOut.bind( objectEvent ); }
-			case "mOVER": { event = MouseEvent.MOUSE_OVER; func = objectEvent.mouseOver.bind( objectEvent ); }
-			case "mUP": { event = MouseEvent.MOUSE_UP; func = objectEvent.mouseUp.bind( objectEvent ); }
-			case "mDOWN": { event = MouseEvent.MOUSE_DOWN; func = objectEvent.mouseDown.bind( objectEvent ); }
+			case "window": this._mouseClickWindow( object );
+			case "button": this._mouseClickButton( object );
+			case "hero": this._mouseClickHero( object );
+			case "item": this._mouseClickItem( object );
+			case "building": this._mouseClickBuilding( object );
+			case "enemy": this._mouseClickEnemy( object );
+			default: trace( "Error in EventHandler._mouseClick. Object type: '" + objectType + "' is not defined" );
 		}
+	}
 
-		for( i in 0...events.length )
+	private function _mouseUp ( object:Dynamic ):Void
+	{
+		var objectType:String = object.get( "type" );
+		switch( objectType )
 		{
-			if( eventName == null )
-			{
-				switch ( events[ i ] )
-				{
-					case "mCLICK": graphicsInstance.removeEventListener( MouseEvent.CLICK, objectEvent.mouseClick.bind( objectEvent ) );
-					case "mOUT": graphicsInstance.removeEventListener( MouseEvent.MOUSE_OUT, objectEvent.mouseOut.bind( objectEvent ) );
-					case "mOVER": graphicsInstance.removeEventListener( MouseEvent.MOUSE_OVER, objectEvent.mouseOver.bind( objectEvent ) );
-					case "mUP": graphicsInstance.removeEventListener( MouseEvent.MOUSE_UP, objectEvent.mouseUp.bind( objectEvent ) );
-					case "mDOWN":  graphicsInstance.removeEventListener( MouseEvent.MOUSE_DOWN, objectEvent.mouseDown.bind( objectEvent ) );
-				}
-				//trace( events[ i ] + ";  " + object.get( "name" ) + "; " + events.length );
-			}
-			else
-			{
-				if( eventName == events[ i ] )
-				{
-					graphicsInstance.removeEventListener( event, func );
-					objectEvent.removeEvent( eventName );
-					if( objectEvent.getEvents().length == 0 )
-						this._removeFromListeners( object );
-					break;
-				}
-			}			
+			case "window": this._mouseUpWindow( object );
+			case "button": this._mouseUpButton( object );
+			case "hero": this._mouseUpHero( object );
+			case "item": this._mouseUpItem( object );
+			case "building": this._mouseUpBuilding( object );
+			case "enemy": this._mouseUpEnemy( object );
+			default: trace( "Error in EventHandler._mouseUp. Object type: '" + objectType + "' is not defined" );
 		}
+	}
 
-		if( eventName == null )
+	private function _mouseDown ( object:Dynamic ):Void
+	{
+		var objectType:String = object.get( "type" );
+		switch( objectType )
 		{
-			objectEvent.cleanEventList();
-			this._removeFromListeners( object );
+			case "window": this._mouseDownWindow( object );
+			case "button": this._mouseDownButton( object );
+			case "hero": this._mouseDownHero( object );
+			case "item": this._mouseDownItem( object );
+			case "building": this._mouseDownBuilding( object );
+			case "enemy": this._mouseDownEnemy( object );
+			default: trace( "Error in EventHandler._mouseDown. Object type: '" + objectType + "' is not defined" );
 		}
+	}
+
+	private function _mouseOut ( object:Dynamic ):Void
+	{
+		var objectType:String = object.get( "type" );
+		switch( objectType )
+		{
+			case "window": this._mouseOutWindow( object );
+			case "button": this._mouseOutButton( object );
+			case "hero": this._mouseOutHero( object );
+			case "item": this._mouseOutItem( object );
+			case "building": this._mouseOutBuilding( object );
+			case "enemy": this._mouseOutEnemy( object );
+			default: trace( "Error in EventHandler._mouseOut. Object type: '" + objectType + "' is not defined" );
+		}
+	}
+
+	private function _mouseOver ( object:Dynamic ):Void
+	{
+		var objectType:String = object.get( "type" );
+		switch( objectType )
+		{
+			case "window": this._mouseOverWindow( object );
+			case "button": this._mouseOverButton( object );
+			case "hero": this._mouseOverHero( object );
+			case "item": this._mouseOverItem( object );
+			case "building": this._mouseOverBuilding( object );
+			case "enemy": this._mouseOverEnemy( object );
+			default: trace( "Error in EventHandler._mouseOver. Object type: '" + objectType + "' is not defined" );
+		}
+	}
+
+	private function _mouseClickButton( object:Dynamic ):Void
+	{
+
+	}
+
+	private function _mouseClickWindow( object:Dynamic ):Void
+	{
+
+	}
+
+	private function _mouseClickHero( object:Dynamic ):Void
+	{
+
+	}
+
+	private function _mouseClickItem( object:Dynamic ):Void
+	{
+
+	}
+
+	private function _mouseClickBuilding( object:Dynamic ):Void
+	{
+
+	}
+
+	private function _mouseClickEnemy( object: Dynamic ):Void
+	{
+
+	}
+
+	private function _mouseUpButton( object:Dynamic ):Void
+	{
+
+	}
+
+	private function _mouseUpWindow( object:Dynamic ):Void
+	{
+
+	}
+
+	private function _mouseUpHero( object:Dynamic ):Void
+	{
+
+	}
+
+	private function _mouseUpItem( object:Dynamic ):Void
+	{
+
+	}
+
+	private function _mouseUpBuilding( object:Dynamic ):Void
+	{
+
+	}
+
+	private function _mouseUpEnemy( object: Dynamic ):Void
+	{
+
+	}
+
+	private function _mouseDownButton( object:Dynamic ):Void
+	{
+
+	}
+
+	private function _mouseDownWindow( object:Dynamic ):Void
+	{
+
+	}
+
+	private function _mouseDownHero( object:Dynamic ):Void
+	{
+
+	}
+
+	private function _mouseDownItem( object:Dynamic ):Void
+	{
+
+	}
+
+	private function _mouseDownBuilding( object:Dynamic ):Void
+	{
+
+	}
+
+	private function _mouseDownEnemy( object: Dynamic ):Void
+	{
+
+	}
+
+	private function _mouseOutButton( object:Dynamic ):Void
+	{
+
+	}
+
+	private function _mouseOutWindow( object:Dynamic ):Void
+	{
+
+	}
+
+	private function _mouseOutHero( object:Dynamic ):Void
+	{
+
+	}
+
+	private function _mouseOutItem( object:Dynamic ):Void
+	{
+
+	}
+
+	private function _mouseOutBuilding( object:Dynamic ):Void
+	{
+
+	}
+
+	private function _mouseOutEnemy( object: Dynamic ):Void
+	{
+
+	}
+
+	private function _mouseOverButton( object:Dynamic ):Void
+	{
+
+	}
+
+	private function _mouseOverWindow( object:Dynamic ):Void
+	{
+
+	}
+
+	private function _mouseOverHero( object:Dynamic ):Void
+	{
+
+	}
+
+	private function _mouseOverItem( object:Dynamic ):Void
+	{
+
+	}
+
+	private function _mouseOverBuilding( object:Dynamic ):Void
+	{
+
+	}
+
+	private function _mouseOverEnemy( object: Dynamic ):Void
+	{
+
 	}
 
 	
@@ -523,18 +775,7 @@ class EventHandler
 
 	}
 
-	private function _doEvent( event:String, entity:Entity ):Void
-	{
-		switch( event )
-		{
-			case "mCLICK": this._mouseClick( entity );
-			case "mUP": this._mouseUp( entity );
-			case "mOUT": this._mouseOut( entity );
-			case "mDOWN": this._mouseDown( entity );
-			case "mOVER": this._mouseOver( entity );
-		}
-		entity.getComponent( "event" ).doneCurrentEvent();
-	}
+	
 
 	
 
@@ -637,19 +878,7 @@ class EventHandler
 
 
 
-	public function update():Void
-	{
-		for( i in 0...this._listeners.length )
-		{
-			//var listener:Entity = this._listeners[ i ];
-			//var entityEvent:Event = listener.getComponent( "event" );
-			//var event:String = entityEvent.getCurrentEvent();
-			//var isDone:Bool = entityEvent.isDoneCurrentEvent();
-			//if( event != null && !isDone )
-			//	this._doEvent( event, listener );
-		}
 		
-	}	
 
 	
 

@@ -44,7 +44,7 @@ class Game
 			this._update( delta );
 			this._lastTime = this._currentTime;	
 		}
-		this._sUpdate(); // special update;
+		this._sUpdate(); // special update; обновление дейсвтий мыши на графические объкты.
 	}
 
 	private function _update( time:Float ):Void
@@ -60,17 +60,30 @@ class Game
 		this._eventHandler.update();
 	}
 
-	private function _parseData( url:Dynamic ):Map<Int, Dynamic>
+	private function _parseData():Array<Dynamic>
 	{
-		var conf = ConfigJSON.json( url );
+		var window:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployWindow.json" );
+		var button:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployButton.json" );
+		var scene:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployScene.json" );
+		var building:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployBuilding.json" );
+		var hero:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployHero.json" );
+		var item:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployItem.json" );
+		//var enemy:Dynamic = ConfigJSON.json( "c:/projects/DgrayDungeon/Source/DeployEnemy.json" );
+		
+		return [ window, button, scene, building, hero, item ];
+	}
+
+	private function _mapJsonObject( object:Dynamic ):Map<Int, Dynamic>
+	{
 		var result:Map<Int, Dynamic> = new Map<Int, Dynamic>();
 
-		for( key in Reflect.fields( conf ) )
+		for( key in Reflect.fields( object ) )
 		{
 			var intKey:Int = Std.parseInt( key );
-			result[ intKey ] = Reflect.getProperty( conf, key );
+			result[ intKey ] = Reflect.getProperty( object, key );
 
 		}
+
 		return result;
 	}
 
@@ -93,13 +106,15 @@ class Game
 		this._mainSprite.addChild( this._worldSprite );
 		this._mainSprite.addChild( this._uiSprite );
 
-		var windowDeploy:Map<Int, Dynamic> = this._parseData( "c:/projects/dgraydungeon/source/DeployWindow.json" );
-		var buttonDeploy:Map<Int, Dynamic> = this._parseData( "c:/projects/dgraydungeon/source/DeployButton.json" );
-		var sceneDeploy:Map<Int, Dynamic> = this._parseData( "c:/projects/dgraydungeon/source/DeployScene.json" );
-		var buildingDeploy:Map<Int, Dynamic> = this._parseData( "c:/projects/dgraydungeon/source/DeployBuilding.json" );
-		var heroDeploy:Map<Int, Dynamic> = this._parseData( "c:/projects/dgraydungeon/source/DeployHero.json" );
-		var itemDeploy:Map<Int, Dynamic> = this._parseData( "c:/projects/dgraydungeon/source/DeployItem.json" );
-		//var enemyDeployMap:Map<Int, Dynamic> = this._parseData( "c:/projects/dgraydungeon/source/DeployEnemy.json" );
+		var parseDataContainer:Array<Dynamic> = this._parseData();
+
+		var windowDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer[0] );
+		var buttonDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer[1] );
+		var sceneDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer[2] );
+		var buildingDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer[3] );
+		var heroDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer[4] );
+		var itemDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer[5] );
+		//var enemyDeployMap:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer[6] );
 
 		this._eventHandler = new EventHandler();
 		this._eventHandler.preInit();
@@ -125,7 +140,7 @@ class Game
 	{
 		var time = Std.int( Math.ffloor( this._delta ) );
 
-		this._mainLoop = new Timer( time );
+		this._mainLoop = new Timer( 10 ); // 100 обновлений в секунду. ТЕСТ
 		this._mainLoop.run = function()
 		{
 			this._tick();
