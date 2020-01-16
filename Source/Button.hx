@@ -2,7 +2,6 @@ package;
 
 class Button
 {
-	private var _preInited:Bool = false;
 	private var _inited:Bool = false;
 	private var _postInited:Bool = false;
 
@@ -10,7 +9,8 @@ class Button
 	private var _deployId:Int;
 	private var _name:Int;
 	private var _type:String;
-	private var _status:String;
+	private var _chooseUnchooseStatus:String;
+	private var _sprite:Sprite;
 
 	private var _graphics:GraphicsSystem;
 	private var _event:EventSystem;
@@ -21,38 +21,39 @@ class Button
 
 	}
 
-	public function preInit():String
+	public function init( id:Int, deployId:Int, name:String, sprite:Sprite ):String
 	{
-		this._graphics = new GraphicsSystem();
-		var err = this._graphics.preInit();
-		if( err != "ok" )
-			return "Error in Button.preInit. " + err;
-
-		this._event = new EventSystem();
-		err = this._event.preInit();
-		if( err != "ok" )
-			return "Error in Button.preInit. " + err;
-
-		this._preInited = true;
-		return "ok";
-	}
-
-	public function init( id:Int, deployId:Int, name:String ):String
-	{
-		if( !this._preInited )
-			return "Error in Button.init. Pre init is FALSE";
-
 		this._id = id;
-		if( this._id == null )
-			return "Error in Button.init. Id is NULL";
+		if( Std.is( this._id, Int ) )
+			return "Error in Button.init. Id is: '" + id + "'";
 
 		this._deployId = deployId;
-		if( this._deployId == null )
-			return "Error in Button.init DeployId is NULL";
+		if( Std.is( this._deployId, Int ) )
+			return "Error in Button.init DeployId is: '" + deployId + "'";
 
 		this._name = name;
-		if( name == null )
-			return "Error in Button.init Name is NULL";
+		if( Std.is( this._name, String ) )
+			return "Error in Button.init Name is: '" + name + "'";
+
+		this._graphics = new GraphicsSystem();
+		var err = this._graphics.init( this );
+		if( err != "ok" )
+			return "Error in Button.init. " + err;
+
+		this._event = new EventSystem();
+		err = this._event.init( this );
+		if( err != "ok" )
+			return "Error in Button.init. " + err;
+
+		this._sprite = sprite;
+		if( Std.is( this._sprite, Sprite ))
+			return "Error in Button.init. Sprite is not a Sprite class ";
+
+		this._type = "button";
+		
+
+		this._chooseUnchooseStatus = "unchoose";
+		return "ok";
 		
 	}
 
@@ -65,13 +66,12 @@ class Button
 		return "ok";
 	}
 
-	public function changeStatusTo( value:String ):String
+	public function changeChooseUnchooseStatus():Void
 	{
-		switch( value )
-		{
-			case "choose", "none": { this._status = value; return "ok"; }
-			default: return "Error in button.changeStatusTo. Status can't be: '" + value + "'";
-		}
+		if( this._chooseUnchooseStatus == "choose" )
+			this._chooseUnchooseStatus = "unchoose";
+		else
+			this._chooseUnchooseStatus = "choose";
 	}
 
 	public function get( value:String ):Dynamic
@@ -84,7 +84,8 @@ class Button
 			case "type": return this._type;
 			case "graphics": return this._graphics;
 			case "event": return this._event;
-			case "sprite": return this._graphics.getSprite();
+			case "sprite": return this._sprite;
+			case "chooseUnchooseStatus": return this._chooseUnchooseStatus;
 			default: { trace( "Error in Button.get. Can't get " + value ); return null };
 		}
 	}

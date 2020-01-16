@@ -13,7 +13,7 @@
 		"imagePushURL": "assets/images/button_dungeon_a_choose.png",
 		"imagePushX": 0.0,
 		"imagePushY": 0.0,
-		"buttonText": null
+		"firstText": null
 	},
 
 	"4001":{
@@ -30,7 +30,7 @@
 		"imagePushURL": "assets/images/button_dungeon_b_choose.png",
 		"imagePushX": 0.0,
 		"imagePushY": 0.0,
-		"buttonText": null
+		"firstText": null
 	},
 
 	"4002":{
@@ -47,7 +47,7 @@
 		"imagePushURL": "assets/images/button_dungeon_c_choose.png",
 		"imagePushX": 0.0,
 		"imagePushY": 0.0,
-		"buttonText": null
+		"firstText": null
 	},
 
 	"4003":{
@@ -64,7 +64,7 @@
 		"imagePushURL": "assets/images/button_dungeon_d_choose.png",
 		"imagePushX": 0.0,
 		"imagePushY": 0.0,
-		"buttonText": null
+		"firstText": null
 	},
 
 	"4004":{
@@ -81,515 +81,298 @@
 		"imagePushURL": "assets/images/button_dungeon_d_choose.png",
 		"imagePushX": 0.0,
 		"imagePushY": 0.0,
-		"buttonText": null
+		"firstText": null
+	},
+
+	"4005":{
+		"name": "chooseDungeonBackToCityButton",
+		"deployId": 4005,
+		"x": 100.0,
+		"y": 150.0,
+		"imageNormalURL": "assets/images/backToCityButton.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"imageHoverURL": "assets/images/backToCityButton_hover.png",
+		"imageHoverX": 0.0,
+		"imageHoverY": 0.0,
+		"imagePushURL": "assets/images/backToCityButton_push.png",
+		"imagePushX": 0.0,
+		"imagePushY": 0.0,
+		"firstText": "BACK",
+		"firstTextSize": 38,
+		"firstTextColor": "0xffffff",
+		"firstTextHeight": 40,
+		"firstTextWidth": 140,
+		"firstTextX": 30.0,
+		"firstTextY": 10.0,
+		"firstTextAlign": "left"
+	},
+
+	"4006":{
+		"name": "gameStartJourney",
+		"deployId": 4006,
+		"x": 860.0,
+		"y": 5.0,
+		"imageNormalURL": "assets/images/button_a.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"imageHoverURL": "assets/images/button_a_hover.png",
+		"imageHoverX": 0.0,
+		"imageHoverY": 0.0,
+		"imagePushURL": "assets/images/button_a_push.png",
+		"imagePushX": 0.0,
+		"imagePushY": 0.0,
+		"firstText": "START",
+		"firstTextSize": 38,
+		"firstTextColor": "0xffffff",
+		"firstTextHeight": 40,
+		"firstTextWidth": 140,
+		"firstTextX": 75.0,
+		"firstTextY": 5.0,
+		"firstTextAlign": "center"
+	},
+		
+	"4007":{
+		"name": "innUp",
+		"deployId": 4007,
+		"x": 105.0,
+		"y": 810.0,
+		"imageNormalURL": "assets/images/button_c.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"imageHoverURL": "assets/images/button_c_hover.png",
+		"imageHoverX": 0.0,
+		"imageHoverY": 0.0,
+		"imagePushURL": "assets/images/button_c_push.png",
+		"imagePushX": 0.0,
+		"imagePushY": 0.0,
+		"firstText": null
+	},
+
+	"4008":{
+		"name": "innDown",
+		"deployId": 4008,
+		"x": 25.0,
+		"y": 810.0,
+		"imageNormalURL": "assets/images/button_d.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"imageHoverURL": "assets/images/button_d_hover.png",
+		"imageHoverX": 0.0,
+		"imageHoverY": 0.0,
+		"imagePushURL": "assets/images/button_d_push.png",
+		"imagePushX": 0.0,
+		"imagePushY": 0.0,
+		"firstText": null
+	},
+
+	"4009":{
+		"name": "citySceneMainWindowClose",
+		"deployId": 4009,
+		"x": 1340.0,
+		"y": 30.0,
+		"imageNormalURL": "assets/images/citySceneMainWindowExitButton.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"imageHoverURL": "assets/images/citySceneMainWindowExitButton.png",
+		"imageHoverX": 0.0,
+		"imageHoverY": 0.0,
+		"imagePushURL": "assets/images/citySceneMainWindowExitButton_push.png",
+		"imagePushX": 0.0,
+		"imagePushY": 0.0,
+		"firstText": null
+	},
+
+	"4010":{
+		"name": "gameStart",
+		"deployId": 4010,
+		"x": 75.0,
+		"y": 145.0,
+		"imageNormalURL": "assets/images/button_b.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"imageHoverURL": "assets/images/button_b_hover.png",
+		"imageHoverX": 0.0,
+		"imageHoverY": 0.0,
+		"imagePushURL": "assets/images/button_b_push.png",
+		"imagePushX": 0.0,
+		"imagePushY": 0.0,
+		"firstText": "New",
+		"firstTextSize": 58,
+		"firstTextColor": "0x000000",
+		"firstTextHeight": 100,
+		"firstTextWidth": 410,
+		"firstTextX": 0.0,
+		"firstTextY": 0.0,
+		"firstTextAlign": "center"
+	},
+
+	"4011":{
+		"name": "gameContinue",
+		"deployId": 4011,
+		"x": 75.0,
+		"y": 25.0,
+		"imageNormalURL": "assets/images/button_b.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"imageHoverURL": "assets/images/button_b_hover.png",
+		"imageHoverX": 0.0,
+		"imageHoverY": 0.0,
+		"imagePushURL": "assets/images/button_b_push.png",
+		"imagePushX": 0.0,
+		"imagePushY": 0.0,
+		"firstText": "Continue",
+		"firstTextSize": 58,
+		"firstTextColor": "0x000000",
+		"firstTextHeight": 100,
+		"firstTextWidth": 410,
+		"firstTextX": 0.0,
+		"firstTextY": 0.0,
+		"firstTextAlign": "center"
+	},
+
+	"4012":{
+		"name": "gameOptions",
+		"deployId": 4012,
+		"x": 75.0,
+		"y": 265.0,
+		"imageNormalURL": "assets/images/button_b.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"imageHoverURL": "assets/images/button_b_hover.png",
+		"imageHoverX": 0.0,
+		"imageHoverY": 0.0,
+		"imagePushURL": "assets/images/button_b_push.png",
+		"imagePushX": 0.0,
+		"imagePushY": 0.0,
+		"firstText": "Options",
+		"firstTextSize": 58,
+		"firstTextColor": "0x000000",
+		"firstTextHeight": 100,
+		"firstTextWidth": 410,
+		"firstTextX": 0.0,
+		"firstTextY": 0.0,
+		"firstTextAlign": "center"
+	},
+
+	"4013":{
+		"name": "gameAuthors",
+		"deployId": 4013,
+		"x": 75.0,
+		"y": 385.0,
+		"imageNormalURL": "assets/images/button_b.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"imageHoverURL": "assets/images/button_b_hover.png",
+		"imageHoverX": 0.0,
+		"imageHoverY": 0.0,
+		"imagePushURL": "assets/images/button_b_push.png",
+		"imagePushX": 0.0,
+		"imagePushY": 0.0,
+		"firstText": "Authors",
+		"firstTextSize": 58,
+		"firstTextColor": "0x000000",
+		"firstTextHeight": 100,
+		"firstTextWidth": 410,
+		"firstTextX": 0.0,
+		"firstTextY": 0.0,
+		"firstTextAlign": "center"
+	},
+
+	"4014":{
+		"name": "recruitWindowHeroButton",
+		"deployId": 4014,
+		"x": 720.0,
+		"y": 20.0,
+		"imageNormalURL": "assets/images/recruitWindowHero.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"imageHoverURL": "assets/images/recruitWindowHero.png",
+		"imageHoverX": 0.0,
+		"imageHoverY": 0.0,
+		"imagePushURL": "assets/images/recruitWindowHero.png",
+		"imagePushX": 0.0,
+		"imagePushY": 0.0,
+		"imagePortraitURL": "assets/images/recruitWindowHeroPicture.png",
+		"imagePortraitX": 70.0,
+		"imagePortraitY": 15.0,
+		"firstText": "N/A",
+		"firstTextSize": 40,
+		"firstTextColor": "0xffffff",
+		"firstTextHeight": 40,
+		"firstTextWidth": 300,
+		"firstTextX": 200.0,
+		"firstTextY": 15.0,
+		"firstTextAlign": "left",
+		"secondText": "N/A",
+		"secondTextSize": 40,
+		"secondTextColor": "0xffffff",
+		"secondTextHeight": 40,
+		"secondTextWidth": 300,
+		"secondTextX": 200.0,
+		"secondTextY": 50.0,
+		"secondTextAlign": "left"
+	},
+
+	"4015":{
+		"name": "recruitHeroButton",
+		"deployId": 4015,
+		"x": 980.0,
+		"y": 770.0,
+		"imageNormalURL": "assets/images/button_a.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"imageHoverURL": "assets/images/button_a_hover.png",
+		"imageHoverX": 0.0,
+		"imageHoverY": 0.0,
+		"imagePushURL": "assets/images/button_a_push.png",
+		"imagePushX": 0.0,
+		"imagePushY": 0.0,
+		"firstText": "Recruit",
+		"firstTextSize": 30,
+		"firstTextColor": "0xffffff",
+		"firstTextHeight": 40,
+		"firstTextWidth": 140,
+		"firstTextX": 75.0,
+		"firstTextY": 10.0,
+		"firstTextAlign": "center"
+	},
+
+	"4016":{
+		"name": "innWindowHeroButton",
+		"deployId": 4016,
+		"x": 0.0,
+		"y": 10.0,
+		"imageNormalURL": "assets/images/innWindowHeroButton.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"imageHoverURL": "assets/images/innWindowHeroButton.png",
+		"imageHoverX": 0.0,
+		"imageHoverY": 0.0,
+		"imagePushURL": "assets/images/innWindowHeroButton.png",
+		"imagePushX": 0.0,
+		"imagePushY": 0.0,
+		"imagePortraitURL": "assets/images/recruitWindowHeroPicture.png",
+		"imagePortraitX": 0.0,
+		"imagePortraitY": 0.0,
+		"imageLevelURL": "",
+		"imageLevelX": 0.0,
+		"imageLevelY": 0.0,
+		"firstText": "N/A",
+		"firstTextSize": 40,
+		"firstTextColor": "0xffffff",
+		"firstTextHeight": 40,
+		"firstTextWidth": 140,
+		"firstTextX": 75.0,
+		"firstTextY": 10.0,
+		"firstTextAlign": "left",
+		"secondText": "N/A",
+		"secondTextSize": 26,
+		"secondTextColor": "0xffffff",
+		"secondTextHeight": 40,
+		"secondTextWidth": 1400,
+		"secondTextX": 200.0,
+		"secondTextY": 50.0,
+		"secondTextAlign": "left"
 	}
-
-			},
-			"chooseDungeonBackToCityButton": {
-				"event": {},
-				"graphics": {
-					"x": 100.0,
-					"y": 150.0,
-					"img": {
-						"one": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/backToCityButton.png"
-						},
-						"two": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/backToCityButton_hover.png"
-						},
-						"three": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/backToCityButton_push.png"
-						}
-					},
-					"text": null,
-					"queue": 0
-				},
-				"ui": {
-					"parentWindow": "chooseHeroToDungeonWindow"
-				}
-			},
-
-			"gameStartJourney": {
-				"event": {},
-				"graphics": {
-					"queue": 0,
-					"x": 860.0,
-					"y": 5.0,
-					"img": {
-						"one": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/button_a.png"
-						},
-						"two": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/button_a_hover.png"
-						},
-						"three": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/button_a_push.png"
-						}
-					},
-					"text": {
-						"first": {
-							"text": "START",
-							"align": "center",
-							"x": 75.0,
-							"y": 5.0,
-							"font": "Verdana",
-							"size": 38,
-							"color": "0xffffff",
-							"visible": true,
-							"selectable": false,
-							"height": 40,
-							"width": 140
-						}
-					}
-				},
-				"ui": {
-					"parentWindow": "panelCityWindow"
-				}
-			},
-
-			"innUp": {
-				"event": {},
-				"graphics": {
-					"x": 105.0,
-					"y": 810.0,
-					"img": {
-						"one": {
-							"x": 0,
-							"y": 0.0,
-							"url": "assets/images/button_c.png"
-						},
-						"two": {
-							"x": 0,
-							"y": 0.0,
-							"url": "assets/images/button_c_hover.png"
-						},
-						"three": {
-							"x": 0,
-							"y": 0.0,
-							"url": "assets/images/button_c_push.png"
-						}
-					},
-					"text": null,
-					"queue": 0
-				},
-				"ui": {
-					"parentWindow": "innWindow"
-				}
-			},
-			"innDown": {
-				"event": {},
-				"graphics": {
-					"x": 25.0,
-					"y": 810.0,
-					"img": {
-						"one": {
-							"x": 0,
-							"y": 0.0,
-							"url": "assets/images/button_d.png"
-						},
-						"two": {
-							"x": 0,
-							"y": 0.0,
-							"url": "assets/images/button_d_hover.png"
-						},
-						"three": {
-							"x": 0,
-							"y": 0.0,
-							"url": "assets/images/button_d_push.png"
-						}
-					},
-					"text": null,
-					"queue": 0
-				},
-				"ui": {
-					"parentWindow": "innWindow"
-				}
-			},
-
-			"citySceneMainWindowClose": {
-				"event": {},
-				"graphics": {
-					"queue": 0,
-					"img": {
-						"one": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/citySceneMainWindowExitButton.png"
-						},
-						"two": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/citySceneMainWindowExitButton.png"
-						},
-						"three": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/citySceneMainWindowExitButton_push.png"
-						}
-					},
-					"x": 1340.0,
-					"y": 30.0,
-					"text": null
-				},
-				"ui": {
-					"parentWindow": "citySceneMainWindow"
-				}
-			},
-			"gameStart": {
-				"event": {},
-				"graphics": {
-					"queue": 0,
-					"x": 75.0,
-					"y": 145.0,
-					"img": {
-						"one": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/button_b.png"
-						},
-						"two": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/button_b_hover.png"
-						},
-						"three": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/button_b_push.png"
-						}
-					},
-					"text": {
-						"first": {
-							"text": "New",
-							"align": "center",
-							"x": 0.0,
-							"y": 0.0,
-							"font": "Verdana",
-							"size": 58,
-							"color": "0x000000",
-							"visible": true,
-							"selectable": false,
-							"height": 100,
-							"width": 410
-						}
-					}
-				},
-				"ui": {
-					"parentWindow": "startSceneWindow"
-				}
-			},
-			"gameContinue": {
-				"event": {},
-				"graphics": {
-					"queue": 0,
-					"x": 75.0,
-					"y": 25.0,
-					"img": {
-						"one": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/button_b.png"
-						},
-						"two": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/button_b_hover.png"
-						},
-						"three": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/button_b_push.png"
-						}
-					},
-					"text": {
-						"first": {
-							"text": "Continue",
-							"align": "center",
-							"x": 0.0,
-							"y": 0.0,
-							"font": "Verdana",
-							"size": 64,
-							"color": "0x000000",
-							"visible": true,
-							"selectable": false,
-							"height": 100,
-							"width": 410
-						}
-					}
-				},
-				"ui": {
-					"parentWindow": "startSceneWindow"
-				}
-			},
-			"gameOptions": {
-				"event": {},
-				"graphics": {
-					"queue": 0,
-					"x": 75.0,
-					"y": 265.0,
-					"img": {
-						"one": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/button_b.png"
-						},
-						"two": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/button_b_hover.png"
-						},
-						"three": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/button_b_push.png"
-						}
-					},
-					"text": {
-						"first": {
-							"text": "Options",
-							"align": "center",
-							"x": 0.0,
-							"y": 0.0,
-							"font": "Verdana",
-							"size": 64,
-							"color": "0x000000",
-							"visible": true,
-							"selectable": false,
-							"height": 100,
-							"width": 410
-						}
-					}
-				},
-				"ui": {
-					"parentWindow": "startSceneWindow"
-				}
-			},
-			"gameAuthors": {
-				"event": {},
-				"graphics": {
-					"queue": 0,
-					"x": 75.0,
-					"y": 385.0,
-					"img": {
-						"one": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/button_b.png"
-						},
-						"two": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/button_b_hover.png"
-						},
-						"three": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/button_b_push.png"
-						}
-					},
-					"text": {
-						"first": {
-							"text": "Authors",
-							"align": "center",
-							"x": 0.0,
-							"y": 0.0,
-							"font": "Verdana",
-							"size": 64,
-							"color": "0x000000",
-							"visible": true,
-							"selectable": false,
-							"height": 100,
-							"width": 410
-						}
-					}
-				},
-				"ui": {
-					"parentWindow": "startSceneWindow"
-				}
-			},
-
-			"recruitWindowHeroButton": {
-				"event": {},
-				"graphics": {
-					"queue": 0,
-					"x": 720.0,
-					"y": 20.0,
-					"img": {
-						"one": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/recruitWindowHero.png"
-						},
-						"two": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/recruitWindowHero.png"
-						},
-						"three": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/recruitWindowHero.png"
-						},
-						"four": {
-							"x": 70.0,
-							"y": 15.0,
-							"url": "assets/images/recruitWindowHeroPicture.png"
-						},
-						"five": {
-							"x": 10.0,
-							"y": 35.0,
-							"url": "assets/images/recruitWindowHeroLevel.png"
-						}
-					},
-					"text": {
-						"first": {
-							"text": "N/A",
-							"align": "left",
-							"x": 200.0,
-							"y": 15.0,
-							"font": "Verdana",
-							"size": 34,
-							"color": "0xffffff",
-							"visible": true,
-							"selectable": false,
-							"height": 40,
-							"width": 300
-						},
-						"second": {
-							"text": "N/A",
-							"align": "left",
-							"x": 200.0,
-							"y": 50.0,
-							"font": "Verdana",
-							"size": 40,
-							"color": "0xffffff",
-							"visible": true,
-							"selectable": false,
-							"height": 45,
-							"width": 300
-						}
-					}
-				},
-				"ui": {}
-			},
-
-			"recruitHeroButton": {
-				"event": {},
-				"graphics": {
-					"queue": 0,
-					"x": 980.0,
-					"y": 770.0,
-					"img": {
-						"one": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/button_a.png"
-						},
-						"two": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/button_a_hover.png"
-						},
-						"three": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/button_a_push.png"
-						}
-					},
-					"text": {
-						"first": {
-							"text": "Recruit",
-							"align": "center",
-							"x": 75.0,
-							"y": 10.0,
-							"font": "Verdana",
-							"size": 30,
-							"color": "0xffffff",
-							"visible": true,
-							"selectable": false,
-							"height": 40,
-							"width": 140
-						}
-					}
-				},
-				"ui": {
-					"parentWindow": "recruitWindow"
-				}
-			},
-
-			"innWindowHeroButton": {
-				"event": {},
-				"graphics": {
-					"queue": 0,
-					"x": 0.0,
-					"y": 10.0,
-					"img": {
-						"one": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/innWindowHeroButton.png"
-						},
-						"two": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/innWindowHeroButton.png"
-						},
-						"three": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/innWindowHeroButton.png"
-						},
-						"four": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": null
-						},
-						"five": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": null
-						}
-					},
-					"text": {
-						"first": {
-							"text": "N/A",
-							"align": "left",
-							"x": 116.0,
-							"y": 2.0,
-							"font": "Verdana",
-							"size": 26,
-							"color": "0xffffff",
-							"visible": true,
-							"selectable": false,
-							"height": 60,
-							"width": 140
-						},
-						"second":{
-							"text": "30 12",
-							"align": "left",
-							"x": 150.0,
-							"y": 60.0,
-							"font": "Verdana",
-							"size": 40,
-							"color": "0xffffff",
-							"visible": true,
-							"selectable": false,
-							"height": 40,
-							"width": 140
-						}
-					}
-				},
-				"ui": {}
-			}
+}

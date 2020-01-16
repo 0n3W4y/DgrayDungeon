@@ -294,7 +294,17 @@ class EventHandler
 
 	private function _mouseClickButton( object:Dynamic ):Void
 	{
-
+		var name:String = object.get( "name" );
+		switch( name )
+		{
+			case "options":{};
+			case "startGame":{};
+			case "continue":{};
+			case "closeWindow":{};
+			case "buyRecruit":{};
+			case "startJourney":{};
+			default: trace( "Error in EventHandler._mouseClickButton. No action assigned to button: '" + name + "'" );
+		}
 	}
 
 	private function _mouseClickWindow( object:Dynamic ):Void
@@ -314,7 +324,12 @@ class EventHandler
 
 	private function _mouseClickBuilding( object:Dynamic ):Void
 	{
-
+		var name:String = object.get( "name" );
+		switch( name )
+		{
+			case "":{}
+			default: trace( "Error in EventHandler._mouseClickBuilding. No action assigned to building: '" + name + "'" );
+		}
 	}
 
 	private function _mouseClickEnemy( object: Dynamic ):Void

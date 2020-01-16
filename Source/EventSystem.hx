@@ -8,7 +8,6 @@ class EventSystem
 	private var _currentEvent:String;
 	private var _isCurrentEventDone:Bool;
 	private var _inited:Bool = false;
-	private var _preInited:Bool = false;
 	private var _postInited:Bool = false;
 	private var _parent:Dynamic;
 
@@ -18,20 +17,15 @@ class EventSystem
 		
 	}
 
-	public function preInit():String
-	{
-		this._events = new Array();
-		this._currentEvent = null;
-		this._isCurrentEventDone = false;
-		this._preInited = true;
-		return "ok";
-	}
-
 	public function init( parent:Dynamic ):String
 	{
 		this._parent = parent;
 		if( this._parent == null )
 			return "Error in EventSystem.init. Parent is NULL";
+
+		this._events = new Array();
+		this._currentEvent = null;
+		this._isCurrentEventDone = false;
 		this._inited = true;
 		return "ok";
 	}
@@ -81,7 +75,7 @@ class EventSystem
 
 	public function mouseClick( e:MouseEvent ):Void
 	{
-		if( this._currentEvent == "mCLICK" && this._isCurrentEventDone )
+		if( this._currentEvent == "mCLICK" )
 			return;
 		this._currentEvent = "mCLICK";
 		this._isCurrentEventDone = false;
@@ -89,7 +83,7 @@ class EventSystem
 
 	public function mouseUp( e:MouseEvent ):Void
 	{
-		if( this._currentEvent == "mUP" && this._isCurrentEventDone )
+		if( this._currentEvent == "mUP" )
 			return;
 		this._currentEvent = "mUP";
 		this._isCurrentEventDone = false;
@@ -97,7 +91,7 @@ class EventSystem
 
 	public function mouseDown( e:MouseEvent ):Void
 	{
-		if( this._currentEvent == "mDOWN" && this._isCurrentEventDone )
+		if( this._currentEvent == "mDOWN" )
 			return;
 		this._currentEvent = "mDOWN";
 		this._isCurrentEventDone = false;
@@ -105,7 +99,7 @@ class EventSystem
 
 	public function mouseOut( e:MouseEvent ):Void
 	{
-		if( this._currentEvent == "mOUT" && this._isCurrentEventDone )
+		if( this._currentEvent == "mOUT" )
 			return;
 		this._currentEvent = "mOUT";
 		this._isCurrentEventDone = false;
@@ -113,7 +107,7 @@ class EventSystem
 
 	public function mouseOver( e:MouseEvent ):Void
 	{
-		if( this._currentEvent == "mOVER" && this._isCurrentEventDone )
+		if( this._currentEvent == "mOVER" )
 			return;
 		this._currentEvent = "mOVER";
 		this._isCurrentEventDone = false;

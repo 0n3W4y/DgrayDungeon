@@ -5,34 +5,27 @@ import openfl.display.TextField;
 
 class GraphicsSystem
 {
-	private var _sprite:Sprite; // для обращения к графике сущности
 	private var _parent:Dynamic; // получить доступ к классу, в котором находится данный класс.
-	private var _preInited:Bool = false;
 	private var _inited:Bool = false;
 	private var _postInited:Bool = false;
+
+	private var _sprite:Sprite;
 
 	public function new():Void
 	{
 
 	}
 
-	public function preInit():String
-	{
-		this._preInited = true;
-		return "ok";
-	}
-
 	public function init( parent:Dynamic, sprite:Sprite ):String
 	{
-		if( !this._preInited )
-			return "Error in GraphicsSystem.init. Pre init is FALSE";
-		this._sprite = sprite;
-		if( this._sprite == null )
-			return  "Error in GraphicsSystem.init. Sprite is NULL";
-
+		//TODO: сделать Std.is( parent, Button ) || Std.is( parent. Window ) || e.t.c
 		this._parent = parent;
 		if( this._parent == null )
 			return "Error in GraphicsSystem.init. Parent is NULL";
+
+		this._sprite = sprite;
+		if( this._sprite == null )
+			return  "Error in GraphicsSystem.init. Sprite is NULL";		
 
 		this._inited = true;
 		return "ok";
@@ -42,6 +35,7 @@ class GraphicsSystem
 	{
 		if( !this.inited )
 			return "Error in GraphicsSystem.postInit. Init is FALSE";
+
 		this._postInited = true;
 		return "ok";
 	}
@@ -51,7 +45,7 @@ class GraphicsSystem
 		// sprite.getChildAt(1).getChildat( num ) - num is position of text;
 		// sprite - main sprite;
 		// childAt(1) - text sprite, have childs with textField.
-
+		//TODO: Полностью переделать функцию, мне не нравится.
 		var num:Int;
 		switch( position )
 		{
@@ -64,19 +58,38 @@ class GraphicsSystem
 		}
 
 		var textField:TextField = this._sprite.getChildAt( 1 ).getChildAt( num );
-
 		if( textField == null )
-		{
 			return ( "Error in GraphicsSystem.changeText, TextField not found at : " + num );
-		}
 
 		textField.text = text;
 		return "ok";
 	}
 
-	public function getSprite():Sprite
+	public function playAnimation( animation:String ):Void
 	{
-		return this._sprite;
+
 	}
 
+
+	// PRIVATE
+
+	private function hover():Void
+	{
+
+	}
+
+	private function unHover():Void
+	{
+
+	}
+
+	private function push():Void
+	{
+
+	}
+
+	private function unPush():Void
+	{
+
+	}
 }

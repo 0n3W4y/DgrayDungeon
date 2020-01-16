@@ -7,7 +7,7 @@
 		"imageURL": "assets/images/startSceneButtonsWindow.png",
 		"imageX": 0.0,
 		"imageY": 0.0,
-		"windowText": null
+		"firstText": null
 	},
 
 	"3001":{
@@ -18,14 +18,14 @@
 		"imageURL": "assets/images/citySceneMainWindow.png",
 		"imageX": 0.0,
 		"imageY": 0.0,
-		"windowText": "The real estate",
-		"windowTextSize": 48,
-		"windowTextColor": "0x000000",
-		"windowTextHeight": 50,
-		"windowTextWidth": 400,
-		"windowTextX": 30.0,
-		"windowTextY": 10.0,
-		"windowTextAlign": "left"
+		"firstText": "The real estate",
+		"firstTextSize": 48,
+		"firstTextColor": "0x000000",
+		"firstTextHeight": 50,
+		"firstTextWidth": 400,
+		"firstTextX": 30.0,
+		"firstTextY": 10.0,
+		"firstTextAlign": "left"
 	},
 
 	"3002":{
@@ -36,14 +36,14 @@
 		"imageURL": "assets/images/recruitWindow.png",
 		"imageX": 0.0,
 		"imageY": 0.0,
-		"windowText": "Recruit Tower",
-		"windowTextSize": 48,
-		"windowTextColor": "0xffffff",
-		"windowTextHeight": 50,
-		"windowTextWidth": 350,
-		"windowTextX": 0.0,
-		"windowTextY": 0.0,
-		"windowTextAlign": "left"
+		"firstText": "Recruit Tower",
+		"firstTextSize": 48,
+		"firstTextColor": "0xffffff",
+		"firstTextHeight": 50,
+		"firstTextWidth": 350,
+		"firstTextX": 0.0,
+		"firstTextY": 0.0,
+		"firstTextAlign": "left"
 	},
 
 	"3003":{
@@ -54,7 +54,7 @@
 		"imageURL": "assets/images/panelCityWindow.png",
 		"imageX": 0.0,
 		"imageY": 0.0,
-		"windowText": null		
+		"firstText": null		
 	},
 
 	"3004":{
@@ -65,7 +65,7 @@
 		"imageURL": "assets/images/dungeonSceneHeroesToDungeon.png",
 		"imageX": 0.0,
 		"imageY": 0.0,
-		"windowText": null		
+		"firstText": null		
 	},
 
 	"3005":{
@@ -76,13 +76,13 @@
 		"imageURL": "assets/images/dungeonWindow.png",
 		"imageX": 0.0,
 		"imageY": 0.0,
-		"windowText": "The real path of truth",
-		"windowTextSize": 22,
-		"windowTextColor": "0xffffff",
-		"windowTextHeight": 20,
-		"windowTextWidth": 250,
-		"windowTextX": 15.0,
-		"windowTextY": 10.0,
-		"windowTextAlign": "center"		
+		"firstText": "The real path of truth",
+		"firstTextSize": 22,
+		"firstTextColor": "0xffffff",
+		"firstTextHeight": 20,
+		"firstTextWidth": 250,
+		"firstTextX": 15.0,
+		"firstTextY": 10.0,
+		"firstTextAlign": "center"
 	}
 }

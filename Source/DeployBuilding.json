@@ -17,9 +17,7 @@
 		"buildingTextWidth": 400,
 		"buildingTextX": 30.0,
 		"buildingTextY": 10.0,
-		"buildingTextAlign": "left",
-		"buildingTextX": 0.0,
-		"buildingTextY": 0.0
+		"buildingTextAlign": "left"
 	},
 
 			"tavern": {

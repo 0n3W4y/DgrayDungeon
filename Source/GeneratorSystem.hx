@@ -102,6 +102,9 @@ class GeneratorSystem
 
 	public function generateWindow( deployId:Int ):Array<Dynamic>
 	{
+		var config:Dynamic = this._windowDeploy.get( deployId );
+		if( config == null )
+			return [ null, "Error in GeneratorSystem.generateWindow. Deploy ID: '" + deployId + "' doesn't exist in WindowDeploy data" ];
 		return [];
 	}
 
