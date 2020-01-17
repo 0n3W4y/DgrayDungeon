@@ -105,6 +105,28 @@ class GeneratorSystem
 		var config:Dynamic = this._windowDeploy.get( deployId );
 		if( config == null )
 			return [ null, "Error in GeneratorSystem.generateWindow. Deploy ID: '" + deployId + "' doesn't exist in WindowDeploy data" ];
+
+		var window:Window = new Window();
+		var id:Int = this._createId();
+		var windowSprite:Sprite = new Sprite();
+		var graphicsSprite:Sprite = new Sprite();
+		var textSprite:Sprite = new Sprite();
+
+		"name": "dungeonOne",
+		"deployId": 3005,
+		"x": 700.0,
+		"y": 400.0,
+		"imageURL": "assets/images/dungeonWindow.png",
+		"imageX": 0.0,
+		"imageY": 0.0,
+		"firstText": "The real path of truth",
+		"firstTextSize": 22,
+		"firstTextColor": "0xffffff",
+		"firstTextHeight": 20,
+		"firstTextWidth": 250,
+		"firstTextX": 15.0,
+		"firstTextY": 10.0,
+		"firstTextAlign": "center"
 		return [];
 	}
 
@@ -119,7 +141,7 @@ class GeneratorSystem
 
 	// PRIVATE
 
-	private function createId():Int
+	private function _createId():Int
 	{
 		var result:Int = this._nextId;
 		this._nextId++;
