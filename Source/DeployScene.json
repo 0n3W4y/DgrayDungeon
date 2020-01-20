@@ -2,25 +2,28 @@
 	"1000":{
 		"name": "startScene",
 		"deployId": 1000,
-		"backgroundImageURL": "assets/images/background_game.png",
-		"window": [ "startSceneWindow" ],
-		"button": [ "gameContinue", "gameStart", "gameOptions" ]
+		"imageNormalURL": "assets/images/background_game.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"window": [ 3000 ]
 	},
 
 	"1001":{
 		"name": "cityScene",
 		"deployId": 1001,
-		"backgroundImageURL": "assets/images/citySceneBackround.png",
+		"imageNormalURL": "assets/images/citySceneBackround.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
 		"window": [ "panelCityWindow", "citySceneMainWindow", "recruitWindow" ],
-		"button": [ "gameStartJourney", "innUp", "innDown", "citySceneMainWindowClose", "recruitHeroButton" ],
 		"building": [ "hospital", "graveyard", "academy", "merchant", "questman", "fontain", "blacksmith", "hermit", "tavern", "recruits", "inn" ]
 	},
 
 	"1002":{
 		"name": "chooseDungeonScene",
 		"deployId": 1002,
-		"backgroundImageURL": "assets/images/chooseDungeonSceneOne.png",
-		"window": [ "dungeon1", "chooseHeroToDungeonWindow" ],
-		"button": [ "chooseDungeonSceneDungeonButtonA", "chooseDungeonBackToCityButton" ]
+		"imageNormalURL": "assets/images/chooseDungeonSceneOne.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"window": [ "dungeon1", "chooseHeroToDungeonWindow" ]
 	}
 }

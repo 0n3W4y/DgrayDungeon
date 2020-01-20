@@ -11,225 +11,45 @@ class SceneSystem
 
 	private function _createId():String
 	{
-		var id = this._nextId + "";
+		var id = this._nextId;
 		this._nextId++;
 		return id;
 	}
 
 	private function _addScene( scene:Scene ):Void
 	{
-		this._scenesArray.push( scene );
+		if( !this.isSceneAlreadyCreated( scene.get( "id" ) ) )
+			this._scenesArray.push( scene );
 	}
-
-	private function _createStartScene():Scene //startgame screen;
-	{
-		var entitySystem:EntitySystem = this._parent.getSystem( "entity" );
-		var id = this._createId();
-		var scene = new Scene( this, id, "startScene" );
-
-		var config:Dynamic = Reflect.getProperty( this._config, "startScene" );
-		if( config == null )
-			trace( "Error in SceneSystem._screateStartScene, scene 'startScene' not found in config container." );
-		
-		scene.setBackgroundImageURL( config.backgroundImageURL );
-
-		//create window
-		var windowsArray:Array<String> =  config.window;
-		for( i in 0...windowsArray.length )
-		{
-			var window:Entity = entitySystem.createEntity( "window", windowsArray[ i ], null );
-			entitySystem.addEntityToScene( window, scene );
-		}
-
-		var buttonArray:Array<String> = config.button;
-
-		for( j in 0...buttonArray.length )
-		{
-			var button:Entity = entitySystem.createEntity( "button", buttonArray[ j ], null );
-			entitySystem.addEntityToScene( button, scene );
-		}
-		
-		this._addScene( scene );
-		return scene;
-	}
-
-	private function _createCityScene():Scene
-	{
-		var entitySystem:EntitySystem = this._parent.getSystem( "entity" );
-		var id = this._createId();
-		var scene = new Scene( this, id, "cityScene" );
-		var recruitBuilding:Entity = null; // building with name "recruit"
-
-		var config:Dynamic = Reflect.getProperty( this._config, "cityScene" );
-		if( config == null )
-			trace( "Error in SceneSystem._screateCityScene, scene not found in config container." );
-
-		scene.setBackgroundImageURL( config.backgroundImageURL );
-		
-		// create all buildings.
-		var buildingsArray:Array<Dynamic> = config.building;
-		for( k in 0...buildingsArray.length )
-		{
-			var building:Entity = entitySystem.createEntity( "building", buildingsArray[ k ], null );
-			entitySystem.addEntityToScene( building, scene );
-			switch( buildingsArray[ k ] )
-			{
-				case "recruits":
-				{
-					recruitBuilding = building;
-					var inventoryBuilding:Dynamic = building.getComponent( "inventory" ); //component inventory;
-					var slots = inventoryBuilding.getCurrentSlots();
-
-					for( i in 0...slots )
-					{
-						entitySystem.createHeroRecruitWithButton( scene, building );
-					}
-					//TODO: set timer to next change heroes in recruit building;
-				}
-				case "storage":
-				{
-					trace( "Storage works" );
-				}
-				case "inn":
-				{
-					
-				}
-			}
-		}
-
-		var windowsArray:Array<String> = config.window;
-		//var windowConfig:Dynamic = this._parent.getSystem( "entity" ).getConfig().window;
-		for( i in 0...windowsArray.length )
-		{
-			var window:Entity = entitySystem.createEntity( "window", windowsArray[ i ], null );
-			entitySystem.addEntityToScene( window, scene );
-		}
-
-		var buttonArray:Array<String> = config.button;
-		for( j in 0...buttonArray.length )
-		{
-			var newButton:String = buttonArray[ j ];
-			if( newButton == "recruitWindowHeroButton" )
-			{
-				var slots:Int = recruitBuilding.getComponent( "inventory" ).getMaxSlots(); //choose max slots for max buttons in recruit window ( building );
-				for( i in 0...slots )
-				{
-					var heroButton:Entity = entitySystem.createEntity( "button", newButton, null );
-					entitySystem.addEntityToScene( heroButton, scene );
-				}
-			}
-			else
-			{
-				var button:Entity = entitySystem.createEntity( "button", newButton, null );
-				entitySystem.addEntityToScene( button, scene );
-			}			
-		}	
-		//trace ( building.getComponent( "inventory" ).getInventory() );
-		this._addScene( scene );
-		return scene;
-	}
-
-	private function _createChooseDungeonScene():Scene
-	{
-		var id = this._createId();
-		var scene:Scene = new Scene( this, id, "chooseDungeonScene" );
-		var entitySystem:EntitySystem = this._parent.getSystem( "entity" );
-
-		var config:Dynamic = Reflect.getProperty( this._config, "chooseDungeonScene" );
-		if( config == null )
-			trace( "Error in SceneSystem._screateCityScene, scene not found in config container." );
-
-		scene.setBackgroundImageURL( config.backgroundImageURL );
-
-		var windowsArray:Array<String> = config.window;
-		for( i in 0...windowsArray.length )
-		{
-			var window:Entity = entitySystem.createEntity( "window", windowsArray[ i ], null );
-			entitySystem.addEntityToScene( window, scene );
-		}
-
-		var buttonArray:Array<String> = config.button;
-
-		for( j in 0...buttonArray.length )
-		{
-			var button:Entity = entitySystem.createEntity( "button", buttonArray[ j ], null );
-			entitySystem.addEntityToScene( button, scene );
-		}
-
-		//TODO: CONFIG;
-		this._addScene( scene );
-		return scene;
-	}
-
-	private function _createDungeonEasy( sceneName:String ):Scene
-	{
-		var id = this._createId();
-		var scene = new Scene( this, id, sceneName );
-		//TODO: CONFIG;
-		this._addScene( scene );
-		return scene;
-	}
-
-	private function _createdungeonMedium( sceneName:String ):Scene
-	{
-		var id = this._createId();
-		var scene = new Scene( this, id, sceneName );
-		//TODO: CONFIG;
-		this._addScene( scene );
-		return scene;
-	}
-
-	private function _createDungeonHard( sceneName:String ):Scene
-	{
-		var id = this._createId();
-		var scene = new Scene( this, id, sceneName );
-		//TODO: CONFIG;
-		this._addScene( scene );
-		return scene;
-	}
-
-	private function _createDungeonNightmare( sceneName:String ):Scene
-	{
-		var id = this._createId();
-		var scene = new Scene( this, id, sceneName );
-		//TODO: CONFIG;
-		this._addScene( scene );
-		return scene;
-	}
-
 
 	
-
-	public function new( parent:Game, params:Dynamic ):Void
+	public function new():Void
 	{
-		this._parent = parent;
-		this._scenesArray = new Array<Scene>();
-		this._config = params;
+
+	}
+
+	public function init():String
+	{
+		this._inited = true;
+		return "ok";
+	}
+
+	public function postInit():String
+	{
+		if( !this._inited )
+			return "Error in SceneSystem.postInit. Init is FALSE";
+
+		this._postInited = true;
+		return "ok";
 	}
 
 	public function update( time:Float ):Void
 	{
 		//we can add scenes to array , who need to update, and remove them if don't need to update;
-		for( key in Reflect.fields( this._scenesArray ) )
+		for( i in 0...this._scenesArray.length )
 		{
-			Reflect.getProperty( this._scenesArray, key ).update( time ); // update all scenes;
+			this._scenesArray[ i ].update( time );
 		}
-	}
-
-	public function createScene( sceneName:String ):Scene
-	{
-		switch( sceneName )
-		{
-			case "startScene": return this._createStartScene();
-			case "cityScene": return this._createCityScene();
-			case "chooseDungeonScene": return this._createChooseDungeonScene();
-			case "dungeonEasy" : return this._createDungeonEasy( sceneName );
-			case "dungeonMedium": return this._createdungeonMedium( sceneName );
-			case "dungeonHard": return this._createDungeonHard( sceneName );
-			case "dungeonNightmare": return this._createDungeonNightmare( sceneName );
-			default: trace( "Error in SceneSystem.createScene, scene name can't be: " + sceneName + "." );
-		}
-		return null;
 	}
 
 	public function removeScene( scene:Scene ):Void
@@ -245,20 +65,24 @@ class SceneSystem
 		}
 	}
 
-	public function switchSceneTo( scene:Scene ):Void // this only hide active scene.
+	public function switchSceneTo( scene:Scene ):Scene // this only hide active scene.
 	{
+		var sceneToReturn:Scene = null;
 		if( this._activeScene != null )
 		{
 			this._activeScene.hide(); //hide scene;
+			sceneToReturn = this._activeScene;
 			this._activeScene = null;
 		}
 
 		this._activeScene = scene;
 		
-		if( this.isSceneAlreadyCreated( scene.getId() ) )
+		if( this.isSceneAlreadyCreated( scene.get( "id" ) ) )
 			this._activeScene.show();
 		else
-			this._activeScene.draw();		
+			this._activeScene.draw();
+
+		return sceneToReturn;	
 		
 	}
 
@@ -287,7 +111,7 @@ class SceneSystem
 	{
 		for( i in 0...this._scenesArray.length )
 		{
-			var sceneId = this._scenesArray[ i ].getId();
+			var sceneId = this._scenesArray[ i ].get( "id" );
 			if( sceneId == id )
 				return true;
 		}

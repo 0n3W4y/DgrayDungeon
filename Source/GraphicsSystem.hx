@@ -1,7 +1,7 @@
 package;
 
 import openfl.display.Sprite;
-import openfl.display.TextField;
+import openfl.text.TextField;
 
 class GraphicsSystem
 {
@@ -33,7 +33,7 @@ class GraphicsSystem
 
 	public function postInit():String
 	{
-		if( !this.inited )
+		if( !this._inited )
 			return "Error in GraphicsSystem.postInit. Init is FALSE";
 
 		this._postInited = true;
@@ -59,7 +59,7 @@ class GraphicsSystem
 
 		var textField:TextField = this._sprite.getChildAt( 1 ).getChildAt( num );
 		if( textField == null )
-			return ( "Error in GraphicsSystem.changeText, TextField not found at : " + num );
+			return ( "Error in GraphicsSystem.changeText, TextField not found at : " + position );
 
 		textField.text = text;
 		return "ok";
@@ -68,6 +68,11 @@ class GraphicsSystem
 	public function playAnimation( animation:String ):Void
 	{
 
+	}
+
+	public function getSprite():Sprite
+	{
+		return this._sprite;
 	}
 
 

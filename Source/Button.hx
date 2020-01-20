@@ -1,5 +1,7 @@
 package;
 
+import openfl.display.Sprite;
+
 class Button
 {
 	private var _inited:Bool = false;
@@ -7,10 +9,9 @@ class Button
 
 	private var _id:Int;
 	private var _deployId:Int;
-	private var _name:Int;
+	private var _name:String;
 	private var _type:String;
 	private var _chooseUnchooseStatus:String;
-	private var _sprite:Sprite;
 
 	private var _graphics:GraphicsSystem;
 	private var _event:EventSystem;
@@ -36,7 +37,7 @@ class Button
 			return "Error in Button.init Name is: '" + name + "'";
 
 		this._graphics = new GraphicsSystem();
-		var err = this._graphics.init( this );
+		var err = this._graphics.init( this, sprite );
 		if( err != "ok" )
 			return "Error in Button.init. " + err;
 
@@ -44,10 +45,6 @@ class Button
 		err = this._event.init( this );
 		if( err != "ok" )
 			return "Error in Button.init. " + err;
-
-		this._sprite = sprite;
-		if( Std.is( this._sprite, Sprite ))
-			return "Error in Button.init. Sprite is not a Sprite class ";
 
 		this._type = "button";
 		
@@ -84,9 +81,9 @@ class Button
 			case "type": return this._type;
 			case "graphics": return this._graphics;
 			case "event": return this._event;
-			case "sprite": return this._sprite;
+			case "sprite": return this._graphics.getSprite();
 			case "chooseUnchooseStatus": return this._chooseUnchooseStatus;
-			default: { trace( "Error in Button.get. Can't get " + value ); return null };
+			default: { trace( "Error in Button.get. Can't get " + value ); return null; };
 		}
 	}
 }

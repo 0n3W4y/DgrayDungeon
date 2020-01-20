@@ -4,39 +4,74 @@ import openfl.display.Sprite;
 
 class Scene
 {
-	private var _parent:SceneSystem;
-	private var _id:String;
+	private var _inited:Bool = false;
+	private var _postInited:Bool = false;
+
+	private var _id:Int;
+	private var _deployId:Int;
+	private var _type:String;
 	private var _name:String;
-	private var _sceneSprite:Sprite;
 
 	private var _aliveEntities:Dynamic;
 	private var _objectEntities:Dynamic;
 	private var _uiEntities:Dynamic;
 
-	private var _backgroundImageURL:String;
+	private var _graphics:GraphicsSystem;
+	
 
-	public function new( parent:SceneSystem, id:String, name:String ):Void
+	public function new():Void
 	{
-		this._parent = parent;
-		this._id = id;
-		this._name = name;
 
+	}
+
+	public function init( id:Int, name:String, deployId:Int, sprite:Sprite ):String
+	{
 		this._aliveEntities = 
 		{
-			"hero": new Array<Entity>(),
-			"enemy": new Array<Entity>()
+			"hero": new Array(),
+			"enemy": new Array()
 		};
 		this._objectEntities = 
 		{
-			"building": new Array<Entity>(),
-			"treasure": new Array<Entity>()
+			"building": new Array<Building>(),
+			"treasure": new Array()
 		};
 		this._uiEntities = 
 		{
-			"window": new Array<Entity>(),
-			"button": new Array<Entity>()
+			"window": new Array<Window>(),
+			"button": new Array<Button>()
 		};
-		this._sceneSprite = new Sprite();
+
+		this._type = "scene";
+
+		this._id = id;
+		if( !Std.is( id, Int ) )
+			return 'Error in Scene.init. Id is "$id"';
+
+		this._name = name;
+		if( !Std.is( name, String ) )
+			return 'Error in Scene.init. Name is "$name"';
+
+		this._deployId = deployId;
+		if( !Std.is( deployId, Int ) )
+			return 'Error in Scene.init. deploy id is "$deployId"';
+
+		this._graphics = new GraphicsSystem();
+		var err:String = this._graphics.init( this, sprite );
+		if( err != 'ok' )
+			return 'Error in Scene.init. $err';
+
+		this._inited = true;
+		return "ok";
+	}
+
+	public function postInit():String
+	{
+		if( !this._inited )
+			return "Error in Scene.postInit. Init is FALSE";
+
+		this._postInited= true;
+		return "ok";
 	}
 
 	public function update( time:Float ):Void
@@ -44,64 +79,18 @@ class Scene
 		// update all Entities;
 	}
 
-	public function draw():Void //draw all scene
+	public function get( value:String ):Dynamic
 	{
-		this._parent.getParent().getSystem( "graphics" ).drawScene( this );
-	}
-
-	public function unDraw():Void
-	{
-		this._parent.getParent().getSystem( "graphics" ).undrawScene( this );
-	}
-
-	public function showUi( uiName:String ):Void
-	{
-		this._parent.getParent().getSystem( "graphics" ).showUiObject( this, uiName );
-	}
-
-	public function hideUi( uiName:String ):Void
-	{
-		this._parent.getParent().getSystem( "graphics" ).hideUiObject( this, uiName );
-	}
-
-	public function show():Void
-	{
-		this._parent.getParent().getSystem( "graphics" ).showScene( this );
-	}
-
-	public function hide():Void
-	{
-		this._parent.getParent().getSystem( "graphics" ).hideScene( this );
-	}
-
-	public function getId():String
-	{
-		return this._id;
-	}
-
-	public function getParent():SceneSystem
-	{
-		return this._parent;
-	}
-
-	public function getName():String
-	{
-		return this._name;
-	}
-
-	public function getBackgroundImageURL():String
-	{
-		return this._backgroundImageURL;
-	}
-
-	public function setBackgroundImageURL( url:String ):Void
-	{
-		this._backgroundImageURL = url;
-	}
-
-	public function getSprite():Sprite
-	{
-		return this._sceneSprite;
+		switch( value )
+		{
+			case "name": return this._name;
+			case "id": return this._id;
+			case "deployId": return this._deployId;
+			case "type": return this._type;
+			case "graphics": return this._graphics;
+			case "sprite": return this._graphics.getSprite();
+			default: { trace( 'Error in Scene.get. No getter for "$value"' ); return null; }
+		}
 	}
 
 	public function getEntities( type:String ):Dynamic
@@ -115,5 +104,39 @@ class Scene
 		}
 
 		return null;
+	}
+
+	public function addChild( object:Dynamic ):Void
+	{
+		var type:String = object.get( "type" );
+		if( this._checkObjectInScene( object ) )
+			return;
+
+		switch( type )
+		{
+			case "": return;
+			default: trace( 'Error in Scene.addChild. Can not add child with type: "$type"' );
+		}
+	}
+
+	public function removeChild( object:Dynamic ):Dynamic
+	{
+		return null;
+	}
+
+	//PRIVATE
+
+	private function _checkObjectInScene( object:Dynamic ):Bool
+	{
+		var type:String = object.get( "type" );
+		var id:Int = object.get( "id" );
+		switch( type )
+		{
+			case "":
+			{ 
+				return true;
+			}
+			default: return false;
+		}
 	}
 }

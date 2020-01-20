@@ -16,6 +16,7 @@ class Game
 
 	private var _eventHandler:EventHandler;
 	private var _generatorSystem:GeneratorSystem;
+	private var _sceneSystem:SceneSystem;
 
 
 	private var _onPause:Bool = false;

@@ -1,5 +1,7 @@
 package;
 
+import openfl.display.Sprite;
+
 class Window
 {
 	private var _inited:Bool = false;
@@ -58,15 +60,7 @@ class Window
 		
 	}
 
-	public function update( time:Float ):Void
-	{
-		for( i in 0...this._buttonChildren.length )
-		{
-			this._buttonChildren[ i ].update( time );
-		}
-	}
-
-	public function appendChild( button:Button ):String
+	public function addChild( button:Button ):String
 	{
 		var checkButton:Array<Dynamic> = this._checkChildForExist( button );
 		var oldButton:Button = checkButton[ 0 ];
@@ -108,7 +102,8 @@ class Window
 			case "graphics": return this._graphics;
 			case "sprite": return this._graphics.getSprite();
 			case "openCloseStatus": return this._openCloseStatus;
-			default: { trace( "Error in Window.get. Can't get " + value ); return null };
+			case "children": return this._buttonChildren;
+			default: { trace( "Error in Window.get. Can't get " + value ); return null; };
 		}
 	}
 
@@ -120,11 +115,11 @@ class Window
 
 	private function _checkChildForExist( button:Button ):Array<Dynamic>
 	{
-		var buttonId:String = button.getId();
+		var buttonId:String = button.get( "id" );
 		for( i in 0...this._buttonChildren.length )
 		{
 			var oldButton:Button = this._buttonChildren[ i ];
-			var oldButtonId:Int = oldButton.getId();
+			var oldButtonId:Int = oldButton.get( "id" );
 			if( oldButtonId == buttonId )
 				return [ oldButton, i ];
 		}
