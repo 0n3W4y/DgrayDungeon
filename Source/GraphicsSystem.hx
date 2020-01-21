@@ -56,8 +56,8 @@ class GraphicsSystem
 			case "five": num = 4;
 			default: return ( "Error in GraphicsSystem.changeText, bad position. Position is: " + position );
 		}
-
-		var textField:TextField = this._sprite.getChildAt( 1 ).getChildAt( num );
+		var abstractSprite:Dynamic = this._sprite;
+		var textField:TextField = abstractSprite.getChildAt( 1 ).getChildAt( num );
 		if( textField == null )
 			return ( "Error in GraphicsSystem.changeText, TextField not found at : " + position );
 

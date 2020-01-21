@@ -63,9 +63,9 @@ class Window
 	public function addChild( button:Button ):String
 	{
 		var checkButton:Array<Dynamic> = this._checkChildForExist( button );
-		var oldButton:Button = checkButton[ 0 ];
-		if( oldButton != null )
-			return "Error in Window.appendChild. Button with name: '" + oldButton.get( "name" ) + "' already exist";
+		var error:String = checkButton[ 0 ];
+		if( error != null )
+			return 'Error in Window.appendChild. $error';
 
 		this._buttonChildren.push( button );
 		return "ok";
@@ -73,14 +73,16 @@ class Window
 
 	public function removeChild( button:Button ):Array<Dynamic>
 	{
+		var name:String = button.get( "name" );
 		var checkButton:Array<Dynamic> = this._checkChildForExist( button );
-		var oldButton:Button = checkButton[ 0 ];
-		var oldButtonIndex:Int = checkButton[ 1 ];
-		if( oldButton == null )
-			return [ null, "Error in Window.appendChild. Button with name: '" + buttonName + "' not exist" ];
-		else
-			this._buttonChildren.splice( oldButtonIndex, 1 );
-		return [ oldButton, null ];
+		var index:Int = checkButton[ 0 ];
+		var error:String = checkButton[ 1 ];
+		if( error == null )
+			return [ null, 'Error in Window.appendChild. Button with name: "$name" not found' ];
+
+		var buttonToReturn:Button = this._buttonChildren[ index ];
+		this._buttonChildren.splice( index, 1 );
+		return [ buttonToReturn, null ];
 	}
 
 	public function changeOpenCloseStatus():Void
@@ -115,13 +117,13 @@ class Window
 
 	private function _checkChildForExist( button:Button ):Array<Dynamic>
 	{
-		var buttonId:String = button.get( "id" );
+		var buttonId:Int = button.get( "id" );
 		for( i in 0...this._buttonChildren.length )
 		{
 			var oldButton:Button = this._buttonChildren[ i ];
 			var oldButtonId:Int = oldButton.get( "id" );
 			if( oldButtonId == buttonId )
-				return [ oldButton, i ];
+				return [ i, 'Error in Window._checkChildForExist. Found duplicate button with id: "$buttonId"' ];
 		}
 		return [ null, null ];
 	}

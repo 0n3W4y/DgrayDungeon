@@ -2,74 +2,46 @@
 	"2000":{
 		"name": "hospital",
 		"deployId": 2000,
-		"normalImageURL": "assets/images/hospital.png",
-		"normalImageX": 0.0,
-		"normalImageY": 0.0,
-		"hoverImageURL": "assets/images/hospital_m.png",
-		"hoverImageX": 0.0,
-		"hoverImageY": 0.0,
+		"imageNormalURL": "assets/images/hospital.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"imageHoverURL": "assets/images/hospital_m.png",
+		"imageHoverX": 0.0,
+		"imageHoverY": 0.0,
 		"x": 650.0,
 		"y": 80.0,
-		"buildingText": "Hospital",
-		"buildingTextSize": 48,
-		"buildingTextColor": "0x000000",
-		"buildingTextHeight": 50,
-		"buildingTextWidth": 400,
-		"buildingTextX": 30.0,
-		"buildingTextY": 10.0,
-		"buildingTextAlign": "left"
+		"firstText": "Hospital",
+		"firstTextSize": 48,
+		"firstTextColor": "0xffffff",
+		"firstTextHeight": 50,
+		"firstTextWidth": 300,
+		"firstTextX": 0.0,
+		"firstTextY": 0.0,
+		"firstTextAlign": "left"
 	},
 
-			"tavern": {
-				"event": {},
-				"graphics": {
-					"addiction": null,
-					"graphicsInstance": null,
-					"queue": 0,
-					"x": 990.0,
-					"y": 330.0,
-					"img": {
-						"one": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/tavern.png"
-						},
-						"two": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/tavern_m.png"
-						}
-					},
-					"text": {
-						"first": {
-							"text": "Tavern",
-							"align": "left",
-							"x": 0.0,
-							"y": 0.0,
-							"font": "Verdana",
-							"size": 48,
-							"color": "0xffffff",
-							"visible": true,
-							"selectable": false,
-							"height": 100,
-							"width": 100
-						},
-						"second": {
-							"text": "Make a drink",
-							"align": "left",
-							"x": 0.0,
-							"y": 0.0,
-							"font": "Verdana",
-							"size": 32,
-							"color": "0xffffff",
-							"visible": true,
-							"selectable": false,
-							"height": 100,
-							"width": 100
-						}
-					}
-				}
-			},
+	"2001":{
+		"name": "tavern",
+		"deployId": 2001,
+		"imageNormalURL": "assets/images/tavern.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"imageHoverURL": "assets/images/tavern_m.png",
+		"imageHoverX": 0.0,
+		"imageHoverY": 0.0,
+		"x": 990.0,
+		"y": 330.0,
+		"firstText": "Tavern",
+		"firstTextSize": 48,
+		"firstTextColor": "0xffffff",
+		"firstTextHeight": 50,
+		"firstTextWidth": 300,
+		"firstTextX": 0.0,
+		"firstTextY": 0.0,
+		"firstTextAlign": "left"
+	},
+
+			
 			"inn": {
 				"inventory": {
 					"maxSlots": 8,
@@ -134,10 +106,6 @@
 			},
 
 			"svyatilishe": {
-
-			},
-
-			"storage": {
 
 			},
 

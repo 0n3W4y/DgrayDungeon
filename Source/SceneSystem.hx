@@ -5,18 +5,11 @@ class SceneSystem
 	private var _parent:Game;
 	private var _scenesArray:Array<Scene>;
 	private var _activeScene:Scene;
-	private var _config:Dynamic;
+	private var _inited:Bool = false;
+	private var _postInited:Bool = false;
 
-	private var _nextId:Int = 0;
 
-	private function _createId():String
-	{
-		var id = this._nextId;
-		this._nextId++;
-		return id;
-	}
-
-	private function _addScene( scene:Scene ):Void
+	public function addScene( scene:Scene ):Void
 	{
 		if( !this.isSceneAlreadyCreated( scene.get( "id" ) ) )
 			this._scenesArray.push( scene );
@@ -54,10 +47,10 @@ class SceneSystem
 
 	public function removeScene( scene:Scene ):Void
 	{
-		var sceneId = scene.getId();
+		var sceneId = scene.get( "id" );
 		for( i in 0...this._scenesArray.length )
 		{
-			if( this._scenesArray[ i ].getId() == sceneId )
+			if( this._scenesArray[ i ].get( "id" )== sceneId )
 			{
 				this._scenesArray.splice( i, 1 );
 				break;
@@ -67,23 +60,7 @@ class SceneSystem
 
 	public function switchSceneTo( scene:Scene ):Scene // this only hide active scene.
 	{
-		var sceneToReturn:Scene = null;
-		if( this._activeScene != null )
-		{
-			this._activeScene.hide(); //hide scene;
-			sceneToReturn = this._activeScene;
-			this._activeScene = null;
-		}
-
-		this._activeScene = scene;
-		
-		if( this.isSceneAlreadyCreated( scene.get( "id" ) ) )
-			this._activeScene.show();
-		else
-			this._activeScene.draw();
-
-		return sceneToReturn;	
-		
+		return null;	
 	}
 
 	public function getParent():Game
@@ -100,7 +77,7 @@ class SceneSystem
 	{
 		for( i in 0...this._scenesArray.length )
 		{
-			var sceneName = this._scenesArray[ i ].getName();
+			var sceneName = this._scenesArray[ i ].get( "name" );
 			if( sceneName == name )
 				return this._scenesArray[ i ];
 		}

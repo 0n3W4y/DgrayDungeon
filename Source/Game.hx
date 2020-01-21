@@ -93,6 +93,15 @@ class Game
 		this._gameStart = Date.now().getTime();
 		this._calculateDelta();
 		this._lastTime = 0.0;
+
+		var createScene:Array<Dynamic> = this._generatorSystem.generateScene( 1000 );
+		var scene:Scene = createScene[ 0 ];
+		var sceneError:String = createScene[ 1 ];
+		if( sceneError != null )
+			throw 'Error in Game._startGame. $sceneError';
+
+		
+		this.start();
 	}
 
 	public function new( width:Int, height:Int, fps:Int, mainSprite:Sprite ):Void
@@ -129,12 +138,7 @@ class Game
 		if( err != "ok" )
 			throw "Error in Game.new. " + err;
 
-		
-
-
-		this._startGame();
-		
-		
+		this._startGame();		
 	}
 
 	public function start():Void

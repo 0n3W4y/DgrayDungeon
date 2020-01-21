@@ -38,8 +38,7 @@ class Scene
 		};
 		this._uiEntities = 
 		{
-			"window": new Array<Window>(),
-			"button": new Array<Button>()
+			"window": new Array<Window>()
 		};
 
 		this._type = "scene";
@@ -106,37 +105,67 @@ class Scene
 		return null;
 	}
 
-	public function addChild( object:Dynamic ):Void
+	public function addChild( object:Dynamic ):String
 	{
 		var type:String = object.get( "type" );
-		if( this._checkObjectInScene( object ) )
-			return;
+		var check:Array<Dynamic> = this._checkChildForExist( object );
+		var err:String = check[ 1 ];
+		if( err != null ) // проверяем на наличие объекта на сцене.
+			return ( 'Error in Scene.addChild. $err' );
 
+		var container:Array<Dynamic> = null;
 		switch( type )
 		{
-			case "": return;
-			default: trace( 'Error in Scene.addChild. Can not add child with type: "$type"' );
+			case "window": container = this._uiEntities.window;
+			default: return( 'Error in Scene.addChild. Can not add child with type: "$type"' );
 		}
+		container.push( object );
+		return "ok";
 	}
 
-	public function removeChild( object:Dynamic ):Dynamic
+	public function removeChild( object:Dynamic ):Array<Dynamic>
 	{
-		return null;
+		var container:Array<Dynamic> = null;
+		var type:String = object.get( "type" );
+		switch( type )
+		{
+			case "window": container = this._objectEntities.window;
+			default: { return [ null, 'Error in Scene._checkChildForExist. No type found for "$type"' ]; }
+		}
+
+		var check:Array<Dynamic> = this._checkChildForExist( object ); // [ index, error ];
+		var index:Int = check[ 0 ];
+		var err:String = check[ 1 ];
+		if( index == null && err != null )
+			return [ null, 'Error in Scene.removeChild. $err' ];
+		else if( index == null )
+			return [ null, 'Error in Scene.removeChild. No object found on Scene' ];
+
+		var removedObject:Dynamic = container[ index ];
+		container.splice( index, 1 );
+		return [ removedObject, null ];
 	}
 
 	//PRIVATE
 
-	private function _checkObjectInScene( object:Dynamic ):Bool
+	private function _checkChildForExist( object:Dynamic ):Array<Dynamic>
 	{
 		var type:String = object.get( "type" );
+		var name:String = object.get( "name" );
 		var id:Int = object.get( "id" );
+		var container:Array<Dynamic> = null;
 		switch( type )
 		{
-			case "":
-			{ 
-				return true;
-			}
-			default: return false;
+			case "window": container = this._objectEntities.window;
+			default: { return [ null, 'Error in Scene._checkChildForExist. No type found for "$type"' ]; }
 		}
+
+		for( i in 0...container.length )
+		{
+			if( id == container[ i ].get( "id" ) )
+				return [ i, 'Error in Scene._checkChildForExist. Found dublicate object with type: "$type" and name "$name"' ];
+		}
+
+		return [ null, null ];
 	}
 }

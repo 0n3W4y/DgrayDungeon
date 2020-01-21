@@ -121,9 +121,22 @@ class GeneratorSystem
 		if( err != "ok" )
 			return [ null, 'Error in GeneratorSystem.generateScene. $err' ];
 
-		if( config.window != null )
+		if( config.window != null ) // Внутри Window есть чайлды в виде button. создаются в функции создании окна.
 		{
-			//TODO: create windows;
+			for( i in 0...config.window.length )
+			{
+				var windowDeployId:Int = config.window[ i ];
+				var createWindow:Array<Dynamic> = this.generateWindow( windowDeployId );
+				var window:Window = createWindow[ 0 ];
+				var windowError:String = createWindow[ 1 ];
+				if( windowError != null )
+					return [ null, 'Error in GeneratorSystem.generateScene. $windowError' ];
+
+				var wErr = scene.addChild( window );
+				if( wErr != "ok" ) // Window Error
+					return [ null, 'Error in GeneratorSystem.generateScene. $wErr' ];
+
+			}
 		}
 
 		return [ scene, null ];
@@ -155,8 +168,14 @@ class GeneratorSystem
 			for( i in 0...config.button.length )
 			{
 				var buttonDeployId:Int = config.button[ i ];
-				var button:Button = this.generateButton( buttonDeployId );
-				window.addChild( button );
+				var createButton:Array<Dynamic> = this.generateButton( buttonDeployId );
+				var button:Button = createButton[ 0 ];
+				var buttonError:String = createButton[ 1 ];
+				if( buttonError != null )
+					return [ null, 'Error in GeneratorSystem.generateWindow. $buttonError' ];
+				var bErr:String = window.addChild( button );
+				if( bErr != "ok" ) // Button Error
+					return [ null, 'Error in GeneratorSystem.generateWindow. $bErr' ];
 			}
 		}
 
@@ -318,7 +337,7 @@ class GeneratorSystem
 		return result;
 	}
 
-
+/*
 	private function _createCityScene():Scene
 	{
 		var entitySystem:EntitySystem = this._parent.getSystem( "entity" );
@@ -427,5 +446,5 @@ class GeneratorSystem
 		return scene;
 	}
 
-
+*/
 }
