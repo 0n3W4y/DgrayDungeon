@@ -11,6 +11,7 @@ class Scene
 	private var _deployId:Int;
 	private var _type:String;
 	private var _name:String;
+	private var _isDrawed:String;
 
 	private var _aliveEntities:Dynamic;
 	private var _objectEntities:Dynamic;
@@ -60,6 +61,7 @@ class Scene
 		if( err != 'ok' )
 			return 'Error in Scene.init. $err';
 
+		this._isDrawed = "undrawed"; // Параметр для того, что бы понять, нужно ли отрисовывать сцену и все ее childs или она уже отрисована но скрыта.
 		this._inited = true;
 		return null;
 	}
@@ -88,6 +90,7 @@ class Scene
 			case "type": return this._type;
 			case "graphics": return this._graphics;
 			case "sprite": return this._graphics.getSprite();
+			case "drawed": return this._isDrawed;
 			default: { trace( 'Error in Scene.get. No getter for "$value"' ); return null; }
 		}
 	}
@@ -140,6 +143,17 @@ class Scene
 
 		container.splice( check, 1 );
 		return [ object, null ];
+	}
+
+	public function changeDrawStatus( value:String ):Void
+	{
+		if( value != "drawed" || value != "undrawed" )
+			throw 'Error in Scene.changeDrawSatatus. Value is not valid: "$value"';
+
+		if( this._isDrawed == value )
+			throw 'Error in Scene.changeDrawStatus. Is Drawed already "$value"';
+
+		this._isDrawed = value;
 	}
 
 	//PRIVATE

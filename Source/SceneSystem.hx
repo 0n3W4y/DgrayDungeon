@@ -17,29 +17,27 @@ class SceneSystem
 
 	}
 
-	public function init( parent:Game, sprite:Sprite ):String
+	public function init( parent:Game, sprite:Sprite ):Void
 	{	
 		this._parent = parent;
 		if( parent == null )
-			return 'Error in SceneSystem.init. Parent is "$parent"';
+			throw 'Error in SceneSystem.init. Parent is "$parent"';
 
 		this._scenesSprite = sprite;
 		if( sprite == null )
-			return 'Error in SceneSystem.init. Sprite is "$sprite"';
+			throw 'Error in SceneSystem.init. Sprite is "$sprite"';
 
 		this._scenesArray = new Array<Scene>();
 		this._activeScene = null;
 		this._inited = true;
-		return "ok";
 	}
 
-	public function postInit():String
+	public function postInit():Void
 	{
 		if( !this._inited )
-			return "Error in SceneSystem.postInit. Init is FALSE";
+			throw "Error in SceneSystem.postInit. Init is FALSE";
 
 		this._postInited = true;
-		return "ok";
 	}
 
 	public function update( time:Float ):Void
@@ -51,15 +49,14 @@ class SceneSystem
 		}
 	}
 
-	public function addScene( scene:Scene ):String
+	public function addScene( scene:Scene ):Void
 	{
 		var name:String = scene.get( "name" );
 		var check = this._checkSceneIfExist( scene );
 		if( check != null )
-			return 'Error in SceneSystem.addScene. Scene with name "$name" already in.';
+			throw 'Error in SceneSystem.addScene. Scene with name "$name" already in.';
 
 		this._scenesArray.push( scene );
-		return null;
 	}
 
 	public function removeScene( scene:Scene ):Array<Dynamic>
@@ -74,7 +71,7 @@ class SceneSystem
 		return [ sceneToReturn, null ];
 	}
 
-	public function switchSceneTo( scene:Scene ):Void // this only hide active scene.
+	public function fastSwitchSceneTo( scene:Scene ):Void // fast switch between scenes, hide active and show scene; Использовать для перемещения между сценой города и выбором данжа.
 	{
 		if( this._activeScene != null )
 			this.hideScene( this._activeScene );
@@ -85,18 +82,31 @@ class SceneSystem
 
 	public function changeSceneTo( scene:Scene ):Void //full undraw active scene, and draw new scene;
 	{
+		//TODO: First we must draw loader scene;
+
+		if( this._activeScene != null )
+			this.undrawScene( this._activeScene );
+
+		this._activeScene = scene;
+		if( scene.get( "drawed" ) == "drawed" )
+			this.showScene( scene ); // если true, значит сцена уже отрисована была до этого, но скрыта. по этому показываем ее.
+		else
+			this.drawScene( scene );
 
 	}
 
 	public function drawUiForScene( scene:Scene ):Void
 	{
-		var windows:Array<Window> = scene.getChilds( "ui" ).window;
 		var ui:UserInterface = this._parent.getSystem( "ui" );
+		var windows:Array<Window> = scene.getChilds( "ui" ).window;
+		if( windows == null )
+			throw 'Error in SceneSystem.drawUiForScene. Scene does not have any widnows.';
+		
 		for( i in 0...windows.length )
 		{
-			var err:String = ui.addUiObject( windows[ i ] );
-			if( err != null )
-				throw 'Error in SceneSystem.drawUiForScene. $err';
+			var window:Window = windows[ i ];
+			var activeStatus:Bool = window.get( "defaultActive" );
+			ui.addUiObject( windows[ i ] );
 		}
 	}
 
@@ -106,9 +116,7 @@ class SceneSystem
 		var ui:UserInterface = this._parent.getSystem( "ui" );
 		for( i in 0...windows.length )
 		{
-			var err:String = ui.removeUiObject( windows[ i ] );
-			if( err != null )
-				throw 'Error in SceneSystem.undrawUiForScene. $err';
+			ui.removeUiObject( windows[ i ] );
 		}
 	}
 
@@ -122,16 +130,24 @@ class SceneSystem
 		scene.get( "sprite" ).visible = false;
 	}
 
-	public function drawScene( scene:Scene ):String
+	public function drawScene( scene:Scene ):Void
 	{
-		var sceneSprite:Sprite = scene.get( "sprite" );
-
-		return 'ok';
+		var name:String = scene.get( "name" );
+		switch( name )
+		{
+			case "startScene": return this._drawStartScene( scene );
+			default: throw 'Error in SceneSystem.drawScene. Scene with name "$name" can not to be draw, no function for it.';
+		}
 	}
 
-	public function undrawScene( scene:Scene ):String
+	public function undrawScene( scene:Scene ):Void
 	{
-		return 'ok';
+		var name:String = scene.get( "name" );
+		switch( name )
+		{
+			case "startScene": return this._undrawStartScene( scene );
+			default: throw 'Error in SceneSystem.drawScene. Scene with name "$name" can not to be draw, no function for it.';
+		}
 	}
 
 	public function getParent():Game
@@ -157,19 +173,28 @@ class SceneSystem
 
 	//PRIVATE
 
-	private function _drawStartingScene( scene:Scene ):Void
+	private function _drawStartScene( scene:Scene ):Void
 	{
 		var sprite:Sprite = scene.get( "sprite" );
 		this._scenesSprite.addChild( sprite );
 		this.drawUiForScene( scene );
+		scene.changeDrawStatus( "drawed" );
+	}
+
+	private function _undrawStartScene( scene:Scene ):Void
+	{
+		var sprite:Sprite = scene.get( "sprite" );
+		this._scenesSprite.removeChild( sprite );
+		this.undrawUiForScene( scene );
+		scene.changeDrawStatus( "undrawed" );
 	}
 
 	private function _checkSceneIfExist( scene:Scene ):Int
 	{
+		var id:Int = scene.get( "id" );
 		for( i in 0...this._scenesArray.length )
 		{
-			var sceneId = this._scenesArray[ i ].get( "id" );
-			if( sceneId == id )
+			if( this._scenesArray[ i ].get( "id" ) == id )
 				return i;
 		}
 		return null;

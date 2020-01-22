@@ -9,7 +9,6 @@ import openfl.text.TextFormatAlign;
 
 class GeneratorSystem
 {
-	private var _preInited:Bool = false;
 	private var _inited:Bool = false;
 	private var _postInited:Bool = false;
 
@@ -32,59 +31,49 @@ class GeneratorSystem
 
 	}
 
-	public function preInit():String
+	public function init( parent:Game, sceneDeploy:Map<Int, Dynamic>, buildingDeploy:Map<Int, Dynamic>, windowDeploy:Map<Int, Dynamic>, buttonDeploy:Map<Int, Dynamic>, heroDeploy:Map<Int, Dynamic>, itemDeploy:Map<Int, Dynamic> ):Void
 	{
 		this._nextId = 0;
-		this._preInited = true;
-		return "ok";
-	}
-
-	public function init( parent:Game, sceneDeploy:Map<Int, Dynamic>, buildingDeploy:Map<Int, Dynamic>, windowDeploy:Map<Int, Dynamic>, buttonDeploy:Map<Int, Dynamic>, heroDeploy:Map<Int, Dynamic>, itemDeploy:Map<Int, Dynamic> ):String
-	{
-		if( !this._preInited )
-			return "Error in GeneratorSystem.init. Pre init is FALSE";
 
 		this._parent = parent;
 		if( this._parent == null )
-			return  "Error in GeneratorSystem.preInit. Parent is NULL";
+			throw  "Error in GeneratorSystem.preInit. Parent is NULL";
 		
 		//TODO: == null && !this.sceneDeploy.exist( 1000 ); // проверка на наличие нужного DeployId в этом объекте
 
 		this._sceneDeploy = sceneDeploy;
 		if( this._sceneDeploy == null )
-			return "Error in GeneratorSystem.init. SceneDeploy is NULL";
+			throw "Error in GeneratorSystem.init. SceneDeploy is NULL";
 		
 		this._buildingDeploy = buildingDeploy;
 		if( this._sceneDeploy == null )
-			return "Error in GeneratorSystem.init. BuildingDeploy is NULL";
+			throw "Error in GeneratorSystem.init. BuildingDeploy is NULL";
 		
 		this._windowDeploy = windowDeploy;
 		if( this._sceneDeploy == null )
-			return "Error in GeneratorSystem.init. WindowDeploy is NULL";
+			throw "Error in GeneratorSystem.init. WindowDeploy is NULL";
 		
 		this._buttonDeploy = buttonDeploy;
 		if( this._sceneDeploy == null )
-			return "Error in GeneratorSystem.init. ButtonDeploy is NULL";
+			throw "Error in GeneratorSystem.init. ButtonDeploy is NULL";
 		
 		this._heroDeploy = heroDeploy;
 		if( this._sceneDeploy == null )
-			return "Error in GeneratorSystem.init. HeroDeploy is NULL";
+			throw "Error in GeneratorSystem.init. HeroDeploy is NULL";
 		
 		this._itemDeploy = itemDeploy;
 		if( this._sceneDeploy == null )
-			return "Error in GeneratorSystem.init. ItemDeploy is NULL";
+			throw "Error in GeneratorSystem.init. ItemDeploy is NULL";
 		
 		this._inited = true;
-		return "ok";
 	}
 
-	public function postInit():String
+	public function postInit():Void
 	{
 		if( !this._inited )
-			return "Error in GeneratorSystem.postInit. Init is FALSE";
+			throw "Error in GeneratorSystem.postInit. Init is FALSE";
 
 		this._postInited = true;
-		return "ok";
 	}
 
 	public function generateHero( deployId:Int ):Array<Dynamic>
@@ -117,10 +106,9 @@ class GeneratorSystem
 		var textSprite:Sprite = this._createTextSprite( config );
 		sprite.addChild( textSprite );
 
-		var err = scene.init( id, config.name, deployId, sprite );
-		if( err != null )
-			return [ null, 'Error in GeneratorSystem.generateScene. $err' ];
+		scene.init( id, config.name, deployId, sprite );
 
+		// окна не будут добавлены на сцену, так как они являются частью Интерфейса пользователя.
 		if( config.window != null ) // Внутри Window есть чайлды в виде button. создаются в функции создании окна.
 		{
 			for( i in 0...config.window.length )
@@ -132,10 +120,7 @@ class GeneratorSystem
 				if( windowError != null )
 					return [ null, 'Error in GeneratorSystem.generateScene. $windowError' ];
 
-				var wErr = scene.addChild( window );
-				if( wErr != "ok" ) // Window Error
-					return [ null, 'Error in GeneratorSystem.generateScene. $wErr' ];
-
+				scene.addChild( window );
 			}
 		}
 
@@ -159,9 +144,7 @@ class GeneratorSystem
 		var textSprite:Sprite = this._createTextSprite( config );
 		sprite.addChild( textSprite );		
 
-		var err:String = window.init( id, config.name, config.deployId, sprite );
-		if( err != null )
-			return [ null, err ];
+		window.init( id, config.name, config.deployId, sprite, config.alwaysActive );
 
 		if( config.button != null )
 		{
@@ -170,12 +153,10 @@ class GeneratorSystem
 				var buttonDeployId:Int = config.button[ i ];
 				var createButton:Array<Dynamic> = this.generateButton( buttonDeployId );
 				var button:Button = createButton[ 0 ];
-				var buttonError:String = createButton[ 1 ];
-				if( buttonError != null )
-					return [ null, 'Error in GeneratorSystem.generateWindow. $buttonError' ];
-				var bErr:String = window.addChild( button );
-				if( bErr != "ok" ) // Button Error
-					return [ null, 'Error in GeneratorSystem.generateWindow. $bErr' ];
+				var err:String = createButton[ 1 ];
+				if( err != null )
+					return [ null, 'Error in GeneratorSystem.generateWindow. $err' ];
+				window.addChild( button );
 			}
 		}
 
@@ -199,9 +180,7 @@ class GeneratorSystem
 		var textSprite:Sprite = this._createTextSprite( config );
 		sprite.addChild( textSprite );
 
-		var err:String = button.init( id, config.name, config.deployId, sprite );
-		if( err != null )
-			return [ null, err ];
+		button.init( id, config.name, config.deployId, sprite );
 
 		return [ button, null ];
 	}
@@ -306,7 +285,7 @@ class GeneratorSystem
         	case "left": align = TextFormatAlign.LEFT;
         	case "right": align = TextFormatAlign.RIGHT;
         	case "center": align = TextFormatAlign.CENTER;
-        	default: trace( "Error in GeneratorSystem._createText. Wrong align: " + text.align + "; text: " + text.text );
+        	default: throw( "Error in GeneratorSystem._createText. Wrong align: " + text.align + "; text: " + text.text );
         }
 
         var textFormat:TextFormat = new TextFormat();
@@ -325,7 +304,7 @@ class GeneratorSystem
         txt.y = text.y;
 
         if( text.text == null || text.width == null || text.height == null || text.x == null || text.y == null || text.size == null || text.color == null )
-        	trace( "Some errors in GeneratorSystem._createText. In config some values is NULL. Text: " + text.text );
+        	throw( "Some errors in GeneratorSystem._createText. In config some values is NULL. Text: " + text.text );
 
         return txt;
 	}

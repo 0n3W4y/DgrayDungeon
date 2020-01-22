@@ -11,7 +11,8 @@ class Window
 	private var _deployId:Int;
 	private var _name:String;
 	private var _type:String;
-	private var _openCloseStatus:String; // open, close
+	private var _isActive:Bool;
+	private var _alwaysActive:Bool;
 
 	private var _buttonChildren:Array<Button>;
 
@@ -23,71 +24,73 @@ class Window
 
 	}
 
-	public function init( id:Int, name:String, deployId:Int, sprite:Sprite ):String
+	public function init( id:Int, name:String, deployId:Int, sprite:Sprite, alwaysActive:Bool ):Void
 	{
 		this._type = "window";
 		this._buttonChildren = new Array();
-		this._openCloseStatus = "close";
+		this._isActive = false; // by default status is hide;
+		this._alwaysActive = alwaysActive;
 
 		this._id = id;
 		if( Std.is( this._id, Int ) )
-			return "Error in Window.init. Id is: '" + id + "'";
+			throw "Error in Window.init. Id is: '" + id + "'";
 
 		this._name = name;
 		if( Std.is( this._name, String ) )
-			return "Error in Window.init. Name is: '" + name + "'";
+			throw "Error in Window.init. Name is: '" + name + "'";
 
 		this._deployId = deployId;
 		if( Std.is( this._deployId, Int ) )
-			return "Error in Widnow.init. DeployID is: '" + deployId + "'";
+			throw "Error in Widnow.init. DeployID is: '" + deployId + "'";
 
 		this._graphics = new GraphicsSystem();
 		var err = this._graphics.init( this, sprite );
 		if( err != "ok" )
-			return "Error in Window.init. Window name: " + this._name + "; " + err;
+			throw "Error in Window.init. Window name: " + this._name + "; " + err;
 
 		this._inited = true;
-		return null;
 	}
 
-	public function postInit():String
+	public function postInit():Void
 	{
 		if( !this._inited )
-			return "Error in Window.postInit. Init is FALSE!";
+			throw "Error in Window.postInit. Init is FALSE!";
 
-		this._postInited = true;
-		return null;
-		
+		this._postInited = true;		
 	}
 
-	public function addChild( button:Button ):String
+	public function addChild( button:Button ):Void
 	{
-		var checkButton:Array<Dynamic> = this._checkChildForExist( button );
-		var error:String = checkButton[ 0 ];
-		if( checkButton != null )
-			return 'Error in Window.addChild. Found duplicate button with id: "$buttonId"';
+		var name:String = button.get( "name" );
+		var check:Int = this._checkChildForExist( button );
+		if( check != null )
+			throw 'Error in Window.addChild. Found duplicate button with name: "$name"';
 
 		this._buttonChildren.push( button );
-		return null;
 	}
 
 	public function removeChild( button:Button ):Array<Dynamic>
 	{
 		var name:String = button.get( "name" );
-		var checkButton:Int = this._checkChildForExist( button );
-		if( checkButton == null )
+		var check:Int = this._checkChildForExist( button );
+		if( check == null )
 			return [ null, 'Error in Window.appendChild. Button with name: "$name" not found' ];
 
-		this._buttonChildren.splice( checkButton, 1 );
+		this._buttonChildren.splice( check, 1 );
 		return [ button, null ];
 	}
 
-	public function changeOpenCloseStatus():Void
+	public function changeActiveStatus():Void
 	{
-		if( this._openCloseStatus == "open" )
-			this._openCloseStatus = "close";
+		if( this._isActive )
+			this._isActive = false;
 		else
-			this._openCloseStatus = "open";
+			this._isActive = true;
+	}
+
+	public function getActiveStatus():Bool
+	{
+		return this._isActive;
 	}
 
 	public function get( value:String ):Dynamic
@@ -100,9 +103,10 @@ class Window
 			case "type": return this._type;
 			case "graphics": return this._graphics;
 			case "sprite": return this._graphics.getSprite();
-			case "openCloseStatus": return this._openCloseStatus;
+			case "activeStatus": return this._isActive;
+			case "alwaysActive": return this._alwaysActive;
 			case "children": return this._buttonChildren;
-			default: { trace( "Error in Window.get. Can't get " + value ); return null; };
+			default: { throw( "Error in Window.get. Can't get " + value ); return null; };
 		}
 	}
 

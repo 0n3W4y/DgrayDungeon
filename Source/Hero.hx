@@ -2,7 +2,6 @@ package;
 
 class Hero
 {
-	private var _preInited:Bool = false;
 	private var _inited:Bool = false;
 	private var _postInited:Bool = false;
 
@@ -16,27 +15,30 @@ class Hero
 
 	}
 
-	public function preInit():Array<Dynamic>
-	{
-		this._preInited = true;
-		return "ok";
-	}
-
-	public function init( id:Int, deployId:Int, name:String ):Array<Dynamic>
+	public function init( id:Int, deployId:Int, name:String ):Void
 	{	
-		if( !this._preInited )
-			return "Error in Hero.init. Pre inited is FALSE";
+		this._type = "hero";
+		this._id = id;
+		if( id == null )
+			throw 'Error in Hero.init. Id is: "$id"';
+
+		this._deployId = deployId;
+		if( deployId == null )
+			throw 'Error in Hero.init. Deploy ID is: "$deployId"';
+
+		this._name = name;
+		if( name == null )
+			throw 'Error in Hero.init. Name is: "$name"';
 
 		this._inited = true;
-		return "ok";
 	}
 
-	public function postInit():Array<Dynamic>
+	public function postInit():Void
 	{
 		if( !this._inited )
-			return "Error in Hero.postInit. Inited is FALSE";
+			throw "Error in Hero.postInit. Inited is FALSE";
+
 		this._postInited = true;
-		return "ok";
 	}
 
 	public function get( value:String ):Dynamic
@@ -47,7 +49,7 @@ class Hero
 			case "deployId": return this._deployId;
 			case "name": return this._name;
 			case "type": return this._type;
-			default: { trace( "Error in Hero.get. Can't get " + value ); return null };
+			default: { throw( "Error in Hero.get. Can't get " + value ); return null; };
 		}
 	}
 }

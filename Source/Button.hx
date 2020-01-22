@@ -11,9 +11,9 @@ class Button
 	private var _deployId:Int;
 	private var _name:String;
 	private var _type:String;
-	private var _chooseUnchooseStatus:String;
-	private var _events:Array<String>;
-
+	private var _activeStatus:Bool;
+	
+	private var _events:EventSystem;
 	private var _graphics:GraphicsSystem;
 
 
@@ -22,48 +22,45 @@ class Button
 
 	}
 
-	public function init( id:Int, deployId:Int, name:String, sprite:Sprite ):String
+	public function init( id:Int, deployId:Int, name:String, sprite:Sprite ):Void
 	{
+		this._type = "button";
+
 		this._id = id;
 		if( Std.is( this._id, Int ) )
-			return "Error in Button.init. Id is: '" + id + "'";
+			throw "Error in Button.init. Id is: '" + id + "'";
 
 		this._deployId = deployId;
 		if( Std.is( this._deployId, Int ) )
-			return "Error in Button.init DeployId is: '" + deployId + "'";
+			throw "Error in Button.init DeployId is: '" + deployId + "'";
 
 		this._name = name;
 		if( Std.is( this._name, String ) )
-			return "Error in Button.init Name is: '" + name + "'";
+			throw "Error in Button.init Name is: '" + name + "'";
 
 		this._graphics = new GraphicsSystem();
-		var err = this._graphics.init( this, sprite );
-		if( err != "ok" )
-			return "Error in Button.init. " + err;
+		this._graphics.init( this, sprite );
 
-		this._type = "button";
-		this._events = new Array<String>();
+		this._events = new EventSystem();
+		this._events.init( this );
 
-		this._chooseUnchooseStatus = "unchoose";
-		return null;
-		
+		this._activeStatus = false;	
 	}
 
-	public function postInit():String
+	public function postInit():Void
 	{
 		if( !this._inited )
-			return "Error in Button.postInit. Init is FALSE";
+			throw "Error in Button.postInit. Init is FALSE";
 		
 		this._postInited = true;
-		return null;
 	}
 
-	public function changeChooseUnchooseStatus():Void
+	public function changeActiveStatus():Void
 	{
-		if( this._chooseUnchooseStatus == "choose" )
-			this._chooseUnchooseStatus = "unchoose";
+		if( this._activeStatus )
+			this._activeStatus = false;
 		else
-			this._chooseUnchooseStatus = "choose";
+			this._activeStatus = true;
 	}
 
 	public function get( value:String ):Dynamic
@@ -76,42 +73,9 @@ class Button
 			case "type": return this._type;
 			case "graphics": return this._graphics;
 			case "sprite": return this._graphics.getSprite();
-			case "chooseUnchooseStatus": return this._chooseUnchooseStatus;
-			default: { trace( "Error in Button.get. Can't get " + value ); return null; };
+			case "events": return this._events;
+			case "activeStatus": return this._activeStatus;
+			default: { throw( "Error in Button.get. Can't get " + value ); return null; };
 		}
-	}
-
-	public function addEvent( eventName:String ):String
-	{
-		var checkEvent:Int = this._checkEvent( eventName );
-		if( checkEvent != null )
-			return 'Error in Button.removeEvent. Button already have event with name: "$eventName"';
-		this._events.push( eventName );
-	}
-
-	public function removeEvent( eventName:String ):String
-	{
-		var checkEvent:Int = this._checkEvent( eventName );
-		if( checkEvent == null )
-			return 'Error in Button.removeEvent. Button have not event with name: "$eventName"';
-		
-		this._events.splice( checkEvent, 1 );
-		return null;			
-	}
-
-
-	// PRIVATE
-
-
-	private function _checkEvent( eventName:String ):Int
-	{
-		for( i in 0...this._events.length )
-		{
-			if( this._events[ i ] == eventName )
-			{
-				return i;
-			}
-		}
-		return null
 	}
 }

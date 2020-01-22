@@ -65,11 +65,6 @@ class GraphicsSystem
 		return "ok";
 	}
 
-	public function playAnimation( animation:String ):Void
-	{
-
-	}
-
 	public function getSprite():Sprite
 	{
 		return this._sprite;
@@ -77,24 +72,4 @@ class GraphicsSystem
 
 
 	// PRIVATE
-
-	private function hover():Void
-	{
-
-	}
-
-	private function unHover():Void
-	{
-
-	}
-
-	private function push():Void
-	{
-
-	}
-
-	private function unPush():Void
-	{
-
-	}
 }

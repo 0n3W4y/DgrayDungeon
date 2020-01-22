@@ -12,140 +12,149 @@ class EventHandler
 	private var _inited:Bool = false;
 	private var _postInited:Bool = false;
 	private var _parent:Game;
-	private var _listeners:Array<Dynamic>;
+	private var _listeners:Map<Int, Array<Dynamic>>;
 
 	public function new():Void
 	{
 
 	}
 
-	public function preInit():String
-	{
-		this._listeners = new Array();
-		this._preInited = true;
-		return "ok";
-	}
-
-	public function init( parent:Game ):String
+	public function init( parent:Game ):Void
 	{	
 		this._parent = parent;
 		if( this._parent == null )
-			return "Error in EventHandler.preInit. Parent - Game = NULL";
+			throw "Error in EventHandler.preInit. Parent - Game = NULL";
+
+		this._listeners = new Map<Int, Array<Dynamic>>(); // [ scene id ]: 
 
 		this._inited = true;
-		return "ok";
 	}
 
-	public function postInit():String
+	public function postInit():Void
 	{
+		if( !this._inited )
+			throw 'Error in EventHandler.postInit. Init is FALSE';
+
 		this._postInited = true;
-		return "ok";
 	}
 
-	public function addEvent( object:Dynamic ):String
+	public function addEvent( object:Dynamic, sceneId:Int ):Void
 	{
-		return this._addEvents( object );
+		var name:String = object.get( "name" );
+		var check:Int = this._checkListenerIfExist( object );
+		if( check != null )
+			throw 'Error in EventHandler._addEventsToButton. Object with name: "$name" already in listeners';
+
+		this._addEvents( object );
+		if( sceneId == null )
+			throw 'Error in EventHandler._addEventsToButton. Scene Id is: "$sceneId"';
+
+		if( this._listeners[ sceneId ] == null )
+			this._listeners[ sceneId ] = new Array();
+
+		this._listeners[ sceneId ].push( object );
 	}
 
-	public function removeEvent( object:Dynamic ):String
+	public function removeEvent( object:Dynamic, sceneId:Int ):Void
 	{
-		return this._removeEvents( object );
+		var name:String = object.get( "name" );
+		var check:Int = this._checkListenerIfExist( object );
+		if( check == null )
+			throw 'Error in EventHandler.removeEvent. Object with name: "$name" already in listeners';
+
+		this._removeEvents( object );
+		this._listeners[ sceneId ].splice( check, 1 );
 	}
-
-
-
 
 	// PRIVATE
 
-
-	private function _addEvents( object:Dynamic ):String
+	private function _removeEvents( object:Dynamic ):Void
+	{
+		var name:String = object.get( "name" );
+		var eventsArray:Array<String> = object.get( "event" );
+	}
+	private function _addEvents( object:Dynamic ):Void
 	{
 		var type:String = object.get( "type" );
 		
 		switch( type )
 		{
-			case "button": return this._addEventsToButton( object );
-			case "window": return this._addEventsToWindow( object );
-			default: return 'Error in EventHandler._addEvent. No events found for type "$type"';
+			case "button":  this._addEventsToButton( object );
+			case "hero": this._addEventsToHero( object );
+			case "enemy": this._addEventsToEnemy( object );
+			case "item": this._addEventsToItem( object );
+			case "building": this._addEventsToBuilding( object );
+			default: throw 'Error in EventHandler._addEvent. No events found for type "$type"';
 		}
 	}
 
-	private function _addEventsToButton( object:Dynamic ):String
+	private function _addEventsToButton( object:Dynamic ):Void
 	{
 		//добавляем стандартные ивенты для кнопки. Такие как hover, unhover, push, unpush, click;
 		// с click будем разбирать по имени кнопки.
 		var name:String = object.get( "name" );
 		var sprite:Sprite = object.get( "sprite" );
+		var objectEvent:EventSystem = object.get( "events" );
 
 		sprite.addEventListener( MouseEvent.MOUSE_OUT, this._unhover );		
-		var err:String = object.addEvent( "unhover" );
-		if( err != null )
-			return 'Error in EventHandler._addEventsToButton. $err';
+		objectEvent.addEvent( "unhover" );
 
 		sprite.addEventListener( MouseEvent.MOUSE_OVER, this._hover );
-		var err:String = object.addEvent( "hover" );
-		if( err != null )
-			return 'Error in EventHandler._addEventsToButton. $err';
+		objectEvent.addEvent( "hover" );
 
 		sprite.addEventListener( MouseEvent.MOUSE_UP, this._unpush );
-		var err:String = object.addEvent( "push" );
-		if( err != null )
-			return 'Error in EventHandler._addEventsToButton. $err';
+		objectEvent.addEvent( "push" );
 
 		sprite.addEventListener( MouseEvent.MOUSE_DOWN, this._push );
-		var err:String = object.addEvent( "unpush" );
-		if( err != null )
-			return 'Error in EventHandler._addEventsToButton. $err';
-
+		objectEvent.addEvent( "unpush" );
 
 		switch( name )
 		{
 			case "gameStart":
 			{
 				sprite.addEventListener( MouseEvent.MOUSE_DOWN, this._clickStartGame );
-				var err:String = object.addEvent( "click" );
-				if( err != null )
-					return 'Error in EventHandler._addEventsToButton. $err';
+				objectEvent.addEvent( "click" );
 			}
 			case "gameContinue":
 			{
 				sprite.addEventListener( MouseEvent.MOUSE_DOWN, this._clickContinueGame );
-				var err:String = object.addEvent( "click" );
-				if( err != null )
-					return 'Error in EventHandler._addEventsToButton. $err';
+				objectEvent.addEvent( "click" );
 			}
-			default: return 'Error in EventHandler._addEventsToButton. No event for button with name "$name"';
+			default: throw 'Error in EventHandler._addEventsToButton. No event for button with name "$name"';
 		}
-
-		this._addToListeners( object );
-		return "ok";
 	}
 
-	private function _addEventToWindow( object:Dynamic, eventName:String ):String
+	private function _addEventsToHero( object:Dynamic ):Void
 	{
 
 	}
 
-	
-
-	private function _addToListeners( object:Dynamic ):Void
+	private function _addEventsToItem( object:Dynamic ):Void
 	{
-		for( i in 0...this._listeners.length ) // chek if listener already in array;
+
+	}
+
+	private function _addEventsToEnemy( object:Dynamic ):Void
+	{
+
+	}
+
+	private function _addEventsToBuilding( object:Dynamic ):Void
+	{
+
+	}
+
+	private function _checkListenerIfExist( object:Dynamic ):Int
+	{
+		var id:Int = object.get( "id" );
+		for( key in this._listeners.keys() )
 		{
-			var listener:Dynamic = this._listeners[ i ];
-			if( listener.get( "id" ) == object.get( "id" ) )
-				return;
+			var valueArray:Array<Dynamic> = this._listeners[ key ];
+			for( i in 0...valueArray.length )
+				if( valueArray[ i ].get( "id" ) == id )
+					return i;
 		}
-		this._listeners.push( object );
-	}
-
-	private function _removeFromListeners( object:Dynamic ):Void
-	{
-		for( i in 0...this._listeners.length )
-		{
-			if( object.get( "id" ) == this._listeners[ i ].get( "id" ) )
-				this._listeners.splice( i, 1 );
-		}
+		return null;
 	}
 
 	private function _clickStartGame( e:MouseEvent ):Void

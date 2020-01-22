@@ -17,6 +17,7 @@ class Game
 	private var _eventHandler:EventHandler;
 	private var _generatorSystem:GeneratorSystem;
 	private var _sceneSystem:SceneSystem;
+	private var _userInterface:UserInterface;
 
 
 	private var _onPause:Bool = false;
@@ -96,13 +97,12 @@ class Game
 
 		var createScene:Array<Dynamic> = this._generatorSystem.generateScene( 1000 );
 		var scene:Scene = createScene[ 0 ];
-		var sceneError:String = createScene[ 1 ];
-		if( sceneError != null )
-			throw 'Error in Game._startGame. $sceneError';
+		var err:String = createScene[ 1 ];
+		if( err != null )
+			throw 'Error in Game._startGame. $err';
 
-		this._sceneSystem.switchScenTo( scene );
-		this._sceneSystem.drawUiForScene( scene );
-
+		this._sceneSystem.addScene( scene );
+		this._sceneSystem.changeSceneTo( scene );
 
 		this.start();
 	}
@@ -130,24 +130,16 @@ class Game
 		//var enemyDeployMap:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer[6] );
 
 		this._eventHandler = new EventHandler();
-		var err = this._eventHandler.init( this );
-		if( err != null )
-			throw 'Error in Game.new. $err';
+		this._eventHandler.init( this );
 
 		this._generatorSystem = new GeneratorSystem();
-		err = this._generatorSystem.init( this, sceneDeploy, buildingDeploy, windowDeploy, buttonDeploy, heroDeploy, itemDeploy );
-		if( err != null )
-			throw 'Error in Game.new. $err';
+		this._generatorSystem.init( this, sceneDeploy, buildingDeploy, windowDeploy, buttonDeploy, heroDeploy, itemDeploy );
 
 		this._sceneSystem = new SceneSystem();
-		err = this._sceneSystem.init( this, this._scenesSprite );
-		if( err != null )
-			throw 'Error in Game.new. $err';
+		this._sceneSystem.init( this, this._scenesSprite );
 
 		this._userInterface = new UserInterface();
-		err = this._userInterface.init( this, this._uiSprite );
-		if( err != null )
-			throw 'Error in Game.new. $err';
+		this._userInterface.init( this, this._uiSprite );
 
 		this._startGame();		
 	}
