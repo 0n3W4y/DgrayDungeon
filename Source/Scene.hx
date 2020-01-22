@@ -28,7 +28,7 @@ class Scene
 	{
 		this._aliveEntities = 
 		{
-			"hero": new Array(),
+			"hero": new Array<Hero>(),
 			"enemy": new Array()
 		};
 		this._objectEntities = 
@@ -61,7 +61,7 @@ class Scene
 			return 'Error in Scene.init. $err';
 
 		this._inited = true;
-		return "ok";
+		return null;
 	}
 
 	public function postInit():String
@@ -70,7 +70,7 @@ class Scene
 			return "Error in Scene.postInit. Init is FALSE";
 
 		this._postInited= true;
-		return "ok";
+		return null;
 	}
 
 	public function update( time:Float ):Void
@@ -92,63 +92,59 @@ class Scene
 		}
 	}
 
-	public function getEntities( type:String ):Dynamic
+	public function getChilds( type:String ):Dynamic
 	{
 		switch( type )
 		{
 			case "ui": return this._uiEntities;
 			case "alive": return this._aliveEntities;
 			case "object": return this._objectEntities;
-			default: trace( "Error in Scene.getEntites, can't get array with type: " + type + "." );
+			default: return "Error in Scene.getEntites, can't get array with type: " + type + "." ;
 		}
-
-		return null;
 	}
 
 	public function addChild( object:Dynamic ):String
 	{
-		var type:String = object.get( "type" );
-		var check:Array<Dynamic> = this._checkChildForExist( object );
-		var err:String = check[ 1 ];
-		if( err != null ) // проверяем на наличие объекта на сцене.
-			return ( 'Error in Scene.addChild. $err' );
-
 		var container:Array<Dynamic> = null;
+		var type:String = object.get( "type" );
+		var name:String = object.get( "name" );
+
+		var check:Int = this._checkChildForExist( object );
+		if( check != null ) // проверяем на наличие объекта на сцене.
+			return 'Error in Scene.addChild. Found dublicate object with type: "$type" and name "$name"';
+
 		switch( type )
 		{
 			case "window": container = this._uiEntities.window;
-			default: return( 'Error in Scene.addChild. Can not add child with type: "$type"' );
+			default: return 'Error in Scene.addChild. Can not add child with type: "$type" and name "$name"';
 		}
 		container.push( object );
-		return "ok";
+		return null;
 	}
 
 	public function removeChild( object:Dynamic ):Array<Dynamic>
 	{
 		var container:Array<Dynamic> = null;
 		var type:String = object.get( "type" );
+		var name:String = object.get( "name" );
+
 		switch( type )
 		{
 			case "window": container = this._objectEntities.window;
-			default: { return [ null, 'Error in Scene._checkChildForExist. No type found for "$type"' ]; }
+			default: { return [ null, 'Error in Scene.removeChild. No type found for type: "$type"' ]; }
 		}
 
-		var check:Array<Dynamic> = this._checkChildForExist( object ); // [ index, error ];
-		var index:Int = check[ 0 ];
-		var err:String = check[ 1 ];
-		if( index == null && err != null )
-			return [ null, 'Error in Scene.removeChild. $err' ];
-		else if( index == null )
-			return [ null, 'Error in Scene.removeChild. No object found on Scene' ];
+		var check:Int = this._checkChildForExist( object );
+		if( check == null )
+			return [ null, 'Error in Scene.removeChild. Scene does not have object with type: "$type" and name: "$name"' ];		
 
-		var removedObject:Dynamic = container[ index ];
-		container.splice( index, 1 );
-		return [ removedObject, null ];
+		container.splice( check, 1 );
+		return [ object, null ];
 	}
 
 	//PRIVATE
 
-	private function _checkChildForExist( object:Dynamic ):Array<Dynamic>
+	private function _checkChildForExist( object:Dynamic ):Int
 	{
 		var type:String = object.get( "type" );
 		var name:String = object.get( "name" );
@@ -157,15 +153,15 @@ class Scene
 		switch( type )
 		{
 			case "window": container = this._objectEntities.window;
-			default: { return [ null, 'Error in Scene._checkChildForExist. No type found for "$type"' ]; }
+			default: return null;
 		}
 
 		for( i in 0...container.length )
 		{
 			if( id == container[ i ].get( "id" ) )
-				return [ i, 'Error in Scene._checkChildForExist. Found dublicate object with type: "$type" and name "$name"' ];
+				return i;
 		}
 
-		return [ null, null ];
+		return null;
 	}
 }

@@ -3,6 +3,7 @@ package;
 import openfl.display.Sprite;
 import openfl.events.MouseEvent;
 import openfl.text.TextField;
+import openfl.events.MouseEvent;
 
 
 class EventHandler
@@ -41,40 +42,15 @@ class EventHandler
 		return "ok";
 	}
 
-	public function addRemoveEvent( object:Dynamic, eventName:String, job:String ):String
+	public function addEvent( object:Dynamic ):String
 	{
-		var result:String;
-		if( job == "add" )
-		{
-			if( eventName == "all" )
-				result = this._addEvents( object );
-			else 
-				result = this._addEvent( object, eventName );
-		}
-		else
-		{
-			if( eventName == "all" )
-				result = this._removeEvents( object );
-			else
-				result = this._removeEvent( object, eventName );
-		}
-		return result;
+		return this._addEvents( object );
 	}
 
-	public function update():Void
+	public function removeEvent( object:Dynamic ):String
 	{
-		for( i in 0...this._listeners.length )
-		{
-			var listener:Dynamic = this._listeners[ i ];
-			var eventSystem:EventSystem = listener.get( "event" );
-			var currentEvent:String = eventSystem.getCurrentEvent();
-			var isDone:Bool = eventSystem.isCurrentEventDone();
-			if( currentEvent != null && !isDone )
-				this._doEvent( currentEvent, listener );
-		}
-		
+		return this._removeEvents( object );
 	}
-
 
 
 
@@ -82,6 +58,133 @@ class EventHandler
 	// PRIVATE
 
 
+	private function _addEvents( object:Dynamic ):String
+	{
+		var type:String = object.get( "type" );
+		
+		switch( type )
+		{
+			case "button": return this._addEventsToButton( object );
+			case "window": return this._addEventsToWindow( object );
+			default: return 'Error in EventHandler._addEvent. No events found for type "$type"';
+		}
+	}
+
+	private function _addEventsToButton( object:Dynamic ):String
+	{
+		//добавляем стандартные ивенты для кнопки. Такие как hover, unhover, push, unpush, click;
+		// с click будем разбирать по имени кнопки.
+		var name:String = object.get( "name" );
+		var sprite:Sprite = object.get( "sprite" );
+
+		sprite.addEventListener( MouseEvent.MOUSE_OUT, this._unhover );		
+		var err:String = object.addEvent( "unhover" );
+		if( err != null )
+			return 'Error in EventHandler._addEventsToButton. $err';
+
+		sprite.addEventListener( MouseEvent.MOUSE_OVER, this._hover );
+		var err:String = object.addEvent( "hover" );
+		if( err != null )
+			return 'Error in EventHandler._addEventsToButton. $err';
+
+		sprite.addEventListener( MouseEvent.MOUSE_UP, this._unpush );
+		var err:String = object.addEvent( "push" );
+		if( err != null )
+			return 'Error in EventHandler._addEventsToButton. $err';
+
+		sprite.addEventListener( MouseEvent.MOUSE_DOWN, this._push );
+		var err:String = object.addEvent( "unpush" );
+		if( err != null )
+			return 'Error in EventHandler._addEventsToButton. $err';
+
+
+		switch( name )
+		{
+			case "gameStart":
+			{
+				sprite.addEventListener( MouseEvent.MOUSE_DOWN, this._clickStartGame );
+				var err:String = object.addEvent( "click" );
+				if( err != null )
+					return 'Error in EventHandler._addEventsToButton. $err';
+			}
+			case "gameContinue":
+			{
+				sprite.addEventListener( MouseEvent.MOUSE_DOWN, this._clickContinueGame );
+				var err:String = object.addEvent( "click" );
+				if( err != null )
+					return 'Error in EventHandler._addEventsToButton. $err';
+			}
+			default: return 'Error in EventHandler._addEventsToButton. No event for button with name "$name"';
+		}
+
+		this._addToListeners( object );
+		return "ok";
+	}
+
+	private function _addEventToWindow( object:Dynamic, eventName:String ):String
+	{
+
+	}
+
+	
+
+	private function _addToListeners( object:Dynamic ):Void
+	{
+		for( i in 0...this._listeners.length ) // chek if listener already in array;
+		{
+			var listener:Dynamic = this._listeners[ i ];
+			if( listener.get( "id" ) == object.get( "id" ) )
+				return;
+		}
+		this._listeners.push( object );
+	}
+
+	private function _removeFromListeners( object:Dynamic ):Void
+	{
+		for( i in 0...this._listeners.length )
+		{
+			if( object.get( "id" ) == this._listeners[ i ].get( "id" ) )
+				this._listeners.splice( i, 1 );
+		}
+	}
+
+	private function _clickStartGame( e:MouseEvent ):Void
+	{
+		//TODO: create cityscene, switch active scene, draw new scene, undraw old scene;
+		trace( "yup!" );
+	}
+
+	private function _clickContinueGame( e:MouseEvent ):Void
+	{
+
+	}
+
+	private function _hover( e:MouseEvent ):Void
+	{
+		var sprite:Dynamic = e.target;
+		sprite.getChildAt( 0 ).getChildAt( 1 ).visible = true;
+	}
+
+	private function _unhover( e:MouseEvent ):Void
+	{
+		var sprite:Dynamic = e.target;
+		sprite.getChildAt( 0 ).getChildAt( 1 ).visible = false; // hover invisible;
+		sprite.getChildAt( 0 ).getChildAt( 2 ).visible = false; // unpushed visible;
+	}
+
+	private function _push( e:MouseEvent ):Void
+	{
+		var sprite:Dynamic = e.target;
+		sprite.getChildAt( 0 ).getChildAt( 2 ).visible = true;
+	}
+
+	private function _unpush( e:MouseEvent ):Void
+	{
+		var sprite:Dynamic = e.target;
+		sprite.getChildAt( 0 ).getChildAt( 2 ).visible = false;
+	}
+
+	/*
 	private function _addEvent( object:Dynamic, eventName:String ):String
 	{
 		var sprite:Sprite = object.get( "sprite" );
@@ -182,284 +285,6 @@ class EventHandler
 		this._removeFromListeners( object );
 		return "ok";
 	}
-
-	private function _addToListeners( object:Dynamic ):Void
-	{
-		for( i in 0...this._listeners.length ) // chek if listener already in array;
-		{
-			var listener:Dynamic = this._listeners[ i ];
-			if( listener.get( "id" ) == object.get( "id" ) )
-				return;
-		}
-		this._listeners.push( object );
-	}
-
-	private function _removeFromListeners( object:Dynamic ):Void
-	{
-		for( i in 0...this._listeners.length )
-		{
-			if( object.get( "id" ) == this._listeners[ i ].get( "id" ) )
-				this._listeners.splice( i, 1 );
-		}
-	}
-
-	private function _doEvent( event:String, object:Dynamic ):Void
-	{
-		switch( event )
-		{
-			case "mCLICK": this._mouseClick( object );
-			case "mUP": this._mouseUp( object );
-			case "mOUT": this._mouseOut( object );
-			case "mDOWN": this._mouseDown( object );
-			case "mOVER": this._mouseOver( object );
-			default: trace( "Error in EventHandler._doEvent. In object with name: '" + object.get( "name" ) + "', deploy id: '" + object.get( "deployId" ) + "' can't do event witn name: '" + event + "'" );
-		}
-		object.get( "event" ).doneCurrentEvent();
-	}
-
-	private function _mouseClick( object:Dynamic ):Void
-	{
-		var objectType:String = object.get( "type" );
-		switch( objectType )
-		{
-			case "window": this._mouseClickWindow( object );
-			case "button": this._mouseClickButton( object );
-			case "hero": this._mouseClickHero( object );
-			case "item": this._mouseClickItem( object );
-			case "building": this._mouseClickBuilding( object );
-			case "enemy": this._mouseClickEnemy( object );
-			default: trace( "Error in EventHandler._mouseClick. Object type: '" + objectType + "' is not defined" );
-		}
-	}
-
-	private function _mouseUp ( object:Dynamic ):Void
-	{
-		var objectType:String = object.get( "type" );
-		switch( objectType )
-		{
-			case "window": this._mouseUpWindow( object );
-			case "button": this._mouseUpButton( object );
-			case "hero": this._mouseUpHero( object );
-			case "item": this._mouseUpItem( object );
-			case "building": this._mouseUpBuilding( object );
-			case "enemy": this._mouseUpEnemy( object );
-			default: trace( "Error in EventHandler._mouseUp. Object type: '" + objectType + "' is not defined" );
-		}
-	}
-
-	private function _mouseDown ( object:Dynamic ):Void
-	{
-		var objectType:String = object.get( "type" );
-		switch( objectType )
-		{
-			case "window": this._mouseDownWindow( object );
-			case "button": this._mouseDownButton( object );
-			case "hero": this._mouseDownHero( object );
-			case "item": this._mouseDownItem( object );
-			case "building": this._mouseDownBuilding( object );
-			case "enemy": this._mouseDownEnemy( object );
-			default: trace( "Error in EventHandler._mouseDown. Object type: '" + objectType + "' is not defined" );
-		}
-	}
-
-	private function _mouseOut ( object:Dynamic ):Void
-	{
-		var objectType:String = object.get( "type" );
-		switch( objectType )
-		{
-			case "window": this._mouseOutWindow( object );
-			case "button": this._mouseOutButton( object );
-			case "hero": this._mouseOutHero( object );
-			case "item": this._mouseOutItem( object );
-			case "building": this._mouseOutBuilding( object );
-			case "enemy": this._mouseOutEnemy( object );
-			default: trace( "Error in EventHandler._mouseOut. Object type: '" + objectType + "' is not defined" );
-		}
-	}
-
-	private function _mouseOver ( object:Dynamic ):Void
-	{
-		var objectType:String = object.get( "type" );
-		switch( objectType )
-		{
-			case "window": this._mouseOverWindow( object );
-			case "button": this._mouseOverButton( object );
-			case "hero": this._mouseOverHero( object );
-			case "item": this._mouseOverItem( object );
-			case "building": this._mouseOverBuilding( object );
-			case "enemy": this._mouseOverEnemy( object );
-			default: trace( "Error in EventHandler._mouseOver. Object type: '" + objectType + "' is not defined" );
-		}
-	}
-
-	private function _mouseClickButton( object:Dynamic ):Void
-	{
-		var name:String = object.get( "name" );
-		switch( name )
-		{
-			case "options":{};
-			case "startGame":{};
-			case "continue":{};
-			case "closeWindow":{};
-			case "buyRecruit":{};
-			case "startJourney":{};
-			default: trace( "Error in EventHandler._mouseClickButton. No action assigned to button: '" + name + "'" );
-		}
-	}
-
-	private function _mouseClickWindow( object:Dynamic ):Void
-	{
-
-	}
-
-	private function _mouseClickHero( object:Dynamic ):Void
-	{
-
-	}
-
-	private function _mouseClickItem( object:Dynamic ):Void
-	{
-
-	}
-
-	private function _mouseClickBuilding( object:Dynamic ):Void
-	{
-		var name:String = object.get( "name" );
-		switch( name )
-		{
-			case "":{}
-			default: trace( "Error in EventHandler._mouseClickBuilding. No action assigned to building: '" + name + "'" );
-		}
-	}
-
-	private function _mouseClickEnemy( object: Dynamic ):Void
-	{
-
-	}
-
-	private function _mouseUpButton( object:Dynamic ):Void
-	{
-
-	}
-
-	private function _mouseUpWindow( object:Dynamic ):Void
-	{
-
-	}
-
-	private function _mouseUpHero( object:Dynamic ):Void
-	{
-
-	}
-
-	private function _mouseUpItem( object:Dynamic ):Void
-	{
-
-	}
-
-	private function _mouseUpBuilding( object:Dynamic ):Void
-	{
-
-	}
-
-	private function _mouseUpEnemy( object: Dynamic ):Void
-	{
-
-	}
-
-	private function _mouseDownButton( object:Dynamic ):Void
-	{
-
-	}
-
-	private function _mouseDownWindow( object:Dynamic ):Void
-	{
-
-	}
-
-	private function _mouseDownHero( object:Dynamic ):Void
-	{
-
-	}
-
-	private function _mouseDownItem( object:Dynamic ):Void
-	{
-
-	}
-
-	private function _mouseDownBuilding( object:Dynamic ):Void
-	{
-
-	}
-
-	private function _mouseDownEnemy( object: Dynamic ):Void
-	{
-
-	}
-
-	private function _mouseOutButton( object:Dynamic ):Void
-	{
-
-	}
-
-	private function _mouseOutWindow( object:Dynamic ):Void
-	{
-
-	}
-
-	private function _mouseOutHero( object:Dynamic ):Void
-	{
-
-	}
-
-	private function _mouseOutItem( object:Dynamic ):Void
-	{
-
-	}
-
-	private function _mouseOutBuilding( object:Dynamic ):Void
-	{
-
-	}
-
-	private function _mouseOutEnemy( object: Dynamic ):Void
-	{
-
-	}
-
-	private function _mouseOverButton( object:Dynamic ):Void
-	{
-
-	}
-
-	private function _mouseOverWindow( object:Dynamic ):Void
-	{
-
-	}
-
-	private function _mouseOverHero( object:Dynamic ):Void
-	{
-
-	}
-
-	private function _mouseOverItem( object:Dynamic ):Void
-	{
-
-	}
-
-	private function _mouseOverBuilding( object:Dynamic ):Void
-	{
-
-	}
-
-	private function _mouseOverEnemy( object: Dynamic ):Void
-	{
-
-	}
-
-	
-
-	/*
 	private function _buyRecruit( sceneSystem:SceneSystem ):Void
 	{
 		//TODO: Button with check if some buttons with hero choose, then collect total price, check inventory money, check slots in inn - then do function buy;

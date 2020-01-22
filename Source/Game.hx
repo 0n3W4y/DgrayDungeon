@@ -7,7 +7,7 @@ import openfl.display.Sprite;
 class Game
 {
 	private var _mainSprite:Sprite;
-	private var _worldSprite:Sprite;
+	private var _scenesSprite:Sprite;
 	private var _uiSprite:Sprite;
 
 	private var _width:Int;
@@ -58,7 +58,7 @@ class Game
 
 	private function _sUpdate():Void
 	{
-		this._eventHandler.update();
+
 	}
 
 	private function _parseData():Array<Dynamic>
@@ -100,7 +100,10 @@ class Game
 		if( sceneError != null )
 			throw 'Error in Game._startGame. $sceneError';
 
-		
+		this._sceneSystem.switchScenTo( scene );
+		this._sceneSystem.drawUiForScene( scene );
+
+
 		this.start();
 	}
 
@@ -111,9 +114,9 @@ class Game
 		this._width = width;
 
 		this._mainSprite = mainSprite;
-		this._worldSprite = new Sprite();
+		this._scenesSprite = new Sprite();
 		this._uiSprite = new Sprite();
-		this._mainSprite.addChild( this._worldSprite );
+		this._mainSprite.addChild( this._scenesSprite );
 		this._mainSprite.addChild( this._uiSprite );
 
 		var parseDataContainer:Array<Dynamic> = this._parseData();
@@ -127,16 +130,24 @@ class Game
 		//var enemyDeployMap:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer[6] );
 
 		this._eventHandler = new EventHandler();
-		this._eventHandler.preInit();
 		var err = this._eventHandler.init( this );
-		if( err != "ok" )
-			throw "Error in Game.new. " + err;
+		if( err != null )
+			throw 'Error in Game.new. $err';
 
 		this._generatorSystem = new GeneratorSystem();
-		this._generatorSystem.preInit();
-		err = this._generatorSystem.init( this, sceneDeploy, buildingDeploy, windowDeploy, buttonDeploy, heroDeploy, itemDeploy  );
-		if( err != "ok" )
-			throw "Error in Game.new. " + err;
+		err = this._generatorSystem.init( this, sceneDeploy, buildingDeploy, windowDeploy, buttonDeploy, heroDeploy, itemDeploy );
+		if( err != null )
+			throw 'Error in Game.new. $err';
+
+		this._sceneSystem = new SceneSystem();
+		err = this._sceneSystem.init( this, this._scenesSprite );
+		if( err != null )
+			throw 'Error in Game.new. $err';
+
+		this._userInterface = new UserInterface();
+		err = this._userInterface.init( this, this._uiSprite );
+		if( err != null )
+			throw 'Error in Game.new. $err';
 
 		this._startGame();		
 	}
@@ -184,7 +195,7 @@ class Game
 		{
 			case "generator" : return this._generatorSystem;
 			//case "graphics": return this._graphicsSystem;
-			//case "scene": return this._sceneSystem;
+			case "scene": return this._sceneSystem;
 			case "event": return this._eventHandler;
 			//case "ui": return this._userInterface;
 			default: trace( "Error in Game.getSystem; system can't be: " + system );

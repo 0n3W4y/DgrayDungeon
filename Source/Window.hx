@@ -47,7 +47,7 @@ class Window
 			return "Error in Window.init. Window name: " + this._name + "; " + err;
 
 		this._inited = true;
-		return "ok";
+		return null;
 	}
 
 	public function postInit():String
@@ -56,7 +56,7 @@ class Window
 			return "Error in Window.postInit. Init is FALSE!";
 
 		this._postInited = true;
-		return "ok";
+		return null;
 		
 	}
 
@@ -64,25 +64,22 @@ class Window
 	{
 		var checkButton:Array<Dynamic> = this._checkChildForExist( button );
 		var error:String = checkButton[ 0 ];
-		if( error != null )
-			return 'Error in Window.appendChild. $error';
+		if( checkButton != null )
+			return 'Error in Window.addChild. Found duplicate button with id: "$buttonId"';
 
 		this._buttonChildren.push( button );
-		return "ok";
+		return null;
 	}
 
 	public function removeChild( button:Button ):Array<Dynamic>
 	{
 		var name:String = button.get( "name" );
-		var checkButton:Array<Dynamic> = this._checkChildForExist( button );
-		var index:Int = checkButton[ 0 ];
-		var error:String = checkButton[ 1 ];
-		if( error == null )
+		var checkButton:Int = this._checkChildForExist( button );
+		if( checkButton == null )
 			return [ null, 'Error in Window.appendChild. Button with name: "$name" not found' ];
 
-		var buttonToReturn:Button = this._buttonChildren[ index ];
-		this._buttonChildren.splice( index, 1 );
-		return [ buttonToReturn, null ];
+		this._buttonChildren.splice( checkButton, 1 );
+		return [ button, null ];
 	}
 
 	public function changeOpenCloseStatus():Void
@@ -115,7 +112,7 @@ class Window
 	//PRIVATE
 
 
-	private function _checkChildForExist( button:Button ):Array<Dynamic>
+	private function _checkChildForExist( button:Button ):Int
 	{
 		var buttonId:Int = button.get( "id" );
 		for( i in 0...this._buttonChildren.length )
@@ -123,9 +120,9 @@ class Window
 			var oldButton:Button = this._buttonChildren[ i ];
 			var oldButtonId:Int = oldButton.get( "id" );
 			if( oldButtonId == buttonId )
-				return [ i, 'Error in Window._checkChildForExist. Found duplicate button with id: "$buttonId"' ];
+				return i;
 		}
-		return [ null, null ];
+		return null;
 	}
 
 }

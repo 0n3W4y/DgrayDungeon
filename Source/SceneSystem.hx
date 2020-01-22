@@ -1,19 +1,15 @@
 package;
 
+import openfl.display.Sprite;
+
 class SceneSystem
 {
 	private var _parent:Game;
 	private var _scenesArray:Array<Scene>;
+	private var _scenesSprite:Sprite;
 	private var _activeScene:Scene;
 	private var _inited:Bool = false;
 	private var _postInited:Bool = false;
-
-
-	public function addScene( scene:Scene ):Void
-	{
-		if( !this.isSceneAlreadyCreated( scene.get( "id" ) ) )
-			this._scenesArray.push( scene );
-	}
 
 	
 	public function new():Void
@@ -21,8 +17,18 @@ class SceneSystem
 
 	}
 
-	public function init():String
-	{
+	public function init( parent:Game, sprite:Sprite ):String
+	{	
+		this._parent = parent;
+		if( parent == null )
+			return 'Error in SceneSystem.init. Parent is "$parent"';
+
+		this._scenesSprite = sprite;
+		if( sprite == null )
+			return 'Error in SceneSystem.init. Sprite is "$sprite"';
+
+		this._scenesArray = new Array<Scene>();
+		this._activeScene = null;
 		this._inited = true;
 		return "ok";
 	}
@@ -45,22 +51,87 @@ class SceneSystem
 		}
 	}
 
-	public function removeScene( scene:Scene ):Void
+	public function addScene( scene:Scene ):String
 	{
-		var sceneId = scene.get( "id" );
-		for( i in 0...this._scenesArray.length )
+		var name:String = scene.get( "name" );
+		var check = this._checkSceneIfExist( scene );
+		if( check != null )
+			return 'Error in SceneSystem.addScene. Scene with name "$name" already in.';
+
+		this._scenesArray.push( scene );
+		return null;
+	}
+
+	public function removeScene( scene:Scene ):Array<Dynamic>
+	{
+		var name:String = scene.get( "name" );
+		var check = this._checkSceneIfExist( scene );
+		if( check == null )
+			return [ null, 'Error in SceneSystem.addScene. Scene with name "$name" does not exist.' ];
+
+		var sceneToReturn:Scene = this._scenesArray[ check ];
+		this._scenesArray.splice( check, 1 );
+		return [ sceneToReturn, null ];
+	}
+
+	public function switchSceneTo( scene:Scene ):Void // this only hide active scene.
+	{
+		if( this._activeScene != null )
+			this.hideScene( this._activeScene );
+
+		this._activeScene = scene;
+		this.showScene( scene );
+	}
+
+	public function changeSceneTo( scene:Scene ):Void //full undraw active scene, and draw new scene;
+	{
+
+	}
+
+	public function drawUiForScene( scene:Scene ):Void
+	{
+		var windows:Array<Window> = scene.getChilds( "ui" ).window;
+		var ui:UserInterface = this._parent.getSystem( "ui" );
+		for( i in 0...windows.length )
 		{
-			if( this._scenesArray[ i ].get( "id" )== sceneId )
-			{
-				this._scenesArray.splice( i, 1 );
-				break;
-			}
+			var err:String = ui.addUiObject( windows[ i ] );
+			if( err != null )
+				throw 'Error in SceneSystem.drawUiForScene. $err';
 		}
 	}
 
-	public function switchSceneTo( scene:Scene ):Scene // this only hide active scene.
+	public function undrawUiForScene( scene:Scene ):Void
 	{
-		return null;	
+		var windows:Array<Window> = scene.getChilds( "ui" ).window;
+		var ui:UserInterface = this._parent.getSystem( "ui" );
+		for( i in 0...windows.length )
+		{
+			var err:String = ui.removeUiObject( windows[ i ] );
+			if( err != null )
+				throw 'Error in SceneSystem.undrawUiForScene. $err';
+		}
+	}
+
+	public function showScene( scene:Scene ):Void
+	{
+		scene.get( "sprite" ).visible = true;
+	}
+
+	public function hideScene( scene:Scene ):Void
+	{
+		scene.get( "sprite" ).visible = false;
+	}
+
+	public function drawScene( scene:Scene ):String
+	{
+		var sceneSprite:Sprite = scene.get( "sprite" );
+
+		return 'ok';
+	}
+
+	public function undrawScene( scene:Scene ):String
+	{
+		return 'ok';
 	}
 
 	public function getParent():Game
@@ -84,14 +155,23 @@ class SceneSystem
 		return null;
 	}
 
-	public function isSceneAlreadyCreated( id:String ):Bool
+	//PRIVATE
+
+	private function _drawStartingScene( scene:Scene ):Void
+	{
+		var sprite:Sprite = scene.get( "sprite" );
+		this._scenesSprite.addChild( sprite );
+		this.drawUiForScene( scene );
+	}
+
+	private function _checkSceneIfExist( scene:Scene ):Int
 	{
 		for( i in 0...this._scenesArray.length )
 		{
 			var sceneId = this._scenesArray[ i ].get( "id" );
 			if( sceneId == id )
-				return true;
+				return i;
 		}
-		return false;
+		return null;
 	}
 }

@@ -118,7 +118,7 @@ class GeneratorSystem
 		sprite.addChild( textSprite );
 
 		var err = scene.init( id, config.name, deployId, sprite );
-		if( err != "ok" )
+		if( err != null )
 			return [ null, 'Error in GeneratorSystem.generateScene. $err' ];
 
 		if( config.window != null ) // Внутри Window есть чайлды в виде button. создаются в функции создании окна.
@@ -160,7 +160,7 @@ class GeneratorSystem
 		sprite.addChild( textSprite );		
 
 		var err:String = window.init( id, config.name, config.deployId, sprite );
-		if( err != "ok" )
+		if( err != null )
 			return [ null, err ];
 
 		if( config.button != null )
@@ -200,7 +200,7 @@ class GeneratorSystem
 		sprite.addChild( textSprite );
 
 		var err:String = button.init( id, config.name, config.deployId, sprite );
-		if( err != "ok" )
+		if( err != null )
 			return [ null, err ];
 
 		return [ button, null ];
