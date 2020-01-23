@@ -28,6 +28,8 @@ class Game
 	private var _delta:Float;
 	private var _doubleDelta:Float;
 
+	private var _player:Player;
+
 	private function _calculateDelta():Void
 	{
 		this._delta = 1000 / this._fps;
@@ -70,9 +72,10 @@ class Game
 		var building:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployBuilding.json" );
 		var hero:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployHero.json" );
 		var item:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployItem.json" );
-		//var enemy:Dynamic = ConfigJSON.json( "c:/projects/DgrayDungeon/Source/DeployEnemy.json" );
+		var enemy:Dynamic = ConfigJSON.json( "c:/projects/DgrayDungeon/Source/DeployEnemy.json" );
+		var player:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployPlayer.json" );
 		
-		return [ window, button, scene, building, hero, item ];
+		return [ window, button, scene, building, hero, item, enemy, player ];
 	}
 
 	private function _mapJsonObject( object:Dynamic ):Map<Int, Dynamic>
@@ -121,13 +124,14 @@ class Game
 
 		var parseDataContainer:Array<Dynamic> = this._parseData();
 
-		var windowDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer[0] );
-		var buttonDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer[1] );
-		var sceneDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer[2] );
-		var buildingDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer[3] );
-		var heroDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer[4] );
-		var itemDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer[5] );
-		var enemyDeployMap:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer[6] );
+		var windowDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer[ 0 ] );
+		var buttonDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer[ 1 ] );
+		var sceneDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer[ 2 ] );
+		var buildingDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer[ 3 ] );
+		var heroDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer[ 4 ] );
+		var itemDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer[ 5 ] );
+		var enemyDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer[ 6 ] );
+		var playerDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer[ 7 ] );
 
 		var config:Dynamic = 
 		{ 
@@ -138,7 +142,8 @@ class Game
 			"buttonDeploy": buttonDeploy, 
 			"heroDeploy": heroDeploy, 
 			"itemDeploy": itemDeploy,
-			"enemyDeploy": null
+			"playerDeploy": playerDeploy,
+			"enemyDeploy": enemyDeploy
 		};
 
 		this._generatorSystem = new GeneratorSystem( config );
@@ -218,6 +223,16 @@ class Game
 	public function getMainSprite():Sprite
 	{
 		return this._mainSprite;
+	}
+
+	public function getPlayer():Player
+	{
+		return this._player;
+	}
+
+	public function setPlayer( player:Player ):Void
+	{
+		this._player = player;
 	}
 }
 /*

@@ -18,6 +18,7 @@ class GeneratorSystem
 	private var _heroDeploy:Map<Int, Dynamic>; // Map [id]: {};
 	private var _buildingDeploy:Map<Int, Dynamic>; // Map [id]: {};
 	private var _sceneDeploy:Map<Int, Dynamic>; // Map [id]: {};
+	private var _playerDeploy:Map<Int, Dynamic>;
 
 	//private var _heroNames:Dynamic; // { "m": [ "Alex"], "w": [ "Stella" ]};
 	//private var _heroSurnames:Dynamic; // [ "Goldrich", "Duckman" ];
@@ -33,6 +34,7 @@ class GeneratorSystem
 		this._buttonDeploy = config.buttonDeploy;
 		this._heroDeploy = config.heroDeploy;
 		this._itemDeploy = config.itemDeploy;
+		this._playerDeploy = config.playerDeploy;
 	}
 
 	public function init():String
@@ -69,6 +71,30 @@ class GeneratorSystem
 	public function postInit():String
 	{
 		return null;
+	}
+
+	public function generatePlayer( deployId:Int, name:String ):Array<Dynamic>
+	{
+		var config:Dynamic = this._playerDeploy.get( deployId );
+		if( config == null )
+			return [ null, 'Error in GeneratorSystem.generatePlayer. Deploy ID: "$deployId" does not exist in PlayerDeploy data' ];
+
+		var id:Int = this._createId();
+		var configForPlayer:Dynamic = 
+		{
+			"id": id,
+			"name": name,
+			"deployId": deployId,
+			"maxHeroSlots": config.maxHeroSlots,
+			"moneyAmount": config.moneyAmount
+		}
+
+		var player:Player = new Player( configForPlayer );
+		var err:String = player.init();
+		if( err != null )
+			return [ null, 'Error in GeneratorSystem.generatePlayer. $err' ];
+
+		return [ player, null ];
 	}
 
 	public function generateHero( deployId:Int ):Array<Dynamic>

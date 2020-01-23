@@ -161,6 +161,13 @@ class EventHandler
 	{
 		//TODO: create cityscene, switch active scene, draw new scene, undraw old scene;
 		var generatorSystem:GeneratorSystem = this._parent.getSystem( "generator" );
+		var createPlayer:Array<Dynamic> = generatorSystem.generatePlayer( 100, "test player" );
+		var player:Player = createPlayer[ 0 ];
+		var pErr:String = createPlayer[ 1 ];
+		if( pErr != null )
+			throw 'Error in EventHandler._clickStartGame. $pErr';
+		this._parent.setPlayer( player );
+
 		var createScene:Array<Dynamic> = generatorSystem.generateScene( 1001 );
 		var scene:Scene = createScene[ 0 ];
 		var err:String = createScene[ 1 ];

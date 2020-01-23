@@ -60,12 +60,9 @@
 		"firstTextX": 0.0,
 		"firstTextY": 0.0,
 		"firstTextAlign": "left",
-		"slot0": { "item": null, "restriction": "hero", "isAvailable": false },
-		"slot1": { "item": null, "restriction": "hero", "isAvailable": false },
-		"slot2": { "item": null, "restriction": "hero", "isAvailable": false },
-		"slot3": { "item": null, "restriction": "hero", "isAvailable": false },
-		"slot4": { "item": null, "restriction": "hero", "isAvailable": false },
-		"slot5": { "item": null, "restriction": "hero", "isAvailable": false }
+		"slot": { "item": null, "restriction": "hero", "isAvailable": false },
+		"masXlots": 30,
+		"defaultSlots":10
 	},
 
 	"2003":{

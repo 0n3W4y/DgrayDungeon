@@ -124,7 +124,7 @@ class SceneSystem
 		for( i in 0...windows.length )
 		{
 			var window:Window = windows[ i ];
-			ui.addUiObject( windows[ i ] );
+			ui.removeUiObject( windows[ i ] );
 			var windowChilds:Array<Button> = window.get( "childs" );
 			for( j in 0...windowChilds.length )
 			{
@@ -211,7 +211,7 @@ class SceneSystem
 
 	private function _undrawCityScene( scene:Scene ):Void
 	{
-		
+
 	}
 
 	private function _checkSceneIfExist( scene:Scene ):Int

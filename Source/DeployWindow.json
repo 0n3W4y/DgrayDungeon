@@ -28,7 +28,8 @@
 		"firstTextWidth": 400,
 		"firstTextX": 30.0,
 		"firstTextY": 10.0,
-		"firstTextAlign": "left"
+		"firstTextAlign": "left",
+		"button": [  ]
 	},
 
 	"3002":{
@@ -47,7 +48,8 @@
 		"firstTextWidth": 350,
 		"firstTextX": 0.0,
 		"firstTextY": 0.0,
-		"firstTextAlign": "left"
+		"firstTextAlign": "left",
+		"button": [  ]
 	},
 
 	"3003":{
@@ -59,7 +61,8 @@
 		"imageNormalURL": "assets/images/panelCityWindow.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
-		"firstText": null		
+		"firstText": null,
+		"button": [  ]	
 	},
 
 	"3004":{
@@ -71,7 +74,8 @@
 		"imageNormalURL": "assets/images/dungeonSceneHeroesToDungeon.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
-		"firstText": null		
+		"firstText": null,
+		"button": [  ]	
 	},
 
 	"3005":{
@@ -90,6 +94,27 @@
 		"firstTextWidth": 250,
 		"firstTextX": 15.0,
 		"firstTextY": 10.0,
-		"firstTextAlign": "center"
+		"firstTextAlign": "center",
+		"button": [  ]
+	},
+
+	"3006":{
+		"name": "innWindow",
+		"deployId": 3006,
+		"alwaysActive": true,
+		"x": 1300.0,
+		"y": 20.0,
+		"imageNormalURL": "assets/images/dungeonWindow.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"firstText": "Inn | 0 of 20",
+		"firstTextSize": 26,
+		"firstTextColor": "0xffffff",
+		"firstTextHeight": 30,
+		"firstTextWidth": 300,
+		"firstTextX": 15.0,
+		"firstTextY": 10.0,
+		"firstTextAlign": "center",
+		"button": [  ]
 	}
 }
