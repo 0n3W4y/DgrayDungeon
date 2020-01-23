@@ -4,13 +4,14 @@ import openfl.display.Sprite;
 
 class Scene
 {
-	private var _inited:Bool = false;
-	private var _postInited:Bool = false;
+	private var _inited:Bool;
+	private var _postInited:Bool;
 
 	private var _id:Int;
 	private var _deployId:Int;
 	private var _type:String;
 	private var _name:String;
+
 	private var _isDrawed:String;
 
 	private var _aliveEntities:Dynamic;
@@ -20,13 +21,17 @@ class Scene
 	private var _graphics:GraphicsSystem;
 	
 
-	public function new():Void
+	public function new( config:Dynamic ):Void
 	{
+		this._type = "scene";
+		this._id = config.id;
+		this._name = config.name;
+		this._deployId = config.deployId;
+		this._graphics = new GraphicsSystem( this, config.sprite );
+		this._isDrawed = "undrawed"; // Параметр для того, что бы понять, нужно ли отрисовывать сцену и все ее childs или она уже отрисована но скрыта.
+		this._inited = false;
+		this._postInited = false;
 
-	}
-
-	public function init( id:Int, name:String, deployId:Int, sprite:Sprite ):String
-	{
 		this._aliveEntities = 
 		{
 			"hero": new Array<Hero>(),
@@ -40,28 +45,29 @@ class Scene
 		this._uiEntities = 
 		{
 			"window": new Array<Window>()
-		};
+		};		
+	}
 
-		this._type = "scene";
+	public function init( ):String
+	{	
+		if( this._id == null )
+			return 'Error in Scene.init. Id is "$this._id"';
 
-		this._id = id;
-		if( !Std.is( id, Int ) )
-			return 'Error in Scene.init. Id is "$id"';
+		
+		if( this._name == null )
+			return 'Error in Scene.init. Name is "$this._name"';
 
-		this._name = name;
-		if( !Std.is( name, String ) )
-			return 'Error in Scene.init. Name is "$name"';
-
-		this._deployId = deployId;
-		if( !Std.is( deployId, Int ) )
-			return 'Error in Scene.init. deploy id is "$deployId"';
-
-		this._graphics = new GraphicsSystem();
-		var err:String = this._graphics.init( this, sprite );
-		if( err != 'ok' )
+		
+		if( this._deployId == null )
+			return 'Error in Scene.init. deploy id is "$this._deployId"';
+		
+		var err:String = this._graphics.init();
+		if( err != null )
 			return 'Error in Scene.init. $err';
 
-		this._isDrawed = "undrawed"; // Параметр для того, что бы понять, нужно ли отрисовывать сцену и все ее childs или она уже отрисована но скрыта.
+		if( this._objectEntities == null || this._objectEntities.building == null || this._objectEntities.treasure == null )
+			return 'Error in Scene.init. Object array in null, or subobject is null';
+
 		this._inited = true;
 		return null;
 	}
@@ -91,7 +97,7 @@ class Scene
 			case "graphics": return this._graphics;
 			case "sprite": return this._graphics.getSprite();
 			case "drawed": return this._isDrawed;
-			default: { trace( 'Error in Scene.get. No getter for "$value"' ); return null; }
+			default: { throw( 'Error in Scene.get. No getter for "$value"' ); return null; }
 		}
 	}
 
@@ -102,11 +108,11 @@ class Scene
 			case "ui": return this._uiEntities;
 			case "alive": return this._aliveEntities;
 			case "object": return this._objectEntities;
-			default: return "Error in Scene.getEntites, can't get array with type: " + type + "." ;
+			default: throw "Error in Scene.getEntites, can't get array with type: " + type + "." ;
 		}
 	}
 
-	public function addChild( object:Dynamic ):String
+	public function addChild( object:Dynamic ):Void
 	{
 		var container:Array<Dynamic> = null;
 		var type:String = object.get( "type" );
@@ -114,15 +120,15 @@ class Scene
 
 		var check:Int = this._checkChildForExist( object );
 		if( check != null ) // проверяем на наличие объекта на сцене.
-			return 'Error in Scene.addChild. Found dublicate object with type: "$type" and name "$name"';
+			throw 'Error in Scene.addChild. Found dublicate object with type: "$type" and name "$name"';
 
 		switch( type )
 		{
 			case "window": container = this._uiEntities.window;
-			default: return 'Error in Scene.addChild. Can not add child with type: "$type" and name "$name"';
+			case "building": container = this._objectEntities.building;
+			default: throw 'Error in Scene.addChild. Can not add child with type: "$type" and name "$name"';
 		}
 		container.push( object );
-		return null;
 	}
 
 	public function removeChild( object:Dynamic ):Array<Dynamic>
@@ -133,7 +139,8 @@ class Scene
 
 		switch( type )
 		{
-			case "window": container = this._objectEntities.window;
+			case "window": container = this._uiEntities.window;
+			case "building": container = this._objectEntities.building;
 			default: { return [ null, 'Error in Scene.removeChild. No type found for type: "$type"' ]; }
 		}
 
@@ -147,11 +154,11 @@ class Scene
 
 	public function changeDrawStatus( value:String ):Void
 	{
-		if( value != "drawed" || value != "undrawed" )
+		if( value != "drawed" && value != "undrawed" )
 			throw 'Error in Scene.changeDrawSatatus. Value is not valid: "$value"';
 
 		if( this._isDrawed == value )
-			throw 'Error in Scene.changeDrawStatus. Is Drawed already "$value"';
+			throw 'Error in Scene.changeDrawStatus. Is drawed already "$value"';
 
 		this._isDrawed = value;
 	}
@@ -166,7 +173,8 @@ class Scene
 		var container:Array<Dynamic> = null;
 		switch( type )
 		{
-			case "window": container = this._objectEntities.window;
+			case "window": container = this._uiEntities.window;
+			case "building": container = this._objectEntities.building;
 			default: return null;
 		}
 

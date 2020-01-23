@@ -6,38 +6,29 @@ import openfl.text.TextField;
 class GraphicsSystem
 {
 	private var _parent:Dynamic; // получить доступ к классу, в котором находится данный класс.
-	private var _inited:Bool = false;
-	private var _postInited:Bool = false;
 
 	private var _sprite:Sprite;
 
-	public function new():Void
+	public function new( parent:Dynamic, sprite:Sprite ):Void
 	{
-
+		this._parent = parent;
+		this._sprite = sprite;
 	}
 
-	public function init( parent:Dynamic, sprite:Sprite ):String
+	public function init():String
 	{
-		//TODO: сделать Std.is( parent, Button ) || Std.is( parent. Window ) || e.t.c
-		this._parent = parent;
 		if( this._parent == null )
 			return "Error in GraphicsSystem.init. Parent is NULL";
-
-		this._sprite = sprite;
+		
 		if( this._sprite == null )
-			return  "Error in GraphicsSystem.init. Sprite is NULL";		
+			return  "Error in GraphicsSystem.init. Sprite is NULL";
 
-		this._inited = true;
-		return "ok";
+		return null;
 	}
 
 	public function postInit():String
 	{
-		if( !this._inited )
-			return "Error in GraphicsSystem.postInit. Init is FALSE";
-
-		this._postInited = true;
-		return "ok";
+		return null;
 	}
 
 	public function changeText( text:String, position:String ):String

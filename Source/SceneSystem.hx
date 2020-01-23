@@ -8,36 +8,34 @@ class SceneSystem
 	private var _scenesArray:Array<Scene>;
 	private var _scenesSprite:Sprite;
 	private var _activeScene:Scene;
-	private var _inited:Bool = false;
-	private var _postInited:Bool = false;
+	private var _inited:Bool;
+	private var _postInited:Bool;
 
 	
-	public function new():Void
+	public function new( parent:Game, sprite:Sprite ):Void
 	{
-
-	}
-
-	public function init( parent:Game, sprite:Sprite ):Void
-	{	
-		this._parent = parent;
-		if( parent == null )
-			throw 'Error in SceneSystem.init. Parent is "$parent"';
-
-		this._scenesSprite = sprite;
-		if( sprite == null )
-			throw 'Error in SceneSystem.init. Sprite is "$sprite"';
-
-		this._scenesArray = new Array<Scene>();
+		this._inited = false;
+		this._postInited = false;
 		this._activeScene = null;
-		this._inited = true;
+		this._scenesArray = new Array<Scene>();
+		this._scenesSprite = sprite;
+		this._parent = parent;
 	}
 
-	public function postInit():Void
-	{
-		if( !this._inited )
-			throw "Error in SceneSystem.postInit. Init is FALSE";
+	public function init():String
+	{	
+		if( this._parent == null )
+			return 'Error in SceneSystem.init. Parent is "$this._parent"';
 
-		this._postInited = true;
+		if( this._scenesSprite == null )
+			return 'Error in SceneSystem.init. Sprite is "$this._scenesSprite"';
+
+		return null;
+	}
+
+	public function postInit():String
+	{
+		return null;
 	}
 
 	public function update( time:Float ):Void
@@ -99,24 +97,39 @@ class SceneSystem
 	{
 		var ui:UserInterface = this._parent.getSystem( "ui" );
 		var windows:Array<Window> = scene.getChilds( "ui" ).window;
+		var eventHandler:EventHandler = this._parent.getSystem( "event" );
+		var sceneId:Int = scene.get( "id" );
 		if( windows == null )
 			throw 'Error in SceneSystem.drawUiForScene. Scene does not have any widnows.';
 		
 		for( i in 0...windows.length )
 		{
 			var window:Window = windows[ i ];
-			var activeStatus:Bool = window.get( "defaultActive" );
 			ui.addUiObject( windows[ i ] );
+			var windowChilds:Array<Button> = window.get( "childs" );
+			for( j in 0...windowChilds.length )
+			{
+				eventHandler.addEvent( windowChilds[ j ], sceneId );
+			}
 		}
+
 	}
 
 	public function undrawUiForScene( scene:Scene ):Void
 	{
 		var windows:Array<Window> = scene.getChilds( "ui" ).window;
 		var ui:UserInterface = this._parent.getSystem( "ui" );
+		var eventHandler:EventHandler = this._parent.getSystem( "event" );
+		var sceneId:Int = scene.get( "id" );
 		for( i in 0...windows.length )
 		{
-			ui.removeUiObject( windows[ i ] );
+			var window:Window = windows[ i ];
+			ui.addUiObject( windows[ i ] );
+			var windowChilds:Array<Button> = window.get( "childs" );
+			for( j in 0...windowChilds.length )
+			{
+				eventHandler.removeEvent( windowChilds[ j ], sceneId );
+			}
 		}
 	}
 
@@ -135,7 +148,8 @@ class SceneSystem
 		var name:String = scene.get( "name" );
 		switch( name )
 		{
-			case "startScene": return this._drawStartScene( scene );
+			case "startScene": this._drawStartScene( scene );
+			case "cityScene": this._drawCityScene( scene );
 			default: throw 'Error in SceneSystem.drawScene. Scene with name "$name" can not to be draw, no function for it.';
 		}
 	}
@@ -145,7 +159,8 @@ class SceneSystem
 		var name:String = scene.get( "name" );
 		switch( name )
 		{
-			case "startScene": return this._undrawStartScene( scene );
+			case "startScene": this._undrawStartScene( scene );
+			case "cityScene": this._undrawCityScene( scene );
 			default: throw 'Error in SceneSystem.drawScene. Scene with name "$name" can not to be draw, no function for it.';
 		}
 	}
@@ -187,6 +202,16 @@ class SceneSystem
 		this._scenesSprite.removeChild( sprite );
 		this.undrawUiForScene( scene );
 		scene.changeDrawStatus( "undrawed" );
+	}
+
+	private function _drawCityScene( scene:Scene ):Void
+	{
+
+	}
+
+	private function _undrawCityScene( scene:Scene ):Void
+	{
+		
 	}
 
 	private function _checkSceneIfExist( scene:Scene ):Int

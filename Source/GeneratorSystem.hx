@@ -9,9 +9,6 @@ import openfl.text.TextFormatAlign;
 
 class GeneratorSystem
 {
-	private var _inited:Bool = false;
-	private var _postInited:Bool = false;
-
 	private var _nextId:Int;
 	private var _parent:Game;
 
@@ -22,58 +19,56 @@ class GeneratorSystem
 	private var _buildingDeploy:Map<Int, Dynamic>; // Map [id]: {};
 	private var _sceneDeploy:Map<Int, Dynamic>; // Map [id]: {};
 
-	private var _heroNames:Dynamic; // { "m": [ "Alex"], "w": [ "Stella" ]};
-	private var _heroSurnames:Dynamic; // [ "Goldrich", "Duckman" ];
+	//private var _heroNames:Dynamic; // { "m": [ "Alex"], "w": [ "Stella" ]};
+	//private var _heroSurnames:Dynamic; // [ "Goldrich", "Duckman" ];
 
 
-	public function new()
-	{
-
-	}
-
-	public function init( parent:Game, sceneDeploy:Map<Int, Dynamic>, buildingDeploy:Map<Int, Dynamic>, windowDeploy:Map<Int, Dynamic>, buttonDeploy:Map<Int, Dynamic>, heroDeploy:Map<Int, Dynamic>, itemDeploy:Map<Int, Dynamic> ):Void
+	public function new( config:Dynamic ):Void
 	{
 		this._nextId = 0;
-
-		this._parent = parent;
-		if( this._parent == null )
-			throw  "Error in GeneratorSystem.preInit. Parent is NULL";
-		
-		//TODO: == null && !this.sceneDeploy.exist( 1000 ); // проверка на наличие нужного DeployId в этом объекте
-
-		this._sceneDeploy = sceneDeploy;
-		if( this._sceneDeploy == null )
-			throw "Error in GeneratorSystem.init. SceneDeploy is NULL";
-		
-		this._buildingDeploy = buildingDeploy;
-		if( this._sceneDeploy == null )
-			throw "Error in GeneratorSystem.init. BuildingDeploy is NULL";
-		
-		this._windowDeploy = windowDeploy;
-		if( this._sceneDeploy == null )
-			throw "Error in GeneratorSystem.init. WindowDeploy is NULL";
-		
-		this._buttonDeploy = buttonDeploy;
-		if( this._sceneDeploy == null )
-			throw "Error in GeneratorSystem.init. ButtonDeploy is NULL";
-		
-		this._heroDeploy = heroDeploy;
-		if( this._sceneDeploy == null )
-			throw "Error in GeneratorSystem.init. HeroDeploy is NULL";
-		
-		this._itemDeploy = itemDeploy;
-		if( this._sceneDeploy == null )
-			throw "Error in GeneratorSystem.init. ItemDeploy is NULL";
-		
-		this._inited = true;
+		this._parent = config.parent;
+		this._sceneDeploy = config.sceneDeploy;
+		this._buildingDeploy = config.buildingDeploy;
+		this._windowDeploy = config.windowDeploy;
+		this._buttonDeploy = config.buttonDeploy;
+		this._heroDeploy = config.heroDeploy;
+		this._itemDeploy = config.itemDeploy;
 	}
 
-	public function postInit():Void
-	{
-		if( !this._inited )
-			throw "Error in GeneratorSystem.postInit. Init is FALSE";
+	public function init():String
+	{		
+		if( this._parent == null )
+			return  'Error in GeneratorSystem.init. Parent is:"$this._parent"';
+		
+		if( this._sceneDeploy == null || !this._sceneDeploy.exists( 1000 ) )
+			return 'Error in GeneratorSystem.init. Scene deploy is not valid';
+		
+		
+		if( this._buildingDeploy == null )
+			return 'Error in GeneratorSystem.init. Building deploy is not valid';
+		
+		
+		if( this._windowDeploy == null )
+			return 'Error in GeneratorSystem.init. Window deploy is not valid';
+		
+		
+		if( this._buttonDeploy == null )
+			return 'Error in GeneratorSystem.init. Button deploy is not valid';
+		
+		
+		if( this._heroDeploy == null )
+			return 'Error in GeneratorSystem.init. Hero deploy is not valid';
+		
+		
+		if( this._itemDeploy == null )
+			return 'Error in GeneratorSystem.init. Item deploy is not valid';
+		
+		return null;
+	}
 
-		this._postInited = true;
+	public function postInit():String
+	{
+		return null;
 	}
 
 	public function generateHero( deployId:Int ):Array<Dynamic>
@@ -98,15 +93,23 @@ class GeneratorSystem
 			return [ null, "Error in GeneratorSystem.generateScene. Deploy ID: '" + deployId + "' doesn't exist in SceneDeploy data" ];
 
 		var id = this._createId();
-		var scene = new Scene();
-
 		var sprite:Sprite = new Sprite();
 		var graphicsSprite:Sprite = this._createGraphicsSprite( config );
 		sprite.addChild( graphicsSprite );
 		var textSprite:Sprite = this._createTextSprite( config );
 		sprite.addChild( textSprite );
 
-		scene.init( id, config.name, deployId, sprite );
+		var configForScene:Dynamic = 
+		{
+			"id": id,
+			"name": config.name,
+			"deployId": deployId,
+			"sprite": sprite
+		}
+		var scene = new Scene( configForScene );
+		var err:String = scene.init();
+		if( err !=null )
+			return [ null, 'Error in GeneratorSystem.generateScene. $err' ];
 
 		// окна не будут добавлены на сцену, так как они являются частью Интерфейса пользователя.
 		if( config.window != null ) // Внутри Window есть чайлды в виде button. создаются в функции создании окна.
@@ -133,7 +136,7 @@ class GeneratorSystem
 		if( config == null )
 			return [ null, "Error in GeneratorSystem.generateWindow. Deploy ID: '" + deployId + "' doesn't exist in WindowDeploy data" ];
 
-		var window:Window = new Window();
+		
 		var id:Int = this._createId();
 		var sprite:Sprite = new Sprite();
 		sprite.x = config.x;
@@ -144,7 +147,18 @@ class GeneratorSystem
 		var textSprite:Sprite = this._createTextSprite( config );
 		sprite.addChild( textSprite );		
 
-		window.init( id, config.name, config.deployId, sprite, config.alwaysActive );
+		var configForWindow:Dynamic = 
+		{
+			"id": id,
+			"name": config.name,
+			"deployId": deployId,
+			"sprite": sprite,
+			"alwaysActive": config.alwaysActive
+		}
+		var window:Window = new Window( configForWindow );
+		var err:String = window.init();
+		if( err != null )
+			return [ null, 'Error in GeneratorSystem.generateWindow. $err' ];
 
 		if( config.button != null )
 		{
@@ -153,10 +167,12 @@ class GeneratorSystem
 				var buttonDeployId:Int = config.button[ i ];
 				var createButton:Array<Dynamic> = this.generateButton( buttonDeployId );
 				var button:Button = createButton[ 0 ];
-				var err:String = createButton[ 1 ];
-				if( err != null )
-					return [ null, 'Error in GeneratorSystem.generateWindow. $err' ];
+				var bErr:String = createButton[ 1 ];
+				if( bErr != null )
+					return [ null, 'Error in GeneratorSystem.generateWindow. $bErr' ];
 				window.addChild( button );
+				var buttonSprite:Sprite = button.get( "sprite" );
+				sprite.addChild( buttonSprite );
 			}
 		}
 
@@ -169,7 +185,7 @@ class GeneratorSystem
 		if( config == null )
 			return [ null, 'Error in GeneratorSystem.generateButton. Deploy ID: "$deployId" does not exist in ButtonDeploy data' ];
 
-		var button:Button = new Button();
+		
 		var id:Int = this._createId();
 		var sprite:Sprite = new Sprite();
 		sprite.x = config.x;
@@ -180,7 +196,17 @@ class GeneratorSystem
 		var textSprite:Sprite = this._createTextSprite( config );
 		sprite.addChild( textSprite );
 
-		button.init( id, config.name, config.deployId, sprite );
+		var configForButton:Dynamic = 
+		{
+			"id": id,
+			"name": config.name,
+			"deployId": deployId,
+			"sprite": sprite
+		}
+		var button:Button = new Button( configForButton );
+		var err:String = button.init();
+		if( err != null )
+			return [ null , 'Error in GeneratorSystem.generateButton. $err' ];
 
 		return [ button, null ];
 	}

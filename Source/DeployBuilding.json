@@ -41,477 +41,177 @@
 		"firstTextAlign": "left"
 	},
 
-			
-			"inn": {
-				"inventory": {
-					"maxSlots": 8,
-					"needToFill": true,
-					"currentSlots": 8,
-					"inventory": {
-						"slot1": {
-							"name": null,
-							"type": "hero",
-							"item": null,
-							"restriction": null,
-							"isAvailable": false
-						}
-					}
-				},
-				"event": {},
-				"graphics": {
-					"queue": 0,
-					"x": 1600.0,
-					"y": 90.0,
-					"img": {
-						"one": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/innWindow.png"
-						},
-						"two": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/innWindow.png"
-						}
-					},
-					"text": {
-						"first": {
-							"text": "Inn",
-							"align": "left",
-							"x": 20.0,
-							"y": -35.0,
-							"font": "Verdana",
-							"size": 32,
-							"color": "0xffffff",
-							"visible": true,
-							"selectable": false,
-							"height": 50,
-							"width": 50
-						},
-						"second": {
-							"text": "0/8",
-							"align": "left",
-							"x": 100.0,
-							"y": -35.0,
-							"font": "Verdana",
-							"size": 32,
-							"color": "0xffffff",
-							"visible": true,
-							"selectable": false,
-							"height": 50,
-							"width": 50
-						}
-					}
-				}
-			},
+	"2002":{
+		"name": "recruits",
+		"deployId": 2002,
+		"imageNormalURL": "assets/images/recruits.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"imageHoverURL": "assets/images/recruits_m.png",
+		"imageHoverX": 0.0,
+		"imageHoverY": 0.0,
+		"x": 1100.0,
+		"y": 500.0,
+		"firstText": "Recruit Coach",
+		"firstTextSize": 48,
+		"firstTextColor": "0xffffff",
+		"firstTextHeight": 50,
+		"firstTextWidth": 300,
+		"firstTextX": 0.0,
+		"firstTextY": 0.0,
+		"firstTextAlign": "left",
+		"slot0": { "item": null, "restriction": "hero", "isAvailable": false },
+		"slot1": { "item": null, "restriction": "hero", "isAvailable": false },
+		"slot2": { "item": null, "restriction": "hero", "isAvailable": false },
+		"slot3": { "item": null, "restriction": "hero", "isAvailable": false },
+		"slot4": { "item": null, "restriction": "hero", "isAvailable": false },
+		"slot5": { "item": null, "restriction": "hero", "isAvailable": false }
+	},
 
-			"svyatilishe": {
+	"2003":{
+		"name": "blacksmith",
+		"deployId": 2003,
+		"imageNormalURL": "assets/images/blacksmith.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"imageHoverURL": "assets/images/blacksmith_m.png",
+		"imageHoverX": 0.0,
+		"imageHoverY": 0.0,
+		"x": 100.0,
+		"y": 500.0,
+		"firstText": "BlackSmith",
+		"firstTextSize": 48,
+		"firstTextColor": "0xffffff",
+		"firstTextHeight": 50,
+		"firstTextWidth": 300,
+		"firstTextX": 0.0,
+		"firstTextY": 0.0,
+		"firstTextAlign": "left"
+	},
 
-			},
+	"2004":{
+		"name": "merchant",
+		"deployId": 2004,
+		"imageNormalURL": "assets/images/merchant.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"imageHoverURL": "assets/images/merchant_m.png",
+		"imageHoverX": 0.0,
+		"imageHoverY": 0.0,
+		"x": 300.0,
+		"y": 280.0,
+		"firstText": "Humble shop",
+		"firstTextSize": 48,
+		"firstTextColor": "0xffffff",
+		"firstTextHeight": 50,
+		"firstTextWidth": 300,
+		"firstTextX": 0.0,
+		"firstTextY": 0.0,
+		"firstTextAlign": "left"
+	},
 
-			"recruits": {
-				"event": {},
-				"graphics": {
-					"addiction": null,
-					"graphicsInstance": null,
-					"x": 1100.0,
-					"y": 500.0,
-					"img": {
-						"one": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/recruits.png"
-						},
-						"two": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/recruits_m.png"
-						}
-					},
-					"text": {
-						"first": {
-							"text": "Recruit Coach",
-							"align": "left",
-							"x": 0.0,
-							"y": 0.0,
-							"font": "Verdana",
-							"size": 48,
-							"color": "0xffffff",
-							"visible": true,
-							"selectable": false,
-							"height": 100,
-							"width": 100
-						},
-						"second": {
-							"text": "Train a new recruits",
-							"align": "left",
-							"x": 0.0,
-							"y": 0.0,
-							"font": "Verdana",
-							"size": 32,
-							"color": "0xffffff",
-							"visible": true,
-							"selectable": false,
-							"height": 100,
-							"width": 100
-						}
-					}
-				},
+	"2005":{
+		"name": "graveyard",
+		"deployId": 2005,
+		"imageNormalURL": "assets/images/graveyard.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"imageHoverURL": "assets/images/graveyard_m.png",
+		"imageHoverX": 0.0,
+		"imageHoverY": 0.0,
+		"x": 680.0,
+		"y": 400.0,
+		"firstText": "Graveyard",
+		"firstTextSize": 48,
+		"firstTextColor": "0xffffff",
+		"firstTextHeight": 50,
+		"firstTextWidth": 300,
+		"firstTextX": 0.0,
+		"firstTextY": 0.0,
+		"firstTextAlign": "left"
+	},
 
-				"inventory": {
-					"maxSlots": 5,
-					"currentSlots": 5,
-					"needToFill": true,
-					"inventory": {
-						"slot1": {
-							"name": null,
-							"type": "hero",
-							"item": null,
-							"restriction": null,
-							"isAvailable": false
-						}
-					}
-				}
-			},
-			"blacksmith": {
-				"event": {},
-				"graphics": {
-					"addiction": null,
-					"graphicsInstance": null,
-					"x": 100.0,
-					"y": 500.0,
-					"img": {
-						"one": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/blacksmith.png"
-						},
-						"two": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/blacksmith_m.png"
-						}
-					},
-					"text": {
-						"first": {
-							"text": "BlackSmith",
-							"align": "left",
-							"x": 0.0,
-							"y": 0.0,
-							"font": "Verdana",
-							"size": 48,
-							"color": "0xffffff",
-							"visible": true,
-							"selectable": false,
-							"height": 100,
-							"width": 100
-						},
-						"second": {
-							"text": "Make a new weapon",
-							"align": "left",
-							"x": 0.0,
-							"y": 0.0,
-							"font": "Verdana",
-							"size": 32,
-							"color": "0xffffff",
-							"visible": true,
-							"selectable": false,
-							"height": 100,
-							"width": 100
-						}
-					}
-				}
-			},
-			"merchant": {
-				"event": {},
-				"graphics": {
-					"addiction": null,
-					"graphicsInstance": null,
-					"x": 300.0,
-					"y": 280.0,
-					"img": {
-						"one": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/merchant.png"
-						},
-						"two": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/merchant_m.png"
-						}
-					},
-					"text": {
-						"first": {
-							"text": "Humble shop",
-							"align": "left",
-							"x": 0.0,
-							"y": 0.0,
-							"font": "Verdana",
-							"size": 48,
-							"color": "0xffffff",
-							"visible": true,
-							"selectable": false,
-							"height": 100,
-							"width": 100
-						},
-						"second": {
-							"text": "Buy new stuff",
-							"align": "left",
-							"x": 0.0,
-							"y": 0.0,
-							"font": "Verdana",
-							"size": 32,
-							"color": "0xffffff",
-							"visible": true,
-							"selectable": false,
-							"height": 100,
-							"width": 100
-						}
-					}
-				}
-			},
-			"graveyard": {
-				"event": {},
-				"graphics": {
-					"addiction": null,
-					"graphicsInstance": null,
-					"x": 680.0,
-					"y": 400.0,
-					"img": {
-						"one": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/graveyard.png"
-						},
-						"two": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/graveyard_m.png"
-						}
-					},
-					"text": {
-						"first": {
-							"text": "Graveyard",
-							"align": "left",
-							"x": 200.0,
-							"y": 100.0,
-							"font": "Verdana",
-							"size": 48,
-							"color": "0xffffff",
-							"visible": true,
-							"selectable": false,
-							"height": 100,
-							"width": 200
-						},
-						"second": {
-							"text": "R.I.P.",
-							"align": "left",
-							"x": 200.0,
-							"y": 150.0,
-							"font": "Verdana",
-							"size": 32,
-							"color": "0xffffff",
-							"visible": true,
-							"selectable": false,
-							"height": 100,
-							"width": 200
-						}
-					}
-				}
-			},
-			"academy": {
-				"event": {},
-				"graphics": {
-					"addiction": null,
-					"graphicsInstance": null,
-					"x": 450.0,
-					"y": 100.0,
-					"img": {
-						"one": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/academy.png"
-						},
-						"two": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/academy_m.png"
-						}
-					},
-					"text": {
-						"first": {
-							"text": "Skill academy",
-							"align": "left",
-							"x": 0.0,
-							"y": 0.0,
-							"font": "Verdana",
-							"size": 48,
-							"color": "0xffffff",
-							"visible": true,
-							"selectable": false,
-							"height": 100,
-							"width": 100
-						},
-						"second": {
-							"text": "Learn new skills",
-							"align": "left",
-							"x": 0.0,
-							"y": 0.0,
-							"font": "Verdana",
-							"size": 32,
-							"color": "0xffffff",
-							"visible": true,
-							"selectable": false,
-							"height": 100,
-							"width": 100
-						}
-					}
-				}
-			},
-			"hermit": {
-				"event": {},
-				"graphics": {
-					"addiction": null,
-					"graphicsInstance": null,
-					"x": 0.0,
-					"y": 600.0,
-					"img": {
-						"one": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/hermit.png"
-						},
-						"two": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/hermit_m.png"
-						}
-					},
-					"text": {
-						"first": {
-							"text": "Hermit",
-							"align": "left",
-							"x": 0.0,
-							"y": 0.0,
-							"font": "Verdana",
-							"size": 40,
-							"color": "0xffffff",
-							"visible": true,
-							"selectable": false,
-							"height": 100,
-							"width": 100
-						},
-						"second": {
-							"text": "Teach surviving",
-							"align": "left",
-							"x": 0.0,
-							"y": 0.0,
-							"font": "Verdana",
-							"size": 28,
-							"color": "0xffffff",
-							"visible": true,
-							"selectable": false,
-							"height": 100,
-							"width": 100
-						}
-					}
-				}
-			},
-			"questman": {
-				"event": {},
-				"graphics": {
-					"addiction": null,
-					"graphicsInstance": null,
-					"x": 550.0,
-					"y": 820.0,
-					"img": {
-						"one": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/questman.png"
-						},
-						"two": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/questman_m.png"
-						}
-					},
-					"text": {
-						"first": {
-							"text": "Strange person",
-							"align": "left",
-							"x": 50.0,
-							"y": 50.0,
-							"font": "Verdana",
-							"size": 30,
-							"color": "0xffffff",
-							"visible": true,
-							"selectable": false,
-							"height": 100,
-							"width": 200
-						},
-						"second": {
-							"text": "Collect new quests",
-							"align": "left",
-							"x": 50.0,
-							"y": 100.0,
-							"font": "Verdana",
-							"size": 18,
-							"color": "0xffffff",
-							"visible": true,
-							"selectable": false,
-							"height": 50,
-							"width": 100
-						}
-					}
-				}
-			},
-			"fontain": {
-				"event": {},
-				"graphics": {
-					"addiction": null,
-					"graphicsInstance": null,
-					"x": 700.0,
-					"y": 690.0,
-					"img": {
-						"one": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/fontain.png"
-						},
-						"two": {
-							"x": 0.0,
-							"y": 0.0,
-							"url": "assets/images/fontain_m.png"
-						}
-					},
-					"text": {
-						"first": {
-							"text": "Fontain",
-							"align": "left",
-							"x": 80.0,
-							"y": 100.0,
-							"font": "Verdana",
-							"size": 30,
-							"color": "0xffffff",
-							"visible": true,
-							"selectable": false,
-							"height": 50,
-							"width": 150
-						},
-						"second": {
-							"text": "Learn more",
-							"align": "left",
-							"x": 80.0,
-							"y": 140.0,
-							"font": "Verdana",
-							"size": 18,
-							"color": "0xffffff",
-							"visible": true,
-							"selectable": false,
-							"height": 50,
-							"width": 150
-						}
-					}
+	"2006":{
+		"name": "academy",
+		"deployId": 2006,
+		"imageNormalURL": "assets/images/academy.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"imageHoverURL": "assets/images/academy_m.png",
+		"imageHoverX": 0.0,
+		"imageHoverY": 0.0,
+		"x": 450.0,
+		"y": 100.0,
+		"firstText": "Academy",
+		"firstTextSize": 48,
+		"firstTextColor": "0xffffff",
+		"firstTextHeight": 50,
+		"firstTextWidth": 300,
+		"firstTextX": 0.0,
+		"firstTextY": 0.0,
+		"firstTextAlign": "left"
+	},
+
+	"2007":{
+		"name": "hermit",
+		"deployId": 2007,
+		"imageNormalURL": "assets/images/hermit.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"imageHoverURL": "assets/images/hermit_m.png",
+		"imageHoverX": 0.0,
+		"imageHoverY": 0.0,
+		"x": 0.0,
+		"y": 600.0,
+		"firstText": "Hermit",
+		"firstTextSize": 48,
+		"firstTextColor": "0xffffff",
+		"firstTextHeight": 50,
+		"firstTextWidth": 300,
+		"firstTextX": 0.0,
+		"firstTextY": 0.0,
+		"firstTextAlign": "left"
+	},
+
+	"2008":{
+		"name": "questman",
+		"deployId": 2008,
+		"imageNormalURL": "assets/images/questman.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"imageHoverURL": "assets/images/questman_m.png",
+		"imageHoverX": 0.0,
+		"imageHoverY": 0.0,
+		"x": 550.0,
+		"y": 820.0,
+		"firstText": "Strange person",
+		"firstTextSize": 48,
+		"firstTextColor": "0xffffff",
+		"firstTextHeight": 50,
+		"firstTextWidth": 300,
+		"firstTextX": 0.0,
+		"firstTextY": 0.0,
+		"firstTextAlign": "left"
+	},
+
+	"2009":{
+		"name": "hermit",
+		"deployId": 2009,
+		"imageNormalURL": "assets/images/fontain.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"imageHoverURL": "assets/images/fontain_m.png",
+		"imageHoverX": 0.0,
+		"imageHoverY": 0.0,
+		"x": 700.0,
+		"y": 690.0,
+		"firstText": "Fontain",
+		"firstTextSize": 48,
+		"firstTextColor": "0xffffff",
+		"firstTextHeight": 50,
+		"firstTextWidth": 300,
+		"firstTextX": 0.0,
+		"firstTextY": 0.0,
+		"firstTextAlign": "left"
+	}
 }

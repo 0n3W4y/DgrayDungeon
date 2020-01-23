@@ -8,34 +8,26 @@ import openfl.events.MouseEvent;
 
 class EventHandler
 {
-	private var _preInited:Bool = false;
-	private var _inited:Bool = false;
-	private var _postInited:Bool = false;
 	private var _parent:Game;
 	private var _listeners:Map<Int, Array<Dynamic>>;
 
-	public function new():Void
+	public function new( parent:Game ):Void
 	{
-
-	}
-
-	public function init( parent:Game ):Void
-	{	
 		this._parent = parent;
-		if( this._parent == null )
-			throw "Error in EventHandler.preInit. Parent - Game = NULL";
-
-		this._listeners = new Map<Int, Array<Dynamic>>(); // [ scene id ]: 
-
-		this._inited = true;
+		this._listeners = new Map<Int, Array<Dynamic>>();
 	}
 
-	public function postInit():Void
-	{
-		if( !this._inited )
-			throw 'Error in EventHandler.postInit. Init is FALSE';
+	public function init():String
+	{	
+		if( this._parent == null )
+			throw 'Error in EventHandler.init. Parent is "$this._parent"';
 
-		this._postInited = true;
+		return null;
+	}
+
+	public function postInit():String
+	{
+		return null;
 	}
 
 	public function addEvent( object:Dynamic, sceneId:Int ):Void
@@ -45,13 +37,13 @@ class EventHandler
 		if( check != null )
 			throw 'Error in EventHandler._addEventsToButton. Object with name: "$name" already in listeners';
 
-		this._addEvents( object );
 		if( sceneId == null )
 			throw 'Error in EventHandler._addEventsToButton. Scene Id is: "$sceneId"';
 
 		if( this._listeners[ sceneId ] == null )
 			this._listeners[ sceneId ] = new Array();
 
+		this._addEvents( object );
 		this._listeners[ sceneId ].push( object );
 	}
 
@@ -70,8 +62,17 @@ class EventHandler
 
 	private function _removeEvents( object:Dynamic ):Void
 	{
-		var name:String = object.get( "name" );
-		var eventsArray:Array<String> = object.get( "event" );
+		var type:String = object.get( "type" );
+
+		switch( "type" )
+		{
+			case "button":  this._removeEventsFromButton( object );
+			//case "hero": this._addEventsToHero( object );
+			//case "enemy": this._addEventsToEnemy( object );
+			//case "item": this._addEventsToItem( object );
+			//case "building": this._addEventsToBuilding( object );
+			default: throw 'Error in EventHandler._removeEvent. No events found for type "$type"';
+		}
 	}
 	private function _addEvents( object:Dynamic ):Void
 	{
@@ -94,32 +95,31 @@ class EventHandler
 		// с click будем разбирать по имени кнопки.
 		var name:String = object.get( "name" );
 		var sprite:Sprite = object.get( "sprite" );
-		var objectEvent:EventSystem = object.get( "events" );
 
-		sprite.addEventListener( MouseEvent.MOUSE_OUT, this._unhover );		
-		objectEvent.addEvent( "unhover" );
-
-		sprite.addEventListener( MouseEvent.MOUSE_OVER, this._hover );
-		objectEvent.addEvent( "hover" );
-
-		sprite.addEventListener( MouseEvent.MOUSE_UP, this._unpush );
-		objectEvent.addEvent( "push" );
-
-		sprite.addEventListener( MouseEvent.MOUSE_DOWN, this._push );
-		objectEvent.addEvent( "unpush" );
+		this._addStandartEvents( object ); // Добавляем стандартные ивенты как ховер, анховер, пуш, анпуш.
 
 		switch( name )
 		{
-			case "gameStart":
-			{
-				sprite.addEventListener( MouseEvent.MOUSE_DOWN, this._clickStartGame );
-				objectEvent.addEvent( "click" );
-			}
-			case "gameContinue":
-			{
-				sprite.addEventListener( MouseEvent.MOUSE_DOWN, this._clickContinueGame );
-				objectEvent.addEvent( "click" );
-			}
+			case "gameStart": sprite.addEventListener( MouseEvent.MOUSE_DOWN, this._clickStartGame );
+			case "gameContinue": sprite.addEventListener( MouseEvent.MOUSE_DOWN, this._clickContinueGame );
+			case "gameOptions": sprite.addEventListener( MouseEvent.MOUSE_DOWN, this._clickOptionsGame );
+			default: throw 'Error in EventHandler._addEventsToButton. No event for button with name "$name"';
+		}
+	}
+
+	private function _removeEventsFromButton( object:Dynamic ):Void
+	{
+		//hasEventListener (type:String):Bool
+		var name:String = object.get( "name" );
+		var sprite:Sprite = object.get( "sprite" );
+
+		this._removeStandartEvents( object ); // Добавляем стандартные ивенты как ховер, анховер, пуш, анпуш.
+
+		switch( name )
+		{
+			case "gameStart": sprite.removeEventListener( MouseEvent.MOUSE_DOWN, this._clickStartGame );
+			case "gameContinue": sprite.removeEventListener( MouseEvent.MOUSE_DOWN, this._clickContinueGame );
+			case "gameOptions": sprite.removeEventListener( MouseEvent.MOUSE_DOWN, this._clickOptionsGame );
 			default: throw 'Error in EventHandler._addEventsToButton. No event for button with name "$name"';
 		}
 	}
@@ -160,7 +160,15 @@ class EventHandler
 	private function _clickStartGame( e:MouseEvent ):Void
 	{
 		//TODO: create cityscene, switch active scene, draw new scene, undraw old scene;
-		trace( "yup!" );
+		var generatorSystem:GeneratorSystem = this._parent.getSystem( "generator" );
+		var createScene:Array<Dynamic> = generatorSystem.generateScene( 1001 );
+		var scene:Scene = createScene[ 0 ];
+		var err:String = createScene[ 1 ];
+		if( err != null )
+			throw 'Error in EventHandler._clickStartGame. $err';
+
+		this._parent.getSystem( "scene" ).addScene( scene );
+		this._parent.getSystem( "scene" ).changeSceneTo( scene );
 	}
 
 	private function _clickContinueGame( e:MouseEvent ):Void
@@ -168,29 +176,56 @@ class EventHandler
 
 	}
 
+	private function _clickOptionsGame( e:MouseEvent ):Void
+	{
+
+	}
+
 	private function _hover( e:MouseEvent ):Void
 	{
-		var sprite:Dynamic = e.target;
-		sprite.getChildAt( 0 ).getChildAt( 1 ).visible = true;
+		var sprite:Dynamic = e.currentTarget;
+		var graphicSprite:Sprite = sprite.getChildAt( 0 );
+		graphicSprite.getChildAt( 1 ).visible = true;
 	}
 
 	private function _unhover( e:MouseEvent ):Void
 	{
-		var sprite:Dynamic = e.target;
-		sprite.getChildAt( 0 ).getChildAt( 1 ).visible = false; // hover invisible;
-		sprite.getChildAt( 0 ).getChildAt( 2 ).visible = false; // unpushed visible;
+		var sprite:Dynamic = e.currentTarget;
+		var graphicSprite:Sprite = sprite.getChildAt( 0 );
+		graphicSprite.getChildAt( 1 ).visible = false;
+		graphicSprite.getChildAt( 2 ).visible = false;
 	}
 
 	private function _push( e:MouseEvent ):Void
 	{
-		var sprite:Dynamic = e.target;
-		sprite.getChildAt( 0 ).getChildAt( 2 ).visible = true;
+		var sprite:Dynamic = e.currentTarget;
+		var graphicSprite:Sprite = sprite.getChildAt( 0 );
+		graphicSprite.getChildAt( 2 ).visible = true;
 	}
 
 	private function _unpush( e:MouseEvent ):Void
 	{
-		var sprite:Dynamic = e.target;
-		sprite.getChildAt( 0 ).getChildAt( 2 ).visible = false;
+		var sprite:Dynamic = e.currentTarget;
+		var graphicSprite:Sprite = sprite.getChildAt( 0 );
+		graphicSprite.getChildAt( 2 ).visible = false;
+	}
+
+	private function _addStandartEvents( object:Dynamic ):Void
+	{
+		var sprite:Sprite = object.get( "sprite" );
+		sprite.addEventListener( MouseEvent.MOUSE_OUT, this._unhover );	
+		sprite.addEventListener( MouseEvent.MOUSE_OVER, this._hover );
+		sprite.addEventListener( MouseEvent.MOUSE_UP, this._unpush );
+		sprite.addEventListener( MouseEvent.MOUSE_DOWN, this._push );
+	}
+
+	private function _removeStandartEvents( object:Dynamic ):Void
+	{
+		var sprite:Sprite = object.get( "sprite" );
+		sprite.removeEventListener( MouseEvent.MOUSE_OUT, this._unhover );
+		sprite.removeEventListener( MouseEvent.MOUSE_OVER, this._hover );
+		sprite.removeEventListener( MouseEvent.MOUSE_UP, this._unpush );
+		sprite.removeEventListener( MouseEvent.MOUSE_DOWN, this._push );
 	}
 
 	/*

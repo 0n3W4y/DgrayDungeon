@@ -4,55 +4,46 @@ import openfl.display.Sprite;
 
 class Button
 {
-	private var _inited:Bool = false;
-	private var _postInited:Bool = false;
-
 	private var _id:Int;
 	private var _deployId:Int;
 	private var _name:String;
 	private var _type:String;
 	private var _activeStatus:Bool;
-	
-	private var _events:EventSystem;
+
 	private var _graphics:GraphicsSystem;
 
 
-	public function new()
-	{
-
-	}
-
-	public function init( id:Int, deployId:Int, name:String, sprite:Sprite ):Void
+	public function new( config:Dynamic ):Void
 	{
 		this._type = "button";
-
-		this._id = id;
-		if( Std.is( this._id, Int ) )
-			throw "Error in Button.init. Id is: '" + id + "'";
-
-		this._deployId = deployId;
-		if( Std.is( this._deployId, Int ) )
-			throw "Error in Button.init DeployId is: '" + deployId + "'";
-
-		this._name = name;
-		if( Std.is( this._name, String ) )
-			throw "Error in Button.init Name is: '" + name + "'";
-
-		this._graphics = new GraphicsSystem();
-		this._graphics.init( this, sprite );
-
-		this._events = new EventSystem();
-		this._events.init( this );
-
-		this._activeStatus = false;	
+		this._id = config.id;
+		this._deployId = config.deployId;
+		this._name = config.name;
+		this._graphics = new GraphicsSystem(  this, config.sprite );
+		this._activeStatus = false;
 	}
 
-	public function postInit():Void
+	public function init():String
 	{
-		if( !this._inited )
-			throw "Error in Button.postInit. Init is FALSE";
+		if( this._name == null )
+			throw 'Error in Button.init. Name is "$this._name"';
 		
-		this._postInited = true;
+		if( this._id == null )
+			throw 'Error in Button.init. Name is "$this._name" id is:"$this._id"';
+		
+		if( this._deployId == null )
+			throw 'Error in Button.init. Name is "$this._name" id is:"$this._id" deploy id is:"$this._deployId"';
+		
+		var err:String = this._graphics.init();
+		if( err != null )
+			return 'Error in Button.init.';
+
+		return null;
+	}
+
+	public function postInit():String
+	{
+		return null;
 	}
 
 	public function changeActiveStatus():Void
@@ -73,7 +64,6 @@ class Button
 			case "type": return this._type;
 			case "graphics": return this._graphics;
 			case "sprite": return this._graphics.getSprite();
-			case "events": return this._events;
 			case "activeStatus": return this._activeStatus;
 			default: { throw( "Error in Button.get. Can't get " + value ); return null; };
 		}

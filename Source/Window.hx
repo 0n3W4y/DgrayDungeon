@@ -4,9 +4,6 @@ import openfl.display.Sprite;
 
 class Window
 {
-	private var _inited:Bool = false;
-	private var _postInited:Bool = false;
-
 	private var _id:Int;
 	private var _deployId:Int;
 	private var _name:String;
@@ -19,44 +16,39 @@ class Window
 	private var _graphics:GraphicsSystem;
 
 
-	public function new():Void
-	{
-
-	}
-
-	public function init( id:Int, name:String, deployId:Int, sprite:Sprite, alwaysActive:Bool ):Void
+	public function new( config:Dynamic ):Void
 	{
 		this._type = "window";
-		this._buttonChildren = new Array();
+		this._buttonChildren = new Array<Button>();
 		this._isActive = false; // by default status is hide;
-		this._alwaysActive = alwaysActive;
-
-		this._id = id;
-		if( Std.is( this._id, Int ) )
-			throw "Error in Window.init. Id is: '" + id + "'";
-
-		this._name = name;
-		if( Std.is( this._name, String ) )
-			throw "Error in Window.init. Name is: '" + name + "'";
-
-		this._deployId = deployId;
-		if( Std.is( this._deployId, Int ) )
-			throw "Error in Widnow.init. DeployID is: '" + deployId + "'";
-
-		this._graphics = new GraphicsSystem();
-		var err = this._graphics.init( this, sprite );
-		if( err != "ok" )
-			throw "Error in Window.init. Window name: " + this._name + "; " + err;
-
-		this._inited = true;
+		this._alwaysActive = config.alwaysActive;
+		this._id = config.id;
+		this._name = config.name;
+		this._deployId = config.deployId;
+		this._graphics = new GraphicsSystem( this, config.sprite );
 	}
 
-	public function postInit():Void
+	public function init():String
 	{
-		if( !this._inited )
-			throw "Error in Window.postInit. Init is FALSE!";
+		if( !Std.is( this._name, String ) || this._name == null )
+			return 'Error in Window.init. Name is:"$this._name"';
 
-		this._postInited = true;		
+		if( !Std.is( this._id, Int ) || this._id == null )
+			return 'Error in Window.init. Id is:"$this._id" name:"$this._name"';
+		
+		if( !Std.is( this._deployId, Int ) || this._deployId == null )
+			return 'Error in Window.init. Name is:"$this._name" id is:"$this._id" deploy id is:"$this._deployId"';
+
+		var err:String = this._graphics.init();
+		if( err != null )
+			return 'Error in Window.init. Name is:"$this._name" id is:"$this._id" deploy id is:"$this._deployId"; $err';
+
+		return null;
+	}
+
+	public function postInit():String
+	{
+		return null;	
 	}
 
 	public function addChild( button:Button ):Void
@@ -105,7 +97,7 @@ class Window
 			case "sprite": return this._graphics.getSprite();
 			case "activeStatus": return this._isActive;
 			case "alwaysActive": return this._alwaysActive;
-			case "children": return this._buttonChildren;
+			case "childs": return this._buttonChildren;
 			default: { throw( "Error in Window.get. Can't get " + value ); return null; };
 		}
 	}

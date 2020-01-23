@@ -15,7 +15,7 @@
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
 		"window": [ "panelCityWindow", "citySceneMainWindow", "recruitWindow" ],
-		"building": [ "hospital", "graveyard", "academy", "merchant", "questman", "fontain", "blacksmith", "hermit", "tavern", "recruits", "inn" ]
+		"building": [ 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009 ]
 	},
 
 	"1002":{

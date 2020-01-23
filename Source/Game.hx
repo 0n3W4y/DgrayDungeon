@@ -127,19 +127,39 @@ class Game
 		var buildingDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer[3] );
 		var heroDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer[4] );
 		var itemDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer[5] );
-		//var enemyDeployMap:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer[6] );
+		var enemyDeployMap:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer[6] );
 
-		this._eventHandler = new EventHandler();
-		this._eventHandler.init( this );
+		var config:Dynamic = 
+		{ 
+			"parent": this, 
+			"sceneDeploy": sceneDeploy, 
+			"buildingDeploy": buildingDeploy, 
+			"windowDeploy": windowDeploy, 
+			"buttonDeploy": buttonDeploy, 
+			"heroDeploy": heroDeploy, 
+			"itemDeploy": itemDeploy,
+			"enemyDeploy": null
+		};
 
-		this._generatorSystem = new GeneratorSystem();
-		this._generatorSystem.init( this, sceneDeploy, buildingDeploy, windowDeploy, buttonDeploy, heroDeploy, itemDeploy );
+		this._generatorSystem = new GeneratorSystem( config );
+		var err:String = this._generatorSystem.init();
+		if( err != null )
+			throw 'Error in Game.new. $err';
 
-		this._sceneSystem = new SceneSystem();
-		this._sceneSystem.init( this, this._scenesSprite );
+		this._eventHandler = new EventHandler( this );
+		err = this._eventHandler.init();
+		if( err != null )
+			throw 'Error in Game.new. $err';
 
-		this._userInterface = new UserInterface();
-		this._userInterface.init( this, this._uiSprite );
+		this._sceneSystem = new SceneSystem( this, this._scenesSprite );
+		err = this._sceneSystem.init();
+		if( err != null )
+			throw 'Error in Game.new. $err';
+
+		this._userInterface = new UserInterface( this, this._uiSprite );
+		err = this._userInterface.init();
+		if( err != null )
+			throw 'Error in Game.new. $err';
 
 		this._startGame();		
 	}
@@ -189,7 +209,7 @@ class Game
 			//case "graphics": return this._graphicsSystem;
 			case "scene": return this._sceneSystem;
 			case "event": return this._eventHandler;
-			//case "ui": return this._userInterface;
+			case "ui": return this._userInterface;
 			default: trace( "Error in Game.getSystem; system can't be: " + system );
 		}
 		return null;

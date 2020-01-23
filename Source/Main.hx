@@ -12,8 +12,6 @@ class Main extends Sprite
 	public function new():Void
 	{
 		super();
-		trace( this.width + "; " + this.height );
-		trace( this.stage.height + "; " + this.stage.width );
 		this._game = new Game( this._width, this._height, this._fps, this );
 	}
 }

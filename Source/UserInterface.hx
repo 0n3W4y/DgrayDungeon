@@ -4,38 +4,31 @@ import openfl.display.Sprite;
 
 class UserInterface
 {
-	private var _inited:Bool = false;
-	private var _postInited:Bool = false;
-
 	private var _parent:Game;
 	private var _objectsOnUi:Array<Dynamic>; //store all sprites / bitmaps for fast remove;
 	private var _uiSprite:Sprite;
 
-	public function new():Void
-	{
-
-	}
-
-	public function init( parent:Game, sprite:Sprite ):Void
+	public function new( parent:Game, sprite:Sprite ):Void
 	{
 		this._parent = parent;
-		if( parent == null )
-			throw 'Error in UserInterface.init. Game is "$parent"';
-
-		this._objectsOnUi = new Array();
 		this._uiSprite = sprite;
-		if( sprite == null )
-			throw 'Error in UserInterface.init. Sprite is "$sprite"';
-
-		this._inited = true;
+		this._objectsOnUi = new Array();
 	}
 
-	public function postInit():Void
+	public function init():String
 	{
-		if( !this._inited )
-			throw 'Error in userInterface.postInit. Init is FALSE';
+		if( this._parent == null )
+			return 'Error in UserInterface.init. Game is "$this._parent"';
 
-		this._postInited = true;
+		if( this._uiSprite == null )
+			return 'Error in UserInterface.init. Sprite is "$this._uiSprite"';
+
+		return null;
+	}
+
+	public function postInit():String
+	{
+		return null;
 	}
 
 	public function addUiObject( object:Dynamic ):Void
@@ -49,7 +42,7 @@ class UserInterface
 		var alwaysActive:Bool = object.get( "alwaysActive" );
 		if( !alwaysActive )
 			sprite.visible = false;
-		
+
 		this._objectsOnUi.push( object );
 		this._uiSprite.addChild( sprite );
 	}
