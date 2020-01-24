@@ -31,10 +31,11 @@ class UserInterface
 		return null;
 	}
 
-	public function addUiObject( object:Dynamic ):Void
+	public function addUiObject( object:Dynamic, sceneId:Int ):Void
 	{
 		var name:String = object.get( "name" );
 		var sprite:Sprite = object.get( "sprite" );
+		var eventHandler:EventHandler = this._parent.getSystem( "event" );
 		var check:Int = this._checkObjectForExist( object );
 		if( check != null )
 			throw 'Error in UserInterface.addUiObject. Object with name: "$name" already exits.';
@@ -43,18 +44,45 @@ class UserInterface
 		if( !alwaysActive )
 			sprite.visible = false;
 
+		if( object.get( "type" ) == "window" )
+		{
+			var windowChilds:Array<Button> = object.get( "childs" );
+			for( j in 0...windowChilds.length )
+			{
+				var button:Button = windowChilds[ j ];
+				var buttonDeployId:Int = button.get( "deployId" );
+				if( buttonDeployId == 4011 )
+				{
+					var saveGame:Dynamic = this._parent.getLastSave();
+					if( saveGame == null )
+						continue;
+				}
+				eventHandler.addEvents( windowChilds[ j ], sceneId );
+			}
+		}
+
 		this._objectsOnUi.push( object );
 		this._uiSprite.addChild( sprite );
 	}
 
-	public function removeUiObject( object:Dynamic ):Array<Dynamic>
+	public function removeUiObject( object:Dynamic, sceneId:Int ):Array<Dynamic>
 	{
 		var name:String = object.get( "name" );
 		var sprite:Sprite = object.get( "sprite" );
+		var eventHandler:EventHandler = this._parent.getSystem( "event" );
 		var check:Int = this._checkObjectForExist( object );
 		if( check == null )
 			return [ null, 'Error in UserInterface.addUiObject. Object with name: "$name" not found.' ];
 
+		if( object.get( "type" ) == "window" )
+		{
+			var windowChilds:Array<Button> = object.get( "childs" );
+			for( j in 0...windowChilds.length )
+			{
+				var button:Button = windowChilds[ j ];
+				eventHandler.removeEvents( windowChilds[ j ], sceneId );
+			}
+		}
 		this._objectsOnUi.splice( check, 1 );
 		this._uiSprite.removeChild( sprite );
 		return [ object, null ];	

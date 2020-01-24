@@ -97,7 +97,6 @@ class SceneSystem
 	{
 		var ui:UserInterface = this._parent.getSystem( "ui" );
 		var windows:Array<Window> = scene.getChilds( "ui" ).window;
-		var eventHandler:EventHandler = this._parent.getSystem( "event" );
 		var sceneId:Int = scene.get( "id" );
 		if( windows == null )
 			throw 'Error in SceneSystem.drawUiForScene. Scene does not have any widnows.';
@@ -105,12 +104,7 @@ class SceneSystem
 		for( i in 0...windows.length )
 		{
 			var window:Window = windows[ i ];
-			ui.addUiObject( windows[ i ] );
-			var windowChilds:Array<Button> = window.get( "childs" );
-			for( j in 0...windowChilds.length )
-			{
-				eventHandler.addEvent( windowChilds[ j ], sceneId );
-			}
+			ui.addUiObject( windows[ i ], sceneId );
 		}
 
 	}
@@ -119,17 +113,12 @@ class SceneSystem
 	{
 		var windows:Array<Window> = scene.getChilds( "ui" ).window;
 		var ui:UserInterface = this._parent.getSystem( "ui" );
-		var eventHandler:EventHandler = this._parent.getSystem( "event" );
+
 		var sceneId:Int = scene.get( "id" );
 		for( i in 0...windows.length )
 		{
 			var window:Window = windows[ i ];
-			ui.removeUiObject( windows[ i ] );
-			var windowChilds:Array<Button> = window.get( "childs" );
-			for( j in 0...windowChilds.length )
-			{
-				eventHandler.removeEvent( windowChilds[ j ], sceneId );
-			}
+			ui.removeUiObject( windows[ i ], sceneId );
 		}
 	}
 
@@ -206,7 +195,10 @@ class SceneSystem
 
 	private function _drawCityScene( scene:Scene ):Void
 	{
-
+		var sprite:Sprite = scene.get( "sprite" );
+		this._scenesSprite.addChild( sprite );
+		this..drawUiForScene( scene );
+		scene.changeDrawStatus( "drawed" );
 	}
 
 	private function _undrawCityScene( scene:Scene ):Void

@@ -29,11 +29,17 @@ class Game
 	private var _doubleDelta:Float;
 
 	private var _player:Player;
+	private var _lastSave:Dynamic;
 
 	private function _calculateDelta():Void
 	{
 		this._delta = 1000 / this._fps;
 		this._doubleDelta = this._delta * 2;
+	}
+
+	private function _checkForSave():Dynamic
+	{
+		return null;
 	}
 
 	private function _tick():Void
@@ -97,6 +103,8 @@ class Game
 		this._gameStart = Date.now().getTime();
 		this._calculateDelta();
 		this._lastTime = 0.0;
+
+		this._lastSave = this._checkForSave();
 
 		var createScene:Array<Dynamic> = this._generatorSystem.generateScene( 1000 );
 		var scene:Scene = createScene[ 0 ];
@@ -233,6 +241,11 @@ class Game
 	public function setPlayer( player:Player ):Void
 	{
 		this._player = player;
+	}
+
+	public function getLastSave():Dynamic
+	{
+		return this._lastSave;
 	}
 }
 /*

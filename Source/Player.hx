@@ -54,10 +54,10 @@ class Player
 
 	public function checkHeroStorageForFreeSlots():Bool
 	{
-		if( this._heroSlots >= this._maxHeroSlots )
-			return false;
+		if( this._heroSlots < this._maxHeroSlots )
+			return true;
 
-		return true;
+		return false;
 	}
 
 	public function addHeroToStorage( hero:Hero ):Void

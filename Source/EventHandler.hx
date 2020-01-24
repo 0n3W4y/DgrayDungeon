@@ -30,7 +30,7 @@ class EventHandler
 		return null;
 	}
 
-	public function addEvent( object:Dynamic, sceneId:Int ):Void
+	public function addEvents( object:Dynamic, sceneId:Int ):Void
 	{
 		var name:String = object.get( "name" );
 		var check:Int = this._checkListenerIfExist( object );
@@ -47,12 +47,20 @@ class EventHandler
 		this._listeners[ sceneId ].push( object );
 	}
 
-	public function removeEvent( object:Dynamic, sceneId:Int ):Void
+	public function removeEvents( object:Dynamic, sceneId:Int ):Void
 	{
 		var name:String = object.get( "name" );
 		var check:Int = this._checkListenerIfExist( object );
+
+		var sprite:Sprite = object.get( "sprite" );
+		if( !sprite.hasEventListener( "click" ) )
+			return;
+
 		if( check == null )
-			throw 'Error in EventHandler.removeEvent. Object with name: "$name" already in listeners';
+			throw 'Error in EventHandler.removeEvent. Object with name: "$name" does not exist';
+
+		if( sceneId == null )
+			throw 'Error in EventHandler._removeEventsToButton. Scene Id is: "$sceneId"';
 
 		this._removeEvents( object );
 		this._listeners[ sceneId ].splice( check, 1 );
@@ -63,17 +71,17 @@ class EventHandler
 	private function _removeEvents( object:Dynamic ):Void
 	{
 		var type:String = object.get( "type" );
-
-		switch( "type" )
+		switch( type )
 		{
 			case "button":  this._removeEventsFromButton( object );
-			//case "hero": this._addEventsToHero( object );
-			//case "enemy": this._addEventsToEnemy( object );
-			//case "item": this._addEventsToItem( object );
-			//case "building": this._addEventsToBuilding( object );
+			case "hero": this._addEventsToHero( object );
+			case "enemy": this._addEventsToEnemy( object );
+			case "item": this._addEventsToItem( object );
+			case "building": this._addEventsToBuilding( object );
 			default: throw 'Error in EventHandler._removeEvent. No events found for type "$type"';
 		}
 	}
+
 	private function _addEvents( object:Dynamic ):Void
 	{
 		var type:String = object.get( "type" );
@@ -100,9 +108,9 @@ class EventHandler
 
 		switch( name )
 		{
-			case "gameStart": sprite.addEventListener( MouseEvent.MOUSE_DOWN, this._clickStartGame );
-			case "gameContinue": sprite.addEventListener( MouseEvent.MOUSE_DOWN, this._clickContinueGame );
-			case "gameOptions": sprite.addEventListener( MouseEvent.MOUSE_DOWN, this._clickOptionsGame );
+			case "gameStart": sprite.addEventListener( MouseEvent.CLICK, this._clickStartGame );
+			case "gameContinue": sprite.addEventListener( MouseEvent.CLICK, this._clickContinueGame );
+			case "gameOptions": sprite.addEventListener( MouseEvent.CLICK, this._clickOptionsGame );
 			default: throw 'Error in EventHandler._addEventsToButton. No event for button with name "$name"';
 		}
 	}
@@ -117,9 +125,9 @@ class EventHandler
 
 		switch( name )
 		{
-			case "gameStart": sprite.removeEventListener( MouseEvent.MOUSE_DOWN, this._clickStartGame );
-			case "gameContinue": sprite.removeEventListener( MouseEvent.MOUSE_DOWN, this._clickContinueGame );
-			case "gameOptions": sprite.removeEventListener( MouseEvent.MOUSE_DOWN, this._clickOptionsGame );
+			case "gameStart": sprite.removeEventListener( MouseEvent.CLICK, this._clickStartGame );
+			case "gameContinue": sprite.removeEventListener( MouseEvent.CLICK, this._clickContinueGame );
+			case "gameOptions": sprite.removeEventListener( MouseEvent.CLICK, this._clickOptionsGame );
 			default: throw 'Error in EventHandler._addEventsToButton. No event for button with name "$name"';
 		}
 	}

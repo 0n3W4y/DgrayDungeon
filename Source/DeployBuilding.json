@@ -60,9 +60,11 @@
 		"firstTextX": 0.0,
 		"firstTextY": 0.0,
 		"firstTextAlign": "left",
-		"slot": { "item": null, "restriction": "hero", "isAvailable": false },
-		"masXlots": 30,
-		"defaultSlots":10
+		"upgradeLevel": 1,
+		"nextUpgradeId": 2012,
+		"canUpgradeLevel": true,
+		"upgradePrice": 10000,
+		"containerSlotsMax": 4
 	},
 
 	"2003":{
@@ -192,7 +194,7 @@
 	},
 
 	"2009":{
-		"name": "hermit",
+		"name": "fontain",
 		"deployId": 2009,
 		"imageNormalURL": "assets/images/fontain.png",
 		"imageNormalX": 0.0,
