@@ -98,7 +98,7 @@ class Window
 			case "activeStatus": return this._isActive;
 			case "alwaysActive": return this._alwaysActive;
 			case "childs": return this._buttonChildren;
-			default: { throw( "Error in Window.get. Can't get " + value ); return null; };
+			default: throw 'Error in Window.get. Can not get "$value"';
 		}
 	}
 

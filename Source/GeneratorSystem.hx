@@ -104,7 +104,38 @@ class GeneratorSystem
 
 	public function generateBuilding( deployId:Int ):Array<Dynamic>
 	{
-		return [];
+		var config = this._sceneDeploy.get( deployId );
+		if( config == null )
+			return [ null, "Error in GeneratorSystem.generateBuilding. Deploy ID: '" + deployId + "' doesn't exist in BuildingDeploy data" ];
+
+		var id = this._createId();
+		var sprite:Sprite = new Sprite();
+		var graphicsSprite:Sprite = this._createGraphicsSprite( config );
+		sprite.addChild( graphicsSprite );
+		var textSprite:Sprite = this._createTextSprite( config );
+		sprite.addChild( textSprite );
+
+		var buildingConfig:Dynamic = 
+		{
+			"id" = id;
+			"name" = config.name;
+			"deployId" = config.deployId;
+			"sprite" = sprite;
+			"upgradeLevel" = config.upgradeLevel;
+			"nextUpgradeId" = config.nextUpgradeId;
+			"canUpgradeLevel" = config.canUpgradeLevel;
+			"upgradePriceMoney" = config.upgradePriceMoney;
+			"containerSlots" = config.containerSlots;
+			"containerSlotsMax" = config.containerSlotsMax;
+		};
+
+		var building:Building = new Building( buildingConfig );
+		var err:String = building.init();
+		if( err !=null )
+			return [ null, 'Error in GeneratorSystem.generateBuilding. $err' ];
+
+		
+		return [ building, null ];
 	}
 
 	public function generateItem( deployId:Int ):Array<Dynamic>
@@ -138,11 +169,12 @@ class GeneratorSystem
 			return [ null, 'Error in GeneratorSystem.generateScene. $err' ];
 
 		// окна не будут добавлены на сцену, так как они являются частью Интерфейса пользователя.
-		if( config.window != null ) // Внутри Window есть чайлды в виде button. создаются в функции создании окна.
+		var configWindow:Array<Int> = config.window;
+		if( configWindow != null ) // Внутри Window есть чайлды в виде button. создаются в функции создании окна.
 		{
-			for( i in 0...config.window.length )
+			for( i in 0...configWindow.length )
 			{
-				var windowDeployId:Int = config.window[ i ];
+				var windowDeployId:Int = configWindow[ i ];
 				var createWindow:Array<Dynamic> = this.generateWindow( windowDeployId );
 				var window:Window = createWindow[ 0 ];
 				var windowError:String = createWindow[ 1 ];
@@ -150,6 +182,22 @@ class GeneratorSystem
 					return [ null, 'Error in GeneratorSystem.generateScene. $windowError' ];
 
 				scene.addChild( window );
+			}
+		}
+
+		var configBuilding:Array<Int> = config.building;
+		if( configBuilding != null )
+		{
+			for( j in 0...configBuilding.length )
+			{
+				var buildingDeployId:Int = configBuilding[ j ];
+				var createBuilding:Array<Dynamic> = this.generateBuilding( buildingDeployId );
+				var building:Building = createBuilding[ 0 ];
+				var buildingError:String = createBuilding[ 1 ];
+				if( buildingError != null )
+					return [ null, 'Error in GeneratorSystem.generateScene. $buildingError' ];
+
+				scene.addChild( building );
 			}
 		}
 

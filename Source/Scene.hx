@@ -12,7 +12,7 @@ class Scene
 	private var _type:String;
 	private var _name:String;
 
-	private var _isDrawed:String;
+	private var _isPrepared:String;
 
 	private var _aliveEntities:Dynamic;
 	private var _objectEntities:Dynamic;
@@ -28,7 +28,7 @@ class Scene
 		this._name = config.name;
 		this._deployId = config.deployId;
 		this._graphics = new GraphicsSystem( this, config.sprite );
-		this._isDrawed = "undrawed"; // Параметр для того, что бы понять, нужно ли отрисовывать сцену и все ее childs или она уже отрисована но скрыта.
+		this._isPrepared = "unprepared"; // Подготовлена сцена дял отображения или нет.
 		this._inited = false;
 		this._postInited = false;
 
@@ -96,7 +96,7 @@ class Scene
 			case "type": return this._type;
 			case "graphics": return this._graphics;
 			case "sprite": return this._graphics.getSprite();
-			case "drawed": return this._isDrawed;
+			case "prepared": return this._isPrepared;
 			default: { throw( 'Error in Scene.get. No getter for "$value"' ); return null; }
 		}
 	}
@@ -106,8 +106,11 @@ class Scene
 		switch( type )
 		{
 			case "ui": return this._uiEntities;
+			case "window": return this._uiEntities.window;
 			case "alive": return this._aliveEntities;
+			case "hero": return this._aliveEntities.hero;
 			case "object": return this._objectEntities;
+			case "building": return this._objectEntities.building;
 			default: throw "Error in Scene.getEntites, can't get array with type: " + type + "." ;
 		}
 	}
@@ -154,13 +157,13 @@ class Scene
 
 	public function changeDrawStatus( value:String ):Void
 	{
-		if( value != "drawed" && value != "undrawed" )
+		if( value != "unprepared" && value != "prepared" )
 			throw 'Error in Scene.changeDrawSatatus. Value is not valid: "$value"';
 
-		if( this._isDrawed == value )
+		if( this._isPrepared == value )
 			throw 'Error in Scene.changeDrawStatus. Is drawed already "$value"';
 
-		this._isDrawed = value;
+		this._isPrepared = value;
 	}
 
 	//PRIVATE

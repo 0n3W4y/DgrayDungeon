@@ -120,6 +120,16 @@ class UserInterface
 		return this._objectsOnUi;
 	}
 
+	public function hideUi():Void
+	{
+		this._uiSprite.visible = false;
+	}
+
+	public function showUi():Void
+	{
+		this._uiSprite.visible = true;
+	}
+
 	//PRIVATE
 
 	private function _checkObjectForExist( object:Dynamic ):Int

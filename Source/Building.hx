@@ -7,6 +7,8 @@ class Building
 	private var _deployId:Int;
 	private var _type:String;
 
+	private var _graphics:GraphicsSystem;
+
 	private var _upgradeLevel:Int; // текущий уровень здания
 	private var _nextUpgradeId:Int; // deployId этого здания, но уже с апгерйдом.
 	private var _canUpgradeLevel:Bool; // можно ли улучшить здание.
@@ -29,6 +31,7 @@ class Building
 		this._containerSlots = config.containerSlots;
 		this._containerSlotsMax = config.containerSlotsMax;
 		this._heroContainer = new Array<Hero>();
+		this._graphics = new GraphicsSystem( this, sprite );
 	}
 
 	public function init():String
@@ -74,6 +77,26 @@ class Building
 		this._containerSlots--;
 		return [ hero, null ];
 	}
+
+	public function get( value:String ):Dynamic
+	{
+		switch( value )
+		{
+			case "id": return this._id;
+			case "deployId": return this._deployId;
+			case "name": return this._name;
+			case "type": return this._type;
+			case "graphics": return this._graphics;
+			case "sprite": return this._graphics.getSprite();
+			case "upgradeLevel": return this._upgradeLevel;
+			case "nextUpgradeId": return this._nextUpgradeId;
+			case "canUpgradeLevel": return this._canUpgradeLevel;
+			case "heroContainer": return this._heroContainer;
+			default: throw 'Error in Building.get. Can not get "$value"';
+		}
+	}
+
+	//PRIVATE
 
 	private function _checkHero( hero:Hero ):Int
 	{

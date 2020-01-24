@@ -113,6 +113,7 @@ class Game
 			throw 'Error in Game._startGame. $err';
 
 		this._sceneSystem.addScene( scene );
+		this._sceneSystem.prepareScene( scene );
 		this._sceneSystem.changeSceneTo( scene );
 
 		this.start();

@@ -69,8 +69,8 @@ class SceneSystem
 		return [ sceneToReturn, null ];
 	}
 
-	public function fastSwitchSceneTo( scene:Scene ):Void // fast switch between scenes, hide active and show scene; Использовать для перемещения между сценой города и выбором данжа.
-	{
+	public function fastSwitchSceneTo( scene:Scene ):Void // fast switch between scenes, hide active and show scene; 
+	{													//Использовать для перемещения между сценой города и выбором данжа.
 		if( this._activeScene != null )
 			this.hideScene( this._activeScene );
 
@@ -80,17 +80,13 @@ class SceneSystem
 
 	public function changeSceneTo( scene:Scene ):Void //full undraw active scene, and draw new scene;
 	{
-		//TODO: First we must draw loader scene;
+		//TODO: Loader;
 
 		if( this._activeScene != null )
 			this.undrawScene( this._activeScene );
 
 		this._activeScene = scene;
-		if( scene.get( "drawed" ) == "drawed" )
-			this.showScene( scene ); // если true, значит сцена уже отрисована была до этого, но скрыта. по этому показываем ее.
-		else
-			this.drawScene( scene );
-
+		this.drawScene( scene );
 	}
 
 	public function drawUiForScene( scene:Scene ):Void
@@ -132,26 +128,40 @@ class SceneSystem
 		scene.get( "sprite" ).visible = false;
 	}
 
-	public function drawScene( scene:Scene ):Void
+	public function prepareScene( scene:Scene ):Void
 	{
 		var name:String = scene.get( "name" );
 		switch( name )
 		{
-			case "startScene": this._drawStartScene( scene );
-			case "cityScene": this._drawCityScene( scene );
+			case "startScene": this._prepareStartScene( scene );
+			case "cityScene": this._prepareCityScene( scene );
 			default: throw 'Error in SceneSystem.drawScene. Scene with name "$name" can not to be draw, no function for it.';
 		}
 	}
 
-	public function undrawScene( scene:Scene ):Void
+	public function prepareUiForScene( scene:Scene ):Void
+	{
+
+	}
+
+	public function drawScene( scene:Scene ):Void
 	{
 		var name:String = scene.get( "name" );
-		switch( name )
-		{
-			case "startScene": this._undrawStartScene( scene );
-			case "cityScene": this._undrawCityScene( scene );
-			default: throw 'Error in SceneSystem.drawScene. Scene with name "$name" can not to be draw, no function for it.';
-		}
+		var prepareStatus:String = scene.get( "prepareStatus" );
+		if( prepareStatus == "unprepared" )
+			throw 'Error in SceneSystem.drawScene. Scene with name: "$name" is "$prepareStatus"';
+
+		this._scenesSprite.addChild( scene.get( "sprite" ) );
+		this.parent.getSystem( "ui" ).showUi();
+	}
+
+	public function undrawScene( scene:Scene ):Void
+	{
+		var sprite:Sprite = scene.get( "sprite" );
+		this._scenesSprite.removeChild( sprite );
+		this.undrawUiForScene( scene );
+		scene.changePrepareStatus( "unprepared" );
+		this._parent.getSystem( "ui" ).hideUi();
 	}
 
 	public function getParent():Game
@@ -177,33 +187,26 @@ class SceneSystem
 
 	//PRIVATE
 
-	private function _drawStartScene( scene:Scene ):Void
+	private function _prepareStartScene( scene:Scene ):Void
 	{
 		var sprite:Sprite = scene.get( "sprite" );
+		this.drawUiForScene( scene );
+		scene.changePrepareStatus( "drawed" );
+	}
+
+	private function _prepareCityScene( scene:Scene ):Void
+	{
+		var sprite:Sprite = scene.get( "sprite" );
+		var buildingsArray:Array<Building> = scene.getChilds( "building" );
+		for( i in 0...buildingsArray.length )
+		{
+			var building:Building = buildingsArray[ i ];
+			var buildingSprite:Sprite = building.get( "sprite" );
+			sprite.addChild( buildingSprite );
+		}
 		this._scenesSprite.addChild( sprite );
 		this.drawUiForScene( scene );
-		scene.changeDrawStatus( "drawed" );
-	}
-
-	private function _undrawStartScene( scene:Scene ):Void
-	{
-		var sprite:Sprite = scene.get( "sprite" );
-		this._scenesSprite.removeChild( sprite );
-		this.undrawUiForScene( scene );
-		scene.changeDrawStatus( "undrawed" );
-	}
-
-	private function _drawCityScene( scene:Scene ):Void
-	{
-		var sprite:Sprite = scene.get( "sprite" );
-		this._scenesSprite.addChild( sprite );
-		this..drawUiForScene( scene );
-		scene.changeDrawStatus( "drawed" );
-	}
-
-	private function _undrawCityScene( scene:Scene ):Void
-	{
-
+		scene.changePrepareStatus( "drawed" );
 	}
 
 	private function _checkSceneIfExist( scene:Scene ):Int
