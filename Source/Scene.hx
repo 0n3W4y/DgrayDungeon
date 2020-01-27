@@ -155,13 +155,13 @@ class Scene
 		return [ object, null ];
 	}
 
-	public function changeDrawStatus( value:String ):Void
+	public function changePrepareStatus( value:String ):Void
 	{
 		if( value != "unprepared" && value != "prepared" )
-			throw 'Error in Scene.changeDrawSatatus. Value is not valid: "$value"';
+			throw 'Error in Scene.changePrepareSatatus. Value is not valid: "$value"';
 
 		if( this._isPrepared == value )
-			throw 'Error in Scene.changeDrawStatus. Is drawed already "$value"';
+			throw 'Error in Scene.changePrepareStatus. Is drawed already "$value"';
 
 		this._isPrepared = value;
 	}

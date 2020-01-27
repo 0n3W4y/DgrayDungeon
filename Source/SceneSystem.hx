@@ -147,21 +147,31 @@ class SceneSystem
 	public function drawScene( scene:Scene ):Void
 	{
 		var name:String = scene.get( "name" );
-		var prepareStatus:String = scene.get( "prepareStatus" );
-		if( prepareStatus == "unprepared" )
-			throw 'Error in SceneSystem.drawScene. Scene with name: "$name" is "$prepareStatus"';
+		var prepared:String = scene.get( "prepared" );
+		if( prepared == "unprepared" )
+			throw 'Error in SceneSystem.drawScene. Scene with name: "$name" is "$prepared"';
 
 		this._scenesSprite.addChild( scene.get( "sprite" ) );
-		this.parent.getSystem( "ui" ).showUi();
+		this._parent.getSystem( "ui" ).show();
 	}
 
 	public function undrawScene( scene:Scene ):Void
 	{
 		var sprite:Sprite = scene.get( "sprite" );
 		this._scenesSprite.removeChild( sprite );
+		this._parent.getSystem( "ui" ).hide();
 		this.undrawUiForScene( scene );
-		scene.changePrepareStatus( "unprepared" );
-		this._parent.getSystem( "ui" ).hideUi();
+		scene.changePrepareStatus( "unprepared" );		
+	}
+
+	public function drawLoader():Void
+	{
+
+	}
+
+	public function undrawLoader():Void
+	{
+
 	}
 
 	public function getParent():Game
@@ -189,9 +199,8 @@ class SceneSystem
 
 	private function _prepareStartScene( scene:Scene ):Void
 	{
-		var sprite:Sprite = scene.get( "sprite" );
 		this.drawUiForScene( scene );
-		scene.changePrepareStatus( "drawed" );
+		scene.changePrepareStatus( "prepared" );
 	}
 
 	private function _prepareCityScene( scene:Scene ):Void
@@ -203,10 +212,23 @@ class SceneSystem
 			var building:Building = buildingsArray[ i ];
 			var buildingSprite:Sprite = building.get( "sprite" );
 			sprite.addChild( buildingSprite );
+			var name:String = building.get( "name" )
+			switch( name )
+			{
+				case "recruit":
+				{
+					//DO heroes in slots + start timer to rebuild heroes in it;
+					var slots:Int = building.get( "maxSlots" );
+
+				} 
+				default : throw 'Error in SceneSystem._prepareCityScene. Building with name: "$name" no action assigned.';
+			}
 		}
+
+
 		this._scenesSprite.addChild( sprite );
 		this.drawUiForScene( scene );
-		scene.changePrepareStatus( "drawed" );
+		scene.changePrepareStatus( "prepared" );
 	}
 
 	private function _checkSceneIfExist( scene:Scene ):Int

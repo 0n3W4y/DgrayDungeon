@@ -28,14 +28,39 @@ class Building
 		this._nextUpgradeId = config.nextUpgradeId;
 		this._canUpgradeLevel = config.canUpgradeLevel;
 		this._upgradePriceMoney = config.upgradePriceMoney;
-		this._containerSlots = config.containerSlots;
+		this._containerSlots = 0;
 		this._containerSlotsMax = config.containerSlotsMax;
 		this._heroContainer = new Array<Hero>();
-		this._graphics = new GraphicsSystem( this, sprite );
+		this._graphics = new GraphicsSystem( this, config.sprite );
 	}
 
 	public function init():String
 	{
+		if( this._name == null )
+			throw 'Error in Building.init. Name is "$._name"';
+		
+		if( this._id == null )
+			throw 'Error in Building.init. Name is "$_name" id is:"$_id"';
+		
+		if( this._deployId == null )
+			throw 'Error in Building.init. Name is "$_name" id is:"$_id" deploy id is:"$_deployId"';
+
+		if( this._upgradeLevel == null || this._upgradeLevel < 1 )
+			throw 'Error in Building.init. Upgrade level is not valid: "$_upgradeLevel", "$_deployId"';
+
+		if( this._canUpgradeLevel == null )
+			throw 'Error in Building.init. Can Upgrade value is not valis: "$_canUpgradeLevel", "$_deployId"';
+
+		if( !this._canUpgradeLevel && this._nextUpgradeId == null )
+			throw 'Error in Building.init. Next upgrade deploy Id is not valid: "$_nextUpgradeId", "$_deployId"';
+
+		if( this._containerSlotsMax == null )
+			throw 'Error in Building.init. Container slots maximum value is not valid: "_containerSlotsMax", "$_deployId"';
+		
+		var err:String = this._graphics.init();
+		if( err != null )
+			return 'Error in Building.init. $err; "$_deployId"';
+
 		return null;
 	}
 
@@ -44,7 +69,7 @@ class Building
 		return null;
 	}
 
-	public function checkForFreeSlots:Bool
+	public function checkForFreeSlotsHeroContainer():Bool
 	{
 		if( this._containerSlotsMax > this._containerSlots )
 			return true;
@@ -52,9 +77,9 @@ class Building
 		return false;
 	}
 
-	public function addHero( hero:Hero ):Void
+	public function addChild( hero:Hero ):Void
 	{
-		if( !this.checkForFreeSlots() ) //защита от "дурака";
+		if( !this.checkForFreeSlotsHeroContainer() ) //защита от "дурака";
 			return;
 
 		var name:String = hero.get( "name" );
@@ -66,7 +91,7 @@ class Building
 		this._containerSlots++;
 	}
 
-	public function removeHero( hero:Hero ):Array<Dynamic>
+	public function removeChild( hero:Hero ):Array<Dynamic>
 	{
 		var name:String = hero.get( "name" );
 		var check:Int = this._checkHero( hero );
@@ -91,7 +116,8 @@ class Building
 			case "upgradeLevel": return this._upgradeLevel;
 			case "nextUpgradeId": return this._nextUpgradeId;
 			case "canUpgradeLevel": return this._canUpgradeLevel;
-			case "heroContainer": return this._heroContainer;
+			case "childs": return this._heroContainer;
+			case "maxSlots": return this._containerSlotsMax;
 			default: throw 'Error in Building.get. Can not get "$value"';
 		}
 	}

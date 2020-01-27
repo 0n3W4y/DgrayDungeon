@@ -175,6 +175,7 @@ class Game
 		if( err != null )
 			throw 'Error in Game.new. $err';
 
+		this._userInterface.hide();
 		this._startGame();		
 	}
 

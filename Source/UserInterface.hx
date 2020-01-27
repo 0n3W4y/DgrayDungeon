@@ -120,12 +120,12 @@ class UserInterface
 		return this._objectsOnUi;
 	}
 
-	public function hideUi():Void
+	public function hide():Void
 	{
 		this._uiSprite.visible = false;
 	}
 
-	public function showUi():Void
+	public function show():Void
 	{
 		this._uiSprite.visible = true;
 	}

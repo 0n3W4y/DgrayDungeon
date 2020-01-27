@@ -17,7 +17,12 @@
 		"firstTextWidth": 300,
 		"firstTextX": 0.0,
 		"firstTextY": 0.0,
-		"firstTextAlign": "left"
+		"firstTextAlign": "left",
+		"upgradeLevel": 1,
+		"nextUpgradeId": 2010,
+		"canUpgradeLevel": true,
+		"upgradePrice": 10000,
+		"containerSlotsMax": 0
 	},
 
 	"2001":{
@@ -38,7 +43,12 @@
 		"firstTextWidth": 300,
 		"firstTextX": 0.0,
 		"firstTextY": 0.0,
-		"firstTextAlign": "left"
+		"firstTextAlign": "left",
+		"upgradeLevel": 1,
+		"nextUpgradeId": 2011,
+		"canUpgradeLevel": true,
+		"upgradePrice": 10000,
+		"containerSlotsMax": 0
 	},
 
 	"2002":{
@@ -85,7 +95,12 @@
 		"firstTextWidth": 300,
 		"firstTextX": 0.0,
 		"firstTextY": 0.0,
-		"firstTextAlign": "left"
+		"firstTextAlign": "left",
+		"upgradeLevel": 1,
+		"nextUpgradeId": 2013,
+		"canUpgradeLevel": true,
+		"upgradePrice": 10000,
+		"containerSlotsMax": 0
 	},
 
 	"2004":{
@@ -106,7 +121,12 @@
 		"firstTextWidth": 300,
 		"firstTextX": 0.0,
 		"firstTextY": 0.0,
-		"firstTextAlign": "left"
+		"firstTextAlign": "left",
+		"upgradeLevel": 1,
+		"nextUpgradeId": 2014,
+		"canUpgradeLevel": true,
+		"upgradePrice": 10000,
+		"containerSlotsMax": 0
 	},
 
 	"2005":{
@@ -127,7 +147,12 @@
 		"firstTextWidth": 300,
 		"firstTextX": 0.0,
 		"firstTextY": 0.0,
-		"firstTextAlign": "left"
+		"firstTextAlign": "left",
+		"upgradeLevel": 1,
+		"nextUpgradeId": 2015,
+		"canUpgradeLevel": true,
+		"upgradePrice": 10000,
+		"containerSlotsMax": 0
 	},
 
 	"2006":{
@@ -148,7 +173,12 @@
 		"firstTextWidth": 300,
 		"firstTextX": 0.0,
 		"firstTextY": 0.0,
-		"firstTextAlign": "left"
+		"firstTextAlign": "left",
+		"upgradeLevel": 1,
+		"nextUpgradeId": 2016,
+		"canUpgradeLevel": true,
+		"upgradePrice": 10000,
+		"containerSlotsMax": 0
 	},
 
 	"2007":{
@@ -169,7 +199,12 @@
 		"firstTextWidth": 300,
 		"firstTextX": 0.0,
 		"firstTextY": 0.0,
-		"firstTextAlign": "left"
+		"firstTextAlign": "left",
+		"upgradeLevel": 1,
+		"nextUpgradeId": 2017,
+		"canUpgradeLevel": true,
+		"upgradePrice": 10000,
+		"containerSlotsMax": 0
 	},
 
 	"2008":{
@@ -190,7 +225,12 @@
 		"firstTextWidth": 300,
 		"firstTextX": 0.0,
 		"firstTextY": 0.0,
-		"firstTextAlign": "left"
+		"firstTextAlign": "left",
+		"upgradeLevel": 1,
+		"nextUpgradeId": 2018,
+		"canUpgradeLevel": true,
+		"upgradePrice": 10000,
+		"containerSlotsMax": 0
 	},
 
 	"2009":{
@@ -211,6 +251,11 @@
 		"firstTextWidth": 300,
 		"firstTextX": 0.0,
 		"firstTextY": 0.0,
-		"firstTextAlign": "left"
+		"firstTextAlign": "left",
+		"upgradeLevel": 1,
+		"nextUpgradeId": 2019,
+		"canUpgradeLevel": true,
+		"upgradePrice": 10000,
+		"containerSlotsMax": 0
 	}
 }

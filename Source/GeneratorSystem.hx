@@ -104,7 +104,7 @@ class GeneratorSystem
 
 	public function generateBuilding( deployId:Int ):Array<Dynamic>
 	{
-		var config = this._sceneDeploy.get( deployId );
+		var config = this._buildingDeploy.get( deployId );
 		if( config == null )
 			return [ null, "Error in GeneratorSystem.generateBuilding. Deploy ID: '" + deployId + "' doesn't exist in BuildingDeploy data" ];
 
@@ -117,16 +117,16 @@ class GeneratorSystem
 
 		var buildingConfig:Dynamic = 
 		{
-			"id" = id;
-			"name" = config.name;
-			"deployId" = config.deployId;
-			"sprite" = sprite;
-			"upgradeLevel" = config.upgradeLevel;
-			"nextUpgradeId" = config.nextUpgradeId;
-			"canUpgradeLevel" = config.canUpgradeLevel;
-			"upgradePriceMoney" = config.upgradePriceMoney;
-			"containerSlots" = config.containerSlots;
-			"containerSlotsMax" = config.containerSlotsMax;
+			"id": id,
+			"name": config.name,
+			"deployId": config.deployId,
+			"sprite": sprite,
+			"upgradeLevel": config.upgradeLevel,
+			"nextUpgradeId": config.nextUpgradeId,
+			"canUpgradeLevel": config.canUpgradeLevel,
+			"upgradePriceMoney": config.upgradePriceMoney,
+			"containerSlots": config.containerSlots,
+			"containerSlotsMax": config.containerSlotsMax
 		};
 
 		var building:Building = new Building( buildingConfig );
@@ -285,11 +285,39 @@ class GeneratorSystem
 		return [ button, null ];
 	}
 
+	public function generateHeroesForBuildingRecruits( building ):Void
+	{
+		var slots:Int = building.get( "maxSlots" );
+		var upgradeLevel:Int = building.get( "upgradeLevel" );
+		var heroRares:Array<String>;
+		switch( upgradeLevel )
+		{
+			case 1: heroRares = [ "uncommon" ];
+			case 2: heroRares = [ "uncommon", "common"  ];
+			case 3: heroRares = [ "uncommon", "common", "rare" ];
+			case 4: heroRares = [ "uncommon", "common", "rare", "legendary" ];
+			default: throw 'Error in GeneratorSystem.generateHeroesForBuildingRecruits. UpgradeLevel for building "Recruits" is wrong!';
+		}
+		for( i in 0...slots )
+		{
+			var index:Int = Math.floor( Math.random() * heroRares.length )
+			var heroRarity:String = heroRares[ index ];
+			var createHero:Array<Dynamic> = this.generateHero( "random", heroRarity, "random" );
+			var err:String = createHero[ 1 ];
+			var hero:Hero = createHero[ 0 ];
+			if( err != null )
+				throw 'Error in GeneratorSystem.generateHeroesForBuildingRecruits. $err';
+
+			building.addChild( hero ); // Никакой проверки.
+		}
+	}
+
 
 
 
 
 	// PRIVATE
+
 
 	private function _createGraphicsSprite( config:Dynamic ):Sprite
 	{
