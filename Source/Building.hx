@@ -2,9 +2,9 @@ package;
 
 class Building
 {
-	private var _id:Int;
-	private var _name:String;
-	private var _deployId:Int;
+	private var _id:GeneratorSystem.ID;
+	private var _name:GeneratorSystem.Name;
+	private var _deployId:GeneratorSystem.DeployID;
 	private var _type:String;
 
 	private var _graphics:GraphicsSystem;
@@ -18,44 +18,44 @@ class Building
 	private var _containerSlots:Int;
 	private var _containerSlotsMax:Int;
 
-	public function new( config:Dynamic ):Void
+	public function new( config:GeneratorSystem.BuildingConfig ):Void
 	{
-		this._id = config.id;
-		this._name = config.name;
-		this._deployId = config.deployId;
+		this._id = config.ID;
+		this._name = config.Name;
+		this._deployId = config.DeployID;
 		this._type = "building";
-		this._upgradeLevel = config.upgradeLevel;
-		this._nextUpgradeId = config.nextUpgradeId;
-		this._canUpgradeLevel = config.canUpgradeLevel;
-		this._upgradePriceMoney = config.upgradePriceMoney;
-		this._containerSlots = 0;
-		this._containerSlotsMax = config.containerSlotsMax;
+		this._upgradeLevel = config.UpgradeLevel;
+		this._nextUpgradeId = config.NextUpgradeId;
+		this._canUpgradeLevel = config.CanUpgradeLevel;
+		this._upgradePrice = config.UpgradePrice;
+		this._containerSlotsMax = config.ContainerSlotsMax;
+		this._graphics = new GraphicsSystem( this, config.GraphicsSprite );
 		this._heroContainer = new Array<Hero>();
-		this._graphics = new GraphicsSystem( this, config.sprite );
+		this._containerSlots = 0;		
 	}
 
 	public function init():String
 	{
-		if( this._name == null )
-			throw 'Error in Building.init. Name is "$._name"';
+		if( this._name == null || this._name == "" )
+			return 'Error in Building.init. Wrong Name. Name is "$_name"';
 		
-		if( this._id == null )
-			throw 'Error in Building.init. Name is "$_name" id is:"$_id"';
+		if( this._id == null || this._id <= 0 )
+			return 'Error in Building.init. Wrong ID. Name is "$_name" id is:"$_id"';
 		
-		if( this._deployId == null )
-			throw 'Error in Building.init. Name is "$_name" id is:"$_id" deploy id is:"$_deployId"';
+		if( this._deployId == null || this._deployId <= 0)
+			return 'Error in Building.init. Wrong DeployID. Name is "$_name" id is:"$_id" deploy id is:"$_deployId"';
 
 		if( this._upgradeLevel == null || this._upgradeLevel < 1 )
-			throw 'Error in Building.init. Upgrade level is not valid: "$_upgradeLevel", "$_deployId"';
+			return 'Error in Building.init. Upgrade level is not valid: "$_upgradeLevel". Name is "$_name" id is:"$_id" deploy id is:"$_deployId"';
 
 		if( this._canUpgradeLevel == null )
-			throw 'Error in Building.init. Can Upgrade value is not valis: "$_canUpgradeLevel", "$_deployId"';
+			return 'Error in Building.init. Can Upgrade value is not valid: "$_canUpgradeLevel". Name is "$_name" id is:"$_id" deploy id is:"$_deployId"';
 
-		if( !this._canUpgradeLevel && this._nextUpgradeId == null )
-			throw 'Error in Building.init. Next upgrade deploy Id is not valid: "$_nextUpgradeId", "$_deployId"';
+		if( this._canUpgradeLevel && this._nextUpgradeId == null )
+			return 'Error in Building.init. Next upgrade deploy Id is not valid: "$_nextUpgradeId". Name is "$_name" id is:"$_id" deploy id is:"$_deployId"';
 
 		if( this._containerSlotsMax == null )
-			throw 'Error in Building.init. Container slots maximum value is not valid: "_containerSlotsMax", "$_deployId"';
+			return 'Error in Building.init. Container slots maximum value is not valid: "_containerSlotsMax". Name is "$_name" id is:"$_id" deploy id is:"$_deployId"';
 		
 		var err:String = this._graphics.init();
 		if( err != null )

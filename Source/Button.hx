@@ -4,39 +4,39 @@ import openfl.display.Sprite;
 
 class Button
 {
-	private var _id:Int;
-	private var _deployId:Int;
-	private var _name:String;
+	private var _id:GeneratorSystem.ID;
+	private var _deployId:GeneratorSystem.DeployID;
+	private var _name:GeneratorSystem.Name;
 	private var _type:String;
 	private var _activeStatus:Bool;
 
 	private var _graphics:GraphicsSystem;
 
 
-	public function new( config:Dynamic ):Void
+	public function new( config:GeneratorSystem.ButtonConfig ):Void
 	{
 		this._type = "button";
-		this._id = config.id;
-		this._deployId = config.deployId;
-		this._name = config.name;
-		this._graphics = new GraphicsSystem(  this, config.sprite );
+		this._id = config.ID;
+		this._deployId = config.DeployID;
+		this._name = config.Name;
+		this._graphics = new GraphicsSystem(  this, config.GraphicsSprite );
 		this._activeStatus = false;
 	}
 
 	public function init():String
 	{
-		if( this._name == null )
-			throw 'Error in Button.init. Name is "$this._name"';
+		if( this._name == null || this._name == "" )
+			return 'Error in Button.init. Wrong Name. Name is "$_name"';
 		
-		if( this._id == null )
-			throw 'Error in Button.init. Name is "$this._name" id is:"$this._id"';
+		if( this._id == null || this._id <= 0 )
+			return 'Error in Button.init. Wrong ID. Name is "$_name" id is:"$_id"';
 		
-		if( this._deployId == null )
-			throw 'Error in Button.init. Name is "$this._name" id is:"$this._id" deploy id is:"$this._deployId"';
+		if( this._deployId == null || this._dpeloyId <= 0 )
+			return 'Error in Button.init. Wrong DeployID. Name is "$_name" id is:"$_id" deploy id is:"$_deployId"';
 		
 		var err:String = this._graphics.init();
 		if( err != null )
-			return 'Error in Button.init.';
+			return 'Error in Button.init.Name is "$_name" id is:"$_id" deploy id is:"$_deployId". $err';
 
 		return null;
 	}

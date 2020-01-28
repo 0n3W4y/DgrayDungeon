@@ -4,9 +4,9 @@ import openfl.display.Sprite;
 
 class Window
 {
-	private var _id:Int;
-	private var _deployId:Int;
-	private var _name:String;
+	private var _id:GeneratorSystem.ID;
+	private var _deployId:GeneratorSystem.DeployID;
+	private var _name:GeneratorSystem.Name;
 	private var _type:String;
 	private var _isActive:Bool;
 	private var _alwaysActive:Bool;
@@ -16,16 +16,16 @@ class Window
 	private var _graphics:GraphicsSystem;
 
 
-	public function new( config:Dynamic ):Void
+	public function new( config:GeneratorSystem.WindowConfig ):Void
 	{
 		this._type = "window";
+		this._id = config.ID;
+		this._name = config.Name;
+		this._deployId = config.DeployID;	
+		this._alwaysActive = config.AlwaysActive;	
+		this._graphics = new GraphicsSystem( this, config.Sprite );
 		this._buttonChildren = new Array<Button>();
 		this._isActive = false; // by default status is hide;
-		this._alwaysActive = config.alwaysActive;
-		this._id = config.id;
-		this._name = config.name;
-		this._deployId = config.deployId;
-		this._graphics = new GraphicsSystem( this, config.sprite );
 	}
 
 	public function init():String

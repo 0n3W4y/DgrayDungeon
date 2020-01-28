@@ -212,7 +212,7 @@ class SceneSystem
 			var building:Building = buildingsArray[ i ];
 			var buildingSprite:Sprite = building.get( "sprite" );
 			sprite.addChild( buildingSprite );
-			var name:String = building.get( "name" )
+			var name:String = building.get( "name" );
 			switch( name )
 			{
 				case "recruit":

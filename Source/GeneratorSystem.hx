@@ -7,6 +7,68 @@ import openfl.text.TextFormat;
 import openfl.text.TextField;
 import openfl.text.TextFormatAlign;
 
+enum ID
+{
+	ID( _:Int );
+}
+
+enum DeployID
+{
+	DeployID( _:Int );
+}
+
+enum Name
+{
+	Name( _:String );
+}
+
+typedef PlayerConfig =
+{
+	var ID:ID;
+	var DeployID:DeployID;
+	var Name:Name;
+	var MaxHeroSlots:Int;
+	var MoneyAmount:Int;
+}
+
+typedef SceneConfig =
+{
+	var ID:ID;
+	var DeployID:DeployID;
+	var Name:Name;
+}
+
+typedef BuildingConfig =
+{
+	var ID:ID;
+	var DeployID:DeployID;
+	var Name:Name;
+	var GraphicsSprite:Sprite;
+	var UpgradeLevel:Int;
+	var NextUpgradeId:Int;
+	var CanUpgradeLevel:Bool;
+	var UpgradePrice:Int;
+	var ContainerHeroSlots:Int;
+	var ContainerHeroSLotsMax:Int;
+}
+
+typedef WindowConfig =
+{
+	var ID:ID;
+	var DeployID:DeployID;
+	var Name:Name;
+	var GraphicsSprite:Sprite;
+	var AlwaysActive:Bool;
+}
+
+typedef ButtonConfig =
+{
+	var ID:ID;
+	var DeployID:DeployID;
+	var Name:Name;
+	var GraphicsSprite:Sprite;
+}
+
 class GeneratorSystem
 {
 	private var _nextId:Int;
@@ -73,100 +135,105 @@ class GeneratorSystem
 		return null;
 	}
 
-	public function generatePlayer( deployId:Int, name:String ):Array<Dynamic>
+	public function createPlayer( deployId:DeployID, name:Name ):Array<Dynamic>
 	{
 		var config:Dynamic = this._playerDeploy.get( deployId );
 		if( config == null )
-			return [ null, 'Error in GeneratorSystem.generatePlayer. Deploy ID: "$deployId" does not exist in PlayerDeploy data' ];
+			return [ null, 'Error in GeneratorSystem.createPlayer. Deploy ID: "$deployId" does not exist in PlayerDeploy data' ];
 
-		var id:Int = this._createId();
-		var configForPlayer:Dynamic = 
+		var id:ID = this._createId();
+		var configForPlayer:PlayerConfig = new PlayerConfig(
 		{
-			"id": id,
-			"name": name,
-			"deployId": deployId,
-			"maxHeroSlots": config.maxHeroSlots,
-			"moneyAmount": config.moneyAmount
-		}
+			ID: id,
+			Name: name,
+			DeployID: deployId,
+			MaxHeroSlots: config.maxHeroSlots,
+			MoneyAmount: config.moneyAmount
+		});
 
 		var player:Player = new Player( configForPlayer );
 		var err:String = player.init();
 		if( err != null )
-			return [ null, 'Error in GeneratorSystem.generatePlayer. $err' ];
+			return [ null, 'Error in GeneratorSystem.createPlayer. $err' ];
 
 		return [ player, null ];
 	}
 
-	public function generateHero( deployId:Int ):Array<Dynamic>
+	public function generateHero( heroType:String, heroRarity:String ):Array<Dynamic>
 	{
 		return [];
 	}
 
-	public function generateBuilding( deployId:Int ):Array<Dynamic>
+	public function createHero():Array<Dynamic>
+	{
+		return [];
+	}
+
+	public function createBuilding( deployId:DeployID ):Array<Dynamic>
 	{
 		var config = this._buildingDeploy.get( deployId );
 		if( config == null )
-			return [ null, "Error in GeneratorSystem.generateBuilding. Deploy ID: '" + deployId + "' doesn't exist in BuildingDeploy data" ];
+			return [ null, "Error in GeneratorSystem.createBuilding. Deploy ID: '" + deployId + "' doesn't exist in BuildingDeploy data" ];
 
-		var id = this._createId();
+		var id:ID = this._createId();
 		var sprite:Sprite = new Sprite();
 		var graphicsSprite:Sprite = this._createGraphicsSprite( config );
 		sprite.addChild( graphicsSprite );
 		var textSprite:Sprite = this._createTextSprite( config );
 		sprite.addChild( textSprite );
 
-		var buildingConfig:Dynamic = 
+		var buildingConfig:BuildingConfig = new BuildingConfig(
 		{
-			"id": id,
-			"name": config.name,
-			"deployId": config.deployId,
-			"sprite": sprite,
-			"upgradeLevel": config.upgradeLevel,
-			"nextUpgradeId": config.nextUpgradeId,
-			"canUpgradeLevel": config.canUpgradeLevel,
-			"upgradePriceMoney": config.upgradePriceMoney,
-			"containerSlots": config.containerSlots,
-			"containerSlotsMax": config.containerSlotsMax
-		};
+			ID: id,
+			DeployID: DeployID( config.deployId ),
+			Name: Name( config.name ),
+			GraphicsSprite: sprite,
+			UpgradeLevel: config.upgradeLevel,
+			NextUpgradeId: config.nextUpgradeId,
+			CanUpgradeLevel: config.canUpgradeLevel,
+			UpgradePrice: config.upgradePriceMoney,
+			ContainerHeroSlots: config.containerSlots,
+			ContainerHeroSLotsMax: config.containerSlotsMax
 
+		});
 		var building:Building = new Building( buildingConfig );
 		var err:String = building.init();
 		if( err !=null )
-			return [ null, 'Error in GeneratorSystem.generateBuilding. $err' ];
+			return [ null, 'Error in GeneratorSystem.createBuilding. $err' ];
 
 		
 		return [ building, null ];
 	}
 
-	public function generateItem( deployId:Int ):Array<Dynamic>
+	public function generateItem( deployId:DeployID ):Array<Dynamic>
 	{
 		return [];
 	}
 
-	public function generateScene( deployId:Int ):Array<Dynamic>
+	public function createScene( deployId:DeployID ):Array<Dynamic>
 	{
 		var config = this._sceneDeploy.get( deployId );
 		if( config == null )
-			return [ null, "Error in GeneratorSystem.generateScene. Deploy ID: '" + deployId + "' doesn't exist in SceneDeploy data" ];
+			return [ null, "Error in GeneratorSystem.createScene. Deploy ID: '" + deployId + "' doesn't exist in SceneDeploy data" ];
 
-		var id = this._createId();
+		var id:ID = this._createId();
 		var sprite:Sprite = new Sprite();
 		var graphicsSprite:Sprite = this._createGraphicsSprite( config );
 		sprite.addChild( graphicsSprite );
 		var textSprite:Sprite = this._createTextSprite( config );
 		sprite.addChild( textSprite );
 
-		var configForScene:Dynamic = 
+		var configForScene:SceneConfig = new SceneConfig(
 		{
-			"id": id,
-			"name": config.name,
-			"deployId": deployId,
-			"sprite": sprite
-		}
+			ID: id,
+			Name: Name( config.name ),
+			DeployID: deployId,
+			GraphicsSprite: sprite
+		});
 		var scene = new Scene( configForScene );
 		var err:String = scene.init();
 		if( err !=null )
-			return [ null, 'Error in GeneratorSystem.generateScene. $err' ];
+			return [ null, 'Error in GeneratorSystem.createScene. $err' ];
 
 		// окна не будут добавлены на сцену, так как они являются частью Интерфейса пользователя.
 		var configWindow:Array<Int> = config.window;
@@ -174,12 +241,12 @@ class GeneratorSystem
 		{
 			for( i in 0...configWindow.length )
 			{
-				var windowDeployId:Int = configWindow[ i ];
-				var createWindow:Array<Dynamic> = this.generateWindow( windowDeployId );
+				var windowDeployId:DeployID = DeployID( configWindow[ i ] );
+				var createWindow:Array<Dynamic> = this.createWindow( windowDeployId );
 				var window:Window = createWindow[ 0 ];
 				var windowError:String = createWindow[ 1 ];
 				if( windowError != null )
-					return [ null, 'Error in GeneratorSystem.generateScene. $windowError' ];
+					return [ null, 'Error in GeneratorSystem.createScene. $windowError' ];
 
 				scene.addChild( window );
 			}
@@ -190,12 +257,12 @@ class GeneratorSystem
 		{
 			for( j in 0...configBuilding.length )
 			{
-				var buildingDeployId:Int = configBuilding[ j ];
-				var createBuilding:Array<Dynamic> = this.generateBuilding( buildingDeployId );
+				var buildingDeployId:DeployID = DeployID( configBuilding[ j ] );
+				var createBuilding:Array<Dynamic> = this.createBuilding( buildingDeployId );
 				var building:Building = createBuilding[ 0 ];
 				var buildingError:String = createBuilding[ 1 ];
 				if( buildingError != null )
-					return [ null, 'Error in GeneratorSystem.generateScene. $buildingError' ];
+					return [ null, 'Error in GeneratorSystem.createScene. $buildingError' ];
 
 				scene.addChild( building );
 			}
@@ -204,14 +271,14 @@ class GeneratorSystem
 		return [ scene, null ];
 	}
 
-	public function generateWindow( deployId:Int ):Array<Dynamic>
+	public function createWindow( deployId:DeployID ):Array<Dynamic>
 	{
 		var config:Dynamic = this._windowDeploy.get( deployId );
 		if( config == null )
-			return [ null, "Error in GeneratorSystem.generateWindow. Deploy ID: '" + deployId + "' doesn't exist in WindowDeploy data" ];
+			return [ null, "Error in GeneratorSystem.createWindow. Deploy ID: '" + deployId + "' doesn't exist in WindowDeploy data" ];
 
 		
-		var id:Int = this._createId();
+		var id:ID = this._createId();
 		var sprite:Sprite = new Sprite();
 		sprite.x = config.x;
 		sprite.y = config.y;
@@ -221,29 +288,29 @@ class GeneratorSystem
 		var textSprite:Sprite = this._createTextSprite( config );
 		sprite.addChild( textSprite );		
 
-		var configForWindow:Dynamic = 
+		var configForWindow:WindowConfig = new WindowConfig( 
 		{
-			"id": id,
-			"name": config.name,
-			"deployId": deployId,
-			"sprite": sprite,
-			"alwaysActive": config.alwaysActive
-		}
+			ID: id,
+			Name: Name( config.name ),
+			DeployID: deployId,
+			GraphicsSprite: sprite,
+			AlwaysActive: config.alwaysActive
+		});
 		var window:Window = new Window( configForWindow );
 		var err:String = window.init();
 		if( err != null )
-			return [ null, 'Error in GeneratorSystem.generateWindow. $err' ];
+			return [ null, 'Error in GeneratorSystem.createWindow. $err' ];
 
 		if( config.button != null )
 		{
 			for( i in 0...config.button.length )
 			{
-				var buttonDeployId:Int = config.button[ i ];
-				var createButton:Array<Dynamic> = this.generateButton( buttonDeployId );
+				var buttonDeployId:DeployID = DeployID( config.button[ i ] );
+				var createButton:Array<Dynamic> = this.createButton( buttonDeployId );
 				var button:Button = createButton[ 0 ];
 				var bErr:String = createButton[ 1 ];
 				if( bErr != null )
-					return [ null, 'Error in GeneratorSystem.generateWindow. $bErr' ];
+					return [ null, 'Error in GeneratorSystem.createWindow. $bErr' ];
 				window.addChild( button );
 				var buttonSprite:Sprite = button.get( "sprite" );
 				sprite.addChild( buttonSprite );
@@ -253,11 +320,11 @@ class GeneratorSystem
 		return [ window, null ];
 	}
 
-	public function generateButton( deployId:Int ):Array<Dynamic>
+	public function createButton( deployId:DeployID ):Array<Dynamic>
 	{
 		var config:Dynamic = this._buttonDeploy.get( deployId );
 		if( config == null )
-			return [ null, 'Error in GeneratorSystem.generateButton. Deploy ID: "$deployId" does not exist in ButtonDeploy data' ];
+			return [ null, 'Error in GeneratorSystem.createButton. Deploy ID: "$deployId" does not exist in ButtonDeploy data' ];
 
 		
 		var id:Int = this._createId();
@@ -270,17 +337,17 @@ class GeneratorSystem
 		var textSprite:Sprite = this._createTextSprite( config );
 		sprite.addChild( textSprite );
 
-		var configForButton:Dynamic = 
-		{
-			"id": id,
-			"name": config.name,
-			"deployId": deployId,
-			"sprite": sprite
-		}
+		var configForButton:ButtonConfig = new ButtonConfig(
+		{ 
+			ID: id, 
+			DeployID: deployId, 
+			Name: config.name, 
+			GraphicsSprite: sprite 
+		});
 		var button:Button = new Button( configForButton );
 		var err:String = button.init();
 		if( err != null )
-			return [ null , 'Error in GeneratorSystem.generateButton. $err' ];
+			return [ null , 'Error in GeneratorSystem.createButton. $err' ];
 
 		return [ button, null ];
 	}
@@ -300,9 +367,9 @@ class GeneratorSystem
 		}
 		for( i in 0...slots )
 		{
-			var index:Int = Math.floor( Math.random() * heroRares.length )
+			var index:Int = Math.floor( Math.random() * heroRares.length );
 			var heroRarity:String = heroRares[ index ];
-			var createHero:Array<Dynamic> = this.generateHero( "random", heroRarity, "random" );
+			var createHero:Array<Dynamic> = this.generateHero( "random", heroRarity );
 			var err:String = createHero[ 1 ];
 			var hero:Hero = createHero[ 0 ];
 			if( err != null )
@@ -437,9 +504,9 @@ class GeneratorSystem
         return txt;
 	}
 
-	private function _createId():Int
+	private function _createId():ID
 	{
-		var result:Int = this._nextId;
+		var result:ID = ID( this._nextId );
 		this._nextId++;
 		return result;
 	}

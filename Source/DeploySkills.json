@@ -1,0 +1,327 @@
+{
+	"skills": {
+					"active": {
+						"maxActiveSkills": [4, 5, 6, 7],
+						"maxStaticActiveSkills": [1, 2, 3, 4],
+						"skills": {
+							"basic": {
+								"name": "basic",
+								"maxUpgradeLevel": 4,
+								"upgradeValue": {
+									"value": [
+										[1, 2],
+										[2, 3],
+										[3, 4],
+										[4, 5],
+										[5, 6]
+									],
+									"type": "once",
+									"effect": null,
+									"removeEffect": null,
+									"valueType": "flat",
+									"action": "substract",
+									"targetStat": ["hp"],
+									"duration": [0, 0, 0, 0, 0],
+									"cooldawn": [0, 0, 0, 0, 0],
+									"target": [
+										[3, 4],
+										[3, 4],
+										[2, 3, 4],
+										[2, 3, 4],
+										[1, 2, 3, 4]
+									]
+								}
+							},
+							"throughAttack": {
+								"name": "throughAttack",
+								"maxUpgradeLevel": 4,
+								"upgradeValue": {
+									"value": [
+										[1, 1],
+										[1, 2],
+										[2, 2],
+										[2, 3],
+										[3, 3]
+									],
+									"type": "once",
+									"effect": null,
+									"removeEffect": null,
+									"valueType": "flat",
+									"action": "substract",
+									"targetStat": ["hp"],
+									"duration": [0, 0, 0, 0, 0],
+									"cooldawn": [4, 4, 3, 3, 2],
+									"target": [
+										[34],
+										[34],
+										[23, 34],
+										[123, 234],
+										[1234]
+									]
+								}
+							},
+							"bleedingAttack": {
+								"name": "bleedingAttack",
+								"maxUpgradeLevel": 4,
+								"upgradeValue": {
+									"value": [
+										[1, 2],
+										[2, 3],
+										[3, 4],
+										[4, 5],
+										[5, 6]
+									],
+									"type": "forever",
+									"effect": "bleed",
+									"removeEffect": null,
+									"valueType": "flat",
+									"action": "substract",
+									"targetStat": ["hp"],
+									"duration": [1, 2, 2, 3, 4],
+									"cooldawn": [4, 4, 3, 3, 2],
+									"target": [
+										[3, 4],
+										[3, 4],
+										[2, 3, 4],
+										[2, 3, 4],
+										[2, 3, 4]
+									]
+								}
+							},
+							"hightBolt": {
+								"name": "hightBolt",
+								"maxUpgradeLevel": 4,
+								"upgradeValue": {
+									"value": [
+										[5, 5],
+										[5, 7],
+										[7, 7],
+										[7, 9],
+										[9, 9]
+									],
+									"type": "once",
+									"effect": "buff",
+									"removeEffect": null,
+									"valueType": "flat",
+									"action": "add",
+									"targetStat": ["dmg"],
+									"duration": [1, 1, 1, 1, 1],
+									"cooldawn": [4, 4, 3, 3, 2],
+									"target": [
+										[0],
+										[0],
+										[0],
+										[0],
+										[0]
+									]
+								}
+							},
+							"bandage": {
+								"name": "bandage",
+								"maxUpgradeLevel": 4,
+								"upgradeValue": {
+									"value": [
+										[10, 12],
+										[10, 15],
+										[12, 15],
+										[12, 17],
+										[15, 17]
+									],
+									"type": "once",
+									"effect": "heal",
+									"removeEffect": "bleed",
+									"valueType": "flat",
+									"action": "add",
+									"targetStat": ["hp"],
+									"duration": [1, 1, 1, 1, 1],
+									"cooldawn": [1, 1, 0, 0, 0],
+									"target": [
+										[0],
+										[0],
+										[0],
+										[0],
+										[0]
+									]
+								}
+							},
+							"strongBolt": {
+								"name": "strongBolt",
+								"maxUpgradeLevel": 4,
+								"upgradeValue": {
+									"value": [
+										[3, 4],
+										[3, 5],
+										[4, 5],
+										[4, 6],
+										[5, 7]
+									],
+									"type": "once",
+									"effect": "moveout",
+									"removeEffect": null,
+									"valueType": "flat",
+									"action": "substract",
+									"targetStat": ["hp"],
+									"duration": [0, 0, 0, 0, 0],
+									"cooldawn": [0, 0, 0, 0, 0],
+									"target": [
+										[1],
+										[1],
+										[1, 2],
+										[1, 2, 3],
+										[1, 2, 3]
+									]
+								}
+							},
+							"stunBolt": {
+								"name": "stunBolt",
+								"maxUpgradeLevel": 4,
+								"upgradeValue": {
+									"value": [
+										[4, 4],
+										[4, 5],
+										[5, 5],
+										[5, 6],
+										[6, 7]
+									],
+									"type": "once",
+									"effect": "stun",
+									"removeEffect": null,
+									"valueType": "flat",
+									"action": "substract",
+									"targetStat": ["hp"],
+									"duration": [0, 0, 0, 0, 0],
+									"cooldawn": [0, 0, 0, 0, 0],
+									"target": [
+										[0],
+										[0],
+										[0],
+										[0],
+										[0]
+									]
+								}
+							}
+						}
+					},
+					"passive": {
+						"maxPassiveSkills": [2, 3, 4, 4],
+						"maxStaticPassiveSkills": [1, 2, 3, 4],
+						"skills": {
+							"armorpiercingBolts": {
+								"name": "armorpiercingBolts",
+								"maxUpgradeLevel": 4,
+								"upgradeValue": {
+
+									"value": [
+										[20, 22],
+										[22, 25],
+										[25, 30],
+										[30, 34],
+										[34, 40]
+									],
+									"type": "once",
+									"effect": null,
+									"removeEffect": null,
+									"valueType": "percent",
+									"action": "substract",
+									"targetStat": ["def"],
+									"duration": [0, 0, 0, 0, 0],
+									"cooldawn": [0, 0, 0, 0, 0],
+									"target": [
+										[1, 2, 3, 4],
+										[1, 2, 3, 4],
+										[1, 2, 3, 4],
+										[1, 2, 3, 4],
+										[1, 2, 3, 4]
+									]
+								}
+							},
+							"speedup": {
+								"name": "speedup",
+								"maxUpgradeLevel": 4,
+								"upgradeValue": {
+									"value": [
+										[1, 1],
+										[2, 2],
+										[3, 3],
+										[4, 4],
+										[5, 5]
+									],
+									"effect": "forever",
+									"removeEffect": null,
+									"valueType": "flat",
+									"action": "add",
+									"targetStat": ["spd"],
+									"duration": [0, 0, 0, 0, 0],
+									"cooldawn": [0, 0, 0, 0, 0],
+									"target": [
+										[0],
+										[0],
+										[0],
+										[0],
+										[0]
+									]
+								}
+							},
+							"dodgeup": {
+								"name": "dodgeup",
+								"maxUpgradeLevel": 4,
+								"upgradeValue": {
+									"value": [
+										[1, 1],
+										[2, 2],
+										[3, 3],
+										[4, 4],
+										[5, 5]
+									],
+									"effect": "forever",
+									"removeEffect": null,
+									"valueType": "flat",
+									"action": "add",
+									"targetStat": ["ddg"],
+									"duration": [0, 0, 0, 0, 0],
+									"cooldawn": [0, 0, 0, 0, 0],
+									"target": [
+										[0],
+										[0],
+										[0],
+										[0],
+										[0]
+									]
+								}
+							},
+							"hightcritdamage": {
+								"name": "hightcritdamage",
+								"maxUpgradeLevel": 4,
+								"upgradeValue": {
+									"value": [
+										[10, 10],
+										[12, 12],
+										[14, 14],
+										[16, 16],
+										[19, 19]
+									],
+									"effect": "forever",
+									"removeEffect": null,
+									"valueType": "flat",
+									"action": "add",
+									"targetStat": ["critDmg"],
+									"duration": [0, 0, 0, 0, 0],
+									"cooldawn": [0, 0, 0, 0, 0],
+									"target": [
+										[0],
+										[0],
+										[0],
+										[0],
+										[0]
+									]
+								}
+							}
+						}
+					},
+}"camping": {
+						"maxCampingSkills": [1, 2, 2, 2],
+						"maxStaticCampingSkills": [1, 1, 2, 2],
+						"skills": {
+
+						}
+					}
