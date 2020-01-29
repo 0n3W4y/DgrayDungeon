@@ -2,6 +2,8 @@ package;
 
 import openfl.display.Sprite;
 
+import Scene;
+
 class SceneSystem
 {
 	private var _parent:Game;
@@ -193,6 +195,76 @@ class SceneSystem
 				return this._scenesArray[ i ];
 		}
 		return null;
+	}
+
+	public function createScene( dpeloyId:SceneDeployID ):Array<Dynamic>
+	{
+		var config = this._sceneDeploy.get( deployId );
+		if( config == null )
+			return [ null, "Error in GeneratorSystem.createScene. Deploy ID: '" + deployId + "' doesn't exist in SceneDeploy data" ];
+
+		var id:Game.ID = this._createId();
+		var sprite:Sprite = new Sprite();
+		var graphicsSprite:Sprite = this._createGraphicsSprite( config );
+		sprite.addChild( graphicsSprite );
+		var textSprite:Sprite = this._createTextSprite( config );
+		sprite.addChild( textSprite );
+
+		var configForScene:SceneConfig =
+		{
+			ID: id,
+			Name: config.name,
+			DeployID: DeployID( config.deployId ),
+			GraphicsSprite: sprite
+		};
+		var scene = new Scene( configForScene );
+		var err:String = scene.init();
+		if( err != null )
+			return [ null, 'Error in GeneratorSystem.createScene. $err' ];
+
+		this._scenesArray.push( scene );
+	}
+
+	public function createScene( deployId:Int ):Array<Dynamic>
+	{
+		
+
+		
+
+		// окна не будут добавлены на сцену, так как они являются частью Интерфейса пользователя.
+		var configWindow:Array<Int> = config.window;
+		if( configWindow != null ) // Внутри Window есть чайлды в виде button. создаются в функции создании окна.
+		{
+			for( i in 0...configWindow.length )
+			{
+				var windowDeployId:Int = configWindow[ i ];
+				var createWindow:Array<Dynamic> = this.createWindow( windowDeployId );
+				var window:Window = createWindow[ 0 ];
+				var windowError:String = createWindow[ 1 ];
+				if( windowError != null )
+					return [ null, 'Error in GeneratorSystem.createScene. $windowError' ];
+
+				scene.addChild( window );
+			}
+		}
+
+		var configBuilding:Array<Int> = config.building;
+		if( configBuilding != null )
+		{
+			for( j in 0...configBuilding.length )
+			{
+				var buildingDeployId:Int = configBuilding[ j ];
+				var createBuilding:Array<Dynamic> = this.createBuilding( buildingDeployId );
+				var building:Building = createBuilding[ 0 ];
+				var buildingError:String = createBuilding[ 1 ];
+				if( buildingError != null )
+					return [ null, 'Error in GeneratorSystem.createScene. $buildingError' ];
+
+				scene.addChild( building );
+			}
+		}
+
+		return [ scene, null ];
 	}
 
 	//PRIVATE

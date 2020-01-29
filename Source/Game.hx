@@ -4,6 +4,25 @@ import haxe.Timer;
 import openfl.system.System;
 import openfl.display.Sprite;
 
+import UserInterface;
+
+enum ID 
+{
+	ID( _:Int );	
+}
+
+typedef GameDeployConfig =
+{
+	var Window:Dynamic;
+	var Button:Dynamic;
+	var Scene:Dynamic;
+	var Building:Dynamic;
+	var Hero:Dynamic; 
+	var Item:Dynamic;
+	var Enemy:Dynamic;
+	var Player:Dynamic;
+}
+
 class Game
 {
 	private var _mainSprite:Sprite;
@@ -15,7 +34,6 @@ class Game
 	private var _gameStart:Float;
 
 	private var _eventHandler:EventHandler;
-	private var _generatorSystem:GeneratorSystem;
 	private var _sceneSystem:SceneSystem;
 	private var _userInterface:UserInterface;
 
@@ -31,94 +49,6 @@ class Game
 	private var _player:Player;
 	private var _lastSave:Dynamic;
 
-	private function _calculateDelta():Void
-	{
-		this._delta = 1000 / this._fps;
-		this._doubleDelta = this._delta * 2;
-	}
-
-	private function _checkForSave():Dynamic
-	{
-		return null;
-	}
-
-	private function _tick():Void
-	{
-		this._currentTime = Date.now().getTime();
-		var delta:Float = this._currentTime - this._lastTime;
-
-		if ( delta >= this._delta ){
-			if( delta >= this._doubleDelta ){
-				delta = this._doubleDelta; // Защита от скачков времени вперед.
-			}
-			this._update( delta );
-			this._lastTime = this._currentTime;	
-		}
-		this._sUpdate(); // special update; обновление дейсвтий мыши на графические объкты.
-	}
-
-	private function _update( time:Float ):Void
-	{
-		if( !this._onPause )
-		{
-			//this._sceneSystem.update( time );
-		}
-	}
-
-	private function _sUpdate():Void
-	{
-
-	}
-
-	private function _parseData():Array<Dynamic>
-	{
-		var window:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployWindow.json" );
-		var button:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployButton.json" );
-		var scene:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployScene.json" );
-		var building:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployBuilding.json" );
-		var hero:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployHero.json" );
-		var item:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployItem.json" );
-		var enemy:Dynamic = ConfigJSON.json( "c:/projects/DgrayDungeon/Source/DeployEnemy.json" );
-		var player:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployPlayer.json" );
-		
-		return [ window, button, scene, building, hero, item, enemy, player ];
-	}
-
-	private function _mapJsonObject( object:Dynamic ):Map<Int, Dynamic>
-	{
-		var result:Map<Int, Dynamic> = new Map<Int, Dynamic>();
-
-		for( key in Reflect.fields( object ) )
-		{
-			var intKey:Int = Std.parseInt( key );
-			result[ intKey ] = Reflect.getProperty( object, key );
-
-		}
-
-		return result;
-	}
-
-	private function _startGame():Void
-	{
-		this._gameStart = Date.now().getTime();
-		this._calculateDelta();
-		this._lastTime = 0.0;
-
-		this._lastSave = this._checkForSave();
-
-		var createScene:Array<Dynamic> = this._generatorSystem.createScene( 1000 );
-		var scene:Scene = createScene[ 0 ];
-		var err:String = createScene[ 1 ];
-		if( err != null )
-			throw 'Error in Game._startGame. $err';
-
-		this._sceneSystem.addScene( scene );
-		this._sceneSystem.prepareScene( scene );
-		this._sceneSystem.changeSceneTo( scene );
-
-		this.start();
-	}
-
 	public function new( width:Int, height:Int, fps:Int, mainSprite:Sprite ):Void
 	{
 		this._fps = fps;
@@ -131,34 +61,16 @@ class Game
 		this._mainSprite.addChild( this._scenesSprite );
 		this._mainSprite.addChild( this._uiSprite );
 
-		var parseDataContainer:Array<Dynamic> = this._parseData();
+		var parseDataContainer:GameDeployConfig = this._parseData();
 
-		var windowDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer[ 0 ] );
-		var buttonDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer[ 1 ] );
-		var sceneDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer[ 2 ] );
-		var buildingDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer[ 3 ] );
-		var heroDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer[ 4 ] );
-		var itemDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer[ 5 ] );
-		var enemyDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer[ 6 ] );
-		var playerDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer[ 7 ] );
-
-		var config:Dynamic = 
-		{ 
-			"parent": this, 
-			"sceneDeploy": sceneDeploy, 
-			"buildingDeploy": buildingDeploy, 
-			"windowDeploy": windowDeploy, 
-			"buttonDeploy": buttonDeploy, 
-			"heroDeploy": heroDeploy, 
-			"itemDeploy": itemDeploy,
-			"playerDeploy": playerDeploy,
-			"enemyDeploy": enemyDeploy
-		};
-
-		this._generatorSystem = new GeneratorSystem( config );
-		var err:String = this._generatorSystem.init();
-		if( err != null )
-			throw 'Error in Game.new. $err';
+		var windowDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer.Window );
+		var buttonDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer.Button );
+		var sceneDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer.Scene );
+		var buildingDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer.Building );
+		var heroDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer.Hero );
+		var itemDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer.Item );
+		var enemyDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer.Enemy );
+		var playerDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer.Player );
 
 		this._eventHandler = new EventHandler( this );
 		err = this._eventHandler.init();
@@ -170,7 +82,7 @@ class Game
 		if( err != null )
 			throw 'Error in Game.new. $err';
 
-		this._userInterface = new UserInterface( this, this._uiSprite );
+		this._userInterface = new UserInterface( { Window:windowDeploy, Button:buttonDeploy, Parent:this, GraphicsSprite:this._uiSprite } );
 		err = this._userInterface.init();
 		if( err != null )
 			throw 'Error in Game.new. $err';
@@ -248,6 +160,105 @@ class Game
 	public function getLastSave():Dynamic
 	{
 		return this._lastSave;
+	}
+
+	private inline function createId():ID
+	{
+		var result:ID = ID( this._nextId );
+		this._nextId++;
+		return result;
+	}
+
+
+
+	//PRIVATE
+
+	private function _calculateDelta():Void
+	{
+		this._delta = 1000 / this._fps;
+		this._doubleDelta = this._delta * 2;
+	}
+
+	private function _checkForSave():Dynamic
+	{
+		return null;
+	}
+
+	private function _tick():Void
+	{
+		this._currentTime = Date.now().getTime();
+		var delta:Float = this._currentTime - this._lastTime;
+
+		if ( delta >= this._delta ){
+			if( delta >= this._doubleDelta ){
+				delta = this._doubleDelta; // Защита от скачков времени вперед.
+			}
+			this._update( delta );
+			this._lastTime = this._currentTime;	
+		}
+		this._sUpdate(); // special update; обновление дейсвтий мыши на графические объкты.
+	}
+
+	private function _update( time:Float ):Void
+	{
+		if( !this._onPause )
+		{
+			//this._sceneSystem.update( time );
+		}
+	}
+
+	private function _sUpdate():Void
+	{
+
+	}
+
+	private function _parseData():GameDeployConfig
+	{
+		var window:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployWindow.json" );
+		var button:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployButton.json" );
+		var scene:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployScene.json" );
+		var building:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployBuilding.json" );
+		var hero:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployHero.json" );
+		var item:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployItem.json" );
+		var enemy:Dynamic = ConfigJSON.json( "c:/projects/DgrayDungeon/Source/DeployEnemy.json" );
+		var player:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployPlayer.json" );
+		
+		return { Window:window, Button:button, Scene:scene, Building:building, Hero:hero, Item:item, Enemy:enemy, Player:player };
+	}
+
+	private function _mapJsonObject( object:Dynamic ):Map<Int, Dynamic>
+	{
+		var result:Map<Int, Dynamic> = new Map<Int, Dynamic>();
+
+		for( key in Reflect.fields( object ) )
+		{
+			var intKey:Int = Std.parseInt( key );
+			result[ intKey ] = Reflect.getProperty( object, key );
+
+		}
+
+		return result;
+	}
+
+	private function _startGame():Void
+	{
+		this._gameStart = Date.now().getTime();
+		this._calculateDelta();
+		this._lastTime = 0.0;
+
+		this._lastSave = this._checkForSave();
+
+		var createScene:Array<Dynamic> = this._generatorSystem.createScene( 1000 );
+		var scene:Scene = createScene[ 0 ];
+		var err:String = createScene[ 1 ];
+		if( err != null )
+			throw 'Error in Game._startGame. $err';
+
+		this._sceneSystem.addScene( scene );
+		this._sceneSystem.prepareScene( scene );
+		this._sceneSystem.changeSceneTo( scene );
+
+		this.start();
 	}
 }
 /*

@@ -2,10 +2,15 @@ package;
 
 import openfl.display.Sprite;
 
+enum WindowDeployID
+{
+	WindowDeployID( _:Int );
+}
+
 typedef WindowConfig =
 {
 	var ID:GeneratorSystem.ID;
-	var DeployID:GeneratorSystem.DeployID;
+	var DeployID:WindowDeployID;
 	var Name:String;
 	var GraphicsSprite:Sprite;
 	var AlwaysActive:Bool;
@@ -14,7 +19,7 @@ typedef WindowConfig =
 class Window
 {
 	private var _id:GeneratorSystem.ID;
-	private var _deployId:GeneratorSystem.DeployID;
+	private var _deployId:WindowDeployID;
 	private var _name:String;
 	private var _type:String;
 	private var _isActive:Bool;

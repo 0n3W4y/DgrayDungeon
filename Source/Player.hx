@@ -2,16 +2,18 @@ package;
 
 typedef PlayerConfig =
 {
-	var ID:GeneratorSystem.ID;
+	var ID:Game.ID;
 	var DeployID:GeneratorSystem.DeployID;
 	var Name:String;
 	var MaxHeroSlots:Int;
 	var MoneyAmount:GeneratorSystem.Money;
 }
 
+typedef Money = Int;
+
 class Player
 {
-	private var _id:GeneratorSystem.ID;
+	private var _id:Game.ID;
 	private var _name:String;
 	private var _deployId:GeneratorSystem.DeployID;
 	private var _moneyAmount:GeneratorSystem.Money;

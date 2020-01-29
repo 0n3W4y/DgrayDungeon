@@ -2,18 +2,23 @@ package;
 
 import openfl.display.Sprite;
 
+enum ButtonDeployID
+{
+	ButtonDeployID( _:Int );
+}
+
 typedef ButtonConfig =
 {
-	var ID:GeneratorSystem.ID;
-	var DeployID:GeneratorSystem.DeployID;
+	var ID:Game.ID;
+	var DeployID:ButtonDeployID;
 	var Name:String;
 	var GraphicsSprite:Sprite;
 }
 
 class Button
 {
-	private var _id:GeneratorSystem.ID;
-	private var _deployId:GeneratorSystem.DeployID;
+	private var _id:Game.ID;
+	private var _deployId:ButtonDeployID;
 	private var _name:String;
 	private var _type:String;
 	private var _activeStatus:Bool;
@@ -21,14 +26,13 @@ class Button
 	private var _graphics:GraphicsSystem;
 
 
-	public function new( config:ButtonConfig ):Void
+	public inline function new( config:ButtonConfig ):Void
 	{
 		this._type = "button";
 		this._id = config.ID;
 		this._deployId = config.DeployID;
 		this._name = config.Name;
 		this._graphics = new GraphicsSystem( this, config.GraphicsSprite );
-		this._activeStatus = false;
 	}
 
 	public function init():String
@@ -44,8 +48,9 @@ class Button
 		
 		var err:String = this._graphics.init();
 		if( err != null )
-			return 'Error in Button.init.Name is "$_name" id is:"$_id" deploy id is:"$_deployId". $err';
+			return 'Error in Button.init. $err. Name is "$_name" id is:"$_id" deploy id is:"$_deployId"';
 
+		this._activeStatus = false;
 		return null;
 	}
 
