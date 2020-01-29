@@ -106,7 +106,7 @@ class Game
 
 		this._lastSave = this._checkForSave();
 
-		var createScene:Array<Dynamic> = this._generatorSystem.createScene( GeneratorSystem.DeployID( 1000 ) );
+		var createScene:Array<Dynamic> = this._generatorSystem.createScene( 1000 );
 		var scene:Scene = createScene[ 0 ];
 		var err:String = createScene[ 1 ];
 		if( err != null )

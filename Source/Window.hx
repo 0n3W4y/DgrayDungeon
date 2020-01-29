@@ -2,11 +2,20 @@ package;
 
 import openfl.display.Sprite;
 
+typedef WindowConfig =
+{
+	var ID:GeneratorSystem.ID;
+	var DeployID:GeneratorSystem.DeployID;
+	var Name:String;
+	var GraphicsSprite:Sprite;
+	var AlwaysActive:Bool;
+}
+
 class Window
 {
 	private var _id:GeneratorSystem.ID;
 	private var _deployId:GeneratorSystem.DeployID;
-	private var _name:GeneratorSystem.Name;
+	private var _name:String;
 	private var _type:String;
 	private var _isActive:Bool;
 	private var _alwaysActive:Bool;
@@ -16,32 +25,32 @@ class Window
 	private var _graphics:GraphicsSystem;
 
 
-	public function new( config:GeneratorSystem.WindowConfig ):Void
+	public function new( config:WindowConfig ):Void
 	{
 		this._type = "window";
 		this._id = config.ID;
 		this._name = config.Name;
 		this._deployId = config.DeployID;	
 		this._alwaysActive = config.AlwaysActive;	
-		this._graphics = new GraphicsSystem( this, config.Sprite );
+		this._graphics = new GraphicsSystem( this, config.GraphicsSprite );
 		this._buttonChildren = new Array<Button>();
 		this._isActive = false; // by default status is hide;
 	}
 
 	public function init():String
 	{
-		if( !Std.is( this._name, String ) || this._name == null )
-			return 'Error in Window.init. Name is:"$this._name"';
+		if( this._name == null || this._name == "" )
+			return 'Error in Window.init. Wrong name. Name is:"$_name" id is:"$_id" deploy id is:"$_deployId"';
 
-		if( !Std.is( this._id, Int ) || this._id == null )
-			return 'Error in Window.init. Id is:"$this._id" name:"$this._name"';
+		if( this._id == null )
+			return 'Error in Window.init. Wrong ID. Name is:"$_name" id is:"$_id" deploy id is:"$_deployId"';
 		
-		if( !Std.is( this._deployId, Int ) || this._deployId == null )
-			return 'Error in Window.init. Name is:"$this._name" id is:"$this._id" deploy id is:"$this._deployId"';
+		if( this._deployId == null )
+			return 'Error in Window.init. Wrong Deploy ID. Name is:"$_name" id is:"$_id" deploy id is:"$_deployId"';
 
 		var err:String = this._graphics.init();
 		if( err != null )
-			return 'Error in Window.init. Name is:"$this._name" id is:"$this._id" deploy id is:"$this._deployId"; $err';
+			return 'Error in Window.init. $err. Name is:"$_name" id is:"$_id" deploy id is:"$_deployId"';
 
 		return null;
 	}

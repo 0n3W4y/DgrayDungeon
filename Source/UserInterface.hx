@@ -31,7 +31,7 @@ class UserInterface
 		return null;
 	}
 
-	public function addUiObject( object:Dynamic, sceneId:Int ):Void
+	public function addUiObject( object:Dynamic, sceneId:GeneratorSystem.ID ):Void
 	{
 		var name:String = object.get( "name" );
 		var sprite:Sprite = object.get( "sprite" );
@@ -65,7 +65,7 @@ class UserInterface
 		this._uiSprite.addChild( sprite );
 	}
 
-	public function removeUiObject( object:Dynamic, sceneId:Int ):Array<Dynamic>
+	public function removeUiObject( object:Dynamic, sceneId:GeneratorSystem.ID ):Array<Dynamic>
 	{
 		var name:String = object.get( "name" );
 		var sprite:Sprite = object.get( "sprite" );

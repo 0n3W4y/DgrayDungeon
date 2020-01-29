@@ -93,7 +93,7 @@ class SceneSystem
 	{
 		var ui:UserInterface = this._parent.getSystem( "ui" );
 		var windows:Array<Window> = scene.getChilds( "ui" ).window;
-		var sceneId:Int = scene.get( "id" );
+		var sceneId:GeneratorSystem.ID = scene.get( "id" );
 		if( windows == null )
 			throw 'Error in SceneSystem.drawUiForScene. Scene does not have any widnows.';
 		
@@ -110,7 +110,7 @@ class SceneSystem
 		var windows:Array<Window> = scene.getChilds( "ui" ).window;
 		var ui:UserInterface = this._parent.getSystem( "ui" );
 
-		var sceneId:Int = scene.get( "id" );
+		var sceneId:GeneratorSystem.ID = scene.get( "id" );
 		for( i in 0...windows.length )
 		{
 			var window:Window = windows[ i ];

@@ -2,37 +2,45 @@ package;
 
 import openfl.display.Sprite;
 
+typedef ButtonConfig =
+{
+	var ID:GeneratorSystem.ID;
+	var DeployID:GeneratorSystem.DeployID;
+	var Name:String;
+	var GraphicsSprite:Sprite;
+}
+
 class Button
 {
 	private var _id:GeneratorSystem.ID;
 	private var _deployId:GeneratorSystem.DeployID;
-	private var _name:GeneratorSystem.Name;
+	private var _name:String;
 	private var _type:String;
 	private var _activeStatus:Bool;
 
 	private var _graphics:GraphicsSystem;
 
 
-	public function new( config:GeneratorSystem.ButtonConfig ):Void
+	public function new( config:ButtonConfig ):Void
 	{
 		this._type = "button";
 		this._id = config.ID;
 		this._deployId = config.DeployID;
 		this._name = config.Name;
-		this._graphics = new GraphicsSystem(  this, config.GraphicsSprite );
+		this._graphics = new GraphicsSystem( this, config.GraphicsSprite );
 		this._activeStatus = false;
 	}
 
 	public function init():String
 	{
 		if( this._name == null || this._name == "" )
-			return 'Error in Button.init. Wrong Name. Name is "$_name"';
+			return 'Error in Button.init. Wrong name. Name is:"$_name" id is:"$_id" deploy id is:"$_deployId"';
+
+		if( this._id == null )
+			return 'Error in Button.init. Wrong ID. Name is:"$_name" id is:"$_id" deploy id is:"$_deployId"';
 		
-		if( this._id == null || this._id <= 0 )
-			return 'Error in Button.init. Wrong ID. Name is "$_name" id is:"$_id"';
-		
-		if( this._deployId == null || this._dpeloyId <= 0 )
-			return 'Error in Button.init. Wrong DeployID. Name is "$_name" id is:"$_id" deploy id is:"$_deployId"';
+		if( this._deployId == null )
+			return 'Error in Button.init. Wrong Deploy ID. Name is:"$_name" id is:"$_id" deploy id is:"$_deployId"';
 		
 		var err:String = this._graphics.init();
 		if( err != null )

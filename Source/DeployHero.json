@@ -182,7 +182,7 @@
 	"10003": {
 		"name": "crossbowman",
 		"deployId": 10003,
-		"rarity": "rare",
+		"rarity": "legendary",
 		"imageNormalURL": null,
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
@@ -237,6 +237,6 @@
 		"passiveSkils":[],
 		"maxActiveSkills":5,
 		"maxPassiveSkills":5
-	},
+	}
 
 }

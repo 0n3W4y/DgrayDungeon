@@ -2,13 +2,18 @@ package;
 
 import openfl.display.Sprite;
 
+typedef SceneConfig =
+{
+	var ID:GeneratorSystem.ID;
+	var DeployID:GeneratorSystem.DeployID;
+	var Name:String;
+	var GraphicsSprite:Sprite;
+}
+
 class Scene
 {
-	private var _inited:Bool;
-	private var _postInited:Bool;
-
-	private var _id:Int;
-	private var _deployId:Int;
+	private var _id:GeneratorSystem.ID;
+	private var _deployId:GeneratorSystem.DeployID;
 	private var _type:String;
 	private var _name:String;
 
@@ -21,16 +26,14 @@ class Scene
 	private var _graphics:GraphicsSystem;
 	
 
-	public function new( config:Dynamic ):Void
+	public function new( config:SceneConfig ):Void
 	{
 		this._type = "scene";
-		this._id = config.id;
-		this._name = config.name;
-		this._deployId = config.deployId;
-		this._graphics = new GraphicsSystem( this, config.sprite );
-		this._isPrepared = "unprepared"; // Подготовлена сцена дял отображения или нет.
-		this._inited = false;
-		this._postInited = false;
+		this._id = config.ID;
+		this._name = config.Name;
+		this._deployId = config.DeployID;
+		this._graphics = new GraphicsSystem( this, config.GraphicsSprite );
+		this._isPrepared = "unprepared"; // По умолчанию, сцена не готова.
 
 		this._aliveEntities = 
 		{
@@ -48,36 +51,26 @@ class Scene
 		};		
 	}
 
-	public function init( ):String
+	public function init():String
 	{	
+		if( this._name == null || this._name == "" )
+			return 'Error in Scene.init. Wrong name. Name is:"$_name" id is:"$_id" deploy id is:"$_deployId"';
+
 		if( this._id == null )
-			return 'Error in Scene.init. Id is "$this._id"';
-
+			return 'Error in Scene.init. Wrong ID. Name is:"$_name" id is:"$_id" deploy id is:"$_deployId"';
 		
-		if( this._name == null )
-			return 'Error in Scene.init. Name is "$this._name"';
-
-		
-		if( this._deployId == null )
-			return 'Error in Scene.init. deploy id is "$this._deployId"';
+		if( this._deployId == null  )
+			return 'Error in Scene.init. Wrong Deploy ID. Name is:"$_name" id is:"$_id" deploy id is:"$_deployId"';
 		
 		var err:String = this._graphics.init();
 		if( err != null )
-			return 'Error in Scene.init. $err';
+			return 'Error in Scene.init. $err. Name is "$_name" id is:"$_id" deploy id is:"$_deployId"';
 
-		if( this._objectEntities == null || this._objectEntities.building == null || this._objectEntities.treasure == null )
-			return 'Error in Scene.init. Object array in null, or subobject is null';
-
-		this._inited = true;
 		return null;
 	}
 
 	public function postInit():String
 	{
-		if( !this._inited )
-			return "Error in Scene.postInit. Init is FALSE";
-
-		this._postInited= true;
 		return null;
 	}
 

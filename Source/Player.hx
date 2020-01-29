@@ -1,11 +1,20 @@
 package;
 
+typedef PlayerConfig =
+{
+	var ID:GeneratorSystem.ID;
+	var DeployID:GeneratorSystem.DeployID;
+	var Name:String;
+	var MaxHeroSlots:Int;
+	var MoneyAmount:GeneratorSystem.Money;
+}
+
 class Player
 {
-	private var _id:Int;
+	private var _id:GeneratorSystem.ID;
 	private var _name:String;
-	private var _deployId:Int;
-	private var _moneyAmount:Int;
+	private var _deployId:GeneratorSystem.DeployID;
+	private var _moneyAmount:GeneratorSystem.Money;
 	private var _maxHeroSlots:Int;
 	private var _heroSlots:Int;
 
@@ -14,13 +23,13 @@ class Player
 	private var _inventory:InventorySystem;
 
 
-	public function new( config:Dynamic ):Void
+	public function new( config:PlayerConfig ):Void
 	{
-		this._id = config.id;
-		this._name = config.name;
-		this._deployId = config.deployId;
-		this._moneyAmount = config.money;
-		this._maxHeroSlots = config.maxHeroSlots;
+		this._id = config.ID;
+		this._name = config.Name;
+		this._deployId = config.DeployID;
+		this._moneyAmount = config.MoneyAmount;
+		this._maxHeroSlots = config.MaxHeroSlots;
 		this._heroSlots = 0;
 		this._inventory = new InventorySystem( this );
 		this._heroStorage = new Array<Hero>();
@@ -28,21 +37,25 @@ class Player
 
 	public function init():String
 	{
-		if( this._name == null )
-			return 'Error in Player.init. Name is: "$this._name"';
+		if( this._name == null || this._name == "" )
+			return 'Error in Player.init. Wrong name. Name is:"$_name" id is:"$_id" deploy id is:"$_deployId"';
 
+		
 		if( this._id == null )
-			return 'Error in Player.init. Id in: "$this._id" name: "$this._name"';
+			return 'Error in Player.init. Wrong ID. Name is:"$_name" id is:"$_id" deploy id is:"$_deployId"';
+		
+		if( this._deployId == null )
+			return 'Error in Player.init. Wrong Deploy ID. Name is:"$_name" id is:"$_id" deploy id is:"$_deployId"';
 
-		if( this._moneyAmount < 0 )
-			return 'Error in Player.init. Money amoun is: "$this._moneyAmount" id in: "$this._id" name: "$this._name"';
+		if( this._moneyAmount == null )
+			return 'Error in Player.init.Wrong money amount. Name: "$_name" id: "$_id"  deploy id: "$_deployId"';
 
 		if( this._maxHeroSlots < 0 )
-			return 'Error in Player.init. Maximum hero slots is: "$this._maxHeroSlots " id in: "$this._id" name: "$this._name"';
+			return 'Error in Player.init. Wrong Maximum hero slots. Name: "$_name" id: "$_id"  deploy id: "$_deployId"';
 
 		var err:String = this._inventory.init();
 		if( err != null )
-			return 'Error in Player.init. Id in: "$this._id" name: "$this._name"; $err';
+			return 'Error in Player.init. $err. Name: "$_name" id: "$_id"  deploy id: "$_deployId"';
 
 		return null;
 	}

@@ -9,12 +9,12 @@ import openfl.events.MouseEvent;
 class EventHandler
 {
 	private var _parent:Game;
-	private var _listeners:Map<Int, Array<Dynamic>>;
+	private var _listeners:Map<GeneratorSystem.ID, Array<Dynamic>>;
 
 	public function new( parent:Game ):Void
 	{
 		this._parent = parent;
-		this._listeners = new Map<Int, Array<Dynamic>>();
+		this._listeners = new Map<GeneratorSystem.ID, Array<Dynamic>>();
 	}
 
 	public function init():String
@@ -30,7 +30,7 @@ class EventHandler
 		return null;
 	}
 
-	public function addEvents( object:Dynamic, sceneId:Int ):Void
+	public function addEvents( object:Dynamic, sceneId:GeneratorSystem.ID ):Void
 	{
 		var name:String = object.get( "name" );
 		var check:Int = this._checkListenerIfExist( object );
@@ -47,7 +47,7 @@ class EventHandler
 		this._listeners[ sceneId ].push( object );
 	}
 
-	public function removeEvents( object:Dynamic, sceneId:Int ):Void
+	public function removeEvents( object:Dynamic, sceneId:GeneratorSystem.ID ):Void
 	{
 		var name:String = object.get( "name" );
 		var check:Int = this._checkListenerIfExist( object );
@@ -170,14 +170,14 @@ class EventHandler
 		//TODO: create cityscene, switch active scene, draw new scene, undraw old scene;
 		var generatorSystem:GeneratorSystem = this._parent.getSystem( "generator" );
 		var sceneSystem:SceneSystem = this._parent.getSystem( "scene" );
-		var createPlayer:Array<Dynamic> = generatorSystem.createPlayer( GeneratorSystem.DeployID( 100 ), GeneratorSystem.Name ( "test player" ) );
+		var createPlayer:Array<Dynamic> = generatorSystem.createPlayer( 100 , "test player" );
 		var player:Player = createPlayer[ 0 ];
 		var pErr:String = createPlayer[ 1 ];
 		if( pErr != null )
 			throw 'Error in EventHandler._clickStartGame. $pErr';
 		this._parent.setPlayer( player );
 
-		var createScene:Array<Dynamic> = generatorSystem.createScene( GeneratorSystem.DeployID( 1001 ) );
+		var createScene:Array<Dynamic> = generatorSystem.createScene( 1001 );
 		var scene:Scene = createScene[ 0 ];
 		var err:String = createScene[ 1 ];
 		if( err != null )
