@@ -124,12 +124,11 @@ class Window
 
 	private function _checkChildForExist( button:Button ):Int
 	{
-		var buttonId:Int = button.get( "id" );
 		for( i in 0...this._buttonChildren.length )
 		{
 			var oldButton:Button = this._buttonChildren[ i ];
 			var oldButtonId:Int = oldButton.get( "id" );
-			if( oldButtonId == buttonId )
+			if( oldButton.get( "id" ).match( button.get( "id" ) ) )
 				return i;
 		}
 		return null;

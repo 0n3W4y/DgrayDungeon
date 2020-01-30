@@ -2,18 +2,23 @@ package;
 
 import openfl.display.Sprite;
 
+enum SceneDeployID
+{
+	SceneDeployID( _:Int );
+}
+
 typedef SceneConfig =
 {
-	var ID:GeneratorSystem.ID;
-	var DeployID:GeneratorSystem.DeployID;
+	var ID:Game.ID;
+	var DeployID:SceneDeployID;
 	var Name:String;
 	var GraphicsSprite:Sprite;
 }
 
 class Scene
 {
-	private var _id:GeneratorSystem.ID;
-	private var _deployId:GeneratorSystem.DeployID;
+	private var _id:Game.ID;
+	private var _deployId:SceneDeployID;
 	private var _type:String;
 	private var _name:String;
 
@@ -21,7 +26,6 @@ class Scene
 
 	private var _aliveEntities:Dynamic;
 	private var _objectEntities:Dynamic;
-	private var _uiEntities:Dynamic;
 
 	private var _graphics:GraphicsSystem;
 	
@@ -44,11 +48,7 @@ class Scene
 		{
 			"building": new Array<Building>(),
 			"treasure": new Array()
-		};
-		this._uiEntities = 
-		{
-			"window": new Array<Window>()
-		};		
+		};	
 	}
 
 	public function init():String
@@ -98,8 +98,6 @@ class Scene
 	{
 		switch( type )
 		{
-			case "ui": return this._uiEntities;
-			case "window": return this._uiEntities.window;
 			case "alive": return this._aliveEntities;
 			case "hero": return this._aliveEntities.hero;
 			case "object": return this._objectEntities;
@@ -120,7 +118,6 @@ class Scene
 
 		switch( type )
 		{
-			case "window": container = this._uiEntities.window;
 			case "building": container = this._objectEntities.building;
 			default: throw 'Error in Scene.addChild. Can not add child with type: "$type" and name "$name"';
 		}
@@ -135,7 +132,6 @@ class Scene
 
 		switch( type )
 		{
-			case "window": container = this._uiEntities.window;
 			case "building": container = this._objectEntities.building;
 			default: { return [ null, 'Error in Scene.removeChild. No type found for type: "$type"' ]; }
 		}
@@ -154,7 +150,7 @@ class Scene
 			throw 'Error in Scene.changePrepareSatatus. Value is not valid: "$value"';
 
 		if( this._isPrepared == value )
-			throw 'Error in Scene.changePrepareStatus. Is drawed already "$value"';
+			throw 'Error in Scene.changePrepareStatus. Prepare status already "$value"';
 
 		this._isPrepared = value;
 	}
@@ -165,18 +161,16 @@ class Scene
 	{
 		var type:String = object.get( "type" );
 		var name:String = object.get( "name" );
-		var id:Int = object.get( "id" );
 		var container:Array<Dynamic> = null;
 		switch( type )
 		{
-			case "window": container = this._uiEntities.window;
 			case "building": container = this._objectEntities.building;
 			default: return null;
 		}
 
 		for( i in 0...container.length )
 		{
-			if( id == container[ i ].get( "id" ) )
+			if( object.get( "id" ).match( container[ i ].get( "id" ) ) )
 				return i;
 		}
 

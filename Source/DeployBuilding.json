@@ -22,7 +22,7 @@
 		"nextUpgradeId": 2010,
 		"canUpgradeLevel": true,
 		"upgradePrice": 10000,
-		"heroStorageSlotsMax": 0
+		"inventorySlotsMax": 0
 	},
 
 	"2001":{
@@ -48,7 +48,7 @@
 		"nextUpgradeId": 2011,
 		"canUpgradeLevel": true,
 		"upgradePrice": 10000,
-		"heroStorageSlotsMax": 0
+		"inventorySlotsMax": 0
 	},
 
 	"2002":{
@@ -74,7 +74,9 @@
 		"nextUpgradeId": 2012,
 		"canUpgradeLevel": true,
 		"upgradePrice": 10000,
-		"heroStorageSlotsMax": 4
+		"inventorySlotsMax": 4,
+		"inventorySlotType": "hero",
+		"inventorySlotRestriction": "none"
 	},
 
 	"2003":{
@@ -100,7 +102,7 @@
 		"nextUpgradeId": 2013,
 		"canUpgradeLevel": true,
 		"upgradePrice": 10000,
-		"heroStorageSlotsMax": 0
+		"inventorySlotsMax": 0
 	},
 
 	"2004":{
@@ -126,7 +128,7 @@
 		"nextUpgradeId": 2014,
 		"canUpgradeLevel": true,
 		"upgradePrice": 10000,
-		"heroStorageSlotsMax": 0
+		"inventorySlotsMax": 0
 	},
 
 	"2005":{
@@ -152,7 +154,7 @@
 		"nextUpgradeId": 2015,
 		"canUpgradeLevel": true,
 		"upgradePrice": 10000,
-		"heroStorageSlotsMax": 0
+		"inventorySlotsMax": 0
 	},
 
 	"2006":{
@@ -178,7 +180,7 @@
 		"nextUpgradeId": 2016,
 		"canUpgradeLevel": true,
 		"upgradePrice": 10000,
-		"heroStorageSlotsMax": 0
+		"inventorySlotsMax": 0
 	},
 
 	"2007":{
@@ -204,7 +206,7 @@
 		"nextUpgradeId": 2017,
 		"canUpgradeLevel": true,
 		"upgradePrice": 10000,
-		"heroStorageSlotsMax": 0
+		"inventorySlotsMax": 0
 	},
 
 	"2008":{
@@ -230,7 +232,7 @@
 		"nextUpgradeId": 2018,
 		"canUpgradeLevel": true,
 		"upgradePrice": 10000,
-		"heroStorageSlotsMax": 0
+		"inventorySlotsMax": 0
 	},
 
 	"2009":{
@@ -256,6 +258,34 @@
 		"nextUpgradeId": 2019,
 		"canUpgradeLevel": true,
 		"upgradePrice": 10000,
-		"heroStorageSlotsMax": 0
+		"inventorySlotsMax": 0
+	},
+
+	"2010":{
+		"name": "inn",
+		"deployId": 2010,
+		"imageNormalURL": "assets/images/inn.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"imageHoverURL": "assets/images/inn_m.png",
+		"imageHoverX": 0.0,
+		"imageHoverY": 0.0,
+		"x": 700.0,
+		"y": 690.0,
+		"firstText": "Inn 0/20",
+		"firstTextSize": 48,
+		"firstTextColor": "0xffffff",
+		"firstTextHeight": 50,
+		"firstTextWidth": 300,
+		"firstTextX": 0.0,
+		"firstTextY": 0.0,
+		"firstTextAlign": "left",
+		"upgradeLevel": 1,
+		"nextUpgradeId": null,
+		"canUpgradeLevel": false,
+		"upgradePrice": 10000,
+		"inventorySlotsMax": 20,
+		"inventorySlotType": "hero",
+		"inventorySlotRestriction": "none"
 	}
 }

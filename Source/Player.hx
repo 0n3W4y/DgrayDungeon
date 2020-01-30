@@ -1,12 +1,16 @@
 package;
+enum PlayerDeployID
+{
+	PlayerDeployID( _:Int );
+}
 
 typedef PlayerConfig =
 {
 	var ID:Game.ID;
-	var DeployID:GeneratorSystem.DeployID;
+	var DeployID:PlayerDeployID;
 	var Name:String;
-	var MaxHeroSlots:Int;
-	var MoneyAmount:GeneratorSystem.Money;
+	var ItemStorageSlotsMax:Int;
+	var MoneyAmount:Money;
 }
 
 typedef Money = Int;
@@ -15,33 +19,26 @@ class Player
 {
 	private var _id:Game.ID;
 	private var _name:String;
-	private var _deployId:GeneratorSystem.DeployID;
+	private var _deployId:PlayerDeployID;
 	private var _moneyAmount:GeneratorSystem.Money;
-	private var _maxHeroSlots:Int;
-	private var _heroSlots:Int;
-
-	private var _heroStorage:Array<Hero>;
-
-	private var _inventory:InventorySystem;
+	private var _itemStorage:Array<Item>;
+	private var _itemStorageSlotsMax:Int;
+	private var _itemStorageSlots:Int;
 
 
-	public function new( config:PlayerConfig ):Void
+	public inline function new( config:PlayerConfig ):Void
 	{
 		this._id = config.ID;
 		this._name = config.Name;
 		this._deployId = config.DeployID;
 		this._moneyAmount = config.MoneyAmount;
-		this._maxHeroSlots = config.MaxHeroSlots;
-		this._heroSlots = 0;
-		this._inventory = new InventorySystem( this );
-		this._heroStorage = new Array<Hero>();
+		this._itemStorageSlotsMax = config.ItemStorageSlotsMax;
 	}
 
 	public function init():String
 	{
 		if( this._name == null || this._name == "" )
 			return 'Error in Player.init. Wrong name. Name is:"$_name" id is:"$_id" deploy id is:"$_deployId"';
-
 		
 		if( this._id == null )
 			return 'Error in Player.init. Wrong ID. Name is:"$_name" id is:"$_id" deploy id is:"$_deployId"';
@@ -52,13 +49,11 @@ class Player
 		if( this._moneyAmount == null )
 			return 'Error in Player.init.Wrong money amount. Name: "$_name" id: "$_id"  deploy id: "$_deployId"';
 
-		if( this._maxHeroSlots < 0 )
+		if( this._itemStorageSlotsMax < 0 )
 			return 'Error in Player.init. Wrong Maximum hero slots. Name: "$_name" id: "$_id"  deploy id: "$_deployId"';
 
-		var err:String = this._inventory.init();
-		if( err != null )
-			return 'Error in Player.init. $err. Name: "$_name" id: "$_id"  deploy id: "$_deployId"';
-
+		this._itemStorageSlots = 0;
+		this._heroStorage = new Array<Hero>();
 		return null;
 	}
 
@@ -75,10 +70,8 @@ class Player
 		return false;
 	}
 
-	public function addHeroToStorage( hero:Hero ):Void
+	public function addItemToStorage( hero:Hero ):Void
 	{
-		if( !this.checkHeroStorageForFreeSlots() )
-			return;
 		var name:String = hero.get( "name" );
 		var id:Int = hero.get( "id" );
 		var check:Int = this._checkHeroInStorage( id );
@@ -89,7 +82,7 @@ class Player
 		this._heroSlots++;
 	}
 
-	public function removeHeroFromStorage( hero:Hero ):Array<Dynamic>
+	public function removeItemFromStorage( hero:Hero ):Array<Dynamic>
 	{
 		var name:String = hero.get( "name" );
 		var id:Int = hero.get( "id" );

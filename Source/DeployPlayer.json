@@ -2,6 +2,6 @@
 	"100":{
 		"deployId": 100,
 		"moneyAmount": 2500,
-		"maxHeroSlots": 20
+		"itemStorageSlotsMax": 1000
 	}
 }

@@ -163,7 +163,7 @@ class SceneSystem
 		this._scenesSprite.removeChild( sprite );
 		this._parent.getSystem( "ui" ).hide();
 		this.undrawUiForScene( scene );
-		scene.changePrepareStatus( "unprepared" );		
+		scene.changePrepareStatus( "unprepared" );
 	}
 
 	public function drawLoader():Void
@@ -227,10 +227,6 @@ class SceneSystem
 
 	public function createScene( deployId:Int ):Array<Dynamic>
 	{
-		
-
-		
-
 		// окна не будут добавлены на сцену, так как они являются частью Интерфейса пользователя.
 		var configWindow:Array<Int> = config.window;
 		if( configWindow != null ) // Внутри Window есть чайлды в виде button. создаются в функции создании окна.
@@ -305,10 +301,9 @@ class SceneSystem
 
 	private function _checkSceneIfExist( scene:Scene ):Int
 	{
-		var id:Int = scene.get( "id" );
 		for( i in 0...this._scenesArray.length )
 		{
-			if( this._scenesArray[ i ].get( "id" ) == id )
+			if( scene.get( "id" ).match( this._scenesArray[ i ].get( "id" ) ) )
 				return i;
 		}
 		return null;

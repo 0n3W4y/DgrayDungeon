@@ -99,7 +99,7 @@
 	},
 
 	"3006":{
-		"name": "innWindow",
+		"name": "dungeonWindow",
 		"deployId": 3006,
 		"alwaysActive": true,
 		"x": 1300.0,

@@ -7,8 +7,8 @@ import Button;
 
 typedef UIConfig = 
 {
-	var Window:Map<Int, <Dynamic>>;
-	var Button:Map<Int, <Dynamic>>;
+	var Window:Map<Int, Dynamic>;
+	var Button:Map<Int, Dynamic>;
 	var Parent:Game;
 	var GraphicsSprite:Sprite;
 }
@@ -20,8 +20,8 @@ class UserInterface
 	private var _objects:Array<Window>;
 	private var _sprite:Sprite;
 
-	private var _windowDeploy:Map<Int, Dynamic>>;
-	private var _buttonDeploy:Map<Int, Dynamic>>;
+	private var _windowDeploy:Map<Int, Dynamic>;
+	private var _buttonDeploy:Map<Int, Dynamic>;
 
 	public inline function new( config:UIConfig ):Void
 	{
@@ -72,12 +72,12 @@ class UserInterface
 		if( !alwaysActive )
 			sprite.visible = false;
 
+		var buttonContinueDeployId:ButtonDeployID = 4011;
 		var windowChilds:Array<Button> = object.get( "childs" );
 		for( j in 0...windowChilds.length )
 		{
 			var button:Button = windowChilds[ j ];
 			var buttonDeployId:ButtonDeployID = button.get( "deployId" );
-			var buttonContinueDeployId:ButtonDeployID = 4011
 			if( buttonDeployId == buttonContinueDeployId ) // проверяем на наличие последнего сохранение игрока. Если его нет. Кнопка "Continue" не активна.
 			{ //TODO: сделать отдельную функцию проверки кнопок и запихивание на них ивентов.
 				var saveGame:Dynamic = this._parent.getLastSave();

@@ -49,6 +49,8 @@ class Game
 	private var _player:Player;
 	private var _lastSave:Dynamic;
 
+	private var _playerDeploy:Map<Int, Dynamic>;
+
 	public function new( width:Int, height:Int, fps:Int, mainSprite:Sprite ):Void
 	{
 		this._fps = fps;
@@ -70,7 +72,8 @@ class Game
 		var heroDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer.Hero );
 		var itemDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer.Item );
 		var enemyDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer.Enemy );
-		var playerDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer.Player );
+
+		this._playerDeploy= this._mapJsonObject( parseDataContainer.Player );
 
 		this._eventHandler = new EventHandler( this );
 		err = this._eventHandler.init();
@@ -132,7 +135,7 @@ class Game
 	{
 		switch( system )
 		{
-			case "generator" : return this._generatorSystem;
+			//case "generator" : return this._generatorSystem;
 			//case "graphics": return this._graphicsSystem;
 			case "scene": return this._sceneSystem;
 			case "event": return this._eventHandler;
@@ -152,21 +155,44 @@ class Game
 		return this._player;
 	}
 
-	public function setPlayer( player:Player ):Void
-	{
-		this._player = player;
-	}
-
 	public function getLastSave():Dynamic
 	{
 		return this._lastSave;
 	}
 
-	private inline function createId():ID
+	public inline function createId():ID
 	{
 		var result:ID = ID( this._nextId );
 		this._nextId++;
 		return result;
+	}
+
+	public function createPlayer( deployId:Int, name:String ):Array<Dynamic>
+	{
+		var config:Dynamic = this._playerDeploy.get( deployId );
+		if( config == null )
+			return [ null, 'Error in GeneratorSystem.createPlayer. Deploy ID: "$deployId" does not exist in PlayerDeploy data' ];
+
+		var id:ID = this.createId;
+		var configForPlayer:PlayerConfig =
+		{
+			ID: id,
+			Name: name,
+			DeployID: PlayerDeployID( config.deployId ),
+			MaxHeroSlots: config.itemStorageSlotsMax,
+			MoneyAmount: Money( config.moneyAmount )
+		};
+
+		var player:Player = new Player( configForPlayer );
+		var err:String = player.init();
+		if( err != null )
+			return [ null, 'Error in GeneratorSystem.createPlayer. $err' ];
+
+		if( this._player != null )
+			throw 'Error in Game.createPlayer. Player already created!';
+
+		this._player = player;
+		return [ player, null ];
 	}
 
 

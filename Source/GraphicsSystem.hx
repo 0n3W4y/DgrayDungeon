@@ -6,13 +6,12 @@ import openfl.text.TextField;
 class GraphicsSystem
 {
 	private var _parent:Dynamic; // получить доступ к классу, в котором находится данный класс.
-
 	private var _sprite:Sprite;
 
-	public function new( parent:Dynamic, sprite:Sprite ):Void
+	public function new( parent:Dynamic ):Void
 	{
 		this._parent = parent;
-		this._sprite = sprite;
+		this._sprite = this._parent.get( "sprite" ); // копируем спрайт из  главной сущности.
 	}
 
 	public function init():String
@@ -31,36 +30,27 @@ class GraphicsSystem
 		return null;
 	}
 
-	public function changeText( text:String, position:String ):String
+	public function changeFirstText( text:String ):String
 	{
-		// sprite.getChildAt(1).getChildat( num ) - num is position of text;
-		// sprite - main sprite;
-		// childAt(1) - text sprite, have childs with textField.
-		//TODO: Полностью переделать функцию, мне не нравится.
-		var num:Int;
-		switch( position )
-		{
-			case "first": num = 0;
-			case "second": num = 1;
-			case "third": num = 2;
-			case "fourth": num = 3;
-			case "five": num = 4;
-			default: return ( "Error in GraphicsSystem.changeText, bad position. Position is: " + position );
-		}
 		var abstractSprite:Dynamic = this._sprite;
-		var textField:TextField = abstractSprite.getChildAt( 1 ).getChildAt( num );
+		var textField:TextField = abstractSprite.getChildAt( 1 ).getChildAt( 0 );
 		if( textField == null )
-			return ( "Error in GraphicsSystem.changeText, TextField not found at : " + position );
+			return ( "Error in GraphicsSystem.changeFirstText, TextField not found" );
 
 		textField.text = text;
 		return "ok";
 	}
 
-	public function getSprite():Sprite
+	public function changeSecondText( text:String ):String
 	{
-		return this._sprite;
-	}
+		var abstractSprite:Dynamic = this._sprite;
+		var textField:TextField = abstractSprite.getChildAt( 1 ).getChildAt( 1 ); // first getChildAt( 1 ) - sprite with textField childs.
+		if( textField == null )
+			return ( "Error in GraphicsSystem.changeSecondText, TextField not found" );
 
+		textField.text = text;
+		return "ok";
+	}
 
 	// PRIVATE
 }

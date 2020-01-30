@@ -9,12 +9,11 @@ import openfl.events.MouseEvent;
 class EventHandler
 {
 	private var _parent:Game;
-	private var _listeners:Map<GeneratorSystem.ID, Array<Dynamic>>;
+	private var _listeners:Array<Dynamic>;
 
-	public function new( parent:Game ):Void
+	public inline function new( parent:Game ):Void
 	{
 		this._parent = parent;
-		this._listeners = new Map<GeneratorSystem.ID, Array<Dynamic>>();
 	}
 
 	public function init():String
@@ -22,6 +21,7 @@ class EventHandler
 		if( this._parent == null )
 			throw 'Error in EventHandler.init. Parent is "$this._parent"';
 
+		this._listeners = new Array<Dynamic>();
 		return null;
 	}
 
@@ -30,29 +30,23 @@ class EventHandler
 		return null;
 	}
 
-	public function addEvents( object:Dynamic, sceneId:GeneratorSystem.ID ):Void
+	public function addEvents( object:Dynamic ):Void
 	{
 		var name:String = object.get( "name" );
 		var check:Int = this._checkListenerIfExist( object );
 		if( check != null )
 			throw 'Error in EventHandler._addEventsToButton. Object with name: "$name" already in listeners';
 
-		if( sceneId == null )
-			throw 'Error in EventHandler._addEventsToButton. Scene Id is: "$sceneId"';
-
-		if( this._listeners[ sceneId ] == null )
-			this._listeners[ sceneId ] = new Array();
-
 		this._addEvents( object );
-		this._listeners[ sceneId ].push( object );
+		this._listeners.push( object );
 	}
 
-	public function removeEvents( object:Dynamic, sceneId:GeneratorSystem.ID ):Void
+	public function removeEvents( object:Dynamic ):Void
 	{
 		var name:String = object.get( "name" );
 		var check:Int = this._checkListenerIfExist( object );
 
-		var sprite:Sprite = object.get( "sprite" );
+		var sprite:Sprite = object.get( "sprite" ); // Проверяю, есть ли на кнопке какой-либо эвент( так я решил проблему с кнопкой continue xD );
 		if( !sprite.hasEventListener( "click" ) )
 			return;
 
@@ -63,7 +57,7 @@ class EventHandler
 			throw 'Error in EventHandler._removeEventsToButton. Scene Id is: "$sceneId"';
 
 		this._removeEvents( object );
-		this._listeners[ sceneId ].splice( check, 1 );
+		this._listeners.splice( check, 1 );
 	}
 
 	// PRIVATE
@@ -104,7 +98,7 @@ class EventHandler
 		var name:String = object.get( "name" );
 		var sprite:Sprite = object.get( "sprite" );
 
-		this._addStandartEvents( object ); // Добавляем стандартные ивенты как ховер, анховер, пуш, анпуш.
+		this._addStandartButtonEvents( object ); // Добавляем стандартные ивенты как ховер, анховер, пуш, анпуш.
 
 		switch( name )
 		{
@@ -121,7 +115,7 @@ class EventHandler
 		var name:String = object.get( "name" );
 		var sprite:Sprite = object.get( "sprite" );
 
-		this._removeStandartEvents( object ); // Добавляем стандартные ивенты как ховер, анховер, пуш, анпуш.
+		this._removeStandartButtonEvents( object ); // Добавляем стандартные ивенты как ховер, анховер, пуш, анпуш.
 
 		switch( name )
 		{
@@ -154,12 +148,11 @@ class EventHandler
 
 	private function _checkListenerIfExist( object:Dynamic ):Int
 	{
-		var id:Int = object.get( "id" );
 		for( key in this._listeners.keys() )
 		{
 			var valueArray:Array<Dynamic> = this._listeners[ key ];
 			for( i in 0...valueArray.length )
-				if( valueArray[ i ].get( "id" ) == id )
+				if( valueArray[ i ].get( "id" ).match( object.get( "id" ) ) );
 					return i;
 		}
 		return null;
@@ -168,22 +161,18 @@ class EventHandler
 	private function _clickStartGame( e:MouseEvent ):Void
 	{
 		//TODO: create cityscene, switch active scene, draw new scene, undraw old scene;
-		var generatorSystem:GeneratorSystem = this._parent.getSystem( "generator" );
 		var sceneSystem:SceneSystem = this._parent.getSystem( "scene" );
-		var createPlayer:Array<Dynamic> = generatorSystem.createPlayer( 100 , "test player" );
-		var player:Player = createPlayer[ 0 ];
+		var createPlayer:Array<Dynamic> = this._parent.createPlayer( 100 , "test player" );
 		var pErr:String = createPlayer[ 1 ];
 		if( pErr != null )
 			throw 'Error in EventHandler._clickStartGame. $pErr';
-		this._parent.setPlayer( player );
 
-		var createScene:Array<Dynamic> = generatorSystem.createScene( 1001 );
+		var createScene:Array<Dynamic> = sceneSystem.createScene( 1001 );
 		var scene:Scene = createScene[ 0 ];
 		var err:String = createScene[ 1 ];
 		if( err != null )
 			throw 'Error in EventHandler._clickStartGame. $err';
 
-		sceneSystem.addScene( scene );
 		sceneSystem.prepareScene( scene );
 		sceneSystem.changeSceneTo( scene );
 	}
@@ -227,7 +216,7 @@ class EventHandler
 		graphicSprite.getChildAt( 2 ).visible = false;
 	}
 
-	private function _addStandartEvents( object:Dynamic ):Void
+	private function _addStandartButtonEvents( object:Dynamic ):Void
 	{
 		var sprite:Sprite = object.get( "sprite" );
 		sprite.addEventListener( MouseEvent.MOUSE_OUT, this._unhover );	
@@ -236,7 +225,7 @@ class EventHandler
 		sprite.addEventListener( MouseEvent.MOUSE_DOWN, this._push );
 	}
 
-	private function _removeStandartEvents( object:Dynamic ):Void
+	private function _removeStandartButtonEvents( object:Dynamic ):Void
 	{
 		var sprite:Sprite = object.get( "sprite" );
 		sprite.removeEventListener( MouseEvent.MOUSE_OUT, this._unhover );

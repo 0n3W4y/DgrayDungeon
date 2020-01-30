@@ -2,79 +2,91 @@ package;
 
 import openfl.display.Sprite;
 
+enum BuildingDeployID
+{
+	BuildingDeployID( _:Int );
+}
+
 typedef BuildingConfig =
 {
-	var ID:GeneratorSystem.ID;
-	var DeployID:GeneratorSystem.DeployID;
+	var ID:Game.ID;
+	var DeployID:BuildingDeployID;
 	var Name:String;
 	var GraphicsSprite:Sprite;
 	var UpgradeLevel:Int;
 	var NextUpgradeId:Int;
 	var CanUpgradeLevel:Bool;
-	var UpgradePrice:GeneratorSystem.Money;
-	var HeroStorageSlotsMax:Int;
+	var UpgradePrice:Player.Money;
+	var InventoryStorageSlotsMax:Int;
 }
 
 class Building
 {
-	private var _id:GeneratorSystem.ID;
+	private var _id:Game.ID;
 	private var _name:String;
-	private var _deployId:GeneratorSystem.DeployID;
+	private var _deployId:BuildingDeployID;
 	private var _type:String;
+	private var _sprite:Sprite;
 
 	private var _graphics:GraphicsSystem;
+	private var _inventory:InventorySystem;
 
 	private var _upgradeLevel:Int; // текущий уровень здания
 	private var _nextUpgradeId:Int; // deployId этого здания, но уже с апгерйдом.
 	private var _canUpgradeLevel:Bool; // можно ли улучшить здание.
-	private var _upgradePrice:GeneratorSystem.Money; // количество моент необходимое для апгрейда здания.
+	private var _upgradePrice:Player.Money; // количество моент необходимое для апгрейда здания.
 
-	private var _heroStorage:Array<Hero>;
-	private var _heroStorageSlots:Int;
-	private var _heroStorageSlotsMax:Int;
+	private var _inventoryStorage:Array<Inventory.Slot>;
+	private var _inventoryStorageSlots:Int;
+	private var _inventoryStorageSlotsMax:Int;
 
-	public function new( config:BuildingConfig ):Void
+	public inline function new( config:BuildingConfig ):Void
 	{
 		this._type = "building";
 		this._id = config.ID;
 		this._name = config.Name;
-		this._deployId = config.DeployID;		
+		this._deployId = config.DeployID;	
+		this._sprite = config.GraphicsSprite;	
 		this._upgradeLevel = config.UpgradeLevel;
 		this._nextUpgradeId = config.NextUpgradeId;
 		this._canUpgradeLevel = config.CanUpgradeLevel;
 		this._upgradePrice = config.UpgradePrice;
-		this._heroStorageSlotsMax = config.HeroStorageSlotsMax;
-		this._graphics = new GraphicsSystem( this, config.GraphicsSprite );
-		this._heroStorage = new Array<Hero>();
-		this._heroStorageSlots = 0;
+		this._heroStorageSlotsMax = config.InventoryStorageSlotsMax;
+		this._graphics = new GraphicsSystem( this );
+		this._inventory = new InventorySystem( this );
 	}
 
 	public function init():String
 	{
+		var textError:String = 'Name:"$_name" id:"$_id" deploy id:"$_deployId"';
 		if( this._name == null || this._name == "" )
-			return 'Error in Building.init. Wrong name. Name is:"$_name" id is:"$_id" deploy id is:"$_deployId"';
+			return 'Error in Building.init. Wrong name. $textError';
 
 		if( this._id == null )
-			return 'Error in Building.init. Wrong ID. Name is:"$_name" id is:"$_id" deploy id is:"$_deployId"';
+			return 'Error in Building.init. Wrong ID. $textError';
 		
 		if( this._deployId == null )
-			return 'Error in Building.init. Wrong Deploy ID. Name is:"$_name" id is:"$_id" deploy id is:"$_deployId"';
+			return 'Error in Building.init. Wrong Deploy ID. $textError';
 
 		if( this._upgradeLevel == null || this._upgradeLevel < 1 )
-			return 'Error in Building.init. Upgrade level is not valid: "$_upgradeLevel". Name is "$_name" id is:"$_id" deploy id is:"$_deployId"';
+			return 'Error in Building.init. Upgrade level is not valid: "$_upgradeLevel". $textError';
 
 		if( this._canUpgradeLevel == null )
-			return 'Error in Building.init. Can Upgrade value is not valid: "$_canUpgradeLevel". Name is "$_name" id is:"$_id" deploy id is:"$_deployId"';
+			return 'Error in Building.init. Can Upgrade value is not valid: "$_canUpgradeLevel". $textError';
 
 		if( this._canUpgradeLevel && this._nextUpgradeId == null )
-			return 'Error in Building.init. Next upgrade deploy Id is not valid: "$_nextUpgradeId". Name is "$_name" id is:"$_id" deploy id is:"$_deployId"';
+			return 'Error in Building.init. Next upgrade deploy Id is not valid: "$_nextUpgradeId". $textError';
 
 		if( this._heroStorageSlotsMax == null )
-			return 'Error in Building.init. Container slots maximum value is not valid: "_heroStorageSlotsMax". Name is "$_name" id is:"$_id" deploy id is:"$_deployId"';
+			return 'Error in Building.init. Container slots maximum value is not valid: "_heroStorageSlotsMax". $textError';
 		
 		var err:String = this._graphics.init();
 		if( err != null )
-			return 'Error in Building.init. $err; "$_deployId"';
+			return 'Error in Building.init. $err; $textError';
+
+		err = this._inventory.init();
+		if( err != null )
+			return 'Error in Building.init. $err; $textError';
 
 		return null;
 	}
@@ -82,46 +94,6 @@ class Building
 	public function postInit():String
 	{
 		return null;
-	}
-
-	public function checkForFreeSlotsHeroStorage():Bool
-	{
-		if( this._heroStorageSlotsMax > this._heroStorageSlots )
-			return true;
-
-		return false;
-	}
-
-	public function cleareHeroStorage():Void
-	{
-		this._heroStorageSlots = 0;
-		this._heroStorage = new Array<Hero>();
-	}
-
-	public function addHeroToStorage( hero:Hero ):Void
-	{
-		if( !this.checkForFreeSlotsHeroStorage() ) //защита от "дурака";
-			return;
-
-		var name:String = hero.get( "name" );
-		var check:Int = this._checkHero( hero );
-		if( check != null )
-			throw 'Error in Building.addHero. Find duplicate hero with name: "$name"';
-
-		this._heroStorage.push( hero );
-		this._heroStorageSlots++;
-	}
-
-	public function removeHeroFromStorage( hero:Hero ):Array<Dynamic>
-	{
-		var name:String = hero.get( "name" );
-		var check:Int = this._checkHero( hero );
-		if( check == null )
-			throw 'Error in Building.removeHero. Hero with name: "$name" does not exist';
-
-		this._heroStorage.splice( check, 1 );
-		this._heroStorageSlots--;
-		return [ hero, null ];
 	}
 
 	public function get( value:String ):Dynamic
@@ -133,26 +105,15 @@ class Building
 			case "name": return this._name;
 			case "type": return this._type;
 			case "graphics": return this._graphics;
-			case "sprite": return this._graphics.getSprite();
+			case "sprite": return this._sprite;
 			case "upgradeLevel": return this._upgradeLevel;
 			case "nextUpgradeId": return this._nextUpgradeId;
 			case "canUpgradeLevel": return this._canUpgradeLevel;
-			case "heroStorage": return this._heroStorage;
-			case "maxSlots": return this._heroStorageSlotsMax;
+			case "inventoryStorage": return this.inventoryStorage;
+			case "inventoryStorageMaxSlots": return this._inventoryStorageSlotsMax;
+			case "inventoryStorageSlots": return this._inventoryStorageSlots;
+			case "inventory": return this._inventory;
 			default: throw 'Error in Building.get. Can not get "$value"';
 		}
-	}
-
-	//PRIVATE
-
-	private function _checkHero( hero:Hero ):Int
-	{
-		var id:Int = hero.get( "id" );
-		for( i in 0...this._heroStorage.length )
-		{
-			if( this._heroStorage[ i ].get( "id" ) == id )
-				return i;
-		}
-		return null;
 	}
 }
