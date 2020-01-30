@@ -15,7 +15,7 @@ class Hero
 
 	}
 
-	public function init( id:Int, deployId:Int, name:String ):Void
+	public function init():Void
 	{	
 		this._type = "hero";
 		this._id = id;

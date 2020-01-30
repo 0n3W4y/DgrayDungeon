@@ -40,6 +40,10 @@ class Building
 	private var _inventoryStorageSlots:Int;
 	private var _inventoryStorageSlotsMax:Int;
 
+	private var _heroStorage:Array<Hero>;
+	private var _heroStorageSlots:Int;
+	private var _heroStorageSlotsMax:Int;
+
 	public inline function new( config:BuildingConfig ):Void
 	{
 		this._type = "building";
@@ -113,7 +117,20 @@ class Building
 			case "inventoryStorageMaxSlots": return this._inventoryStorageSlotsMax;
 			case "inventoryStorageSlots": return this._inventoryStorageSlots;
 			case "inventory": return this._inventory;
+			case "heroStorage": return this._heroStorage;
+			case "heroStorageSlots": return this._heroStorageSlots;
+			case "heroStorageSlotsMax": return this._heroStorageSlotsMax;
 			default: throw 'Error in Building.get. Can not get "$value"';
 		}
+	}
+
+	public function addHero( hero:Hero ):Void
+	{
+
+	}
+
+	public function removeHero( hero:Hero ):Hero
+	{
+		return null;
 	}
 }

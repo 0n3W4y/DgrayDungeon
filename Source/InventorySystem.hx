@@ -35,14 +35,14 @@ class InventorySystem
 		return null;
 	}
 
-	public function addToInventory( item:Dynamic, amount:Int ):Int
+	public function addToInventory( item:Item, amount:Int ):Int
 	{
 		var storable:Bool = item.get( "storable" );
 		this._inventorySlots ++;
 		return "ok";
 	}
 
-	public function removeFromInventory( item:Dynamic, amount:Int ):Dynamic
+	public function removeFromInventory( item:Item, amount:Int ):Item
 	{
 		this._inventory[ index ].Item = null
 		this._inventorySlots--;
@@ -51,11 +51,11 @@ class InventorySystem
 
 	//PRIVATE
 
-	private function _checkDuplicate( item:Dynamic ):Int // находит дубликат по уникальному ID. Если есть совпадение - то лучше вывести ошибку и остановить приложение.
+	private function _checkDuplicate( item:Item ):Int // находит дубликат по уникальному ID. Если есть совпадение - то лучше вывести ошибку и остановить приложение.
 	{
 		for( i in 0...this._inventory.length )
 		{
-			var oldItem:Dynamic = this._inventory[ i ].Item;
+			var oldItem:Item = this._inventory[ i ].Item;
 			if( oldItem == null )
 				continue;
 
@@ -66,11 +66,11 @@ class InventorySystem
 		return null;
 	}
 
-	private function _findFreeSlotForItem( item:Dynamic ):Int
+	private function _findFreeSlotForItem( item:Item ):Int
 	{
 		for( i in 0...this._inventory.length )
 		{
-			var oldItem:Dynamic = this._inventory[ i ].Item;
+			var oldItem:Item = this._inventory[ i ].Item;
 			if( oldItem != null )
 				continue;
 
@@ -82,7 +82,7 @@ class InventorySystem
 		return null;
 	}
 
-	private function _checkTypeBetweenItemAndSlot( item:Dynamic, slot:Slot ):Bool
+	private function _checkTypeBetweenItemAndSlot( item:Item, slot:Slot ):Bool
 	{
 		var itemType:String = item.get( "type" );
 		var slotType:String = slot.Type;
@@ -92,7 +92,7 @@ class InventorySystem
 		return false;
 	}
 
-	private function _checkRestrictionBetweenItemAndSlot( item:Dynamic, slot:Slot ):Bool
+	private function _checkRestrictionBetweenItemAndSlot( item:Item, slot:Slot ):Bool
 	{
 		var slotRestriction = slot.Restriction;
 		if( slotRestriction == "none" )
@@ -108,12 +108,12 @@ class InventorySystem
 		return false;
 	}
 
-	private function _storeItemInSlot( amount:Int, slot:Slot ):Int
+	private function _storeItemInSlot( item:Item, slot:Slot ):Int
 	{
 		return 0;
 	}
 
-	private function _substractItemFromSlot( amount:Int, slot:Slot ):Int
+	private function _substractItemFromSlot( item:Item, slot:Slot ):Int
 	{
 		return 0;
 	}

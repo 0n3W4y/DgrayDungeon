@@ -30,26 +30,24 @@ class GraphicsSystem
 		return null;
 	}
 
-	public function changeFirstText( text:String ):String
+	public function changeFirstText( text:String ):Void
 	{
 		var abstractSprite:Dynamic = this._sprite;
 		var textField:TextField = abstractSprite.getChildAt( 1 ).getChildAt( 0 );
 		if( textField == null )
-			return ( "Error in GraphicsSystem.changeFirstText, TextField not found" );
+			throw ( "Error in GraphicsSystem.changeFirstText, TextField not found" );
 
 		textField.text = text;
-		return "ok";
 	}
 
-	public function changeSecondText( text:String ):String
+	public function changeSecondText( text:String ):Void
 	{
 		var abstractSprite:Dynamic = this._sprite;
 		var textField:TextField = abstractSprite.getChildAt( 1 ).getChildAt( 1 ); // first getChildAt( 1 ) - sprite with textField childs.
 		if( textField == null )
-			return ( "Error in GraphicsSystem.changeSecondText, TextField not found" );
+			throw ( "Error in GraphicsSystem.changeSecondText, TextField not found" );
 
 		textField.text = text;
-		return "ok";
 	}
 
 	// PRIVATE
