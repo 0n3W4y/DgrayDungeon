@@ -5,6 +5,7 @@ import openfl.system.System;
 import openfl.display.Sprite;
 
 import UserInterface;
+import Deploy;
 
 enum ID 
 {
@@ -22,12 +23,13 @@ class Game
 	private var _gameStart:Float;
 
 	private var _deploy:Deploy;
+	private var _state:State;
 	private var _eventHandler:EventHandler;
 	private var _sceneSystem:SceneSystem;
 	private var _userInterface:UserInterface;
 
 
-	private var _onPause:Bool = false;
+	private var _onPause:Bool;
 	private var _fps:Int;
 	private var _mainLoop:Timer;
 	private var _currentTime:Float;
@@ -51,8 +53,9 @@ class Game
 		this._uiSprite = new Sprite();
 		this._mainSprite.addChild( this._scenesSprite );
 		this._mainSprite.addChild( this._uiSprite );
+		this._onPause = false;
 
-		var parseDataContainer:Deploy.DeployConfig = this._parseData();
+		var parseDataContainer:DeployConfig = this._parseData();
 
 		this._deploy = new Deploy( parseDataContainer );
 		var err:String = this._deploy.init();
@@ -69,7 +72,7 @@ class Game
 		if( err != null )
 			throw 'Error in Game.new. $err';
 
-		this._userInterface = new UserInterface( { Parent:this, GraphicsSprite:this._uiSprite } );
+		this._userInterface = new UserInterface( this, this._uiSprite );
 		err = this._userInterface.init();
 		if( err != null )
 			throw 'Error in Game.new. $err';
@@ -120,7 +123,7 @@ class Game
 		switch( system )
 		{
 			case "deploy" : return this._deploy;
-			//case "graphics": return this._graphicsSystem;
+			case "state": return this.state;
 			case "scene": return this._sceneSystem;
 			case "event": return this._eventHandler;
 			case "ui": return this._userInterface;
@@ -153,9 +156,7 @@ class Game
 
 	public function createPlayer( deployId:Int, name:String ):Array<Dynamic>
 	{
-		var config:Dynamic = this._playerDeploy.get( deployId );
-		if( config == null )
-			return [ null, 'Error in GeneratorSystem.createPlayer. Deploy ID: "$deployId" does not exist in PlayerDeploy data' ];
+		var config:PlayerDeploy = this._deploy.get( "player", deployId );
 
 		var id:ID = this.createId;
 		var configForPlayer:PlayerConfig =
@@ -225,29 +226,83 @@ class Game
 	private function _parseData():Deploy.DeployConfig
 	{
 		var window:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployWindow.json" );
-		var button:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployButton.json" );
-		var scene:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployScene.json" );
-		var building:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployBuilding.json" );
-		var hero:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployHero.json" );
-		var item:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployItem.json" );
-		var enemy:Dynamic = ConfigJSON.json( "c:/projects/DgrayDungeon/Source/DeployEnemy.json" );
-		var player:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployPlayer.json" );
-		
-		return { Window:window, Button:button, Scene:scene, Building:building, Hero:hero, Item:item, Enemy:enemy, Player:player };
-	}
-
-	private function _mapJsonObject( object:Dynamic ):Map<Int, Dynamic>
-	{
-		var result:Map<Int, Dynamic> = new Map<Int, Dynamic>();
-
-		for( key in Reflect.fields( object ) )
+		var windowMap:Map<Int, WindowDeploy> = new Map<Int, WindowDeploy>();
+		for( key in Reflect.fields( window ) )
 		{
 			var intKey:Int = Std.parseInt( key );
-			result[ intKey ] = Reflect.getProperty( object, key );
+			windowMap[ intKey ] = WindowDeploy( Reflect.getProperty( window, key ) );
 
 		}
 
-		return result;
+		var button:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployButton.json" );
+		var buttonMap:Map<Int, ButtonDeploy> = new Map<Int, ButtonDeploy>();
+		for( key in Reflect.fields( button ) )
+		{
+			var intKey:Int = Std.parseInt( key );
+			buttonMap[ intKey ] = ButtonDeploy( Reflect.getProperty( button, key ) );
+
+		}
+
+		var scene:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployScene.json" );
+		var sceneMap:Map<Int, SceneDeploy> = new Map<Int, SceneDeploy>();
+		for( key in Reflect.fields( scene ) )
+		{
+			var intKey:Int = Std.parseInt( key );
+			sceneMap[ intKey ] = SceneDeploy( Reflect.getProperty( scene, key ) );
+
+		}
+
+		var building:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployBuilding.json" );
+		var buildingMap:Map<Int, BuildingDeploy> = new Map<Int, BuildingDeploy>();
+		for( key in Reflect.fields( building ) )
+		{
+			var intKey:Int = Std.parseInt( key );
+			buildingMap[ intKey ] = SceneDeploy( Reflect.getProperty( building, key ) );
+
+		}
+
+		var hero:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployHero.json" );
+		var heroMap:Map<Int, HeroDeploy> = new Map<Int, HeroDeploy>();
+		for( key in Reflect.fields( hero ) )
+		{
+			var intKey:Int = Std.parseInt( key );
+			heroMap[ intKey ] = SceneDeploy( Reflect.getProperty( hero, key ) );
+
+		}
+
+		var item:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployItem.json" );
+		var itemMap:Map<Int, ItemDeploy> = new Map<Int, ItemDeploy>();
+		for( key in Reflect.fields( item ) )
+		{
+			var intKey:Int = Std.parseInt( key );
+			itemMap[ intKey ] = SceneDeploy( Reflect.getProperty( item, key ) );
+
+		}
+
+		var enemy:Dynamic = ConfigJSON.json( "c:/projects/DgrayDungeon/Source/DeployEnemy.json" );
+		var enemyMap:Map<Int, EnemyDeploy> = new Map<Int, EnemyDeploy>();
+		for( key in Reflect.fields( enemy ) )
+		{
+			var intKey:Int = Std.parseInt( key );
+			enemyMap[ intKey ] = SceneDeploy( Reflect.getProperty( enemy, key ) );
+
+		}
+
+		var player:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployPlayer.json" );
+		var playerMap:Map<Int, PlayerDeploy> = new Map<Int, PlayerDeploy>();
+		for( key in Reflect.fields( player ) )
+		{
+			var intKey:Int = Std.parseInt( key );
+			playerMap[ intKey ] = SceneDeploy( Reflect.getProperty( player, key ) );
+
+		}
+
+		return { Window:windowMap, Button:buttonMap, Scene:sceneMap, Building:buildingMap, Hero:heroMap, Item:itemMap, Enemy:enemyMap, Player:playerMap };
+	}
+
+	private function _mapJsonObject( newObject:Dynamic, oldObject:Dynamic ):Void
+	{
+		
 	}
 
 	private function _startGame():Void
@@ -271,28 +326,3 @@ class Game
 		this.start();
 	}
 }
-/*
-		var acc = 70;
-        var dmg = [ 10, 12 ];
-        var minDmg = dmg[0];
-        var maxDmg = dmg[1];
-        var damage = null;
-        var difDmg = Math.round( (maxDmg - minDmg)*acc/100 );
-        var k = 0;
-        var l = 0;
-        for( i in 0...9 )
-            {
-                var hitTest = Math.floor(Math.random() * 100 );
-                if( hitTest <= acc-1 )
-                    k++;
-                else
-                    l++;     
-            }
-         if( k > l )
-             minDmg += difDmg;
-        else
-            maxDmg -= difDmg;
-        
-            
-        var random =  Math.floor( minDmg + Math.random() * ( maxDmg - minDmg + 1 ));
-*/

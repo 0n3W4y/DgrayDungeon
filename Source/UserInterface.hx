@@ -5,21 +5,12 @@ import openfl.display.Sprite;
 import Window;
 import Button;
 
-typedef UIConfig = 
-{
-	var Parent:Game;
-	var GraphicsSprite:Sprite;
-}
-
 class UserInterface
 {
 	private var _parent:Game;
 	private var _objectsOnUi:Array<Window>;
 	private var _objects:Array<Window>;
 	private var _sprite:Sprite;
-
-	private var _windowDeploy:Map<Int, Dynamic>;
-	private var _buttonDeploy:Map<Int, Dynamic>;
 
 	public inline function new( config:UIConfig ):Void
 	{
@@ -171,10 +162,7 @@ class UserInterface
 
 	public function createWindow( deployId:Int ):Array<Dynamic>
 	{
-		var config:Dynamic = this._windowDeploy.get( deployId );
-		if( config == null )
-			return [ null, "Error in GeneratorSystem.createWindow. Deploy ID: '" + deployId + "' doesn't exist in WindowDeploy data" ];
-
+		var config:Deploy.WindowDeploy = this._parent.get( "deploy" ).get( "window", deployId );
 		
 		var id:Game.ID = this._parent.createId();
 		var sprite:Sprite = new Sprite();
@@ -222,10 +210,7 @@ class UserInterface
 
 	public function createButton( deployId:Int ):Array<Dynamic>
 	{
-		var config:Dynamic = this._buttonDeploy.get( deployId );
-		if( config == null )
-			return [ null, 'Error in GeneratorSystem.createButton. Deploy ID: "$deployId" does not exist in ButtonDeploy data' ];
-
+		var config:Deploy.ButtonDeploy = this._parent.get( "deploy" ).get( "button", deployId );
 		
 		var id:ID = this._parent.createId();
 		var sprite:Sprite = new Sprite();
