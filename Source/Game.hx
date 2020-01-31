@@ -11,18 +11,6 @@ enum ID
 	ID( _:Int );	
 }
 
-typedef GameDeployConfig =
-{
-	var Window:Dynamic;
-	var Button:Dynamic;
-	var Scene:Dynamic;
-	var Building:Dynamic;
-	var Hero:Dynamic; 
-	var Item:Dynamic;
-	var Enemy:Dynamic;
-	var Player:Dynamic;
-}
-
 class Game
 {
 	private var _mainSprite:Sprite;
@@ -33,6 +21,7 @@ class Game
 	private var _height:Int;
 	private var _gameStart:Float;
 
+	private var _deploy:Deploy;
 	private var _eventHandler:EventHandler;
 	private var _sceneSystem:SceneSystem;
 	private var _userInterface:UserInterface;
@@ -63,17 +52,12 @@ class Game
 		this._mainSprite.addChild( this._scenesSprite );
 		this._mainSprite.addChild( this._uiSprite );
 
-		var parseDataContainer:GameDeployConfig = this._parseData();
+		var parseDataContainer:Deploy.DeployConfig = this._parseData();
 
-		var windowDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer.Window );
-		var buttonDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer.Button );
-		var sceneDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer.Scene );
-		var buildingDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer.Building );
-		var heroDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer.Hero );
-		var itemDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer.Item );
-		var enemyDeploy:Map<Int, Dynamic> = this._mapJsonObject( parseDataContainer.Enemy );
-
-		this._playerDeploy= this._mapJsonObject( parseDataContainer.Player );
+		this._deploy = new Deploy( parseDataContainer );
+		var err:String = this._deploy.init();
+		if( err != null )
+			throw 'Error in Game.new. $err';
 
 		this._eventHandler = new EventHandler( this );
 		err = this._eventHandler.init();
@@ -85,7 +69,7 @@ class Game
 		if( err != null )
 			throw 'Error in Game.new. $err';
 
-		this._userInterface = new UserInterface( { Window:windowDeploy, Button:buttonDeploy, Parent:this, GraphicsSprite:this._uiSprite } );
+		this._userInterface = new UserInterface( { Parent:this, GraphicsSprite:this._uiSprite } );
 		err = this._userInterface.init();
 		if( err != null )
 			throw 'Error in Game.new. $err';
@@ -135,7 +119,7 @@ class Game
 	{
 		switch( system )
 		{
-			//case "generator" : return this._generatorSystem;
+			case "deploy" : return this._deploy;
 			//case "graphics": return this._graphicsSystem;
 			case "scene": return this._sceneSystem;
 			case "event": return this._eventHandler;
@@ -238,7 +222,7 @@ class Game
 
 	}
 
-	private function _parseData():GameDeployConfig
+	private function _parseData():Deploy.DeployConfig
 	{
 		var window:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployWindow.json" );
 		var button:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployButton.json" );

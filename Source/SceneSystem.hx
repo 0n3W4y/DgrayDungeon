@@ -4,24 +4,24 @@ import openfl.display.Sprite;
 
 import Scene;
 
+typedef SceneSystemConfig = 
+{
+	var Parent:Game;
+	var GraphicsSprite:Sprite;
+}
+
 class SceneSystem
 {
 	private var _parent:Game;
 	private var _scenesArray:Array<Scene>;
 	private var _scenesSprite:Sprite;
 	private var _activeScene:Scene;
-	private var _inited:Bool;
-	private var _postInited:Bool;
 
 	
-	public function new( parent:Game, sprite:Sprite ):Void
+	public function new( config.SceneSystemConfig ):Void
 	{
-		this._inited = false;
-		this._postInited = false;
-		this._activeScene = null;
-		this._scenesArray = new Array<Scene>();
-		this._scenesSprite = sprite;
-		this._parent = parent;
+		this._scenesSprite = config.GraphicsSprite;
+		this._parent = config.Parent;
 	}
 
 	public function init():String
@@ -31,7 +31,8 @@ class SceneSystem
 
 		if( this._scenesSprite == null )
 			return 'Error in SceneSystem.init. Sprite is "$this._scenesSprite"';
-
+		this._activeScene = null;
+		this._scenesArray = new Array<Scene>();
 		return null;
 	}
 

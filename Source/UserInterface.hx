@@ -7,8 +7,6 @@ import Button;
 
 typedef UIConfig = 
 {
-	var Window:Map<Int, Dynamic>;
-	var Button:Map<Int, Dynamic>;
 	var Parent:Game;
 	var GraphicsSprite:Sprite;
 }
