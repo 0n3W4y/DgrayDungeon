@@ -7,11 +7,6 @@ import openfl.display.Sprite;
 import UserInterface;
 import Deploy;
 
-enum ID 
-{
-	ID( _:Int );	
-}
-
 class Game
 {
 	private var _mainSprite:Sprite;
@@ -62,23 +57,28 @@ class Game
 		if( err != null )
 			throw 'Error in Game.new. $err';
 
-		this._eventHandler = new EventHandler( this );
+		this._eventHandler = new EventHandler({ Parent:this });
 		err = this._eventHandler.init();
 		if( err != null )
 			throw 'Error in Game.new. $err';
 
-		this._sceneSystem = new SceneSystem( this, this._scenesSprite );
+		this._sceneSystem = new SceneSystem({ Parent:this, GraphicsSprite:this._scenesSprite });
 		err = this._sceneSystem.init();
 		if( err != null )
 			throw 'Error in Game.new. $err';
 
-		this._userInterface = new UserInterface( this, this._uiSprite );
+		this._userInterface = new UserInterface({ Parent:this, GraphicsSprite:this._uiSprite });
 		err = this._userInterface.init();
 		if( err != null )
 			throw 'Error in Game.new. $err';
 
+		this._state = new State({ Parent:this });
+		err = this._state.init();
+		if( err != null )
+			throw 'Error in game.new. $err';
+
 		this._userInterface.hide();
-		this._startGame();		
+		this._startGame();
 	}
 
 	public function start():Void
@@ -123,7 +123,7 @@ class Game
 		switch( system )
 		{
 			case "deploy" : return this._deploy;
-			case "state": return this.state;
+			case "state": return this._state;
 			case "scene": return this._sceneSystem;
 			case "event": return this._eventHandler;
 			case "ui": return this._userInterface;
@@ -147,9 +147,9 @@ class Game
 		return this._lastSave;
 	}
 
-	public inline function createId():ID
+	public inline function createId():Int
 	{
-		var result:ID = ID( this._nextId );
+		var result:Int = this._nextId;
 		this._nextId++;
 		return result;
 	}
@@ -226,74 +226,82 @@ class Game
 	private function _parseData():Deploy.DeployConfig
 	{
 		var window:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployWindow.json" );
-		var windowMap:Map<Int, WindowDeploy> = new Map<Int, WindowDeploy>();
+		var windowMap:Map<Window.WindowDeployID, WindowDeploy> = new Map<Window.WindowDeployID, WindowDeploy>();
 		for( key in Reflect.fields( window ) )
 		{
-			var intKey:Int = Std.parseInt( key );
-			windowMap[ intKey ] = WindowDeploy( Reflect.getProperty( window, key ) );
+			var intKey:Window.WindowDeployID = Std.parseInt( key );
+			var value:WindowDeploy = Reflect.getProperty( window, key );
+			windowMap[ intKey ] = value;
 
 		}
 
 		var button:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployButton.json" );
-		var buttonMap:Map<Int, ButtonDeploy> = new Map<Int, ButtonDeploy>();
+		var buttonMap:Map<Button.ButtonDeployID, ButtonDeploy> = new Map<Button.ButtonDeployID, ButtonDeploy>();
 		for( key in Reflect.fields( button ) )
 		{
-			var intKey:Int = Std.parseInt( key );
-			buttonMap[ intKey ] = ButtonDeploy( Reflect.getProperty( button, key ) );
+			var intKey:Button.ButtonDeployID = Std.parseInt( key );
+			var value:ButtonDeploy = Reflect.getProperty( button, key );
+			buttonMap[ intKey ] = value;
 
 		}
 
 		var scene:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployScene.json" );
-		var sceneMap:Map<Int, SceneDeploy> = new Map<Int, SceneDeploy>();
+		var sceneMap:Map<Scene.SceneDeployID, SceneDeploy> = new Map<Scene.SceneDeployID, SceneDeploy>();
 		for( key in Reflect.fields( scene ) )
 		{
-			var intKey:Int = Std.parseInt( key );
-			sceneMap[ intKey ] = SceneDeploy( Reflect.getProperty( scene, key ) );
+			var intKey:Scene.SceneDeployID = Std.parseInt( key );
+			var value:SceneDeploy = Reflect.getProperty( scene, key );
+			sceneMap[ intKey ] = value;
 
 		}
 
 		var building:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployBuilding.json" );
-		var buildingMap:Map<Int, BuildingDeploy> = new Map<Int, BuildingDeploy>();
+		var buildingMap:Map<Building.BuildingDeployID, BuildingDeploy> = new Map<Building.BuildingDeployID, BuildingDeploy>();
 		for( key in Reflect.fields( building ) )
 		{
-			var intKey:Int = Std.parseInt( key );
-			buildingMap[ intKey ] = SceneDeploy( Reflect.getProperty( building, key ) );
+			var intKey:Building.BuildingDeployID = Std.parseInt( key );
+			var value:BuildingDeploy = Reflect.getProperty( building, key );
+			buildingMap[ intKey ] = value;
 
 		}
 
 		var hero:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployHero.json" );
-		var heroMap:Map<Int, HeroDeploy> = new Map<Int, HeroDeploy>();
+		var heroMap:Map<Hero.HeroDeployID, HeroDeploy> = new Map<Hero.HeroDeployID, HeroDeploy>();
 		for( key in Reflect.fields( hero ) )
 		{
-			var intKey:Int = Std.parseInt( key );
-			heroMap[ intKey ] = SceneDeploy( Reflect.getProperty( hero, key ) );
+			var intKey:Hero.HeroDeployID = Std.parseInt( key );
+			var value:HeroDeploy = Reflect.getProperty( hero, key );
+			heroMap[ intKey ] = value;
 
 		}
 
 		var item:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployItem.json" );
-		var itemMap:Map<Int, ItemDeploy> = new Map<Int, ItemDeploy>();
+		var itemMap:Map<Item.ItemDeployID, ItemDeploy> = new Map<Item.ItemDeployID, ItemDeploy>();
 		for( key in Reflect.fields( item ) )
 		{
-			var intKey:Int = Std.parseInt( key );
-			itemMap[ intKey ] = SceneDeploy( Reflect.getProperty( item, key ) );
+			var intKey:Item.ItemDeployID = Std.parseInt( key );
+			var value:ItemDeploy = Reflect.getProperty( item, key );
+			itemMap[ intKey ] = value;
 
 		}
 
 		var enemy:Dynamic = ConfigJSON.json( "c:/projects/DgrayDungeon/Source/DeployEnemy.json" );
-		var enemyMap:Map<Int, EnemyDeploy> = new Map<Int, EnemyDeploy>();
+		var enemyMap:Map<Enemy.EnemyDeployID, EnemyDeploy> = new Map<Enemy.EnemyDeployID, EnemyDeploy>();
 		for( key in Reflect.fields( enemy ) )
 		{
-			var intKey:Int = Std.parseInt( key );
-			enemyMap[ intKey ] = SceneDeploy( Reflect.getProperty( enemy, key ) );
+			var intKey:Enemy.EnemyDeployID = Std.parseInt( key );
+			var value:EnemyDeploy = Reflect.getProperty( enemy, key );
+			enemyMap[ intKey ] = value;
 
 		}
 
 		var player:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployPlayer.json" );
-		var playerMap:Map<Int, PlayerDeploy> = new Map<Int, PlayerDeploy>();
+		var playerMap:Map<Player.PlayerDeployID, PlayerDeploy> = new Map<Player.PlayerDeployID, PlayerDeploy>();
 		for( key in Reflect.fields( player ) )
 		{
-			var intKey:Int = Std.parseInt( key );
-			playerMap[ intKey ] = SceneDeploy( Reflect.getProperty( player, key ) );
+			var intKey:Player.PlayerDeployID = Std.parseInt( key );
+			var value:PlayerDeploy = Reflect.getProperty( player, key );
+			playerMap[ intKey ] = value;
 
 		}
 
@@ -313,13 +321,12 @@ class Game
 
 		this._lastSave = this._checkForSave();
 
-		var createScene:Array<Dynamic> = this._generatorSystem.createScene( 1000 );
+		var createScene:Array<Dynamic> = this._sceneSystem.createScene( 1000 );
 		var scene:Scene = createScene[ 0 ];
 		var err:String = createScene[ 1 ];
 		if( err != null )
 			throw 'Error in Game._startGame. $err';
 
-		this._sceneSystem.addScene( scene );
 		this._sceneSystem.prepareScene( scene );
 		this._sceneSystem.changeSceneTo( scene );
 

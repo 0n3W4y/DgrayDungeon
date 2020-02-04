@@ -3,12 +3,7 @@ package;
 class NameSystem
 {
 	
-	public function new():Void
-	{
-
-	}
-
-	public function preInit():String
+	public inline function new():Void
 	{
 
 	}

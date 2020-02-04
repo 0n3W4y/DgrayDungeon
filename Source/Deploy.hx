@@ -1,5 +1,6 @@
 package;
 
+
 enum WindowDeploy
 {
 	WindowDeploy( _:Dynamic );
@@ -40,6 +41,7 @@ enum HeroDeploy
 	HeroDeploy( _:Dynamic );
 }
 
+
 typedef DeployConfig =
 {
 	var Window:Map<Int, WindowDeploy>;
@@ -61,7 +63,7 @@ class Deploy
 	private var _enemy:Map<Int, EnemyDeploy>;
 	private var _window:Map<Int, WindowDeploy>;
 	private var _button:Map<Int, ButtonDeploy>;
-	private var _item:MAp<Int, ItemDeploy>;
+	private var _item:Map<Int, ItemDeploy>;
 
 	public inline function new( config:DeployConfig ):Void
 	{
@@ -78,28 +80,23 @@ class Deploy
 	public function init():String
 	{
 		
-		if( this.scene == null || !this.scene.exists( 1000 ) )
-			return 'Error in Deploy.init. Scene deploy is not valid';
+		if( !this.scene.exists( 1000 ) )
+			return 'Error in Deploy.init. Scene deploy is not valid';		
 		
+		if( this._building == null )
+			return 'Error in Deploy.init. Building deploy is not valid';		
 		
-		if( this._buildingDeploy == null )
-			return 'Error in Deploy.init. Building deploy is not valid';
+		if( this._hero == null )
+			return 'Error in Deploy.init. Hero deploy is not valid';		
 		
-		
-		if( this._windowDeploy == null )
-			return 'Error in Deploy.init. Window deploy is not valid';
-		
-		
-		if( this._buttonDeploy == null )
-			return 'Error in Deploy.init. Button deploy is not valid';
-		
-		
-		if( this._heroDeploy == null )
-			return 'Error in Deploy.init. Hero deploy is not valid';
-		
-		
-		if( this._itemDeploy == null )
+		if( this._item == null )
 			return 'Error in Deploy.init. Item deploy is not valid';
+
+		if( !this._button.exists( 4000 ) )
+			return 'Error in UserInterface.init. Button deploy config is not valid!';
+
+		if( !this._window.exists( 3000 ) )
+			return 'Error in UserInterface.init. Window deploy config is not valid!';
 
 		//TODO: добавить дополнительные провеки на deploy.
 		

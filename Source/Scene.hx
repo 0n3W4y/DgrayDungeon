@@ -2,6 +2,11 @@ package;
 
 import openfl.display.Sprite;
 
+enum SceneID
+{
+	SceneID( _:Int );
+}
+
 enum SceneDeployID
 {
 	SceneDeployID( _:Int );
@@ -9,7 +14,7 @@ enum SceneDeployID
 
 typedef SceneConfig =
 {
-	var ID:Game.ID;
+	var ID:SceneID;
 	var DeployID:SceneDeployID;
 	var Name:String;
 	var GraphicsSprite:Sprite;
@@ -17,7 +22,7 @@ typedef SceneConfig =
 
 class Scene
 {
-	private var _id:Game.ID;
+	private var _id:SceneID;
 	private var _deployId:SceneDeployID;
 	private var _type:String;
 	private var _name:String;
@@ -26,29 +31,20 @@ class Scene
 
 	private var _aliveEntities:Dynamic;
 	private var _objectEntities:Dynamic;
+	private var _window:Array<Window.WindowID>;
 
 	private var _graphics:GraphicsSystem;
+	private var _sprite:Sprite;
 	
 
-	public function new( config:SceneConfig ):Void
+	public inline function new( config:SceneConfig ):Void
 	{
 		this._type = "scene";
 		this._id = config.ID;
 		this._name = config.Name;
 		this._deployId = config.DeployID;
-		this._graphics = new GraphicsSystem( this, config.GraphicsSprite );
-		this._isPrepared = "unprepared"; // По умолчанию, сцена не готова.
-
-		this._aliveEntities = 
-		{
-			"hero": new Array<Hero>(),
-			"enemy": new Array()
-		};
-		this._objectEntities = 
-		{
-			"building": new Array<Building>(),
-			"treasure": new Array()
-		};	
+		this._graphics = new GraphicsSystem( this );
+		this._sprite = config.GraphicsSprite;
 	}
 
 	public function init():String
@@ -65,6 +61,21 @@ class Scene
 		var err:String = this._graphics.init();
 		if( err != null )
 			return 'Error in Scene.init. $err. Name is "$_name" id is:"$_id" deploy id is:"$_deployId"';
+
+		this._isPrepared = "unprepared"; // По умолчанию, сцена не готова.
+
+		this._aliveEntities = 
+		{
+			"hero": new Array<Hero>(),
+			"enemy": new Array()
+		};
+		this._objectEntities = 
+		{
+			"building": new Array<Building>(),
+			"treasure": new Array()
+		};
+
+		this._window = new Array<Window.WindowID>();
 
 		return null;
 	}
@@ -88,7 +99,7 @@ class Scene
 			case "deployId": return this._deployId;
 			case "type": return this._type;
 			case "graphics": return this._graphics;
-			case "sprite": return this._graphics.getSprite();
+			case "sprite": return this._sprite;
 			case "prepared": return this._isPrepared;
 			default: { throw( 'Error in Scene.get. No getter for "$value"' ); return null; }
 		}

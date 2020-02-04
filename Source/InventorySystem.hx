@@ -3,7 +3,7 @@ package;
 typedef Slot = 
 {
 	var Type:String;
-	var Item:Dynamic;
+	var Item:Item;
 	var Restriction:String;
 }
 
@@ -35,16 +35,15 @@ class InventorySystem
 		return null;
 	}
 
-	public function addToInventory( item:Item, amount:Int ):Int
+	public function addToInventory( item:Item ):Int
 	{
-		var storable:Bool = item.get( "storable" );
 		this._inventorySlots ++;
 		return "ok";
 	}
 
-	public function removeFromInventory( item:Item, amount:Int ):Item
+	public function removeFromInventory( item:Item ):Item
 	{
-		this._inventory[ index ].Item = null
+		this._inventory[ index ].Item = null;
 		this._inventorySlots--;
 		return item;
 	}
@@ -59,7 +58,7 @@ class InventorySystem
 			if( oldItem == null )
 				continue;
 
-			if( item.get( "id" ).match( oldItem.get( "id" ) ) )
+			if( haxe.EnumTools.EnumValueTools.equals( item.get( "id" ), oldItem.get( "id" ) ) )
 				return i;
 		}
 

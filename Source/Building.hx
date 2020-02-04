@@ -7,9 +7,14 @@ enum BuildingDeployID
 	BuildingDeployID( _:Int );
 }
 
+enum BuildingID
+{
+	BuildingID( _:Int );
+}
+
 typedef BuildingConfig =
 {
-	var ID:Game.ID;
+	var ID:BuildingID;
 	var DeployID:BuildingDeployID;
 	var Name:String;
 	var GraphicsSprite:Sprite;
@@ -22,7 +27,7 @@ typedef BuildingConfig =
 
 class Building
 {
-	private var _id:Game.ID;
+	private var _id:BuildingID;
 	private var _name:String;
 	private var _deployId:BuildingDeployID;
 	private var _type:String;
@@ -36,7 +41,7 @@ class Building
 	private var _canUpgradeLevel:Bool; // можно ли улучшить здание.
 	private var _upgradePrice:Player.Money; // количество моент необходимое для апгрейда здания.
 
-	private var _inventoryStorage:Array<Inventory.Slot>;
+	private var _inventoryStorage:Array<InventorySystem.Slot>;
 	private var _inventoryStorageSlots:Int;
 	private var _inventoryStorageSlotsMax:Int;
 

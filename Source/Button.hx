@@ -2,6 +2,11 @@ package;
 
 import openfl.display.Sprite;
 
+enum ButtonID
+{
+	ButtonID( _:Int );
+}
+
 enum ButtonDeployID
 {
 	ButtonDeployID( _:Int );
@@ -9,7 +14,7 @@ enum ButtonDeployID
 
 typedef ButtonConfig =
 {
-	var ID:Game.ID;
+	var ID:ButtonID;
 	var DeployID:ButtonDeployID;
 	var Name:String;
 	var GraphicsSprite:Sprite;
@@ -17,7 +22,7 @@ typedef ButtonConfig =
 
 class Button
 {
-	private var _id:Game.ID;
+	private var _id:ButtonID;
 	private var _deployId:ButtonDeployID;
 	private var _name:String;
 	private var _type:String;

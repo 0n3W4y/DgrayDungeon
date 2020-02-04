@@ -1,5 +1,10 @@
 package;
 
+enum HeroID
+{
+	HeroID( _:Int );
+}
+
 class Hero
 {
 	private var _inited:Bool = false;

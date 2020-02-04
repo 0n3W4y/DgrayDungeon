@@ -1,9 +1,18 @@
 package;
 
 import openfl.display.Sprite;
+import openfl.display.Bitmap;
+import openfl.text.TextField;
+import openfl.text.TextFormat;
 
 import Window;
 import Button;
+
+typedef UserInterfaceConfig = 
+{
+	var Parent:Game;
+	var GraphicsSprite:Sprite;
+}
 
 class UserInterface
 {
@@ -12,12 +21,10 @@ class UserInterface
 	private var _objects:Array<Window>;
 	private var _sprite:Sprite;
 
-	public inline function new( config:UIConfig ):Void
+	public inline function new( config:UserInterfaceConfig ):Void
 	{
 		this._parent = config.Parent;
 		this._sprite = config.GraphicsSprite;
-		this._buttonDeploy = config.Button;
-		this._windowDeploy = config.Widnow;
 	}
 
 	public function init():String
@@ -25,14 +32,8 @@ class UserInterface
 		if( this._parent == null )
 			return 'Error in UserInterface.init. Game is "$this._parent"';
 
-		if( this._uiSprite == null )
-			return 'Error in UserInterface.init. Sprite is "$this._uiSprite"';
-
-		if( !this._buttonDeploy.exist( 4000 ) )
-			return 'Error in UserInterface.init. Button deploy config is not valid!';
-
-		if( !this._windowDeploy.exist( 3000 ) )
-			return 'Error in UserInterface.init. Window deploy config is not valid!';
+		if( this._sprite == null )
+			return 'Error in UserInterface.init. Sprite is "$this._sprite"';
 
 		this._objectsOnUi = new Array<Window>();
 		this._objects = new Array<Window>();
@@ -44,7 +45,7 @@ class UserInterface
 		return null;
 	}
 
-	public function addWindowOnUi( deployId:WindowdeployID ):Void
+	public function addWindowOnUi( deployId:Deploy.WindowDeploy ):Void
 	{
 		var exist:Int = this._checkWindowInObjectsOnUi( deployId );
 		if( exist != null )
@@ -152,12 +153,12 @@ class UserInterface
 
 	public function hide():Void
 	{
-		this._uiSprite.visible = false;
+		this._sprite.visible = false;
 	}
 
 	public function show():Void
 	{
-		this._uiSprite.visible = true;
+		this._sprite.visible = true;
 	}
 
 	public function createWindow( deployId:Int ):Array<Dynamic>
@@ -261,7 +262,7 @@ class UserInterface
 		return null;
 	}
 
-		private function _createGraphicsSprite( config:Dynamic ):Sprite
+	private function _createGraphicsSprite( config:Dynamic ):Sprite
 	{
 		var sprite:Sprite = new Sprite();
 		var bitmap:Bitmap;

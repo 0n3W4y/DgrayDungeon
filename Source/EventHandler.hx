@@ -5,15 +5,20 @@ import openfl.events.MouseEvent;
 import openfl.text.TextField;
 import openfl.events.MouseEvent;
 
+typedef EventHandlerConfig = 
+{
+	var Parent:Game;
+}
+
 
 class EventHandler
 {
 	private var _parent:Game;
 	private var _listeners:Array<Dynamic>;
 
-	public inline function new( parent:Game ):Void
+	public inline function new( config:EventHandlerConfig ):Void
 	{
-		this._parent = parent;
+		this._parent = config.Parent;
 	}
 
 	public function init():String
@@ -147,15 +152,16 @@ class EventHandler
 	}
 
 	private function _checkListenerIfExist( object:Dynamic ):Int
-	{
-		for( key in this._listeners.keys() )
+	{	
+		var type:String = object.get( "type" );
+		for( i in this._listeners.length )
 		{
-			var valueArray:Array<Dynamic> = this._listeners[ key ];
-			for( i in 0...valueArray.length )
-				if( valueArray[ i ].get( "id" ).match( object.get( "id" ) ) );
-					return i;
+			if( this._listeners[ i ].get( "type" ) != type ))
+				continue;
+				
+			if( haxe.EnumTools.EnumValueTools.equals( this._listeners[ i ].get( "id" ), object.get( "id" )))
+				return i;
 		}
-		return null;
 	}
 
 	private function _clickStartGame( e:MouseEvent ):Void

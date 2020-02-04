@@ -8,10 +8,10 @@ class GraphicsSystem
 	private var _parent:Dynamic; // получить доступ к классу, в котором находится данный класс.
 	private var _sprite:Sprite;
 
-	public function new( parent:Dynamic ):Void
+	public inline function new( parent:Dynamic ):Void
 	{
 		this._parent = parent;
-		this._sprite = this._parent.get( "sprite" ); // копируем спрайт из  главной сущности.
+		this._sprite = this._parent.get( "sprite" );
 	}
 
 	public function init():String

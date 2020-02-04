@@ -218,40 +218,7 @@
             
         var random =  Math.floor( minDmg + Math.random() * ( maxDmg - minDmg + 1 ));
 */
-public function createBuilding( deployId:Int ):Array<Dynamic>
-    {
-        var config = this._buildingDeploy.get( deployId );
-        if( config == null )
-            return [ null, "Error in GeneratorSystem.createBuilding. Deploy ID: '" + deployId + "' doesn't exist in BuildingDeploy data" ];
 
-        var id:ID = this._createId();
-        var sprite:Sprite = new Sprite();
-        var graphicsSprite:Sprite = this._createGraphicsSprite( config );
-        sprite.addChild( graphicsSprite );
-        var textSprite:Sprite = this._createTextSprite( config );
-        sprite.addChild( textSprite );
-
-        var buildingConfig:BuildingConfig =
-        {
-            ID: id,
-            DeployID: DeployID( config.deployId ),
-            Name: config.name,
-            GraphicsSprite: sprite,
-            UpgradeLevel: config.upgradeLevel,
-            NextUpgradeId: config.nextUpgradeId,
-            CanUpgradeLevel: config.canUpgradeLevel,
-            UpgradePrice: { Amount: config.moneyAmount },
-            HeroStorageSlotsMax: config.heroStorageSlotsMax
-
-        };
-        var building:Building = new Building( buildingConfig );
-        var err:String = building.init();
-        if( err !=null )
-            return [ null, 'Error in GeneratorSystem.createBuilding. $err' ];
-
-        
-        return [ building, null ];
-    }
 
     public function generateHeroesForBuildingRecruits( building ):Void
     {

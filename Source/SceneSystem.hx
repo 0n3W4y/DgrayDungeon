@@ -1,8 +1,10 @@
 package;
 
 import openfl.display.Sprite;
+import openfl.display.Bitmap;
 
 import Scene;
+import Building;
 
 typedef SceneSystemConfig = 
 {
@@ -18,7 +20,7 @@ class SceneSystem
 	private var _activeScene:Scene;
 
 	
-	public function new( config.SceneSystemConfig ):Void
+	public function new( config:SceneSystemConfig ):Void
 	{
 		this._scenesSprite = config.GraphicsSprite;
 		this._parent = config.Parent;
@@ -96,14 +98,13 @@ class SceneSystem
 	{
 		var ui:UserInterface = this._parent.getSystem( "ui" );
 		var windows:Array<Window> = scene.getChilds( "ui" ).window;
-		var sceneId:GeneratorSystem.ID = scene.get( "id" );
 		if( windows == null )
 			throw 'Error in SceneSystem.drawUiForScene. Scene does not have any widnows.';
 		
 		for( i in 0...windows.length )
 		{
 			var window:Window = windows[ i ];
-			ui.addUiObject( windows[ i ], sceneId );
+			ui.addUiObject( windows[ i ] );
 		}
 
 	}
@@ -200,11 +201,11 @@ class SceneSystem
 
 	public function createScene( dpeloyId:SceneDeployID ):Array<Dynamic>
 	{
-		var config = this._sceneDeploy.get( deployId );
+		var config = this._parent.get( "deploy" ).get( "scene", deployId );
 		if( config == null )
 			return [ null, "Error in GeneratorSystem.createScene. Deploy ID: '" + deployId + "' doesn't exist in SceneDeploy data" ];
 
-		var id:Game.ID = this._createId();
+		var id:SceneID = SceneID( this._parent.createId() );
 		var sprite:Sprite = new Sprite();
 		var graphicsSprite:Sprite = this._createGraphicsSprite( config );
 		sprite.addChild( graphicsSprite );
@@ -215,7 +216,7 @@ class SceneSystem
 		{
 			ID: id,
 			Name: config.name,
-			DeployID: DeployID( config.deployId ),
+			DeployID: dpeloyId,
 			GraphicsSprite: sprite
 		};
 		var scene = new Scene( configForScene );
@@ -224,9 +225,10 @@ class SceneSystem
 			return [ null, 'Error in GeneratorSystem.createScene. $err' ];
 
 		this._scenesArray.push( scene );
+		return [ scene, null ];
 	}
 
-	public function createScene( deployId:Int ):Array<Dynamic>
+	public function createStartingScene( scene:Scene ):Array<Dynamic>
 	{
 		// окна не будут добавлены на сцену, так как они являются частью Интерфейса пользователя.
 		var configWindow:Array<Int> = config.window;
@@ -263,6 +265,41 @@ class SceneSystem
 
 		return [ scene, null ];
 	}
+
+	public function createBuilding( deployId:Int ):Array<Dynamic>
+    {
+        var config = this._buildingDeploy.get( deployId );
+        if( config == null )
+            return [ null, "Error in GeneratorSystem.createBuilding. Deploy ID: '" + deployId + "' doesn't exist in BuildingDeploy data" ];
+
+        var id:Game.ID = this._parent.createId();
+        var sprite:Sprite = new Sprite();
+        var graphicsSprite:Sprite = this._createGraphicsSprite( config );
+        sprite.addChild( graphicsSprite );
+        var textSprite:Sprite = this._createTextSprite( config );
+        sprite.addChild( textSprite );
+
+        var buildingConfig:BuildingConfig =
+        {
+            ID: id,
+            DeployID: BuildingDeployID( config.deployId ),
+            Name: config.name,
+            GraphicsSprite: sprite,
+            UpgradeLevel: config.upgradeLevel,
+            NextUpgradeId: config.nextUpgradeId,
+            CanUpgradeLevel: config.canUpgradeLevel,
+            UpgradePrice: Player.Money( config.moneyAmount ),
+            HeroStorageSlotsMax: config.heroStorageSlotsMax
+
+        };
+        var building:Building = new Building( buildingConfig );
+        var err:String = building.init();
+        if( err !=null )
+            return [ null, 'Error in GeneratorSystem.createBuilding. $err' ];
+
+        
+        return [ building, null ];
+    }
 
 	//PRIVATE
 
@@ -308,5 +345,29 @@ class SceneSystem
 				return i;
 		}
 		return null;
+	}
+
+	private function _createGraphicsSprite( config:Dynamic ):Sprite
+	{
+		var sprite:Sprite = new Sprite();
+		var bitmap:Bitmap;
+
+		if( config.imageNormalURL != null )
+		{
+			bitmap = this._createBitmap( config.imageNormalURL, config.imageNormalX, config.imageNormalY );
+			sprite.addChild( bitmap );
+		}
+		return sprite;
+	}
+
+	private function _createBitmap( url:String, x:Float, y:Float ):Bitmap
+	{
+		if( x == null || y == null )
+			throw 'Error in Scene.System._createBitmap. Error in "$x", "$y", "$url"';
+
+		var bitmap:Bitmap = new Bitmap( Assets.getBitmapData( url ) );
+		bitmap.x = x;
+		bitmap.y = y;
+		return bitmap;
 	}
 }

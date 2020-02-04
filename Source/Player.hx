@@ -1,4 +1,10 @@
 package;
+
+enum PlayerID
+{
+	PlayerID( _:Int );
+}
+
 enum PlayerDeployID
 {
 	PlayerDeployID( _:Int );
@@ -6,7 +12,7 @@ enum PlayerDeployID
 
 typedef PlayerConfig =
 {
-	var ID:Game.ID;
+	var ID:PlayerID;
 	var DeployID:PlayerDeployID;
 	var Name:String;
 	var ItemStorageSlotsMax:Int;
@@ -17,10 +23,10 @@ typedef Money = Int;
 
 class Player
 {
-	private var _id:Game.ID;
+	private var _id:PlayerID;
 	private var _name:String;
 	private var _deployId:PlayerDeployID;
-	private var _moneyAmount:GeneratorSystem.Money;
+	private var _moneyAmount:Money;
 	private var _itemStorage:Array<Item>;
 	private var _itemStorageSlotsMax:Int;
 	private var _itemStorageSlots:Int;
@@ -73,7 +79,7 @@ class Player
 	public function addItemToStorage( hero:Hero ):Void
 	{
 		var name:String = hero.get( "name" );
-		var id:Int = hero.get( "id" );
+		var id:PlayerID = hero.get( "id" );
 		var check:Int = this._checkHeroInStorage( id );
 		if( check != null )
 			throw 'Error in Player.addHeroToStorage. Found duplicate hero with name:"$name" id:"$id"';
@@ -85,7 +91,7 @@ class Player
 	public function removeItemFromStorage( hero:Hero ):Array<Dynamic>
 	{
 		var name:String = hero.get( "name" );
-		var id:Int = hero.get( "id" );
+		var id:PlayerID = hero.get( "id" );
 		var check:Int = this._checkHeroInStorage( id );
 		if( check == null )
 			return [ null, 'Error in Player.removeHeroToStorage. Hero with name:"$name" id:"$id" does not exist' ];
@@ -95,7 +101,7 @@ class Player
 		return [ hero, null ];
 	}
 
-	public function getHeroById( id:Int ):Array<Dynamic>
+	public function getHeroById( id:PlayerID ):Array<Dynamic>
 	{
 		var check:Int = this._checkHeroInStorage( id );
 		if( check == null )
@@ -118,11 +124,11 @@ class Player
 	//PRIVATE
 
 
-	private function _checkHeroInStorage( id:Int ):Int
+	private function _checkHeroInStorage( id:PlayerID ):Int
 	{
 		for( i in 0...this._heroStorage.length )
 		{
-			if( this._heroStorage[ i ].get( "id" ) == id )
+			if( EnumValueTools.equals( this._heroStorage[ i ].get( "id" ), id ) )
 				return i;
 		}
 		return null;
