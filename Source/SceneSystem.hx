@@ -214,9 +214,10 @@ class SceneSystem
 		return null;
 	}
 
-	public function createScene( deployId:SceneDeployID ):Array<Dynamic>
+	public function createScene( deployId:Int ):Array<Dynamic>
 	{
-		var config = this._parent.getSystem( "deploy" ).getScene( deployId );
+		var sceneDeployId:SceneDeployID = SceneDeployID( deployId );
+		var config = this._parent.getSystem( "deploy" ).getScene( sceneDeployId );
 		if( config == null )
 			return [ null, "Error in GeneratorSystem.createScene. Deploy ID: '" + deployId + "' doesn't exist in SceneDeploy data" ];
 
@@ -231,7 +232,7 @@ class SceneSystem
 		{
 			ID: id,
 			Name: config.name,
-			DeployID: deployId,
+			DeployID: sceneDeployId,
 			GraphicsSprite: sprite
 		};
 		var scene = new Scene( configForScene );
@@ -255,8 +256,7 @@ class SceneSystem
 		{
 			for( j in 0...configBuilding.length )
 			{
-				var buildingDeployId:BuildingDeployID = BuildingDeployID( configBuilding[ j ] );
-				var createBuilding:Array<Dynamic> = this.createBuilding( buildingDeployId );
+				var createBuilding:Array<Dynamic> = this.createBuilding( configBuilding[ j ] );
 				var building:Building = createBuilding[ 0 ];
 				var buildingError:String = createBuilding[ 1 ];
 				if( buildingError != null )
@@ -270,30 +270,34 @@ class SceneSystem
 		return [ scene, null ];
 	}
 
-	public function createBuilding( deployId:BuildingDeployID ):Array<Dynamic>
+	public function createBuilding( deployId:Int ):Array<Dynamic>
     {
-        var config = this._parent.getSystem( "deploy" ).getBuilding( deployId );
+    	var buildingDeployId:BuildingDeployID = BuildingDeployID( deployId );
+        var config = this._parent.getSystem( "deploy" ).getBuilding( buildingDeployId );
         if( config == null )
             return [ null, "Error in GeneratorSystem.createBuilding. Deploy ID: '" + deployId + "' doesn't exist in BuildingDeploy data" ];
 
-        var id:Game.ID = this._parent.createId();
+        var id:BuildingID = BuildingID( this._parent.createId() );
         var sprite:Sprite = new Sprite();
         var graphicsSprite:Sprite = this._createGraphicsSprite( config );
         sprite.addChild( graphicsSprite );
         var textSprite:Sprite = this._createTextSprite( config );
         sprite.addChild( textSprite );
 
+        var moneyInt:Int = config.moneyAmount;
+        var money:Player.Money = moneyInt;
         var buildingConfig:BuildingConfig =
         {
             ID: id,
-            DeployID: deployId,
+            DeployID: buildingDeployId,
             Name: config.name,
             GraphicsSprite: sprite,
             UpgradeLevel: config.upgradeLevel,
             NextUpgradeId: config.nextUpgradeId,
             CanUpgradeLevel: config.canUpgradeLevel,
-            UpgradePrice: Player.Money( config.moneyAmount ),
-            HeroStorageSlotsMax: config.heroStorageSlotsMax
+            UpgradePrice: money,
+            HeroStorageSlotsMax: config.heroStorageSlotsMax,
+            InventoryStorageSlotsMax: config.inventoryStorageSlotsMax
 
         };
         var building:Building = new Building( buildingConfig );

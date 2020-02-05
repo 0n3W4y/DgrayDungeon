@@ -158,14 +158,15 @@ class Game
 
 	public function createPlayer( deployId:Int, name:String ):Array<Dynamic>
 	{
-		var config:PlayerDeploy = this._deploy.get( "player", deployId );
+		var playerDeployId:PlayerDeployID = PlayerDeployID( deployId );
+		var config:Dynamic = this._deploy.getPlayer( playerDeployId );
 
-		var id:ID = this.createId;
+		var id:PlayerID = PlayerID( this.createId );
 		var configForPlayer:PlayerConfig =
 		{
 			ID: id,
 			Name: name,
-			DeployID: PlayerDeployID( config.deployId ),
+			DeployID: playerDeployId,
 			MaxHeroSlots: config.itemStorageSlotsMax,
 			MoneyAmount: Money( config.moneyAmount )
 		};
@@ -227,14 +228,14 @@ class Game
 
 	private function _parseData():Deploy.DeployConfig
 	{
-		var window:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployWindow.json" );
-		var button:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployButton.json" );
-		var scene:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployScene.json" );
-		var building:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployBuilding.json" );
-		var hero:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployHero.json" );
-		var item:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployItem.json" );
-		var enemy:Dynamic = ConfigJSON.json( "c:/projects/DgrayDungeon/Source/DeployEnemy.json" );
-		var player:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployPlayer.json" );
+		var window:Dynamic = ConfigJSON.json( "D:/projects/DgrayDungeon//Source/DeployWindow.json" );
+		var button:Dynamic = ConfigJSON.json( "D:/projects/DgrayDungeon/Source/DeployButton.json" );
+		var scene:Dynamic = ConfigJSON.json( "D:/projects/DgrayDungeon/Source/DeployScene.json" );
+		var building:Dynamic = ConfigJSON.json( "D:/projects/DgrayDungeon/Source/DeployBuilding.json" );
+		var hero:Dynamic = ConfigJSON.json( "D:/projects/DgrayDungeon/Source/DeployHero.json" );
+		var item:Dynamic = ConfigJSON.json( "D:/projects/DgrayDungeon/Source/DeployItem.json" );
+		var enemy:Dynamic = ConfigJSON.json( "D:/projects/DgrayDungeon/Source/DeployEnemy.json" );
+		var player:Dynamic = ConfigJSON.json( "D:/projects/DgrayDungeon/Source/DeployPlayer.json" );
 
 		return { Window:window, Button:button, Scene:scene, Building:building, Hero:hero, Item:item, Enemy:enemy, Player:player };
 	}

@@ -34,6 +34,7 @@ class Scene
 	private var _sprite:Sprite;
 
 	private var _building:Array<Building>;
+	private var _hero:Array<Hero>;
 	
 
 	public inline function new( config:SceneConfig ):Void
@@ -63,6 +64,7 @@ class Scene
 
 		this._isPrepared = "unprepared"; // По умолчанию, сцена не готова.
 		this._building = new Array<Building>();
+		this._hero = new Array<Hero>();
 
 		return null;
 	}
@@ -96,10 +98,8 @@ class Scene
 	{
 		switch( type )
 		{
-			case "alive": return this._aliveEntities;
-			case "hero": return this._aliveEntities.hero;
-			case "object": return this._objectEntities;
-			case "building": return this._objectEntities.building;
+			case "hero": return this._hero;
+			case "building": return this._building;
 			default: throw "Error in Scene.getEntites, can't get array with type: " + type + "." ;
 		}
 	}
@@ -111,12 +111,13 @@ class Scene
 
 		var check:Int = this._checkChildForExist( object );
 		if( check != null ) // проверяем на наличие объекта на сцене.
-			throw 'Error in Scene.addChild. Found dublicate object with type: "$type" and name "$name"';
+			throw 'Error in Scene.addChild. Found dublicate object type: "$type" and name "$name"';
 
 		switch( type )
 		{
-			case "building": container = this._building.push( object );
-			default: throw 'Error in Scene.addChild. Can not add child with type: "$type" and name "$name"';
+			case "building": this._building.push( object );
+			case "hero": this._hero.push( object );
+			default: throw 'Error in Scene.addChild. Can not add child type: "$type" and name "$name"';
 		}
 	}
 
@@ -132,6 +133,7 @@ class Scene
 		switch( type )
 		{
 			case "building": this._building.splice( check, 1 );
+			case "hero": this._hero.splice( check, 1 );
 			default: return [ null, 'Error in Scene.removeChild. No type found for type: "$type"' ];
 		}
 
@@ -159,6 +161,7 @@ class Scene
 		switch( type )
 		{
 			case "building": container = this._building;
+			case "hero": container = this._hero;
 			default: return null;
 		}
 

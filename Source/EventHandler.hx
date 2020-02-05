@@ -58,9 +58,6 @@ class EventHandler
 		if( check == null )
 			throw 'Error in EventHandler.removeEvent. Object with name: "$name" does not exist';
 
-		if( sceneId == null )
-			throw 'Error in EventHandler._removeEventsToButton. Scene Id is: "$sceneId"';
-
 		this._removeEvents( object );
 		this._listeners.splice( check, 1 );
 	}

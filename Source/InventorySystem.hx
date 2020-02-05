@@ -1,5 +1,7 @@
 package;
 
+import Item;
+
 typedef InventorySystemConfig =
 {
 	var Parent:Dynamic;
@@ -71,13 +73,14 @@ class InventorySystem
 
 	private function _checkDuplicate( item:Item ):Int // находит дубликат по уникальному ID. Если есть совпадение - то лучше вывести ошибку и остановить приложение.
 	{
+		var id:ItemID = item.get( "id" );
 		for( i in 0...this._inventory.length )
 		{
 			var oldItem:Item = this._inventory[ i ].Item;
 			if( oldItem == null )
 				continue;
 
-			if( haxe.EnumTools.EnumValueTools.equals( item.get( "id" ), oldItem.get( "id" ) ) )
+			if( haxe.EnumTools.EnumValueTools.equals( id, oldItem.get( "id" )))
 				return i;
 		}
 

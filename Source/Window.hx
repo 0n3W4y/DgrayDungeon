@@ -36,13 +36,13 @@ class Window
 	private var _sprite:Sprite;
 
 
-	public function new( config:WindowConfig ):Void
+	public inline function new( config:WindowConfig ):Void
 	{
 		this._type = "window";
 		this._id = config.ID;
 		this._name = config.Name;
 		this._deployId = config.DeployID;	
-		this._alwaysActive = config.AlwaysActive;	
+		this._alwaysActive = config.AlwaysActive;
 		this._graphics = new GraphicsSystem();
 		this._sprite = config.GraphicsSprite;
 	}

@@ -83,13 +83,13 @@ class UserInterface
 		this._sprite.addChild( sprite );
 	}
 
-	public function removeWindowFromUi( id:WindowID ):Void
+	public function removeWindowFromUi( deployId:WindowDeployID ):Void
 	{
-		var exist:Int = this._checkWindowInObjectsOnUi( id );
+		var exist:Int = this._checkWindowInObjectsOnUi( deployId );
 		if( exist == null )
 			throw 'Error in UserInterface.removeWindowOnUi. Window with deploy id: "$deployId" not exist on UI!';
 
-		var check:Int = this._checkWidnowInObjects( id );
+		var check:Int = this._checkWidnowInObjects( deployId );
 		if( check == null )
 			throw 'Error in UserInterface.removeWindowOnUi. Window with deploy id: "$deployId" not exist!';
 
@@ -106,13 +106,13 @@ class UserInterface
 		this._sprite.removeChild( sprite );
 	}
 
-	public function destroyWindow( id:WindowID ):Window
+	public function destroyWindow( deployId:WindowDeployID ):Window
 	{
-		var exist:Int = this._checkWindowInObjectsOnUi( id );
+		var exist:Int = this._checkWindowInObjectsOnUi( deployId );
 		if( exist != null )
 			throw 'Error in UserInterface.destroyWindow. Window with deploy id: "$deployId" Can not kill window, while it on UI';
 
-		var check:Int = this._checkWidnowInObjects( id );
+		var check:Int = this._checkWidnowInObjects( deployId );
 		if( check == null )
 			throw 'Error in UserInterface.destroyWindow. Window with deploy id: "$deployId" not exist!';
 
@@ -121,21 +121,27 @@ class UserInterface
 		return window;
 	}
 
-	public function showUiObject( id:WindowID ):Void
+	public function showUiObject( deployId:WindowDeployID ):Void
 	{
-		var check:Int = this._checkWindowInObjectsOnUi( id );
+		var check:Int = this._checkWindowInObjectsOnUi( deployId );
 		if( check == null )
-			throw 'Error in UserInterface.showUiObject. Object with id: "$id" does not exist.';	
+			throw 'Error in UserInterface.showUiObject. Object with deploy id: "$deployId" does not exist.';
+
+		if( this._objectsOnUi[ check ].get( "alwaysActive" ))
+			throw 'Error in UserInterface.ShowUiObjec. Object can not be shown, while object is always active. "$deployId"';
 
 		this._objectsOnUi[ check ].get( "sprite" ).visible = true;
 		this._objectsOnUi[ check ].changeActiveStatus();
 	}
 
-	public function hideUiObject( id:WindowID ):Void
+	public function hideUiObject( deployId:WindowDeployID ):Void
 	{
-		var check:Int = this._checkWindowInObjectsOnUi( id );
+		var check:Int = this._checkWindowInObjectsOnUi( deployId );
 		if( check == null )
-			throw 'Error in UserInterface.hideUiObject. Object with id: "$id" does not exist.';	
+			throw 'Error in UserInterface.hideUiObject. Object with deploy id: "$deployId" does not exist.';
+
+		if( this._objectsOnUi[ check ].get( "alwaysActive" ))
+			throw 'Error in UserInterface.ShowUiObjec. Object can not be hide, while object is always active. "$deployId"';
 
 		this._objectsOnUi[ check ].get( "sprite" ).visible = false;
 		this._objectsOnUi[ check ].changeActiveStatus();
@@ -161,9 +167,10 @@ class UserInterface
 		this._sprite.visible = true;
 	}
 
-	public function createWindow( deployId:WindowDeployID ):Array<Dynamic>
+	public function createWindow( deployId:Int ):Array<Dynamic>
 	{
-		var config:Dynamic = this._parent.getSystem( "deploy" ).getWindow( deployId );
+		var windowDeployId:WindowDeployID = WindowDeployID( deployId );
+		var config:Dynamic = this._parent.getSystem( "deploy" ).getWindow( windowDeployId );
 		
 		var id:WindowID = WindowID( this._parent.createId() );
 		var sprite:Sprite = new Sprite();
@@ -179,7 +186,7 @@ class UserInterface
 		{
 			ID: id,
 			Name: config.name,
-			DeployID: config.deployId,
+			DeployID: windowDeployId,
 			GraphicsSprite: sprite,
 			AlwaysActive: config.alwaysActive
 		};
@@ -192,8 +199,7 @@ class UserInterface
 		{
 			for( i in 0...config.button.length )
 			{
-				var buttonDeployId:ButtonDeployID = ButtonDeployID( config.button[ i ] );
-				var createButton:Array<Dynamic> = this.createButton( buttonDeployId );
+				var createButton:Array<Dynamic> = this.createButton( config.button[ i ] );
 				var button:Button = createButton[ 0 ];
 				var bErr:String = createButton[ 1 ];
 				if( bErr != null )
@@ -209,9 +215,10 @@ class UserInterface
 		return [ window, null ];
 	}
 
-	public function createButton( deployId:ButtonDeployID ):Array<Dynamic>
+	public function createButton( deployId:Int ):Array<Dynamic>
 	{
-		var config:Dynamic = this._parent.get( "deploy" ).getButton( deployId );
+		var buttondeployId:ButtonDeployID = ButtonDeployID( deployId );
+		var config:Dynamic = this._parent.getSystem( "deploy" ).getButton( buttondeployId );
 		
 		var id:ButtonID = ButtonID( this._parent.createId() );
 		var sprite:Sprite = new Sprite();
@@ -226,7 +233,7 @@ class UserInterface
 		var configForButton:ButtonConfig =
 		{ 
 			ID: id, 
-			DeployID: config.deployId,
+			DeployID: buttondeployId,
 			Name: config.name, 
 			GraphicsSprite: sprite 
 		};
@@ -242,22 +249,22 @@ class UserInterface
 
 	//PRIVATE
 
-	private function _checkWidnowInObjects( id:WindowID ):Int
+	private function _checkWidnowInObjects( deployId:WindowDeployID ):Int
 	{
 		for( i in 0...this._objects.length )
 		{
-			if( haxe.EnumTools.EnumValueTools.equals( this._objects[ i ].get( "id" ), id ))
+			if( haxe.EnumTools.EnumValueTools.equals( this._objects[ i ].get( "deployId" ), deployId ))
 				return i;
 		}
 
 		return null;
 	}
 
-	private function _checkWindowInObjectsOnUi( id:WindowID ):Int
+	private function _checkWindowInObjectsOnUi( deployId:WindowDeployID ):Int
 	{
 		for( i in 0...this._objectsOnUi.length )
 		{
-			if( haxe.EnumTools.EnumValueTools.equals( this._objectsOnUi[ i ].get( "id" ), id ))
+			if( haxe.EnumTools.EnumValueTools.equals( this._objectsOnUi[ i ].get( "deployId" ), deployId ))
 				return i;
 		}
 

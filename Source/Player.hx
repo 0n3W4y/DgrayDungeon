@@ -70,13 +70,13 @@ class Player
 			return 'Error in Player.init. Wrong Maximum item slots. Name: "$_name" id: "$_id"  deploy id: "$_deployId"';
 
 		if( this._battleItemStorageSlotsMax < 0 )
-			return 'Error in Player.init. Wrong item in battle storage Maximum slots. Name: "$_name" id: "$_id"  deploy id: "$_deployId"';
+			return 'Error in Player.init. Wrong Maximum slots in battle item storage . Name: "$_name" id: "$_id"  deploy id: "$_deployId"';
 
 		this._itemStorageSlots = 0;
 		this._battleItemStorageSlots = 0;
-		this._heroStorage = new Array<Slot>();
+		this._itemStorage = new Array<Slot>();
 		this._battleItemStorage = new Array<Slot>();
-		var err:String = this.inventory.init( { Parent:this, Inventory:this._battleItemStorage, MaxSlots:this._battleItemStorageSlotsMax, Slots:this._battleItemStorageSlots } );
+		var err:String = this._inventory.init( { Parent:this, Inventory:this._battleItemStorage, MaxSlots:this._battleItemStorageSlotsMax, Slots:this._battleItemStorageSlots } );
 		if( err != null )
 			return 'Error in Player.Init. Name: "$_name" id: "$_id"  deploy id: "$_deployId". $err';
 
@@ -98,7 +98,7 @@ class Player
 
 	public function addItemToStorage( item:Item ):Void
 	{
-		if( !this.checkItemStorageForFreeSlots )
+		if( !this.checkItemStorageForFreeSlots() )
 			return;
 		//TODO: Сделать проверку на предмет того, можно ли "сложить" количество объектов. Будет решено после появления самих предметов.
 		var name:String = item.get( "name" );
@@ -121,7 +121,7 @@ class Player
 
 		this._itemStorage.splice( check, 1 );
 		this._itemStorageSlots--;
-		return [ hero, null ];
+		return [ item, null ];
 	}
 
 	public function getItemFromStorageById( id:Item.ItemID ):Array<Dynamic>

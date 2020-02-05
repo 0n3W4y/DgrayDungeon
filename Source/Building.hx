@@ -23,6 +23,7 @@ typedef BuildingConfig =
 	var CanUpgradeLevel:Bool;
 	var UpgradePrice:Player.Money;
 	var InventoryStorageSlotsMax:Int;
+	var HeroStorageSlotsMax:Int;
 }
 
 class Building
@@ -61,8 +62,8 @@ class Building
 		this._canUpgradeLevel = config.CanUpgradeLevel;
 		this._upgradePrice = config.UpgradePrice;
 		this._heroStorageSlotsMax = config.InventoryStorageSlotsMax;
-		this._graphics = new GraphicsSystem( this );
-		this._inventory = new InventorySystem( this );
+		this._graphics = new GraphicsSystem();
+		this._inventory = new InventorySystem();
 	}
 
 	public function init():String
@@ -89,11 +90,11 @@ class Building
 		if( this._heroStorageSlotsMax == null )
 			return 'Error in Building.init. Container slots maximum value is not valid: "_heroStorageSlotsMax". $textError';
 		
-		var err:String = this._graphics.init();
+		var err:String = this._graphics.init({ Parent:this, GraphicsSprite:this._sprite });
 		if( err != null )
 			return 'Error in Building.init. $err; $textError';
 
-		err = this._inventory.init();
+		err = this._inventory.init({ Parent:this, Inventory:this._inventoryStorage, MaxSlots:this._inventoryStorageSlotsMax, Slots:this._inventoryStorageSlots });
 		if( err != null )
 			return 'Error in Building.init. $err; $textError';
 

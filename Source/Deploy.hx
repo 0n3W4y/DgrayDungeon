@@ -93,7 +93,7 @@ class Deploy
 
 	public function init():String
 	{
-		if( !this._scene.exists( Scene.SceneDeployID( 1000 )))
+		if( !this._scene.exists( SceneDeployID( 1000 )))
 			return 'Error in Deploy.init. Scene deploy is not valid';		
 		
 		if( this._building == null )
@@ -105,10 +105,10 @@ class Deploy
 		if( this._item == null )
 			return 'Error in Deploy.init. Item deploy is not valid';
 
-		if( !this._button.exists( Button.ButtonDeployID( 4000 )))
+		if( !this._button.exists( ButtonDeployID( 4000 )))
 			return 'Error in UserInterface.init. Button deploy config is not valid!';
 
-		if( !this._window.exists( Window.WindowDeployID( 3000 )))
+		if( !this._window.exists( WindowDeployID( 3000 )))
 			return 'Error in UserInterface.init. Window deploy config is not valid!';
 
 		//TODO: добавить дополнительные провеки на deploy.
