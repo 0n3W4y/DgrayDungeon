@@ -2,9 +2,14 @@ package;
 
 import openfl.display.Sprite;
 import openfl.display.Bitmap;
+import openfl.Assets;
+import openfl.text.TextField;
+import openfl.text.TextFormat;
+import openfl.text.TextFormatAlign;
 
 import Scene;
 import Building;
+import Window;
 
 typedef SceneSystemConfig = 
 {
@@ -188,20 +193,30 @@ class SceneSystem
 		return this._activeScene;
 	}
 
-	public function getScene( name:String ):Scene
+	public function getSceneByName( name:String ):Scene
 	{
 		for( i in 0...this._scenesArray.length )
 		{
-			var sceneName = this._scenesArray[ i ].get( "name" );
+			var sceneName:String = this._scenesArray[ i ].get( "name" );
 			if( sceneName == name )
 				return this._scenesArray[ i ];
 		}
 		return null;
 	}
 
-	public function createScene( dpeloyId:SceneDeployID ):Array<Dynamic>
+	public function getSceneById( id:SceneID ):Scene
 	{
-		var config = this._parent.get( "deploy" ).get( "scene", deployId );
+		for( i in 0...this._scenesArray.length )
+		{
+			if( haxe.EnumTools.EnumValueTools.equals( id, this._scenesArray[ i ].get( "id" )))
+				return this._scenesArray[ i ];
+		}
+		return null;
+	}
+
+	public function createScene( deployId:SceneDeployID ):Array<Dynamic>
+	{
+		var config = this._parent.getSystem( "deploy" ).getScene( deployId );
 		if( config == null )
 			return [ null, "Error in GeneratorSystem.createScene. Deploy ID: '" + deployId + "' doesn't exist in SceneDeploy data" ];
 
@@ -216,7 +231,7 @@ class SceneSystem
 		{
 			ID: id,
 			Name: config.name,
-			DeployID: dpeloyId,
+			DeployID: deployId,
 			GraphicsSprite: sprite
 		};
 		var scene = new Scene( configForScene );
@@ -224,26 +239,14 @@ class SceneSystem
 		if( err != null )
 			return [ null, 'Error in GeneratorSystem.createScene. $err' ];
 
-		this._scenesArray.push( scene );
-		return [ scene, null ];
-	}
-
-	public function createStartingScene( scene:Scene ):Array<Dynamic>
-	{
-		// окна не будут добавлены на сцену, так как они являются частью Интерфейса пользователя.
 		var configWindow:Array<Int> = config.window;
 		if( configWindow != null ) // Внутри Window есть чайлды в виде button. создаются в функции создании окна.
 		{
+			var ui:UserInterface = this._parent.getSystem( "ui" );
 			for( i in 0...configWindow.length )
 			{
-				var windowDeployId:Int = configWindow[ i ];
-				var createWindow:Array<Dynamic> = this.createWindow( windowDeployId );
-				var window:Window = createWindow[ 0 ];
-				var windowError:String = createWindow[ 1 ];
-				if( windowError != null )
-					return [ null, 'Error in GeneratorSystem.createScene. $windowError' ];
-
-				scene.addChild( window );
+				var windowDeployId:WindowDeployID = WindowDeployID( configWindow[ i ] );
+				ui.createWindow( windowDeployId );
 			}
 		}
 
@@ -252,7 +255,7 @@ class SceneSystem
 		{
 			for( j in 0...configBuilding.length )
 			{
-				var buildingDeployId:Int = configBuilding[ j ];
+				var buildingDeployId:BuildingDeployID = BuildingDeployID( configBuilding[ j ] );
 				var createBuilding:Array<Dynamic> = this.createBuilding( buildingDeployId );
 				var building:Building = createBuilding[ 0 ];
 				var buildingError:String = createBuilding[ 1 ];
@@ -263,12 +266,13 @@ class SceneSystem
 			}
 		}
 
+		this._scenesArray.push( scene );
 		return [ scene, null ];
 	}
 
-	public function createBuilding( deployId:Int ):Array<Dynamic>
+	public function createBuilding( deployId:BuildingDeployID ):Array<Dynamic>
     {
-        var config = this._buildingDeploy.get( deployId );
+        var config = this._parent.getSystem( "deploy" ).getBuilding( deployId );
         if( config == null )
             return [ null, "Error in GeneratorSystem.createBuilding. Deploy ID: '" + deployId + "' doesn't exist in BuildingDeploy data" ];
 
@@ -282,7 +286,7 @@ class SceneSystem
         var buildingConfig:BuildingConfig =
         {
             ID: id,
-            DeployID: BuildingDeployID( config.deployId ),
+            DeployID: deployId,
             Name: config.name,
             GraphicsSprite: sprite,
             UpgradeLevel: config.upgradeLevel,
@@ -296,7 +300,6 @@ class SceneSystem
         var err:String = building.init();
         if( err !=null )
             return [ null, 'Error in GeneratorSystem.createBuilding. $err' ];
-
         
         return [ building, null ];
     }
@@ -357,17 +360,112 @@ class SceneSystem
 			bitmap = this._createBitmap( config.imageNormalURL, config.imageNormalX, config.imageNormalY );
 			sprite.addChild( bitmap );
 		}
+
+		if( config.imageHoverURL != null )
+		{
+			bitmap = this._createBitmap( config.imageHoverURL, config.imageHoverX, config.imageHoverY );
+			bitmap.visible = false;
+			sprite.addChild( bitmap );
+		}
+
+		if( config.imagePushURL != null )
+		{
+			bitmap = this._createBitmap( config.imagePushURL, config.imagePushX, config.imagePushY );
+			bitmap.visible = false;
+			sprite.addChild( bitmap );
+		}
+
+		// TODO: Portrait for button hero, Level for button hero.
+
 		return sprite;
 	}
 
 	private function _createBitmap( url:String, x:Float, y:Float ):Bitmap
 	{
-		if( x == null || y == null )
-			throw 'Error in Scene.System._createBitmap. Error in "$x", "$y", "$url"';
-
 		var bitmap:Bitmap = new Bitmap( Assets.getBitmapData( url ) );
 		bitmap.x = x;
 		bitmap.y = y;
 		return bitmap;
+	}
+
+	private function _createTextSprite( config:Dynamic ):Sprite
+	{
+		var sprite:Sprite = new Sprite();
+		var text:TextField;
+		var textConfig:Dynamic = 
+		{
+			"text": null,
+			"size": null,
+			"color": null,
+			"width": null,
+			"height": null,
+			"x": null,
+			"y": null,
+			"align": null
+		};
+
+		if( config.firstText != null )
+		{
+			textConfig.text = config.firstText;
+			textConfig.size = config.firstTextSize;
+			textConfig.color = config.firstTextColor;
+			textConfig.width = config.firstTextWidth;
+			textConfig.height = config.firstTextHeight;
+			textConfig.x = config.firstTextX;
+			textConfig.y = config.firstTextY;
+			textConfig.align = config.firstTextAlign;
+			text = this._createText( textConfig );
+			sprite.addChild( text );
+		}
+
+		if( config.secondText != null )
+		{
+			textConfig.text = config.secondText;
+			textConfig.size = config.secondTextSize;
+			textConfig.color = config.secondTextColor;
+			textConfig.width = config.secondTextWidth;
+			textConfig.height = config.secondTextHeight;
+			textConfig.x = config.secondTextX;
+			textConfig.y = config.secondTextY;
+			textConfig.align = config.secondTextAlign;
+			text = this._createText( textConfig );
+			sprite.addChild( text );
+		}
+
+		return sprite;
+	}
+
+	private function _createText( text:Dynamic ):TextField
+	{
+        var txt:TextField = new TextField();
+
+        var align:Dynamic = null;
+        switch( text.align )
+        {
+        	case "left": align = TextFormatAlign.LEFT;
+        	case "right": align = TextFormatAlign.RIGHT;
+        	case "center": align = TextFormatAlign.CENTER;
+        	default: throw( "Error in GeneratorSystem._createText. Wrong align: " + text.align + "; text: " + text.text );
+        }
+
+        var textFormat:TextFormat = new TextFormat();
+        textFormat.font = "Verdana";
+        textFormat.size = text.size;
+        textFormat.color = text.color;        
+        textFormat.align = align;
+
+        txt.defaultTextFormat = textFormat;
+        txt.visible = true;
+        txt.selectable = false;
+        txt.text = text.text;
+        txt.width = text.width;
+        txt.height = text.height;
+        txt.x = text.x;
+        txt.y = text.y;
+
+        if( text.text == null || text.width == null || text.height == null || text.x == null || text.y == null || text.size == null || text.color == null )
+        	throw( "Some errors in GeneratorSystem._createText. In config some values is NULL. Text: " + text.text );
+
+        return txt;
 	}
 }

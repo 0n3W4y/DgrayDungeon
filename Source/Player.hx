@@ -1,5 +1,7 @@
 package;
 
+import InventorySystem;
+
 enum PlayerID
 {
 	PlayerID( _:Int );
@@ -10,16 +12,17 @@ enum PlayerDeployID
 	PlayerDeployID( _:Int );
 }
 
+typedef Money = Int;
+
 typedef PlayerConfig =
 {
 	var ID:PlayerID;
 	var DeployID:PlayerDeployID;
 	var Name:String;
 	var ItemStorageSlotsMax:Int;
+	var BattleItemStorageSlotsMax:Int;
 	var MoneyAmount:Money;
 }
-
-typedef Money = Int;
 
 class Player
 {
@@ -27,10 +30,16 @@ class Player
 	private var _name:String;
 	private var _deployId:PlayerDeployID;
 	private var _moneyAmount:Money;
-	private var _itemStorage:Array<Item>;
+
+	private var _itemStorage:Array<Item>; // Никаких ограничений, если предмет является классом Item, его можно запихнуть сюда. Это инвентарь игрока.
 	private var _itemStorageSlotsMax:Int;
 	private var _itemStorageSlots:Int;
 
+	private var _battleItemStorage:Array<Slot>; // данный инвентарь имееет ограничение по количеству слотов. 
+	private var _battleItemStorageSlots:Int;
+	private var _battleItemStorageSlotsMax:Int;
+
+	private var _inventory:InventorySystem;
 
 	public inline function new( config:PlayerConfig ):Void
 	{
@@ -39,6 +48,8 @@ class Player
 		this._deployId = config.DeployID;
 		this._moneyAmount = config.MoneyAmount;
 		this._itemStorageSlotsMax = config.ItemStorageSlotsMax;
+		this._battleItemStorageSlotsMax = config.BattleItemStorageSlotsMax;
+		this._inventory = new InventorySystem();
 	}
 
 	public function init():String
@@ -56,10 +67,19 @@ class Player
 			return 'Error in Player.init.Wrong money amount. Name: "$_name" id: "$_id"  deploy id: "$_deployId"';
 
 		if( this._itemStorageSlotsMax < 0 )
-			return 'Error in Player.init. Wrong Maximum hero slots. Name: "$_name" id: "$_id"  deploy id: "$_deployId"';
+			return 'Error in Player.init. Wrong Maximum item slots. Name: "$_name" id: "$_id"  deploy id: "$_deployId"';
+
+		if( this._battleItemStorageSlotsMax < 0 )
+			return 'Error in Player.init. Wrong item in battle storage Maximum slots. Name: "$_name" id: "$_id"  deploy id: "$_deployId"';
 
 		this._itemStorageSlots = 0;
-		this._heroStorage = new Array<Hero>();
+		this._battleItemStorageSlots = 0;
+		this._heroStorage = new Array<Slot>();
+		this._battleItemStorage = new Array<Slot>();
+		var err:String = this.inventory.init( { Parent:this, Inventory:this._battleItemStorage, MaxSlots:this._battleItemStorageSlotsMax, Slots:this._battleItemStorageSlots } );
+		if( err != null )
+			return 'Error in Player.Init. Name: "$_name" id: "$_id"  deploy id: "$_deployId". $err';
+
 		return null;
 	}
 
@@ -68,53 +88,56 @@ class Player
 		return null;
 	}
 
-	public function checkHeroStorageForFreeSlots():Bool
+	public function checkItemStorageForFreeSlots():Bool
 	{
-		if( this._heroSlots < this._maxHeroSlots )
+		if( this._itemStorageSlots < this._itemStorageSlotsMax )
 			return true;
 
 		return false;
 	}
 
-	public function addItemToStorage( hero:Hero ):Void
+	public function addItemToStorage( item:Item ):Void
 	{
-		var name:String = hero.get( "name" );
-		var id:PlayerID = hero.get( "id" );
-		var check:Int = this._checkHeroInStorage( id );
+		if( !this.checkItemStorageForFreeSlots )
+			return;
+		//TODO: Сделать проверку на предмет того, можно ли "сложить" количество объектов. Будет решено после появления самих предметов.
+		var name:String = item.get( "name" );
+		var id:Item.ItemID = item.get( "id" );
+		var check:Int = this._checkItemInStorage( id );
 		if( check != null )
-			throw 'Error in Player.addHeroToStorage. Found duplicate hero with name:"$name" id:"$id"';
+			throw 'Error in Player.addItemToStorage. Found duplicate item with name:"$name" id:"$id"';
 
-		this._heroStorage.push( hero );
-		this._heroSlots++;
+		this._itemStorage.push( item );
+		this._itemStorageSlots++;
 	}
 
-	public function removeItemFromStorage( hero:Hero ):Array<Dynamic>
+	public function removeItemFromStorage( item:Item ):Array<Dynamic>
 	{
-		var name:String = hero.get( "name" );
-		var id:PlayerID = hero.get( "id" );
-		var check:Int = this._checkHeroInStorage( id );
+		var name:String = item.get( "name" );
+		var id:Item.ItemID = item.get( "id" );
+		var check:Int = this._checkItemInStorage( id );
 		if( check == null )
-			return [ null, 'Error in Player.removeHeroToStorage. Hero with name:"$name" id:"$id" does not exist' ];
+			return [ null, 'Error in Player.removeItemFromStorage. Item with name:"$name" id:"$id" does not exist' ];
 
-		this._heroStorage.splice( check, 1 );
-		this._heroSlots--;
+		this._itemStorage.splice( check, 1 );
+		this._itemStorageSlots--;
 		return [ hero, null ];
 	}
 
-	public function getHeroById( id:PlayerID ):Array<Dynamic>
+	public function getItemFromStorageById( id:Item.ItemID ):Array<Dynamic>
 	{
-		var check:Int = this._checkHeroInStorage( id );
+		var check:Int = this._checkItemInStorage( id );
 		if( check == null )
 			return [ null, 'Error in Player.getHeroById. Hero with id:"$id" does not exist' ];
 
-		return [ this._heroStorage[ check ], null ];
+		return [ this._itemStorage[ check ], null ];
 	}
 
 	public function get( value:String ):Dynamic
 	{
 		switch( value )
 		{
-			case "" :return null;
+			case "inventory" :return this._inventory;
 			default: throw 'Error in Player.get. Not valid value: "$value"';
 		}
 	}
@@ -124,11 +147,11 @@ class Player
 	//PRIVATE
 
 
-	private function _checkHeroInStorage( id:PlayerID ):Int
+	private function _checkItemInStorage( id:Item.ItemID ):Int
 	{
-		for( i in 0...this._heroStorage.length )
+		for( i in 0...this._itemStorage.length )
 		{
-			if( EnumValueTools.equals( this._heroStorage[ i ].get( "id" ), id ) )
+			if( haxe.EnumTools.EnumValueTools.equals( this._itemStorage[ i ].get( "id" ), id ) )
 				return i;
 		}
 		return null;

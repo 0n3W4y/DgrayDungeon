@@ -1,6 +1,7 @@
 package;
 
 import openfl.display.Sprite;
+import Window;
 
 enum SceneID
 {
@@ -29,12 +30,10 @@ class Scene
 
 	private var _isPrepared:String;
 
-	private var _aliveEntities:Dynamic;
-	private var _objectEntities:Dynamic;
-	private var _window:Array<Window.WindowID>;
-
 	private var _graphics:GraphicsSystem;
 	private var _sprite:Sprite;
+
+	private var _building:Array<Building>;
 	
 
 	public inline function new( config:SceneConfig ):Void
@@ -43,8 +42,8 @@ class Scene
 		this._id = config.ID;
 		this._name = config.Name;
 		this._deployId = config.DeployID;
-		this._graphics = new GraphicsSystem( this );
 		this._sprite = config.GraphicsSprite;
+		this._graphics = new GraphicsSystem();
 	}
 
 	public function init():String
@@ -58,24 +57,12 @@ class Scene
 		if( this._deployId == null  )
 			return 'Error in Scene.init. Wrong Deploy ID. Name is:"$_name" id is:"$_id" deploy id is:"$_deployId"';
 		
-		var err:String = this._graphics.init();
+		var err:String = this._graphics.init({ Parent:this, GraphicsSprite:this._sprite });
 		if( err != null )
 			return 'Error in Scene.init. $err. Name is "$_name" id is:"$_id" deploy id is:"$_deployId"';
 
 		this._isPrepared = "unprepared"; // По умолчанию, сцена не готова.
-
-		this._aliveEntities = 
-		{
-			"hero": new Array<Hero>(),
-			"enemy": new Array()
-		};
-		this._objectEntities = 
-		{
-			"building": new Array<Building>(),
-			"treasure": new Array()
-		};
-
-		this._window = new Array<Window.WindowID>();
+		this._building = new Array<Building>();
 
 		return null;
 	}
@@ -119,7 +106,6 @@ class Scene
 
 	public function addChild( object:Dynamic ):Void
 	{
-		var container:Array<Dynamic> = null;
 		var type:String = object.get( "type" );
 		var name:String = object.get( "name" );
 
@@ -129,29 +115,26 @@ class Scene
 
 		switch( type )
 		{
-			case "building": container = this._objectEntities.building;
+			case "building": container = this._building.push( object );
 			default: throw 'Error in Scene.addChild. Can not add child with type: "$type" and name "$name"';
 		}
-		container.push( object );
 	}
 
 	public function removeChild( object:Dynamic ):Array<Dynamic>
 	{
-		var container:Array<Dynamic> = null;
 		var type:String = object.get( "type" );
 		var name:String = object.get( "name" );
 
-		switch( type )
-		{
-			case "building": container = this._objectEntities.building;
-			default: { return [ null, 'Error in Scene.removeChild. No type found for type: "$type"' ]; }
-		}
-
 		var check:Int = this._checkChildForExist( object );
 		if( check == null )
-			return [ null, 'Error in Scene.removeChild. Scene does not have object with type: "$type" and name: "$name"' ];		
+			return [ null, 'Error in Scene.removeChild. Scene does not have object with type: "$type" and name: "$name"' ];	
 
-		container.splice( check, 1 );
+		switch( type )
+		{
+			case "building": this._building.splice( check, 1 );
+			default: return [ null, 'Error in Scene.removeChild. No type found for type: "$type"' ];
+		}
+
 		return [ object, null ];
 	}
 
@@ -175,16 +158,17 @@ class Scene
 		var container:Array<Dynamic> = null;
 		switch( type )
 		{
-			case "building": container = this._objectEntities.building;
+			case "building": container = this._building;
 			default: return null;
 		}
 
 		for( i in 0...container.length )
 		{
-			if( object.get( "id" ).match( container[ i ].get( "id" ) ) )
+			if( haxe.EnumTools.EnumValueTools.equals( object.get( "id" ), container[ i ].get( "id" )))
 				return i;
 		}
 
 		return null;
 	}
+
 }

@@ -16,6 +16,7 @@ class Game
 	private var _width:Int;
 	private var _height:Int;
 	private var _gameStart:Float;
+	private var _nextId:Int;
 
 	private var _deploy:Deploy;
 	private var _state:State;
@@ -42,6 +43,7 @@ class Game
 		this._fps = fps;
 		this._height = height;
 		this._width = width;
+		this._nextId = 0;
 
 		this._mainSprite = mainSprite;
 		this._scenesSprite = new Sprite();
@@ -226,86 +228,15 @@ class Game
 	private function _parseData():Deploy.DeployConfig
 	{
 		var window:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployWindow.json" );
-		var windowMap:Map<Window.WindowDeployID, WindowDeploy> = new Map<Window.WindowDeployID, WindowDeploy>();
-		for( key in Reflect.fields( window ) )
-		{
-			var intKey:Window.WindowDeployID = Std.parseInt( key );
-			var value:WindowDeploy = Reflect.getProperty( window, key );
-			windowMap[ intKey ] = value;
-
-		}
-
 		var button:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployButton.json" );
-		var buttonMap:Map<Button.ButtonDeployID, ButtonDeploy> = new Map<Button.ButtonDeployID, ButtonDeploy>();
-		for( key in Reflect.fields( button ) )
-		{
-			var intKey:Button.ButtonDeployID = Std.parseInt( key );
-			var value:ButtonDeploy = Reflect.getProperty( button, key );
-			buttonMap[ intKey ] = value;
-
-		}
-
 		var scene:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployScene.json" );
-		var sceneMap:Map<Scene.SceneDeployID, SceneDeploy> = new Map<Scene.SceneDeployID, SceneDeploy>();
-		for( key in Reflect.fields( scene ) )
-		{
-			var intKey:Scene.SceneDeployID = Std.parseInt( key );
-			var value:SceneDeploy = Reflect.getProperty( scene, key );
-			sceneMap[ intKey ] = value;
-
-		}
-
 		var building:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployBuilding.json" );
-		var buildingMap:Map<Building.BuildingDeployID, BuildingDeploy> = new Map<Building.BuildingDeployID, BuildingDeploy>();
-		for( key in Reflect.fields( building ) )
-		{
-			var intKey:Building.BuildingDeployID = Std.parseInt( key );
-			var value:BuildingDeploy = Reflect.getProperty( building, key );
-			buildingMap[ intKey ] = value;
-
-		}
-
 		var hero:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployHero.json" );
-		var heroMap:Map<Hero.HeroDeployID, HeroDeploy> = new Map<Hero.HeroDeployID, HeroDeploy>();
-		for( key in Reflect.fields( hero ) )
-		{
-			var intKey:Hero.HeroDeployID = Std.parseInt( key );
-			var value:HeroDeploy = Reflect.getProperty( hero, key );
-			heroMap[ intKey ] = value;
-
-		}
-
 		var item:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployItem.json" );
-		var itemMap:Map<Item.ItemDeployID, ItemDeploy> = new Map<Item.ItemDeployID, ItemDeploy>();
-		for( key in Reflect.fields( item ) )
-		{
-			var intKey:Item.ItemDeployID = Std.parseInt( key );
-			var value:ItemDeploy = Reflect.getProperty( item, key );
-			itemMap[ intKey ] = value;
-
-		}
-
 		var enemy:Dynamic = ConfigJSON.json( "c:/projects/DgrayDungeon/Source/DeployEnemy.json" );
-		var enemyMap:Map<Enemy.EnemyDeployID, EnemyDeploy> = new Map<Enemy.EnemyDeployID, EnemyDeploy>();
-		for( key in Reflect.fields( enemy ) )
-		{
-			var intKey:Enemy.EnemyDeployID = Std.parseInt( key );
-			var value:EnemyDeploy = Reflect.getProperty( enemy, key );
-			enemyMap[ intKey ] = value;
-
-		}
-
 		var player:Dynamic = ConfigJSON.json( "C:/projects/DgrayDungeon/Source/DeployPlayer.json" );
-		var playerMap:Map<Player.PlayerDeployID, PlayerDeploy> = new Map<Player.PlayerDeployID, PlayerDeploy>();
-		for( key in Reflect.fields( player ) )
-		{
-			var intKey:Player.PlayerDeployID = Std.parseInt( key );
-			var value:PlayerDeploy = Reflect.getProperty( player, key );
-			playerMap[ intKey ] = value;
 
-		}
-
-		return { Window:windowMap, Button:buttonMap, Scene:sceneMap, Building:buildingMap, Hero:heroMap, Item:itemMap, Enemy:enemyMap, Player:playerMap };
+		return { Window:window, Button:button, Scene:scene, Building:building, Hero:hero, Item:item, Enemy:enemy, Player:player };
 	}
 
 	private function _mapJsonObject( newObject:Dynamic, oldObject:Dynamic ):Void

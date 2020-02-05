@@ -154,14 +154,15 @@ class EventHandler
 	private function _checkListenerIfExist( object:Dynamic ):Int
 	{	
 		var type:String = object.get( "type" );
-		for( i in this._listeners.length )
+		for( i in 0...this._listeners.length )
 		{
-			if( this._listeners[ i ].get( "type" ) != type ))
+			if( this._listeners[ i ].get( "type" ) != type )
 				continue;
-				
+
 			if( haxe.EnumTools.EnumValueTools.equals( this._listeners[ i ].get( "id" ), object.get( "id" )))
 				return i;
 		}
+		return null;
 	}
 
 	private function _clickStartGame( e:MouseEvent ):Void

@@ -3,19 +3,27 @@ package;
 import openfl.display.Sprite;
 import openfl.text.TextField;
 
+typedef GraphicsSystemconfig = 
+{
+	var Parent:Dynamic;
+	var GraphicsSprite:Sprite;
+}
+
 class GraphicsSystem
 {
 	private var _parent:Dynamic; // получить доступ к классу, в котором находится данный класс.
 	private var _sprite:Sprite;
 
-	public inline function new( parent:Dynamic ):Void
+	public inline function new():Void
 	{
-		this._parent = parent;
-		this._sprite = this._parent.get( "sprite" );
+
 	}
 
-	public function init():String
+	public function init( config:GraphicsSystemconfig ):String
 	{
+		this._parent = config.Parent;
+		this._sprite = config.GraphicsSprite;
+		
 		if( this._parent == null )
 			return "Error in GraphicsSystem.init. Parent is NULL";
 		

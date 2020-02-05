@@ -29,6 +29,7 @@ class Button
 	private var _activeStatus:Bool;
 
 	private var _graphics:GraphicsSystem;
+	private var _sprite:Sprite;
 
 
 	public inline function new( config:ButtonConfig ):Void
@@ -37,7 +38,8 @@ class Button
 		this._id = config.ID;
 		this._deployId = config.DeployID;
 		this._name = config.Name;
-		this._graphics = new GraphicsSystem( this, config.GraphicsSprite );
+		this._sprite = config.GraphicsSprite;
+		this._graphics = new GraphicsSystem();
 	}
 
 	public function init():String
@@ -51,7 +53,7 @@ class Button
 		if( this._deployId == null )
 			return 'Error in Button.init. Wrong Deploy ID. Name is:"$_name" id is:"$_id" deploy id is:"$_deployId"';
 		
-		var err:String = this._graphics.init();
+		var err:String = this._graphics.init({ Parent:this, GraphicsSprite: this._sprite });
 		if( err != null )
 			return 'Error in Button.init. $err. Name is "$_name" id is:"$_id" deploy id is:"$_deployId"';
 
@@ -81,7 +83,7 @@ class Button
 			case "name": return this._name;
 			case "type": return this._type;
 			case "graphics": return this._graphics;
-			case "sprite": return this._graphics.getSprite();
+			case "sprite": return this._sprite;
 			case "activeStatus": return this._activeStatus;
 			default: { throw( "Error in Button.get. Can't get " + value ); return null; };
 		}

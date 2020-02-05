@@ -1,5 +1,13 @@
 package;
 
+typedef InventorySystemConfig =
+{
+	var Parent:Dynamic;
+	var Inventory:Array<Slot>;
+	var MaxSlots:Int;
+	var Slots:Int;
+}
+
 typedef Slot = 
 {
 	var Type:String;
@@ -14,19 +22,30 @@ class InventorySystem
 	private var _inventorySlots:Int;
 	private var _inventorySlotsMax:Int;
 
-	public inline function new( parent:Dynamic ):Void
+	public inline function new():Void
 	{
-		this._parent = parent;
+		
 	}
 
-	public function init():String
+	public function init( config:InventorySystemConfig ):String
 	{
-		if( this._parent == null || this._parent == '' )
-			return 'Error in InventorySystem.init. Parent is wrong: "$_parent"';
+		this._parent = config.Parent;
+		this._inventory = config.Inventory;
+		this._inventorySlots = config.Slots;
+		this._inventorySlotsMax = config.MaxSlots;
 
-		this._inventory = this._parent.get( "inventoryStorage" );
-		this._inventorySlots = this._parent.get( "inventoryStorageSlots" );
-		this._inventorySlotsMax = this._parent.get( "inventoryStorageSlotsMax" );
+		if( this._parent == null || this._parent == '' )
+			return 'Error in InventorySystem.init. Parent is wrong';
+
+		if( this._inventory == null )
+			return 'Error in InventorySystem.init. Inventory Array is null!';
+
+		if( this._inventorySlots == null )
+			return 'Error in InventorySystem.init. Inventory Slots are null!';
+
+		if( this._inventorySlotsMax == null )
+			return 'Error in InventorySystem.init. Inventory Slots Max are null!';
+
 		return null;
 	}
 
@@ -35,14 +54,14 @@ class InventorySystem
 		return null;
 	}
 
-	public function addToInventory( item:Item ):Int
+	public function addToInventory( item:Item ):Void
 	{
 		this._inventorySlots ++;
-		return "ok";
 	}
 
 	public function removeFromInventory( item:Item ):Item
 	{
+		var index:Int = 0;
 		this._inventory[ index ].Item = null;
 		this._inventorySlots--;
 		return item;
@@ -112,7 +131,7 @@ class InventorySystem
 		return 0;
 	}
 
-	private function _substractItemFromSlot( item:Item, slot:Slot ):Int
+	private function _substractAmountItemFromSlot( item:Item, slot:Slot ):Int
 	{
 		return 0;
 	}

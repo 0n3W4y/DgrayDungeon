@@ -33,6 +33,7 @@ class Window
 	private var _buttonChildren:Array<Button>;
 
 	private var _graphics:GraphicsSystem;
+	private var _sprite:Sprite;
 
 
 	public function new( config:WindowConfig ):Void
@@ -42,9 +43,8 @@ class Window
 		this._name = config.Name;
 		this._deployId = config.DeployID;	
 		this._alwaysActive = config.AlwaysActive;	
-		this._graphics = new GraphicsSystem( this, config.GraphicsSprite );
-		this._buttonChildren = new Array<Button>();
-		this._isActive = false; // by default status is hide;
+		this._graphics = new GraphicsSystem();
+		this._sprite = config.GraphicsSprite;
 	}
 
 	public function init():String
@@ -58,7 +58,9 @@ class Window
 		if( this._deployId == null )
 			return 'Error in Window.init. Wrong Deploy ID. Name is:"$_name" id is:"$_id" deploy id is:"$_deployId"';
 
-		var err:String = this._graphics.init();
+		this._isActive = false; // by default status is hide;
+		this._buttonChildren = new Array<Button>();
+		var err:String = this._graphics.init({ Parent:this, GraphicsSprite:this._sprite });
 		if( err != null )
 			return 'Error in Window.init. $err. Name is:"$_name" id is:"$_id" deploy id is:"$_deployId"';
 
@@ -113,7 +115,7 @@ class Window
 			case "name": return this._name;
 			case "type": return this._type;
 			case "graphics": return this._graphics;
-			case "sprite": return this._graphics.getSprite();
+			case "sprite": return this._sprite;
 			case "activeStatus": return this._isActive;
 			case "alwaysActive": return this._alwaysActive;
 			case "childs": return this._buttonChildren;

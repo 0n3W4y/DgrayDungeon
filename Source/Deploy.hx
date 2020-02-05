@@ -1,86 +1,99 @@
 package;
 
-
-enum WindowDeploy
-{
-	WindowDeploy( _:Dynamic );
-}
-
-enum ButtonDeploy
-{
-	ButtonDeploy( _:Dynamic );
-}
-
-enum PlayerDeploy
-{
-	PlayerDeploy( _:Dynamic );
-}
-
-enum SceneDeploy
-{
-	SceneDeploy( _:Dynamic );
-}
-
-enum ItemDeploy
-{
-	ItemDeploy( _:Dynamic );
-}
-
-enum BuildingDeploy
-{
-	BuildingDeploy( _:Dynamic );
-}
-
-enum EnemyDeploy
-{
-	EnemyDeploy( _:Dynamic );
-}
-
-enum HeroDeploy
-{
-	HeroDeploy( _:Dynamic );
-}
-
+import Window;
+import Player;
+import Button;
+import Building;
+import Hero;
+import Enemy;
+import Scene;
+import Item;
 
 typedef DeployConfig =
 {
-	var Window:Map<Int, WindowDeploy>;
-	var Button:Map<Int, ButtonDeploy>;
-	var Scene:Map<Int, SceneDeploy>;
-	var Building:Map<Int, BuildingDeploy>;
-	var Hero:Map<Int, HeroDeploy>; 
-	var Item:Map<Int, ItemDeploy>;
-	var Enemy:Map<Int, EnemyDeploy>;
-	var Player:Map<Int, PlayerDeploy>;
+	var Window:Dynamic;
+	var Button:Dynamic;
+	var Scene:Dynamic;
+	var Building:Dynamic;
+	var Hero:Dynamic; 
+	var Item:Dynamic;
+	var Enemy:Dynamic;
+	var Player:Dynamic;
 }
 
 class Deploy
 {
-	private var _player:Map<Int, PlayerDeploy>;
-	private var _scene:Map<Int, SceneDeploy>;
-	private var _hero:Map<Int, HeroDeploy>;
-	private var _building:Map<Int, BuildingDeploy>;
-	private var _enemy:Map<Int, EnemyDeploy>;
-	private var _window:Map<Int, WindowDeploy>;
-	private var _button:Map<Int, ButtonDeploy>;
-	private var _item:Map<Int, ItemDeploy>;
+	private var _player:Map<PlayerDeployID, Dynamic>;
+	private var _scene:Map<SceneDeployID, Dynamic>;
+	private var _hero:Map<HeroDeployID, Dynamic>;
+	private var _building:Map<BuildingDeployID, Dynamic>;
+	private var _enemy:Map<EnemyDeployID, Dynamic>;
+	private var _window:Map<WindowDeployID, Dynamic>;
+	private var _button:Map<ButtonDeployID, Dynamic>;
+	private var _item:Map<ItemDeployID, Dynamic>;
 
 	public inline function new( config:DeployConfig ):Void
 	{
-		this._player = config.Player;
-		this._scene = config.Scene;
-		this._window = config.Window;
-		this._button = config.Button;
-		this._building = config.Building;
-		this._hero = config.Hero;
-		this._item = config.Item;
-		this._enemy = config.Enemy;
+		this._player = new Map<PlayerDeployID, Dynamic>();
+		for( key in Reflect.fields( config.Player ))
+		{
+			var intKey:Int = Std.parseInt( key );
+			this._player[ PlayerDeployID( intKey )] = Reflect.getProperty( config.Player, key );
+		}
+
+		this._scene = new Map<SceneDeployID, Dynamic>();
+		for( key in Reflect.fields( config.Scene ))
+		{
+			var intKey:Int = Std.parseInt( key );
+			this._scene[ SceneDeployID( intKey )] = Reflect.getProperty( config.Scene, key );
+		}
+
+		this._hero = new Map<HeroDeployID, Dynamic>();
+		for( key in Reflect.fields( config.Hero ))
+		{
+			var intKey:Int = Std.parseInt( key );
+			this._hero[ HeroDeployID( intKey )] = Reflect.getProperty( config.Hero, key );
+		}
+
+		this._building = new Map<BuildingDeployID, Dynamic>();
+		for( key in Reflect.fields( config.Building ))
+		{
+			var intKey:Int = Std.parseInt( key );
+			this._building[ BuildingDeployID( intKey )] = Reflect.getProperty( config.Building, key );
+		}
+
+		this._enemy = new Map<EnemyDeployID, Dynamic>();
+		for( key in Reflect.fields( config.Enemy ))
+		{
+			var intKey:Int = Std.parseInt( key );
+			this._enemy[ EnemyDeployID( intKey )] = Reflect.getProperty( config.Enemy, key );
+		}
+
+		this._window = new Map<WindowDeployID, Dynamic>();
+		for( key in Reflect.fields( config.Window ))
+		{
+			var intKey:Int = Std.parseInt( key );
+			this._window[ WindowDeployID( intKey )] = Reflect.getProperty( config.Window, key );
+		}
+
+		this._button = new Map<ButtonDeployID, Dynamic>();
+		for( key in Reflect.fields( config.Button ))
+		{
+			var intKey:Int = Std.parseInt( key );
+			this._button[ ButtonDeployID( intKey )] = Reflect.getProperty( config.Button, key );
+		}
+
+		this._item = new Map<ItemDeployID, Dynamic>();
+		for( key in Reflect.fields( config.Item ))
+		{
+			var intKey:Int = Std.parseInt( key );
+			this._item[ ItemDeployID( intKey )] = Reflect.getProperty( config.Item, key );
+		}
 	}
 
 	public function init():String
 	{
-		
-		if( !this.scene.exists( 1000 ) )
+		if( !this._scene.exists( Scene.SceneDeployID( 1000 )))
 			return 'Error in Deploy.init. Scene deploy is not valid';		
 		
 		if( this._building == null )
@@ -92,10 +105,10 @@ class Deploy
 		if( this._item == null )
 			return 'Error in Deploy.init. Item deploy is not valid';
 
-		if( !this._button.exists( 4000 ) )
+		if( !this._button.exists( Button.ButtonDeployID( 4000 )))
 			return 'Error in UserInterface.init. Button deploy config is not valid!';
 
-		if( !this._window.exists( 3000 ) )
+		if( !this._window.exists( Window.WindowDeployID( 3000 )))
 			return 'Error in UserInterface.init. Window deploy config is not valid!';
 
 		//TODO: добавить дополнительные провеки на deploy.
@@ -103,67 +116,67 @@ class Deploy
 		return null;
 	}
 
-	public function get( type:String , deployId:Int ):Dynamic
+	public function getWindow( deployId:Window.WindowDeployID ):Dynamic
 	{
-		switch( type )
-		{
-			case "window":
-			{
-				if( this._window.exists( deployId ) )
-					throw 'Error in Deploy.get. Wrong deploy id for "$type" and deploy id: "$deployId"';
+		if( this._window.exists( deployId ) )
+			throw 'Error in Deploy.get. Wrong deploy id: "$deployId"';
 
-				return this._window[ deployId ];
-			}
-			case "button":
-			{
-				if( this._button.exists( deployId ) )
-					throw 'Error in Deploy.get. Wrong deploy id for "$type" and deploy id: "$deployId"';
+		return this._window[ deployId ];
+	}
+
+	public function getButton( deployId:Button.ButtonDeployID ):Dynamic
+	{
+		if( this._button.exists( deployId ) )
+			throw 'Error in Deploy.get. Wrong deploy id: "$deployId"';
 				
-				return this._button[ deployId ];
-			}
-			case "hero":
-			{
-				if( this._hero.exists( deployId ) )
-					throw 'Error in Deploy.get. Wrong deploy id for "$type" and deploy id: "$deployId"';
+		return this._button[ deployId ];
+	}
+
+	public function getHero( deployId:Hero.HeroDeployID ):Dynamic
+	{
+		if( this._hero.exists( deployId ) )
+			throw 'Error in Deploy.get. Wrong deploy id: "$deployId"';
 				
-				return this._hero[ deployId ];
-			}
-			case "player":
-			{
-				if( this._player.exists( deployId ) )
-					throw 'Error in Deploy.get. Wrong deploy id for "$type" and deploy id: "$deployId"';
+		return this._hero[ deployId ];
+	}
+
+	public function getPlayer( deployId:Player.PlayerDeployID ):Dynamic
+	{
+		if( this._player.exists( deployId ) )
+			throw 'Error in Deploy.get. Wrong deploy id: "$deployId"';
 				
-				return this._player[ deployId ];
-			}
-			case "scene":
-			{
-				if( this._scene.exists( deployId ) )
-					throw 'Error in Deploy.get. Wrong deploy id for "$type" and deploy id: "$deployId"';
+		return this._player[ deployId ];
+	}
+
+	public function getScene( deployId:Scene.SceneDeployID ):Dynamic
+	{
+		if( this._scene.exists( deployId ) )
+			throw 'Error in Deploy.get. Wrong deploy id: "$deployId"';
 				
-				return this._scene[ deployId ];
-			}
-			case "Building":
-			{
-				if( this._building.exists( deployId ) )
-					throw 'Error in Deploy.get. Wrong deploy id for "$type" and deploy id: "$deployId"';
+		return this._scene[ deployId ];
+	}
+
+	public function getBuilding( deployId:Building.BuildingDeployID ):Dynamic
+	{
+		if( this._building.exists( deployId ) )
+			throw 'Error in Deploy.get. Wrong deploy id: "$deployId"';
 				
-				return this._building[ deployId ];
-			}
-			case "item":
-			{
-				if( this._item.exists( deployId ) )
-					throw 'Error in Deploy.get. Wrong deploy id for "$type" and deploy id: "$deployId"';
+		return this._building[ deployId ];
+	}
+
+	public function getItem( deployId:Item.ItemDeployID ):Dynamic
+	{
+		if( this._item.exists( deployId ) )
+			throw 'Error in Deploy.get. Wrong deploy id: "$deployId"';
 				
-				return this._item[ deployId ];
-			}
-			case "enemy":
-			{
-				if( this._enemy.exists( deployId ) )
-					throw 'Error in Deploy.get. Wrong deploy id for "$type" and deploy id: "$deployId"';
+		return this._item[ deployId ];
+	}
+
+	public function getEnemy( deployId:Enemy.EnemyDeployID ):Dynamic
+	{
+		if( this._enemy.exists( deployId ) )
+			throw 'Error in Deploy.get. Wrong deploy id: "$deployId"';
 				
-				return this._enemy[ deployId ];
-			}
-			default: throw 'Error in Deploy.get. Wrong type, type can not be: "$type"';
-		}
+		return this._enemy[ deployId ];
 	}
 }

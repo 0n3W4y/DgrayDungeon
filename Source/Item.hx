@@ -16,4 +16,9 @@ class Item
 	{
 
 	}
+
+	public function get():Void
+	{
+		
+	}
 }
