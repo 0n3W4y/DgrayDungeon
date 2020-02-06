@@ -102,14 +102,14 @@ class SceneSystem
 	public function drawUiForScene( scene:Scene ):Void
 	{
 		var ui:UserInterface = this._parent.getSystem( "ui" );
-		var windows:Array<Window> = scene.getChilds( "ui" ).window;
-		if( windows == null )
-			throw 'Error in SceneSystem.drawUiForScene. Scene does not have any widnows.';
+		var sceneDeployId:SceneDeployID = scene.get( "id" );
+		var configScene:Dynamic = this._parent.getSystem( "deploy" ).getScene( sceneDeployId );
+		var windowArray:Array<Int> = configScene.window;
 		
-		for( i in 0...windows.length )
+		for( i in 0...windowArray.length )
 		{
-			var window:Window = windows[ i ];
-			ui.addUiObject( windows[ i ] );
+			var window:WindowDeployID = windowArray[ i ];
+			ui.addWindowOnUi( windows[ i ] );
 		}
 
 	}
@@ -246,8 +246,7 @@ class SceneSystem
 			var ui:UserInterface = this._parent.getSystem( "ui" );
 			for( i in 0...configWindow.length )
 			{
-				var windowDeployId:WindowDeployID = WindowDeployID( configWindow[ i ] );
-				ui.createWindow( windowDeployId );
+				ui.createWindow( configWindow[ i ] );
 			}
 		}
 
