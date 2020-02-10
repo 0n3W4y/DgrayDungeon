@@ -102,28 +102,31 @@ class SceneSystem
 	public function drawUiForScene( scene:Scene ):Void
 	{
 		var ui:UserInterface = this._parent.getSystem( "ui" );
-		var sceneDeployId:SceneDeployID = scene.get( "id" );
+		var sceneDeployId:SceneDeployID = scene.get( "deployId" );
 		var configScene:Dynamic = this._parent.getSystem( "deploy" ).getScene( sceneDeployId );
 		var windowArray:Array<Int> = configScene.window;
 		
 		for( i in 0...windowArray.length )
 		{
-			var window:WindowDeployID = windowArray[ i ];
-			ui.addWindowOnUi( windows[ i ] );
+			var window:Int = windowArray[ i ];
+			var windowId:WindowDeployID = WindowDeployID( window );
+			ui.addWindowOnUi( windowId );
 		}
 
 	}
 
 	public function undrawUiForScene( scene:Scene ):Void
 	{
-		var windows:Array<Window> = scene.getChilds( "ui" ).window;
 		var ui:UserInterface = this._parent.getSystem( "ui" );
+		var sceneDeployId:SceneDeployID = scene.get( "id" );
+		var configScene:Dynamic = this._parent.getSystem( "deploy" ).getScene( sceneDeployId );
+		var windowArray:Array<Int> = configScene.window;
 
-		var sceneId:GeneratorSystem.ID = scene.get( "id" );
-		for( i in 0...windows.length )
+		for( i in 0...windowArray.length )
 		{
-			var window:Window = windows[ i ];
-			ui.removeUiObject( windows[ i ], sceneId );
+			var window:Int = windowArray[ i ];
+			var windowId:WindowDeployID = WindowDeployID( window );
+			ui.removeWindowFromUi( windowId );
 		}
 	}
 
@@ -219,7 +222,7 @@ class SceneSystem
 		var sceneDeployId:SceneDeployID = SceneDeployID( deployId );
 		var config = this._parent.getSystem( "deploy" ).getScene( sceneDeployId );
 		if( config == null )
-			return [ null, "Error in GeneratorSystem.createScene. Deploy ID: '" + deployId + "' doesn't exist in SceneDeploy data" ];
+			return [ null, "Error in SceneSystem.createScene. Deploy ID: '" + deployId + "' doesn't exist in SceneDeploy data" ];
 
 		var id:SceneID = SceneID( this._parent.createId() );
 		var sprite:Sprite = new Sprite();
@@ -238,7 +241,7 @@ class SceneSystem
 		var scene = new Scene( configForScene );
 		var err:String = scene.init();
 		if( err != null )
-			return [ null, 'Error in GeneratorSystem.createScene. $err' ];
+			return [ null, 'Error in SceneSystem.createScene. $err' ];
 
 		var configWindow:Array<Int> = config.window;
 		if( configWindow != null ) // Внутри Window есть чайлды в виде button. создаются в функции создании окна.
@@ -255,12 +258,7 @@ class SceneSystem
 		{
 			for( j in 0...configBuilding.length )
 			{
-				var createBuilding:Array<Dynamic> = this.createBuilding( configBuilding[ j ] );
-				var building:Building = createBuilding[ 0 ];
-				var buildingError:String = createBuilding[ 1 ];
-				if( buildingError != null )
-					return [ null, 'Error in GeneratorSystem.createScene. $buildingError' ];
-
+				var building:Building = this.createBuilding( configBuilding[ j ] );
 				scene.addChild( building );
 			}
 		}
@@ -269,12 +267,12 @@ class SceneSystem
 		return [ scene, null ];
 	}
 
-	public function createBuilding( deployId:Int ):Array<Dynamic>
+	public function createBuilding( deployId:Int ):Building
     {
     	var buildingDeployId:BuildingDeployID = BuildingDeployID( deployId );
         var config = this._parent.getSystem( "deploy" ).getBuilding( buildingDeployId );
         if( config == null )
-            return [ null, "Error in GeneratorSystem.createBuilding. Deploy ID: '" + deployId + "' doesn't exist in BuildingDeploy data" ];
+            throw 'Error in SceneSystem.createBuilding. Deploy ID: $deployId doesnt exist';
 
         var id:BuildingID = BuildingID( this._parent.createId() );
         var sprite:Sprite = new Sprite();
@@ -302,9 +300,9 @@ class SceneSystem
         var building:Building = new Building( buildingConfig );
         var err:String = building.init();
         if( err !=null )
-            return [ null, 'Error in GeneratorSystem.createBuilding. $err' ];
+            throw 'Error in SceneSystem.createBuilding. $err';
         
-        return [ building, null ];
+        return building;
     }
 
 	//PRIVATE
@@ -448,7 +446,7 @@ class SceneSystem
         	case "left": align = TextFormatAlign.LEFT;
         	case "right": align = TextFormatAlign.RIGHT;
         	case "center": align = TextFormatAlign.CENTER;
-        	default: throw( "Error in GeneratorSystem._createText. Wrong align: " + text.align + "; text: " + text.text );
+        	default: throw( "Error in SceneSystem._createText. Wrong align: " + text.align + "; text: " + text.text );
         }
 
         var textFormat:TextFormat = new TextFormat();
@@ -467,7 +465,7 @@ class SceneSystem
         txt.y = text.y;
 
         if( text.text == null || text.width == null || text.height == null || text.x == null || text.y == null || text.size == null || text.color == null )
-        	throw( "Some errors in GeneratorSystem._createText. In config some values is NULL. Text: " + text.text );
+        	throw( "Some errors in SceneSystem._createText. In config some values is NULL. Text: " + text.text );
 
         return txt;
 	}

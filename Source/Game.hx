@@ -6,6 +6,7 @@ import openfl.display.Sprite;
 
 import UserInterface;
 import Deploy;
+import Player;
 
 class Game
 {
@@ -161,14 +162,18 @@ class Game
 		var playerDeployId:PlayerDeployID = PlayerDeployID( deployId );
 		var config:Dynamic = this._deploy.getPlayer( playerDeployId );
 
-		var id:PlayerID = PlayerID( this.createId );
+		var id:Int = this.createId();
+		var playerId:PlayerID = PlayerID( id );
+		var moneyAmount:Int = config.moneyAmount;
+		var money:Money = moneyAmount;
 		var configForPlayer:PlayerConfig =
 		{
-			ID: id,
+			ID: playerId,
 			Name: name,
 			DeployID: playerDeployId,
-			MaxHeroSlots: config.itemStorageSlotsMax,
-			MoneyAmount: Money( config.moneyAmount )
+			ItemStorageSlotsMax: config.itemStorageSlotsMax,
+			BattleItemStorageSlotsMax: config.battleItemStorageSlotsMax,
+			MoneyAmount: money
 		};
 
 		var player:Player = new Player( configForPlayer );

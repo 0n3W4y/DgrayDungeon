@@ -64,13 +64,14 @@ class UserInterface
 		if( !alwaysActive )
 			sprite.visible = false;
 
-		var buttonContinueDeployId:ButtonDeployID = 4011;
-		var windowChilds:Array<Button> = object.get( "childs" );
+		var buttonContinueDeployId:ButtonDeployID = ButtonDeployID( 4011 );
+		var windowChilds:Array<Button> = window.get( "childs" );
 		for( j in 0...windowChilds.length )
 		{
 			var button:Button = windowChilds[ j ];
 			var buttonDeployId:ButtonDeployID = button.get( "deployId" );
-			if( buttonDeployId == buttonContinueDeployId ) // проверяем на наличие последнего сохранение игрока. Если его нет. Кнопка "Continue" не активна.
+			// проверяем на наличие последнего сохранение игрока. Если его нет. Кнопка "Continue" не активна.
+			if( haxe.EnumTools.EnumValueTools.equals( buttonContinueDeployId, buttonDeployId ));
 			{ //TODO: сделать отдельную функцию проверки кнопок и запихивание на них ивентов.
 				var saveGame:Dynamic = this._parent.getLastSave();
 				if( saveGame == null )
@@ -154,6 +155,7 @@ class UserInterface
 			case "sprite": return this._sprite;
 			case "objectsOnUi": return this._objectsOnUi;
 			case "objects": return this._objects;
+			default: throw 'Error in UserItreface.get. Not value for "$value"';
 		}
 	}
 

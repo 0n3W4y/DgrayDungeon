@@ -118,64 +118,64 @@ class Deploy
 
 	public function getWindow( deployId:Window.WindowDeployID ):Dynamic
 	{
-		if( this._window.exists( deployId ) )
-			throw 'Error in Deploy.get. Wrong deploy id: "$deployId"';
+		if( !this._window.exists( deployId ) )
+			throw 'Error in Deploy.getWindow. Wrong deploy id: "$deployId"';
 
 		return this._window[ deployId ];
 	}
 
 	public function getButton( deployId:Button.ButtonDeployID ):Dynamic
 	{
-		if( this._button.exists( deployId ) )
-			throw 'Error in Deploy.get. Wrong deploy id: "$deployId"';
+		if( !this._button.exists( deployId ) )
+			throw 'Error in Deploy.getButton. Wrong deploy id: "$deployId"';
 				
 		return this._button[ deployId ];
 	}
 
 	public function getHero( deployId:Hero.HeroDeployID ):Dynamic
 	{
-		if( this._hero.exists( deployId ) )
-			throw 'Error in Deploy.get. Wrong deploy id: "$deployId"';
+		if( !this._hero.exists( deployId ) )
+			throw 'Error in Deploy.getHero. Wrong deploy id: "$deployId"';
 				
 		return this._hero[ deployId ];
 	}
 
 	public function getPlayer( deployId:Player.PlayerDeployID ):Dynamic
 	{
-		if( this._player.exists( deployId ) )
-			throw 'Error in Deploy.get. Wrong deploy id: "$deployId"';
+		if( !this._player.exists( deployId ) )
+			throw 'Error in Deploy.getPlayer. Wrong deploy id: "$deployId"';
 				
 		return this._player[ deployId ];
 	}
 
 	public function getScene( deployId:Scene.SceneDeployID ):Dynamic
 	{
-		if( this._scene.exists( deployId ) )
-			throw 'Error in Deploy.get. Wrong deploy id: "$deployId"';
+		if( !this._scene.exists( deployId ) )
+			throw 'Error in Deploy.getScene. Wrong deploy id: "$deployId"';
 				
 		return this._scene[ deployId ];
 	}
 
 	public function getBuilding( deployId:Building.BuildingDeployID ):Dynamic
 	{
-		if( this._building.exists( deployId ) )
-			throw 'Error in Deploy.get. Wrong deploy id: "$deployId"';
+		if( !this._building.exists( deployId ) )
+			throw 'Error in Deploy.getBuilding. Wrong deploy id: "$deployId"';
 				
 		return this._building[ deployId ];
 	}
 
 	public function getItem( deployId:Item.ItemDeployID ):Dynamic
 	{
-		if( this._item.exists( deployId ) )
-			throw 'Error in Deploy.get. Wrong deploy id: "$deployId"';
+		if( !this._item.exists( deployId ) )
+			throw 'Error in Deploy.getItem. Wrong deploy id: "$deployId"';
 				
 		return this._item[ deployId ];
 	}
 
 	public function getEnemy( deployId:Enemy.EnemyDeployID ):Dynamic
 	{
-		if( this._enemy.exists( deployId ) )
-			throw 'Error in Deploy.get. Wrong deploy id: "$deployId"';
+		if( !this._enemy.exists( deployId ) )
+			throw 'Error in Deploy.getEnemy. Wrong deploy id: "$deployId"';
 				
 		return this._enemy[ deployId ];
 	}

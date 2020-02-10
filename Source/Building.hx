@@ -2,6 +2,8 @@ package;
 
 import openfl.display.Sprite;
 
+import InventorySystem;
+
 enum BuildingDeployID
 {
 	BuildingDeployID( _:Int );
@@ -42,7 +44,7 @@ class Building
 	private var _canUpgradeLevel:Bool; // можно ли улучшить здание.
 	private var _upgradePrice:Player.Money; // количество моент необходимое для апгрейда здания.
 
-	private var _inventoryStorage:Array<InventorySystem.Slot>;
+	private var _inventoryStorage:Array<Slot>;
 	private var _inventoryStorageSlots:Int;
 	private var _inventoryStorageSlotsMax:Int;
 
@@ -61,7 +63,8 @@ class Building
 		this._nextUpgradeId = config.NextUpgradeId;
 		this._canUpgradeLevel = config.CanUpgradeLevel;
 		this._upgradePrice = config.UpgradePrice;
-		this._heroStorageSlotsMax = config.InventoryStorageSlotsMax;
+		this._heroStorageSlotsMax = config.HeroStorageSlotsMax;
+		this._inventoryStorageSlotsMax = config.InventoryStorageSlotsMax;
 		this._graphics = new GraphicsSystem();
 		this._inventory = new InventorySystem();
 	}
@@ -69,6 +72,7 @@ class Building
 	public function init():String
 	{
 		var textError:String = 'Name:"$_name" id:"$_id" deploy id:"$_deployId"';
+
 		if( this._name == null || this._name == "" )
 			return 'Error in Building.init. Wrong name. $textError';
 
@@ -89,7 +93,10 @@ class Building
 
 		if( this._heroStorageSlotsMax == null )
 			return 'Error in Building.init. Container slots maximum value is not valid: "_heroStorageSlotsMax". $textError';
-		
+
+		if( this._inventoryStorageSlotsMax == null )
+			return 'Error in Building.init. Container slots maximum value is not valid: "_inventoryStorageSlotsMax". $textError';
+
 		var err:String = this._graphics.init({ Parent:this, GraphicsSprite:this._sprite });
 		if( err != null )
 			return 'Error in Building.init. $err; $textError';
@@ -119,7 +126,7 @@ class Building
 			case "upgradeLevel": return this._upgradeLevel;
 			case "nextUpgradeId": return this._nextUpgradeId;
 			case "canUpgradeLevel": return this._canUpgradeLevel;
-			case "inventoryStorage": return this.inventoryStorage;
+			case "inventoryStorage": return this._inventoryStorage;
 			case "inventoryStorageMaxSlots": return this._inventoryStorageSlotsMax;
 			case "inventoryStorageSlots": return this._inventoryStorageSlots;
 			case "inventory": return this._inventory;
@@ -138,5 +145,13 @@ class Building
 	public function removeHero( hero:Hero ):Hero
 	{
 		return null;
+	}
+
+	public function checkFreeSlotForHero():Bool
+	{
+		if( this._heroStorageSlots < this._heroStorageSlotsMax )
+			return true;
+
+		return false;
 	}
 }

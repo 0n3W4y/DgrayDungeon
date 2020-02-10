@@ -1,6 +1,8 @@
 package;
 
 import openfl.display.Sprite;
+import haxe.EnumTools.EnumValueTools;
+import Button;
 
 enum WindowID
 {
@@ -75,22 +77,24 @@ class Window
 	public function addChild( button:Button ):Void
 	{
 		var name:String = button.get( "name" );
-		var check:Int = this._checkChildForExist( button );
+		var id:ButtonID = button.get( "id" );
+		var check:Int = this._checkChildForExist( id );
 		if( check != null )
 			throw 'Error in Window.addChild. Found duplicate button with name: "$name"';
 
 		this._buttonChildren.push( button );
 	}
 
-	public function removeChild( button:Button ):Array<Dynamic>
+	public function removeChild( button:Button ):Button
 	{
 		var name:String = button.get( "name" );
-		var check:Int = this._checkChildForExist( button );
+		var id:ButtonID = button.get( "id" );
+		var check:Int = this._checkChildForExist( id );
 		if( check == null )
-			return [ null, 'Error in Window.appendChild. Button with name: "$name" not found' ];
+			throw 'Error in Window.appendChild. Button with name: "$name" not found';
 
 		this._buttonChildren.splice( check, 1 );
-		return [ button, null ];
+		return button;
 	}
 
 	public function changeActiveStatus():Void
@@ -129,13 +133,12 @@ class Window
 	//PRIVATE
 
 
-	private function _checkChildForExist( button:Button ):Int
+	private function _checkChildForExist( id:ButtonID ):Int
 	{
 		for( i in 0...this._buttonChildren.length )
 		{
-			var oldButton:Button = this._buttonChildren[ i ];
-			var oldButtonId:Int = oldButton.get( "id" );
-			if( oldButton.get( "id" ).match( button.get( "id" ) ) )
+			var oldButtonId:ButtonID = this._buttonChildren[ i ].get( "id" );
+			if( EnumValueTools.equals( oldButtonId, id ))
 				return i;
 		}
 		return null;

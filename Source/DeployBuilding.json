@@ -22,7 +22,8 @@
 		"nextUpgradeId": 2010,
 		"canUpgradeLevel": true,
 		"upgradePrice": 10000,
-		"inventorySlotsMax": 0
+		"heroStorageSlotsMax": 3,
+		"inventoryStorageSlotsMax": 0
 	},
 
 	"2001":{
@@ -48,7 +49,8 @@
 		"nextUpgradeId": 2011,
 		"canUpgradeLevel": true,
 		"upgradePrice": 10000,
-		"inventorySlotsMax": 0
+		"heroStorageSlotsMax": 0,
+		"inventoryStorageSlotsMax": 0
 	},
 
 	"2002":{
@@ -74,9 +76,8 @@
 		"nextUpgradeId": 2012,
 		"canUpgradeLevel": true,
 		"upgradePrice": 10000,
-		"inventorySlotsMax": 4,
-		"inventorySlotType": "hero",
-		"inventorySlotRestriction": "none"
+		"heroStorageSlotsMax": 6,
+		"inventoryStorageSlotsMax": 0
 	},
 
 	"2003":{
@@ -102,7 +103,8 @@
 		"nextUpgradeId": 2013,
 		"canUpgradeLevel": true,
 		"upgradePrice": 10000,
-		"inventorySlotsMax": 0
+		"heroStorageSlotsMax": 0,
+		"inventoryStorageSlotsMax": 12
 	},
 
 	"2004":{
@@ -128,7 +130,8 @@
 		"nextUpgradeId": 2014,
 		"canUpgradeLevel": true,
 		"upgradePrice": 10000,
-		"inventorySlotsMax": 0
+		"heroStorageSlotsMax": 0,
+		"inventoryStorageSlotsMax": 0
 	},
 
 	"2005":{
@@ -154,7 +157,8 @@
 		"nextUpgradeId": 2015,
 		"canUpgradeLevel": true,
 		"upgradePrice": 10000,
-		"inventorySlotsMax": 0
+		"heroStorageSlotsMax": 0,
+		"inventoryStorageSlotsMax": 0
 	},
 
 	"2006":{
@@ -180,7 +184,8 @@
 		"nextUpgradeId": 2016,
 		"canUpgradeLevel": true,
 		"upgradePrice": 10000,
-		"inventorySlotsMax": 0
+		"heroStorageSlotsMax": 0,
+		"inventoryStorageSlotsMax": 0
 	},
 
 	"2007":{
@@ -206,7 +211,8 @@
 		"nextUpgradeId": 2017,
 		"canUpgradeLevel": true,
 		"upgradePrice": 10000,
-		"inventorySlotsMax": 0
+		"heroStorageSlotsMax": 0,
+		"inventoryStorageSlotsMax": 0
 	},
 
 	"2008":{
@@ -232,7 +238,8 @@
 		"nextUpgradeId": 2018,
 		"canUpgradeLevel": true,
 		"upgradePrice": 10000,
-		"inventorySlotsMax": 0
+		"heroStorageSlotsMax": 0,
+		"inventoryStorageSlotsMax": 0
 	},
 
 	"2009":{
@@ -258,7 +265,8 @@
 		"nextUpgradeId": 2019,
 		"canUpgradeLevel": true,
 		"upgradePrice": 10000,
-		"inventorySlotsMax": 0
+		"heroStorageSlotsMax": 0,
+		"inventoryStorageSlotsMax": 0
 	},
 
 	"2010":{
@@ -284,8 +292,7 @@
 		"nextUpgradeId": null,
 		"canUpgradeLevel": false,
 		"upgradePrice": 10000,
-		"inventorySlotsMax": 20,
-		"inventorySlotType": "hero",
-		"inventorySlotRestriction": "none"
+		"heroStorageSlotsMax": 20,
+		"inventoryStorageSlotsMax": 0
 	}
 }

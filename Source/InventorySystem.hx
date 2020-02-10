@@ -48,6 +48,8 @@ class InventorySystem
 		if( this._inventorySlotsMax == null )
 			return 'Error in InventorySystem.init. Inventory Slots Max are null!';
 
+		this._fillInventory();
+
 		return null;
 	}
 
@@ -70,6 +72,12 @@ class InventorySystem
 	}
 
 	//PRIVATE
+
+	private function _fillInventory():Void
+	{
+		var parentType:String = this._parent.get( "type" );
+		
+	}
 
 	private function _checkDuplicate( item:Item ):Int // находит дубликат по уникальному ID. Если есть совпадение - то лучше вывести ошибку и остановить приложение.
 	{

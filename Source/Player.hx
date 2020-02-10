@@ -74,7 +74,7 @@ class Player
 
 		this._itemStorageSlots = 0;
 		this._battleItemStorageSlots = 0;
-		this._itemStorage = new Array<Slot>();
+		this._itemStorage = new Array<Item>();
 		this._battleItemStorage = new Array<Slot>();
 		var err:String = this._inventory.init( { Parent:this, Inventory:this._battleItemStorage, MaxSlots:this._battleItemStorageSlotsMax, Slots:this._battleItemStorageSlots } );
 		if( err != null )
