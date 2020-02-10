@@ -294,7 +294,7 @@ class SceneSystem
             CanUpgradeLevel: config.canUpgradeLevel,
             UpgradePrice: money,
             HeroStorageSlotsMax: config.heroStorageSlotsMax,
-            InventoryStorageSlotsMax: config.inventoryStorageSlotsMax
+            ItemStorageSlotsMax: config.itemStorageSlotsMax
 
         };
         var building:Building = new Building( buildingConfig );

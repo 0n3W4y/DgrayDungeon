@@ -19,8 +19,8 @@ typedef PlayerConfig =
 	var ID:PlayerID;
 	var DeployID:PlayerDeployID;
 	var Name:String;
-	var ItemStorageSlotsMax:Int;
-	var BattleItemStorageSlotsMax:Int;
+	var InventoryStorageSlotsMax:Int;
+	var BattleInventoryStorageSlotsMax:Int;
 	var MoneyAmount:Money;
 }
 
@@ -31,15 +31,12 @@ class Player
 	private var _deployId:PlayerDeployID;
 	private var _moneyAmount:Money;
 
-	private var _itemStorage:Array<Item>; // Никаких ограничений, если предмет является классом Item, его можно запихнуть сюда. Это инвентарь игрока.
-	private var _itemStorageSlotsMax:Int;
-	private var _itemStorageSlots:Int;
-
-	private var _battleItemStorage:Array<Slot>; // данный инвентарь имееет ограничение по количеству слотов. 
-	private var _battleItemStorageSlots:Int;
-	private var _battleItemStorageSlotsMax:Int;
-
 	private var _inventory:InventorySystem;
+	private var _inventoryStorage:Array<Slot>;
+	private var _inventoryStorageMaxSlots:Int;
+	private var _battleInventory:InventorySystem;
+	private var _battleInventoryStorage:Array<Slot>;
+	private var _battleInventoryStorageMaxSlots
 
 	public inline function new( config:PlayerConfig ):Void
 	{
@@ -47,9 +44,10 @@ class Player
 		this._name = config.Name;
 		this._deployId = config.DeployID;
 		this._moneyAmount = config.MoneyAmount;
-		this._itemStorageSlotsMax = config.ItemStorageSlotsMax;
-		this._battleItemStorageSlotsMax = config.BattleItemStorageSlotsMax;
-		this._inventory = new InventorySystem();
+		this._inventory = new InventorySystem({ Parent:this, InventoryName: "inventoryStorage" });
+		this._inventoryStorageMaxSlots = config.InventoryStorageSlotsMax;
+		this._battleInventory = new InventorySystem({ Parent:this, InventoryName: "battleInventoryStorage" });
+		this._battleInventoryStorageMaxSlots = config.BattleInventoryStorageSlotsMax
 	}
 
 	public function init():String
@@ -66,19 +64,32 @@ class Player
 		if( this._moneyAmount == null )
 			return 'Error in Player.init.Wrong money amount. Name: "$_name" id: "$_id"  deploy id: "$_deployId"';
 
-		if( this._itemStorageSlotsMax < 0 )
+		if( this._inventoryStorageMaxSlots < 0 || this._inventoryStorageMaxSlots == null )
 			return 'Error in Player.init. Wrong Maximum item slots. Name: "$_name" id: "$_id"  deploy id: "$_deployId"';
 
-		if( this._battleItemStorageSlotsMax < 0 )
+		if( this._battleInventoryStorageMaxSlots < 0 || this._battleInventoryStorageMaxSlots == null )
 			return 'Error in Player.init. Wrong Maximum slots in battle item storage . Name: "$_name" id: "$_id"  deploy id: "$_deployId"';
 
-		this._itemStorageSlots = 0;
-		this._battleItemStorageSlots = 0;
-		this._itemStorage = new Array<Item>();
+		this._itemStorage = new Array<Slot>();
 		this._battleItemStorage = new Array<Slot>();
-		var err:String = this._inventory.init( { Parent:this, Inventory:this._battleItemStorage, MaxSlots:this._battleItemStorageSlotsMax, Slots:this._battleItemStorageSlots } );
+
+		for( i in 0...this._inventoryStorageMaxSlots )
+		{
+			this._inventoryStorage.push({ Type: "any", Item: null, Restriction: "none" });
+		}
+
+		for( j in 0...this._battleInventoryStorageMaxSlots )
+		{
+			this._battleInventoryStorage.push({ Type: "any", Item: null, Restriction: "none" });
+		}
+
+		var err:String = this._inventory.init();
 		if( err != null )
-			return 'Error in Player.Init. Name: "$_name" id: "$_id"  deploy id: "$_deployId". $err';
+			return 'Error in Player.Init. Inventory Error. Name: "$_name" id: "$_id"  deploy id: "$_deployId". $err';
+
+		err = this._battleInventory.init();
+		if( err != null )
+			return 'Error in Player.Init. Battle Inventory Error. Name: "$_name" id: "$_id"  deploy id: "$_deployId". $err';
 
 		return null;
 	}
@@ -137,7 +148,10 @@ class Player
 	{
 		switch( value )
 		{
-			case "inventory" :return this._inventory;
+			case "inventory": return this._inventory;
+			case "battleInventory": return this._battleInventory;
+			case "inventoryStorage": return this._inventoryStorage;
+			case "battleInventoryStorage": return this._battleInventoryStorage;
 			default: throw 'Error in Player.get. Not valid value: "$value"';
 		}
 	}

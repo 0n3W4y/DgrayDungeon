@@ -5,10 +5,9 @@ import Item;
 typedef InventorySystemConfig =
 {
 	var Parent:Dynamic;
-	var Inventory:Array<Slot>;
-	var MaxSlots:Int;
-	var Slots:Int;
+	var InventoryName:String; // название, как получить интвентарь Array, с которым инвентарь должен работать.
 }
+
 
 typedef Slot = 
 {
@@ -20,35 +19,21 @@ typedef Slot =
 class InventorySystem
 {
 	private var _parent:Dynamic;
-	private var _inventory:Array<Slot>;
-	private var _inventorySlots:Int;
-	private var _inventorySlotsMax:Int;
+	private var _inventoryName:String;
 
-	public inline function new():Void
-	{
-		
-	}
-
-	public function init( config:InventorySystemConfig ):String
+	public inline function new( config:InventorySystemConfig ):Void
 	{
 		this._parent = config.Parent;
-		this._inventory = config.Inventory;
-		this._inventorySlots = config.Slots;
-		this._inventorySlotsMax = config.MaxSlots;
+		this._inventoryName = config.InventoryName;
+	}
 
+	public function init():String
+	{
 		if( this._parent == null || this._parent == '' )
 			return 'Error in InventorySystem.init. Parent is wrong';
 
-		if( this._inventory == null )
-			return 'Error in InventorySystem.init. Inventory Array is null!';
-
-		if( this._inventorySlots == null )
-			return 'Error in InventorySystem.init. Inventory Slots are null!';
-
-		if( this._inventorySlotsMax == null )
-			return 'Error in InventorySystem.init. Inventory Slots Max are null!';
-
-		this._fillInventory();
+		if( this._inventoryName == null )
+			return 'Error in InventorySystem.init. Inventory name is null!';
 
 		return null;
 	}
@@ -60,31 +45,28 @@ class InventorySystem
 
 	public function addToInventory( item:Item ):Void
 	{
-		this._inventorySlots ++;
+
 	}
 
 	public function removeFromInventory( item:Item ):Item
 	{
-		var index:Int = 0;
-		this._inventory[ index ].Item = null;
-		this._inventorySlots--;
 		return item;
+	}
+
+	public function getItemById( itemId: ItemID ):Item
+	{
+		return null;
 	}
 
 	//PRIVATE
 
-	private function _fillInventory():Void
-	{
-		var parentType:String = this._parent.get( "type" );
-		
-	}
-
 	private function _checkDuplicate( item:Item ):Int // находит дубликат по уникальному ID. Если есть совпадение - то лучше вывести ошибку и остановить приложение.
 	{
 		var id:ItemID = item.get( "id" );
-		for( i in 0...this._inventory.length )
+		var inventory:Array<Slot> = this.inventory();
+		for( i in 0...inventory.length )
 		{
-			var oldItem:Item = this._inventory[ i ].Item;
+			var oldItem:Item = inventory[ i ].Item;
 			if( oldItem == null )
 				continue;
 
@@ -97,13 +79,14 @@ class InventorySystem
 
 	private function _findFreeSlotForItem( item:Item ):Int
 	{
-		for( i in 0...this._inventory.length )
+		var inventory:Array<Slot> = this.inventory();
+		for( i in 0...inventory.length )
 		{
-			var oldItem:Item = this._inventory[ i ].Item;
+			var oldItem:Item = inventory[ i ].Item;
 			if( oldItem != null )
 				continue;
 
-			var slot:Slot = this._inventory[ i ];
+			var slot:Slot = inventory[ i ];
 			if( this._checkTypeBetweenItemAndSlot( item, slot ) && this._checkRestrictionBetweenItemAndSlot( item, slot ) )
 				return i;
 		}
@@ -113,9 +96,9 @@ class InventorySystem
 
 	private function _checkTypeBetweenItemAndSlot( item:Item, slot:Slot ):Bool
 	{
-		var itemType:String = item.get( "type" );
+		var itemType:String = item.get( "name" );
 		var slotType:String = slot.Type;
-		if( itemType == slotType )
+		if( itemType == slotType || slotType == "any" )
 			return true;
 
 		return false;
@@ -137,13 +120,18 @@ class InventorySystem
 		return false;
 	}
 
-	private function _storeItemInSlot( item:Item, slot:Slot ):Int
+	private function _addItemInSlot( item:Item, slot:Slot ):Int
 	{
 		return 0;
 	}
 
-	private function _substractAmountItemFromSlot( item:Item, slot:Slot ):Int
+	private function _withdrawAmountItemFromSlot( item:Item, slot:Slot ):Int
 	{
 		return 0;
+	}
+
+	private inline function inventory():Array<Slot>
+	{
+		this._parent.get( this._inventoryName );
 	}
 }

@@ -24,7 +24,7 @@ typedef BuildingConfig =
 	var NextUpgradeId:Int;
 	var CanUpgradeLevel:Bool;
 	var UpgradePrice:Player.Money;
-	var InventoryStorageSlotsMax:Int;
+	var ItemStorageSlotsMax:Int;
 	var HeroStorageSlotsMax:Int;
 }
 
@@ -44,9 +44,10 @@ class Building
 	private var _canUpgradeLevel:Bool; // можно ли улучшить здание.
 	private var _upgradePrice:Player.Money; // количество моент необходимое для апгрейда здания.
 
-	private var _inventoryStorage:Array<Slot>;
-	private var _inventoryStorageSlots:Int;
-	private var _inventoryStorageSlotsMax:Int;
+	private var _itemStorage:Array<Item>;
+	private var _itemStorageSlots:Int;
+	private var _itemStorageSlotsMax:Int;
+	private var _buyBackItemStorage:Array<Item>;
 
 	private var _heroStorage:Array<Hero>;
 	private var _heroStorageSlots:Int;
@@ -64,9 +65,8 @@ class Building
 		this._canUpgradeLevel = config.CanUpgradeLevel;
 		this._upgradePrice = config.UpgradePrice;
 		this._heroStorageSlotsMax = config.HeroStorageSlotsMax;
-		this._inventoryStorageSlotsMax = config.InventoryStorageSlotsMax;
+		this._itemStorageSlotsMax = config.ItemStorageSlotsMax;
 		this._graphics = new GraphicsSystem();
-		this._inventory = new InventorySystem();
 	}
 
 	public function init():String
@@ -101,10 +101,6 @@ class Building
 		if( err != null )
 			return 'Error in Building.init. $err; $textError';
 
-		err = this._inventory.init({ Parent:this, Inventory:this._inventoryStorage, MaxSlots:this._inventoryStorageSlotsMax, Slots:this._inventoryStorageSlots });
-		if( err != null )
-			return 'Error in Building.init. $err; $textError';
-
 		return null;
 	}
 
@@ -126,10 +122,9 @@ class Building
 			case "upgradeLevel": return this._upgradeLevel;
 			case "nextUpgradeId": return this._nextUpgradeId;
 			case "canUpgradeLevel": return this._canUpgradeLevel;
-			case "inventoryStorage": return this._inventoryStorage;
-			case "inventoryStorageMaxSlots": return this._inventoryStorageSlotsMax;
-			case "inventoryStorageSlots": return this._inventoryStorageSlots;
-			case "inventory": return this._inventory;
+			case "itemStorage": return this._inventoryStorage;
+			case "itemStorageMaxSlots": return this._inventoryStorageSlotsMax;
+			case "itemStorageSlots": return this._inventoryStorageSlots;
 			case "heroStorage": return this._heroStorage;
 			case "heroStorageSlots": return this._heroStorageSlots;
 			case "heroStorageSlotsMax": return this._heroStorageSlotsMax;
@@ -144,7 +139,17 @@ class Building
 
 	public function removeHero( hero:Hero ):Hero
 	{
-		return null;
+		return hero;
+	}
+
+	public function addItem( item:Item ):Void
+	{
+
+	}
+
+	public function removeItem( item:Item ):Item
+	{
+		return item;
 	}
 
 	public function checkFreeSlotForHero():Bool
