@@ -27,20 +27,19 @@ class InventorySystem
 		this._inventoryName = config.InventoryName;
 	}
 
-	public function init():String
+	public function init( error:String ):Void
 	{
-		if( this._parent == null || this._parent == '' )
-			return 'Error in InventorySystem.init. Parent is wrong';
+		if( this._parent == null )
+			throw '$err. Parent is null';
 
 		if( this._inventoryName == null )
-			return 'Error in InventorySystem.init. Inventory name is null!';
+			throw '$err. Inventory name is null';
 
-		return null;
 	}
 
-	public function postInit():String
+	public function postInit():Void
 	{
-		return null;
+		
 	}
 
 	public function addToInventory( item:Item ):Void

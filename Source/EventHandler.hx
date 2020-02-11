@@ -21,18 +21,18 @@ class EventHandler
 		this._parent = config.Parent;
 	}
 
-	public function init():String
+	public function init( error:String ):Void
 	{	
+		var err:String = 'Error in EventHandler.init';
 		if( this._parent == null )
-			throw 'Error in EventHandler.init. Parent is "$this._parent"';
+			throw '$error. $err. Parent is null';
 
 		this._listeners = new Array<Dynamic>();
-		return null;
 	}
 
-	public function postInit():String
+	public function postInit():Void
 	{
-		return null;
+		
 	}
 
 	public function addEvents( object:Dynamic ):Void
@@ -166,17 +166,12 @@ class EventHandler
 	{
 		//TODO: create cityscene, switch active scene, draw new scene, undraw old scene;
 		var sceneSystem:SceneSystem = this._parent.getSystem( "scene" );
-		var createPlayer:Array<Dynamic> = this._parent.createPlayer( 100 , "test player" );
+		var createPlayer:Player = this._parent.createPlayer( 100 , "test player" );
 		var pErr:String = createPlayer[ 1 ];
 		if( pErr != null )
 			throw 'Error in EventHandler._clickStartGame. $pErr';
 
-		var createScene:Array<Dynamic> = sceneSystem.createScene( 1001 );
-		var scene:Scene = createScene[ 0 ];
-		var err:String = createScene[ 1 ];
-		if( err != null )
-			throw 'Error in EventHandler._clickStartGame. $err';
-
+		var createScene:Scene = sceneSystem.createScene( 1001 );
 		sceneSystem.prepareScene( scene );
 		sceneSystem.changeSceneTo( scene );
 	}

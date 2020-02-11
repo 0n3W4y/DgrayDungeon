@@ -51,7 +51,6 @@ class Player
 		var err:String = 'Name "$_name" id "$_id" deploy id "$_deployId"';
 		this._type = "player";
 		this._inventoryStorage = new Array<Slot>();
-		this._battleInventoryStorage = new Array<Slot>();
 
 		if( this._name == null || this._name == "" )
 			throw '$error Wrong name. $err ';
@@ -73,14 +72,7 @@ class Player
 			this._inventoryStorage.push({ Type: "item", Item: null, Restriction: "none" });
 		}
 
-		var err:String = this._inventory.init();
-		if( err != null )
-			throw 'Error in Player.Init. Inventory Error. Name: "$_name" id: "$_id"  deploy id: "$_deployId". $err';
-
-		err = this._battleInventory.init();
-		if( err != null )
-			throw 'Error in Player.Init. Battle Inventory Error. Name: "$_name" id: "$_id"  deploy id: "$_deployId". $err';
-
+		this._inventory.init( 'Error in Player.Init. Inventory.init. $err' );
 	}
 
 	public function postInit():Void

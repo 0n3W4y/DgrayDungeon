@@ -15,9 +15,14 @@ class State
 		
 	}
 
-	public function init():String
+	public function init( error:String ):Void
 	{
-		return null;
+		
+	}
+
+	public function postInot():Void
+	{
+
 	}
 
 	public function get( value:String ):Dynamic

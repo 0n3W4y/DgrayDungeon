@@ -31,16 +31,18 @@ class SceneSystem
 		this._parent = config.Parent;
 	}
 
-	public function init():String
+	public function init( error:String ):Void
 	{	
+		var err:String = 'Error in SceneSystem.init';
+
 		if( this._parent == null )
-			return 'Error in SceneSystem.init. Parent is "$this._parent"';
+			throw '$error. $err Parent is null';
 
 		if( this._scenesSprite == null )
-			return 'Error in SceneSystem.init. Sprite is "$this._scenesSprite"';
+			throw '$error. $err. Sprite is null';
+		
 		this._activeScene = null;
 		this._scenesArray = new Array<Scene>();
-		return null;
 	}
 
 	public function postInit():String
@@ -297,9 +299,7 @@ class SceneSystem
 
         };
         var building:Building = new Building( buildingConfig );
-        var err:String = building.init();
-        if( err !=null )
-            throw 'Error in SceneSystem.createBuilding. $err';
+        building.init( 'Error in SceneSystem.createBuilding. Building.init' );
         
         return building;
     }

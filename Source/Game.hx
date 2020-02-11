@@ -57,29 +57,19 @@ class Game
 		var parseDataContainer:DeployConfig = this._parseData();
 
 		this._deploy = new Deploy( parseDataContainer );
-		var err:String = this._deploy.init();
-		if( err != null )
-			throw 'Error in Game.new. $err';
+		this._deploy.init( 'Error in Game.new' );
 
 		this._eventHandler = new EventHandler({ Parent:this });
-		err = this._eventHandler.init();
-		if( err != null )
-			throw 'Error in Game.new. $err';
+		this._eventHandler.init( 'Error in Game.new' );
 
 		this._sceneSystem = new SceneSystem({ Parent:this, GraphicsSprite:this._scenesSprite });
-		err = this._sceneSystem.init();
-		if( err != null )
-			throw 'Error in Game.new. $err';
+		this._sceneSystem.init( 'Error in Game.new' );
 
 		this._userInterface = new UserInterface({ Parent:this, GraphicsSprite:this._uiSprite });
-		err = this._userInterface.init();
-		if( err != null )
-			throw 'Error in Game.new. $err';
+		this._userInterface.init( 'Error in Game.new' );
 
 		this._state = new State({ Parent:this });
-		err = this._state.init();
-		if( err != null )
-			throw 'Error in game.new. $err';
+		this._state.init( 'Error in Game.new' );
 
 		this._userInterface.hide();
 		this._startGame();
@@ -232,14 +222,14 @@ class Game
 
 	private function _parseData():Deploy.DeployConfig
 	{
-		var window:Dynamic = ConfigJSON.json( "c:/projects/DgrayDungeon//Source/DeployWindow.json" );
-		var button:Dynamic = ConfigJSON.json( "c:/projects/DgrayDungeon/Source/DeployButton.json" );
-		var scene:Dynamic = ConfigJSON.json( "c:/projects/DgrayDungeon/Source/DeployScene.json" );
-		var building:Dynamic = ConfigJSON.json( "c:/projects/DgrayDungeon/Source/DeployBuilding.json" );
-		var hero:Dynamic = ConfigJSON.json( "c:/projects/DgrayDungeon/Source/DeployHero.json" );
-		var item:Dynamic = ConfigJSON.json( "c:/projects/DgrayDungeon/Source/DeployItem.json" );
-		var enemy:Dynamic = ConfigJSON.json( "c:/projects/DgrayDungeon/Source/DeployEnemy.json" );
-		var player:Dynamic = ConfigJSON.json( "c:/projects/DgrayDungeon/Source/DeployPlayer.json" );
+		var window:Dynamic = ConfigJSON.json( "d:/projects/DgrayDungeon//Source/DeployWindow.json" );
+		var button:Dynamic = ConfigJSON.json( "d:/projects/DgrayDungeon/Source/DeployButton.json" );
+		var scene:Dynamic = ConfigJSON.json( "d:/projects/DgrayDungeon/Source/DeployScene.json" );
+		var building:Dynamic = ConfigJSON.json( "d:/projects/DgrayDungeon/Source/DeployBuilding.json" );
+		var hero:Dynamic = ConfigJSON.json( "d:/projects/DgrayDungeon/Source/DeployHero.json" );
+		var item:Dynamic = ConfigJSON.json( "d:/projects/DgrayDungeon/Source/DeployItem.json" );
+		var enemy:Dynamic = ConfigJSON.json( "d:/projects/DgrayDungeon/Source/DeployEnemy.json" );
+		var player:Dynamic = ConfigJSON.json( "d:/projects/DgrayDungeon/Source/DeployPlayer.json" );
 
 		return { Window:window, Button:button, Scene:scene, Building:building, Hero:hero, Item:item, Enemy:enemy, Player:player };
 	}
@@ -257,12 +247,7 @@ class Game
 
 		this._lastSave = this._checkForSave();
 
-		var createScene:Array<Dynamic> = this._sceneSystem.createScene( 1000 );
-		var scene:Scene = createScene[ 0 ];
-		var err:String = createScene[ 1 ];
-		if( err != null )
-			throw 'Error in Game._startGame. $err';
-
+		var scene:Scene = this._sceneSystem.createScene( 1000 );
 		this._sceneSystem.prepareScene( scene );
 		this._sceneSystem.changeSceneTo( scene );
 
