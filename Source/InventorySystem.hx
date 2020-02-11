@@ -98,7 +98,7 @@ class InventorySystem
 	{
 		var itemType:String = item.get( "name" );
 		var slotType:String = slot.Type;
-		if( itemType == slotType || slotType == "any" )
+		if( itemType == slotType || slotType == "item" )
 			return true;
 
 		return false;
@@ -120,7 +120,7 @@ class InventorySystem
 		return false;
 	}
 
-	private function _addItemInSlot( item:Item, slot:Slot ):Int
+	private function _addAmountItemInSlot( item:Item, slot:Slot ):Int
 	{
 		return 0;
 	}
@@ -132,6 +132,6 @@ class InventorySystem
 
 	private inline function inventory():Array<Slot>
 	{
-		this._parent.get( this._inventoryName );
+		return this._parent.get( this._inventoryName );
 	}
 }

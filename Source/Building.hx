@@ -47,6 +47,7 @@ class Building
 	private var _itemStorage:Array<Item>;
 	private var _itemStorageSlots:Int;
 	private var _itemStorageSlotsMax:Int;
+
 	private var _buyBackItemStorage:Array<Item>;
 
 	private var _heroStorage:Array<Hero>;
@@ -69,44 +70,41 @@ class Building
 		this._graphics = new GraphicsSystem();
 	}
 
-	public function init():String
+	public function init():Void
 	{
-		var textError:String = 'Name:"$_name" id:"$_id" deploy id:"$_deployId"';
+		var err:String = 'Name:"$_name" id:"$_id" deploy id:"$_deployId"';
 
 		if( this._name == null || this._name == "" )
-			return 'Error in Building.init. Wrong name. $textError';
+			throw 'Error in Building.init. Wrong name. $err';
 
 		if( this._id == null )
-			return 'Error in Building.init. Wrong ID. $textError';
+			throw 'Error in Building.init. Wrong ID. $err';
 		
 		if( this._deployId == null )
-			return 'Error in Building.init. Wrong Deploy ID. $textError';
+			throw 'Error in Building.init. Wrong Deploy ID. $err';
 
 		if( this._upgradeLevel == null || this._upgradeLevel < 1 )
-			return 'Error in Building.init. Upgrade level is not valid: "$_upgradeLevel". $textError';
+			throw 'Error in Building.init. Upgrade level is not valid: "$_upgradeLevel". $err';
 
 		if( this._canUpgradeLevel == null )
-			return 'Error in Building.init. Can Upgrade value is not valid: "$_canUpgradeLevel". $textError';
+			throw 'Error in Building.init. Can Upgrade value is not valid: "$_canUpgradeLevel". $err';
 
 		if( this._canUpgradeLevel && this._nextUpgradeId == null )
-			return 'Error in Building.init. Next upgrade deploy Id is not valid: "$_nextUpgradeId". $textError';
+			throw 'Error in Building.init. Next upgrade deploy Id is not valid: "$_nextUpgradeId". $err';
 
 		if( this._heroStorageSlotsMax == null )
-			return 'Error in Building.init. Container slots maximum value is not valid: "_heroStorageSlotsMax". $textError';
+			throw 'Error in Building.init. Container slots maximum value is not valid: "_heroStorageSlotsMax". $err';
 
-		if( this._inventoryStorageSlotsMax == null )
-			return 'Error in Building.init. Container slots maximum value is not valid: "_inventoryStorageSlotsMax". $textError';
+		if( this._itemStorageSlotsMax == null )
+			throw 'Error in Building.init. Container slots maximum value is not valid: "_itemStorageSlotsMax". $err';
 
-		var err:String = this._graphics.init({ Parent:this, GraphicsSprite:this._sprite });
-		if( err != null )
-			return 'Error in Building.init. $err; $textError';
+		this._graphics.init( 'Error in Building.init. Error in GraphicsSystem.init. $err' );
 
-		return null;
 	}
 
-	public function postInit():String
+	public function postInit():Void
 	{
-		return null;
+		
 	}
 
 	public function get( value:String ):Dynamic
@@ -122,9 +120,9 @@ class Building
 			case "upgradeLevel": return this._upgradeLevel;
 			case "nextUpgradeId": return this._nextUpgradeId;
 			case "canUpgradeLevel": return this._canUpgradeLevel;
-			case "itemStorage": return this._inventoryStorage;
-			case "itemStorageMaxSlots": return this._inventoryStorageSlotsMax;
-			case "itemStorageSlots": return this._inventoryStorageSlots;
+			case "itemStorage": return this._itemStorage;
+			case "itemStorageMaxSlots": return this._itemStorageSlotsMax;
+			case "itemStorageSlots": return this._itemStorageSlots;
 			case "heroStorage": return this._heroStorage;
 			case "heroStorageSlots": return this._heroStorageSlots;
 			case "heroStorageSlotsMax": return this._heroStorageSlotsMax;

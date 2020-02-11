@@ -9,8 +9,9 @@ import openfl.Assets;
 
 import Window;
 import Button;
+import haxe.EnumTools.EnumValueTools;
 
-typedef UserInterfaceConfig = 
+typedef UserInterfaceConfig =
 {
 	var Parent:Game;
 	var GraphicsSprite:Sprite;
@@ -29,22 +30,21 @@ class UserInterface
 		this._sprite = config.GraphicsSprite;
 	}
 
-	public function init():String
+	public function init( error:String ):Void
 	{
 		if( this._parent == null )
-			return 'Error in UserInterface.init. Game is "$this._parent"';
+			throw 'Error in UserInterface.init. Game is "$this._parent"';
 
 		if( this._sprite == null )
-			return 'Error in UserInterface.init. Sprite is "$this._sprite"';
+			throw 'Error in UserInterface.init. Sprite is "$this._sprite"';
 
 		this._objectsOnUi = new Array<Window>();
 		this._objects = new Array<Window>();
-		return null;
 	}
 
-	public function postInit():String
+	public function postInit():Void
 	{
-		return null;
+
 	}
 
 	public function addWindowOnUi( deployId:WindowDeployID ):Void
@@ -71,7 +71,7 @@ class UserInterface
 			var button:Button = windowChilds[ j ];
 			var buttonDeployId:ButtonDeployID = button.get( "deployId" );
 			// проверяем на наличие последнего сохранение игрока. Если его нет. Кнопка "Continue" не активна.
-			if( haxe.EnumTools.EnumValueTools.equals( buttonContinueDeployId, buttonDeployId ));
+			if( EnumValueTools.equals( buttonContinueDeployId, buttonDeployId ))
 			{ //TODO: сделать отдельную функцию проверки кнопок и запихивание на них ивентов.
 				var saveGame:Dynamic = this._parent.getLastSave();
 				if( saveGame == null )
@@ -173,7 +173,7 @@ class UserInterface
 	{
 		var windowDeployId:WindowDeployID = WindowDeployID( deployId );
 		var config:Dynamic = this._parent.getSystem( "deploy" ).getWindow( windowDeployId );
-		
+
 		var id:WindowID = WindowID( this._parent.createId() );
 		var sprite:Sprite = new Sprite();
 		sprite.x = config.x;
@@ -193,19 +193,13 @@ class UserInterface
 			AlwaysActive: config.alwaysActive
 		};
 		var window:Window = new Window( configForWindow );
-		var err:String = window.init();
-		if( err != null )
-			return [ null, 'Error in GeneratorSystem.createWindow. $err' ];
+		window.init( 'Error in GeneratorSystem.createWindow. Window.init' );
 
 		if( config.button != null )
 		{
 			for( i in 0...config.button.length )
 			{
-				var createButton:Array<Dynamic> = this.createButton( config.button[ i ] );
-				var button:Button = createButton[ 0 ];
-				var bErr:String = createButton[ 1 ];
-				if( bErr != null )
-					return [ null, 'Error in GeneratorSystem.createWindow. $bErr' ];
+				var button:Button = this.createButton( config.button[ i ] );
 				window.addChild( button );
 				var buttonSprite:Sprite = button.get( "sprite" );
 				sprite.addChild( buttonSprite );
@@ -217,11 +211,11 @@ class UserInterface
 		return [ window, null ];
 	}
 
-	public function createButton( deployId:Int ):Array<Dynamic>
+	public function createButton( deployId:Int ):Button
 	{
 		var buttondeployId:ButtonDeployID = ButtonDeployID( deployId );
 		var config:Dynamic = this._parent.getSystem( "deploy" ).getButton( buttondeployId );
-		
+
 		var id:ButtonID = ButtonID( this._parent.createId() );
 		var sprite:Sprite = new Sprite();
 		sprite.x = config.x;
@@ -233,21 +227,19 @@ class UserInterface
 		sprite.addChild( textSprite );
 
 		var configForButton:ButtonConfig =
-		{ 
-			ID: id, 
+		{
+			ID: id,
 			DeployID: buttondeployId,
-			Name: config.name, 
-			GraphicsSprite: sprite 
+			Name: config.name,
+			GraphicsSprite: sprite
 		};
 		var button:Button = new Button( configForButton );
-		var err:String = button.init();
-		if( err != null )
-			return [ null , 'Error in GeneratorSystem.createButton. $err' ];
+		button.init( 'Error in GeneratorSystem.createButton. Button.init' );
 
-		return [ button, null ];
+		return button;
 	}
 
-	
+
 
 	//PRIVATE
 
@@ -314,7 +306,7 @@ class UserInterface
 	{
 		var sprite:Sprite = new Sprite();
 		var text:TextField;
-		var textConfig:Dynamic = 
+		var textConfig:Dynamic =
 		{
 			"text": null,
 			"size": null,
@@ -373,7 +365,7 @@ class UserInterface
         var textFormat:TextFormat = new TextFormat();
         textFormat.font = "Verdana";
         textFormat.size = text.size;
-        textFormat.color = text.color;        
+        textFormat.color = text.color;
         textFormat.align = align;
 
         txt.defaultTextFormat = textFormat;

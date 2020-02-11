@@ -3,7 +3,7 @@ package;
 import openfl.display.Sprite;
 import openfl.text.TextField;
 
-typedef GraphicsSystemconfig = 
+typedef GraphicsSystemconfig =
 {
 	var Parent:Dynamic;
 	var GraphicsSprite:Sprite;
@@ -14,28 +14,25 @@ class GraphicsSystem
 	private var _parent:Dynamic; // получить доступ к классу, в котором находится данный класс.
 	private var _sprite:Sprite;
 
-	public inline function new():Void
-	{
-
-	}
-
-	public function init( config:GraphicsSystemconfig ):String
+	public inline function new( config:GraphicsSystemconfig ):Void
 	{
 		this._parent = config.Parent;
 		this._sprite = config.GraphicsSprite;
-		
-		if( this._parent == null )
-			return "Error in GraphicsSystem.init. Parent is NULL";
-		
-		if( this._sprite == null )
-			return  "Error in GraphicsSystem.init. Sprite is NULL";
-
-		return null;
 	}
 
-	public function postInit():String
+	public function init( error:String ):Void
 	{
-		return null;
+		var err:String = 'Error in GraphicsSystem.init';
+		if( this._parent == null )
+			throw ' $error. $err. Parent is null!';
+
+		if( this._sprite == null )
+			throw ' $error. $err. Sprite is null!';
+	}
+
+	public function postInit():Void
+	{
+
 	}
 
 	public function changeFirstText( text:String ):Void
@@ -56,6 +53,11 @@ class GraphicsSystem
 			throw ( "Error in GraphicsSystem.changeSecondText, TextField not found" );
 
 		textField.text = text;
+	}
+
+	public inline function getSprite():Sprite
+	{
+		return this._sprite;
 	}
 
 	// PRIVATE

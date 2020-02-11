@@ -217,12 +217,12 @@ class SceneSystem
 		return null;
 	}
 
-	public function createScene( deployId:Int ):Array<Dynamic>
+	public function createScene( deployId:Int ):Scene
 	{
 		var sceneDeployId:SceneDeployID = SceneDeployID( deployId );
 		var config = this._parent.getSystem( "deploy" ).getScene( sceneDeployId );
 		if( config == null )
-			return [ null, "Error in SceneSystem.createScene. Deploy ID: '" + deployId + "' doesn't exist in SceneDeploy data" ];
+			throw 'Error in SceneSystem.createScene. Deploy ID: "$deployId + " does not exist in SceneDeploy data';
 
 		var id:SceneID = SceneID( this._parent.createId() );
 		var sprite:Sprite = new Sprite();
@@ -239,9 +239,7 @@ class SceneSystem
 			GraphicsSprite: sprite
 		};
 		var scene = new Scene( configForScene );
-		var err:String = scene.init();
-		if( err != null )
-			return [ null, 'Error in SceneSystem.createScene. $err' ];
+		scene.init( 'Error in SceneSystem.createScene. Error in Scene.init' );
 
 		var configWindow:Array<Int> = config.window;
 		if( configWindow != null ) // Внутри Window есть чайлды в виде button. создаются в функции создании окна.
@@ -260,11 +258,12 @@ class SceneSystem
 			{
 				var building:Building = this.createBuilding( configBuilding[ j ] );
 				scene.addChild( building );
+				this.prepareBuilding( building );
 			}
 		}
 
 		this._scenesArray.push( scene );
-		return [ scene, null ];
+		return scene;
 	}
 
 	public function createBuilding( deployId:Int ):Building
@@ -305,7 +304,32 @@ class SceneSystem
         return building;
     }
 
+    public function prepareBuilding( building:Building ):Void
+    {
+    	var name:String = building.get( "name" );
+    	switch( name )
+    	{
+    		case "recruit": this._prepareBuildingRecruit( building );
+    		case "hospital": {};
+    		case "fontain": {};
+    		case "inn": {};
+    		case "tavern": {};
+    		case "blacksmith": {};
+    		case "merchant": {};
+    		case "graveyard": {};
+    		case "academy": {};
+    		case "hermit": {};
+    		case "questman": {};
+    		default: throw 'Error. in SceneSystem.prepareBuilding. No action found for building "$name"';
+    	}
+    }
+
 	//PRIVATE
+
+	private function _prepareBuildingRecruit( building:Building ):Void
+	{
+		var slots:Int = building.get( "heroStorageSlotsMax" );
+	}
 
 	private function _prepareStartScene( scene:Scene ):Void
 	{
@@ -322,19 +346,7 @@ class SceneSystem
 			var building:Building = buildingsArray[ i ];
 			var buildingSprite:Sprite = building.get( "sprite" );
 			sprite.addChild( buildingSprite );
-			var name:String = building.get( "name" );
-			switch( name )
-			{
-				case "recruit":
-				{
-					//DO heroes in slots + start timer to rebuild heroes in it;
-					var slots:Int = building.get( "maxSlots" );
-
-				} 
-				default : throw 'Error in SceneSystem._prepareCityScene. Building with name: "$name" no action assigned.';
-			}
 		}
-
 
 		this._scenesSprite.addChild( sprite );
 		this.drawUiForScene( scene );

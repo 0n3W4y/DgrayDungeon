@@ -52,6 +52,7 @@ class Game
 		this._mainSprite.addChild( this._scenesSprite );
 		this._mainSprite.addChild( this._uiSprite );
 		this._onPause = false;
+		this._lastSave = null;
 
 		var parseDataContainer:DeployConfig = this._parseData();
 
@@ -157,7 +158,7 @@ class Game
 		return result;
 	}
 
-	public function createPlayer( deployId:Int, name:String ):Array<Dynamic>
+	public function createPlayer( deployId:Int, name:String ):Player
 	{
 		var playerDeployId:PlayerDeployID = PlayerDeployID( deployId );
 		var config:Dynamic = this._deploy.getPlayer( playerDeployId );
@@ -177,15 +178,13 @@ class Game
 		};
 
 		var player:Player = new Player( configForPlayer );
-		var err:String = player.init();
-		if( err != null )
-			return [ null, 'Error in GeneratorSystem.createPlayer. $err' ];
+		player.init( 'Error in GeneratorSystem.createPlayer. Error in Player.init' );
 
 		if( this._player != null )
 			throw 'Error in Game.createPlayer. Player already created!';
 
 		this._player = player;
-		return [ player, null ];
+		return player;
 	}
 
 

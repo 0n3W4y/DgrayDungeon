@@ -99,12 +99,12 @@
 	},
 
 	"3006":{
-		"name": "dungeonWindow",
+		"name": "innWindow",
 		"deployId": 3006,
 		"alwaysActive": true,
 		"x": 1300.0,
 		"y": 20.0,
-		"imageNormalURL": "assets/images/dungeonWindow.png",
+		"imageNormalURL": "assets/images/innWindow.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
 		"firstText": "Inn | 0 of 20",
@@ -115,6 +115,28 @@
 		"firstTextX": 15.0,
 		"firstTextY": 10.0,
 		"firstTextAlign": "center",
+		"button": [ 4007, 4008 ]
+	},
+
+	"3007":{
+		"name": "storageWindow",
+		"deployId": 3007,
+		"alwaysActive": false,
+		"x": 168.0,
+		"y": 110.0,
+		"imageNormalURL": "assets/images/storageWindow.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"firstText": "Storage | 0 of 100",
+		"firstTextSize": 26,
+		"firstTextColor": "0xffffff",
+		"firstTextHeight": 30,
+		"firstTextWidth": 300,
+		"firstTextX": 15.0,
+		"firstTextY": 10.0,
+		"firstTextAlign": "center",
 		"button": [  ]
 	}
+
+
 }

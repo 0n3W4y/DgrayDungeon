@@ -44,34 +44,31 @@ class Scene
 		this._name = config.Name;
 		this._deployId = config.DeployID;
 		this._sprite = config.GraphicsSprite;
-		this._graphics = new GraphicsSystem();
+		this._graphics = new GraphicsSystem({ Parent:this, GraphicsSprite:this._sprite });
 	}
 
-	public function init():String
+	public function init( error:String ):Void
 	{	
-		if( this._name == null || this._name == "" )
-			return 'Error in Scene.init. Wrong name. Name is:"$_name" id is:"$_id" deploy id is:"$_deployId"';
-
-		if( this._id == null )
-			return 'Error in Scene.init. Wrong ID. Name is:"$_name" id is:"$_id" deploy id is:"$_deployId"';
-		
-		if( this._deployId == null  )
-			return 'Error in Scene.init. Wrong Deploy ID. Name is:"$_name" id is:"$_id" deploy id is:"$_deployId"';
-		
-		var err:String = this._graphics.init({ Parent:this, GraphicsSprite:this._sprite });
-		if( err != null )
-			return 'Error in Scene.init. $err. Name is "$_name" id is:"$_id" deploy id is:"$_deployId"';
-
+		var err:String = 'Name "$_name" id "$_id" deploy id "$_deployId"';
 		this._isPrepared = "unprepared"; // По умолчанию, сцена не готова.
 		this._building = new Array<Building>();
 		this._hero = new Array<Hero>();
 
-		return null;
+		if( this._name == null || this._name == "" )
+			throw '$error. Wrong name. $err';
+
+		if( this._id == null )
+			throw '$error Wrong ID. $err';
+		
+		if( this._deployId == null  )
+			throw '$error Wrong Deploy ID. $err';
+		
+		this._graphics.init( (error + err) );		
 	}
 
-	public function postInit():String
+	public function postInit():Void
 	{
-		return null;
+
 	}
 
 	public function update( time:Float ):Void

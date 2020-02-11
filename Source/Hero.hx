@@ -32,7 +32,6 @@ class Hero
 
 	private var _inventory:InventorySystem;
 	private var _itemInventory:Array<Slot>;
-	private var _itemInventorySlots:Int;
 	private var _itemInventorySlotsMax:Int;
 
 	

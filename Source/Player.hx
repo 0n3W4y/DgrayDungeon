@@ -29,14 +29,12 @@ class Player
 	private var _id:PlayerID;
 	private var _name:String;
 	private var _deployId:PlayerDeployID;
+	private var _type:String;
 	private var _moneyAmount:Money;
 
 	private var _inventory:InventorySystem;
-	private var _inventoryStorage:Array<Slot>;
+	private var _inventoryStorage:Array<Slot>; // Инвентарь, котоырй будет использовтаь игрок во время боевых сцен. Так же он досутпен будет, для подготовки к боевой сцены.
 	private var _inventoryStorageMaxSlots:Int;
-	private var _battleInventory:InventorySystem;
-	private var _battleInventoryStorage:Array<Slot>;
-	private var _battleInventoryStorageMaxSlots
 
 	public inline function new( config:PlayerConfig ):Void
 	{
@@ -46,102 +44,48 @@ class Player
 		this._moneyAmount = config.MoneyAmount;
 		this._inventory = new InventorySystem({ Parent:this, InventoryName: "inventoryStorage" });
 		this._inventoryStorageMaxSlots = config.InventoryStorageSlotsMax;
-		this._battleInventory = new InventorySystem({ Parent:this, InventoryName: "battleInventoryStorage" });
-		this._battleInventoryStorageMaxSlots = config.BattleInventoryStorageSlotsMax
 	}
 
-	public function init():String
+	public function init( error:String ):Void
 	{
+		var err:String = 'Name "$_name" id "$_id" deploy id "$_deployId"';
+		this._type = "player";
+		this._inventoryStorage = new Array<Slot>();
+		this._battleInventoryStorage = new Array<Slot>();
+
 		if( this._name == null || this._name == "" )
-			return 'Error in Player.init. Wrong name. Name is:"$_name" id is:"$_id" deploy id is:"$_deployId"';
+			throw '$error Wrong name. $err ';
 		
 		if( this._id == null )
-			return 'Error in Player.init. Wrong ID. Name is:"$_name" id is:"$_id" deploy id is:"$_deployId"';
+			throw '$error. Wrong ID. $err';
 		
 		if( this._deployId == null )
-			return 'Error in Player.init. Wrong Deploy ID. Name is:"$_name" id is:"$_id" deploy id is:"$_deployId"';
+			throw '$error. Wrong Deploy ID. $err';
 
 		if( this._moneyAmount == null )
-			return 'Error in Player.init.Wrong money amount. Name: "$_name" id: "$_id"  deploy id: "$_deployId"';
+			throw '$error. Wrong money amount. $err';
 
 		if( this._inventoryStorageMaxSlots < 0 || this._inventoryStorageMaxSlots == null )
-			return 'Error in Player.init. Wrong Maximum item slots. Name: "$_name" id: "$_id"  deploy id: "$_deployId"';
-
-		if( this._battleInventoryStorageMaxSlots < 0 || this._battleInventoryStorageMaxSlots == null )
-			return 'Error in Player.init. Wrong Maximum slots in battle item storage . Name: "$_name" id: "$_id"  deploy id: "$_deployId"';
-
-		this._itemStorage = new Array<Slot>();
-		this._battleItemStorage = new Array<Slot>();
+			throw '$error. Wrong Maximum item slots. $err';
 
 		for( i in 0...this._inventoryStorageMaxSlots )
 		{
-			this._inventoryStorage.push({ Type: "any", Item: null, Restriction: "none" });
-		}
-
-		for( j in 0...this._battleInventoryStorageMaxSlots )
-		{
-			this._battleInventoryStorage.push({ Type: "any", Item: null, Restriction: "none" });
+			this._inventoryStorage.push({ Type: "item", Item: null, Restriction: "none" });
 		}
 
 		var err:String = this._inventory.init();
 		if( err != null )
-			return 'Error in Player.Init. Inventory Error. Name: "$_name" id: "$_id"  deploy id: "$_deployId". $err';
+			throw 'Error in Player.Init. Inventory Error. Name: "$_name" id: "$_id"  deploy id: "$_deployId". $err';
 
 		err = this._battleInventory.init();
 		if( err != null )
-			return 'Error in Player.Init. Battle Inventory Error. Name: "$_name" id: "$_id"  deploy id: "$_deployId". $err';
+			throw 'Error in Player.Init. Battle Inventory Error. Name: "$_name" id: "$_id"  deploy id: "$_deployId". $err';
 
-		return null;
 	}
 
-	public function postInit():String
+	public function postInit():Void
 	{
-		return null;
-	}
 
-	public function checkItemStorageForFreeSlots():Bool
-	{
-		if( this._itemStorageSlots < this._itemStorageSlotsMax )
-			return true;
-
-		return false;
-	}
-
-	public function addItemToStorage( item:Item ):Void
-	{
-		if( !this.checkItemStorageForFreeSlots() )
-			return;
-		//TODO: Сделать проверку на предмет того, можно ли "сложить" количество объектов. Будет решено после появления самих предметов.
-		var name:String = item.get( "name" );
-		var id:Item.ItemID = item.get( "id" );
-		var check:Int = this._checkItemInStorage( id );
-		if( check != null )
-			throw 'Error in Player.addItemToStorage. Found duplicate item with name:"$name" id:"$id"';
-
-		this._itemStorage.push( item );
-		this._itemStorageSlots++;
-	}
-
-	public function removeItemFromStorage( item:Item ):Array<Dynamic>
-	{
-		var name:String = item.get( "name" );
-		var id:Item.ItemID = item.get( "id" );
-		var check:Int = this._checkItemInStorage( id );
-		if( check == null )
-			return [ null, 'Error in Player.removeItemFromStorage. Item with name:"$name" id:"$id" does not exist' ];
-
-		this._itemStorage.splice( check, 1 );
-		this._itemStorageSlots--;
-		return [ item, null ];
-	}
-
-	public function getItemFromStorageById( id:Item.ItemID ):Array<Dynamic>
-	{
-		var check:Int = this._checkItemInStorage( id );
-		if( check == null )
-			return [ null, 'Error in Player.getHeroById. Hero with id:"$id" does not exist' ];
-
-		return [ this._itemStorage[ check ], null ];
 	}
 
 	public function get( value:String ):Dynamic
@@ -149,9 +93,12 @@ class Player
 		switch( value )
 		{
 			case "inventory": return this._inventory;
-			case "battleInventory": return this._battleInventory;
 			case "inventoryStorage": return this._inventoryStorage;
-			case "battleInventoryStorage": return this._battleInventoryStorage;
+			case "name": return this._name;
+			case "deployId": return this._deployId;
+			case "id": return this._id;
+			case "type": return this._type;
+			case "money": return this._moneyAmount;
 			default: throw 'Error in Player.get. Not valid value: "$value"';
 		}
 	}
@@ -160,14 +107,4 @@ class Player
 
 	//PRIVATE
 
-
-	private function _checkItemInStorage( id:Item.ItemID ):Int
-	{
-		for( i in 0...this._itemStorage.length )
-		{
-			if( haxe.EnumTools.EnumValueTools.equals( this._itemStorage[ i ].get( "id" ), id ) )
-				return i;
-		}
-		return null;
-	}
 }
