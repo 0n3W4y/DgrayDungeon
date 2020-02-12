@@ -9,7 +9,7 @@ typedef InventorySystemConfig =
 }
 
 
-typedef Slot = 
+typedef Slot =
 {
 	var Type:String;
 	var Item:Item;
@@ -30,16 +30,16 @@ class InventorySystem
 	public function init( error:String ):Void
 	{
 		if( this._parent == null )
-			throw '$err. Parent is null';
+			throw '$error. Parent is null';
 
 		if( this._inventoryName == null )
-			throw '$err. Inventory name is null';
+			throw '$error. Inventory name is null';
 
 	}
 
 	public function postInit():Void
 	{
-		
+
 	}
 
 	public function addToInventory( item:Item ):Void

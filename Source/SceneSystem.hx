@@ -11,7 +11,7 @@ import Scene;
 import Building;
 import Window;
 
-typedef SceneSystemConfig = 
+typedef SceneSystemConfig =
 {
 	var Parent:Game;
 	var GraphicsSprite:Sprite;
@@ -24,7 +24,7 @@ class SceneSystem
 	private var _scenesSprite:Sprite;
 	private var _activeScene:Scene;
 
-	
+
 	public function new( config:SceneSystemConfig ):Void
 	{
 		this._scenesSprite = config.GraphicsSprite;
@@ -32,7 +32,7 @@ class SceneSystem
 	}
 
 	public function init( error:String ):Void
-	{	
+	{
 		var err:String = 'Error in SceneSystem.init';
 
 		if( this._parent == null )
@@ -40,7 +40,7 @@ class SceneSystem
 
 		if( this._scenesSprite == null )
 			throw '$error. $err. Sprite is null';
-		
+
 		this._activeScene = null;
 		this._scenesArray = new Array<Scene>();
 	}
@@ -81,7 +81,7 @@ class SceneSystem
 		return [ sceneToReturn, null ];
 	}
 
-	public function fastSwitchSceneTo( scene:Scene ):Void // fast switch between scenes, hide active and show scene; 
+	public function fastSwitchSceneTo( scene:Scene ):Void // fast switch between scenes, hide active and show scene;
 	{													//Использовать для перемещения между сценой города и выбором данжа.
 		if( this._activeScene != null )
 			this.hideScene( this._activeScene );
@@ -107,7 +107,7 @@ class SceneSystem
 		var sceneDeployId:SceneDeployID = scene.get( "deployId" );
 		var configScene:Dynamic = this._parent.getSystem( "deploy" ).getScene( sceneDeployId );
 		var windowArray:Array<Int> = configScene.window;
-		
+
 		for( i in 0...windowArray.length )
 		{
 			var window:Int = windowArray[ i ];
@@ -120,7 +120,7 @@ class SceneSystem
 	public function undrawUiForScene( scene:Scene ):Void
 	{
 		var ui:UserInterface = this._parent.getSystem( "ui" );
-		var sceneDeployId:SceneDeployID = scene.get( "id" );
+		var sceneDeployId:SceneDeployID = scene.get( "deployId" );
 		var configScene:Dynamic = this._parent.getSystem( "deploy" ).getScene( sceneDeployId );
 		var windowArray:Array<Int> = configScene.window;
 
@@ -175,7 +175,6 @@ class SceneSystem
 		this._scenesSprite.removeChild( sprite );
 		this._parent.getSystem( "ui" ).hide();
 		this.undrawUiForScene( scene );
-		scene.changePrepareStatus( "unprepared" );
 	}
 
 	public function drawLoader():Void
@@ -277,6 +276,8 @@ class SceneSystem
 
         var id:BuildingID = BuildingID( this._parent.createId() );
         var sprite:Sprite = new Sprite();
+				sprite.x = config.x;
+				sprite.y = config.y;
         var graphicsSprite:Sprite = this._createGraphicsSprite( config );
         sprite.addChild( graphicsSprite );
         var textSprite:Sprite = this._createTextSprite( config );
@@ -300,7 +301,7 @@ class SceneSystem
         };
         var building:Building = new Building( buildingConfig );
         building.init( 'Error in SceneSystem.createBuilding. Building.init' );
-        
+
         return building;
     }
 
@@ -309,7 +310,7 @@ class SceneSystem
     	var name:String = building.get( "name" );
     	switch( name )
     	{
-    		case "recruit": this._prepareBuildingRecruit( building );
+    		case "recruits": this._prepareBuildingRecruits( building );
     		case "hospital": {};
     		case "fontain": {};
     		case "inn": {};
@@ -326,9 +327,9 @@ class SceneSystem
 
 	//PRIVATE
 
-	private function _prepareBuildingRecruit( building:Building ):Void
+	private function _prepareBuildingRecruits( building:Building ):Void
 	{
-		var slots:Int = building.get( "heroStorageSlotsMax" );
+		//TODO: Create heroes, add heroes to building.
 	}
 
 	private function _prepareStartScene( scene:Scene ):Void
@@ -348,7 +349,6 @@ class SceneSystem
 			sprite.addChild( buildingSprite );
 		}
 
-		this._scenesSprite.addChild( sprite );
 		this.drawUiForScene( scene );
 		scene.changePrepareStatus( "prepared" );
 	}
@@ -405,7 +405,7 @@ class SceneSystem
 	{
 		var sprite:Sprite = new Sprite();
 		var text:TextField;
-		var textConfig:Dynamic = 
+		var textConfig:Dynamic =
 		{
 			"text": null,
 			"size": null,
@@ -464,7 +464,7 @@ class SceneSystem
         var textFormat:TextFormat = new TextFormat();
         textFormat.font = "Verdana";
         textFormat.size = text.size;
-        textFormat.color = text.color;        
+        textFormat.color = text.color;
         textFormat.align = align;
 
         txt.defaultTextFormat = textFormat;

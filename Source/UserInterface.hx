@@ -32,14 +32,16 @@ class UserInterface
 
 	public function init( error:String ):Void
 	{
+		this._objectsOnUi = new Array<Window>();
+		this._objects = new Array<Window>();
+		this.hide(); // при первом старте скрываем ui, для правильного отображения сцены приветствия.
+
 		if( this._parent == null )
 			throw 'Error in UserInterface.init. Game is "$this._parent"';
 
 		if( this._sprite == null )
 			throw 'Error in UserInterface.init. Sprite is "$this._sprite"';
 
-		this._objectsOnUi = new Array<Window>();
-		this._objects = new Array<Window>();
 	}
 
 	public function postInit():Void

@@ -59,18 +59,18 @@ class Building
 		this._type = "building";
 		this._id = config.ID;
 		this._name = config.Name;
-		this._deployId = config.DeployID;	
-		this._sprite = config.GraphicsSprite;	
+		this._deployId = config.DeployID;
+		this._sprite = config.GraphicsSprite;
 		this._upgradeLevel = config.UpgradeLevel;
 		this._nextUpgradeId = config.NextUpgradeId;
 		this._canUpgradeLevel = config.CanUpgradeLevel;
 		this._upgradePrice = config.UpgradePrice;
 		this._heroStorageSlotsMax = config.HeroStorageSlotsMax;
 		this._itemStorageSlotsMax = config.ItemStorageSlotsMax;
-		this._graphics = new GraphicsSystem();
+		this._graphics = new GraphicsSystem({ Parent: this, GraphicsSprite: config.GraphicsSprite });
 	}
 
-	public function init():Void
+	public function init( error:String ):Void
 	{
 		var err:String = 'Name:"$_name" id:"$_id" deploy id:"$_deployId"';
 
@@ -79,7 +79,7 @@ class Building
 
 		if( this._id == null )
 			throw 'Error in Building.init. Wrong ID. $err';
-		
+
 		if( this._deployId == null )
 			throw 'Error in Building.init. Wrong Deploy ID. $err';
 
@@ -104,7 +104,7 @@ class Building
 
 	public function postInit():Void
 	{
-		
+
 	}
 
 	public function get( value:String ):Dynamic

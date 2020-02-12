@@ -15,7 +15,7 @@ typedef DeployConfig =
 	var Button:Dynamic;
 	var Scene:Dynamic;
 	var Building:Dynamic;
-	var Hero:Dynamic; 
+	var Hero:Dynamic;
 	var Item:Dynamic;
 	var Enemy:Dynamic;
 	var Player:Dynamic;
@@ -91,29 +91,28 @@ class Deploy
 		}
 	}
 
-	public function init():String
+	public function init( error:String ):Void
 	{
+		var err:String = 'Error in Deploy.init';
 		if( !this._scene.exists( SceneDeployID( 1000 )))
-			return 'Error in Deploy.init. Scene deploy is not valid';		
-		
+			throw '$error. $err. Scene deploy is not valid';
+
 		if( this._building == null )
-			return 'Error in Deploy.init. Building deploy is not valid';		
-		
+			throw '$error. $err. Building deploy is not valid';
+
 		if( this._hero == null )
-			return 'Error in Deploy.init. Hero deploy is not valid';		
-		
+			throw '$error. $err. Hero deploy is not valid';
+
 		if( this._item == null )
-			return 'Error in Deploy.init. Item deploy is not valid';
+			throw '$error. $err. Item deploy is not valid';
 
 		if( !this._button.exists( ButtonDeployID( 4000 )))
-			return 'Error in UserInterface.init. Button deploy config is not valid!';
+			throw '$error. $err. Button deploy config is not valid!';
 
 		if( !this._window.exists( WindowDeployID( 3000 )))
-			return 'Error in UserInterface.init. Window deploy config is not valid!';
+			throw '$error. $err. Window deploy config is not valid!';
 
 		//TODO: добавить дополнительные провеки на deploy.
-		
-		return null;
 	}
 
 	public function getWindow( deployId:Window.WindowDeployID ):Dynamic
@@ -128,7 +127,7 @@ class Deploy
 	{
 		if( !this._button.exists( deployId ) )
 			throw 'Error in Deploy.getButton. Wrong deploy id: "$deployId"';
-				
+
 		return this._button[ deployId ];
 	}
 
@@ -136,7 +135,7 @@ class Deploy
 	{
 		if( !this._hero.exists( deployId ) )
 			throw 'Error in Deploy.getHero. Wrong deploy id: "$deployId"';
-				
+
 		return this._hero[ deployId ];
 	}
 
@@ -144,7 +143,7 @@ class Deploy
 	{
 		if( !this._player.exists( deployId ) )
 			throw 'Error in Deploy.getPlayer. Wrong deploy id: "$deployId"';
-				
+
 		return this._player[ deployId ];
 	}
 
@@ -152,7 +151,7 @@ class Deploy
 	{
 		if( !this._scene.exists( deployId ) )
 			throw 'Error in Deploy.getScene. Wrong deploy id: "$deployId"';
-				
+
 		return this._scene[ deployId ];
 	}
 
@@ -160,7 +159,7 @@ class Deploy
 	{
 		if( !this._building.exists( deployId ) )
 			throw 'Error in Deploy.getBuilding. Wrong deploy id: "$deployId"';
-				
+
 		return this._building[ deployId ];
 	}
 
@@ -168,7 +167,7 @@ class Deploy
 	{
 		if( !this._item.exists( deployId ) )
 			throw 'Error in Deploy.getItem. Wrong deploy id: "$deployId"';
-				
+
 		return this._item[ deployId ];
 	}
 
@@ -176,7 +175,7 @@ class Deploy
 	{
 		if( !this._enemy.exists( deployId ) )
 			throw 'Error in Deploy.getEnemy. Wrong deploy id: "$deployId"';
-				
+
 		return this._enemy[ deployId ];
 	}
 }

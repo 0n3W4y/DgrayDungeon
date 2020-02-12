@@ -37,30 +37,29 @@ class Button
 		this._id = config.ID;
 		this._deployId = config.DeployID;
 		this._name = config.Name;
-		this._sprite = config.GraphicsSprite;
-		this._graphics = new GraphicsSystem({ Parent:this, GraphicsSprite: this._sprite });
+		this._graphics = new GraphicsSystem({ Parent:this, GraphicsSprite: config.GraphicsSprite });
 	}
 
 	public function init( error:String ):Void
 	{
 		var err:String = 'Name "$_name" id "$_id" deploy id "$_deployId"';
+		this._activeStatus = false;
+
 		if( this._name == null || this._name == "" )
-			return '$error. Wrong name. $err';
+			throw '$error. Wrong name. $err';
 
 		if( this._id == null )
-			return '$error Wrong ID. $err';
-		
-		if( this._deployId == null )
-			return '$error Wrong Deploy ID. $err"';
-		
-		this._graphics.init( '$error. $err' );
+			throw '$error Wrong ID. $err';
 
-		this._activeStatus = false;
+		if( this._deployId == null )
+			throw '$error Wrong Deploy ID. $err"';
+
+		this._graphics.init( '$error. $err' );
 	}
 
 	public function postInit():Void
 	{
-		
+
 	}
 
 	public function changeActiveStatus():Void
