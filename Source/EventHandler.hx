@@ -95,12 +95,11 @@ class EventHandler
 
 	private function _addEventsToButton( object:Dynamic ):Void
 	{
-		//добавляем стандартные ивенты для кнопки. Такие как hover, unhover, push, unpush, click;
-		// с click будем разбирать по имени кнопки.
+		// click будем разбирать по имени кнопки.
 		var name:String = object.get( "name" );
 		var sprite:Sprite = object.get( "sprite" );
 
-		this._addStandartButtonEvents( object ); // Добавляем стандартные ивенты как ховер, анховер, пуш, анпуш.
+		this._addStandartButtonEvents( sprite ); // Добавляем стандартные ивенты как hover, unhover, push, unpush.
 
 		switch( name )
 		{
@@ -119,7 +118,7 @@ class EventHandler
 		var name:String = object.get( "name" );
 		var sprite:Sprite = object.get( "sprite" );
 
-		this._removeStandartButtonEvents( object ); // Добавляем стандартные ивенты как ховер, анховер, пуш, анпуш.
+		this._removeStandartButtonEvents( sprite ); // Убираем стандартные ивенты как hover, unhover, push, unpush.
 
 		switch( name )
 		{
@@ -151,9 +150,22 @@ class EventHandler
 	{
 		var name:String = object.get( "name" );
 		var sprite:Sprite = object.get( "sprite" );
+		this._addStandartBuildingEvents( sprite );
 		switch( name )
 		{
 			case "recruits": sprite.addEventListener( MouseEvent.CLICK, this._clickRecruitsBuilding );
+			default:
+		}
+	}
+
+	private function _removeEventsFromBuilding( object:Dynamic ):Void
+	{
+		var name:String = object.get( "name" );
+		var sprite:Sprite = object.get( "sprite" );
+		this._removeStandartBuildingEvents( sprite );
+		switch( name )
+		{
+			case "recruits": sprite.removeEventListener( MouseEvent.CLICK, this._clickRecruitsBuilding );
 			default:
 		}
 	}
@@ -227,26 +239,49 @@ class EventHandler
 		graphicSprite.getChildAt( 2 ).visible = false;
 	}
 
-	private function _addStandartButtonEvents( object:Dynamic ):Void
+	private function _hoverBuilding( e:MouseEvent ):Void
 	{
-		var sprite:Sprite = object.get( "sprite" );
+		var sprite:Dynamic = e.currentTarget;
+		var graphicsSprite:Sprite = sprite.getChildAt( 0 );
+		graphicSprite.getChildAt( 1 ).visible = true;
+		var textSprite:Sprite = sprite.getChildAt( 1 );
+		textSprite.getChildAt( 0 ).visible = true;
+	}
+
+	private function _unhoverBuilding( e:MouseEvent ):Void
+	{
+		var sprite:Dynamic = e.currentTarget;
+		var graphicsSprite:Sprite = sprite.getChildAt( 0 );
+		graphicSprite.getChildAt( 1 ).visible = false;
+		var textSprite:Sprite = sprite.getChildAt( 1 );
+		textSprite.getChildAt( 0 ).visible = false;
+	}
+
+	private function _addStandartButtonEvents( sprite:Sprite ):Void
+	{
 		sprite.addEventListener( MouseEvent.MOUSE_OUT, this._unhover );
 		sprite.addEventListener( MouseEvent.MOUSE_OVER, this._hover );
 		sprite.addEventListener( MouseEvent.MOUSE_UP, this._unpush );
 		sprite.addEventListener( MouseEvent.MOUSE_DOWN, this._push );
 	}
 
-	private function _removeStandartButtonEvents( object:Dynamic ):Void
+	private function _removeStandartButtonEvents( sprite:Sprite ):Void
 	{
-		var sprite:Sprite = object.get( "sprite" );
 		sprite.removeEventListener( MouseEvent.MOUSE_OUT, this._unhover );
 		sprite.removeEventListener( MouseEvent.MOUSE_OVER, this._hover );
 		sprite.removeEventListener( MouseEvent.MOUSE_UP, this._unpush );
 		sprite.removeEventListener( MouseEvent.MOUSE_DOWN, this._push );
 	}
 
-	private function _addStandartBuildingEvents( object:Dynamic ):Void
+	private function _addStandartBuildingEvents( sprite:Sprite ):Void
 	{
+		sprite.addEventListener( MouseEvent.MOUSE_OVER, this._hoverBuilding );
+		sprite.addEventListener( MouseEvent.MOUSE_OUT, this._unhoverBuilding );
+	}
 
+	private function _removeStandartBuildingEvents( sprite:Sprite ):Void
+	{
+		sprite.removeEventListener( MouseEvent.MOUSE_OVER, this._hoverBuilding );
+		sprite.removeEventListener( MouseEvent.MOUSE_OUT, this._unhoverBuilding );
 	}
 }
