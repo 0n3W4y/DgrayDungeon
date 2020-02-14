@@ -207,6 +207,11 @@ class EventHandler
 
 	private function _clickRecruitsBuilding( e:MouseEvent ):Void
 	{
+		var ui:UserInterface = this._parent.getSystem( "ui" );
+		var deployIdMainWindow:Window.WindowDeployID = Window.WindowDeployID( 3001 );
+		var deployIdRecruitWindow:Window.WindowDeployID = Window.WindowDeployID( 3002 );
+		ui.showUiObject( deployIdMainWindow );
+		ui.showUiObject( deployIdRecruitWindow );
 		//TODO: click window to open ( mainCityWindow + recruitWindow );
 	}
 
