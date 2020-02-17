@@ -5,6 +5,8 @@ import openfl.events.MouseEvent;
 import openfl.text.TextField;
 import openfl.events.MouseEvent;
 
+import Window;
+
 typedef EventHandlerConfig =
 {
 	var Parent:Game;
@@ -69,11 +71,11 @@ class EventHandler
 		var type:String = object.get( "type" );
 		switch( type )
 		{
-			case "button":  this._removeEventsFromButton( object );
-			case "hero": this._addEventsToHero( object );
-			case "enemy": this._addEventsToEnemy( object );
-			case "item": this._addEventsToItem( object );
-			case "building": this._addEventsToBuilding( object );
+			case "button": this._removeEventsFromButton( object );
+			case "hero": this._removeEventsFromHero( object );
+			case "enemy": this._removeEventsFromEnemy( object );
+			case "item": this._removeEventsFromItem( object );
+			case "building": this._removeEventsFromBuilding( object );
 			default: throw 'Error in EventHandler._removeEvent. No events found for type "$type"';
 		}
 	}
@@ -108,6 +110,7 @@ class EventHandler
 			case "gameOptions": sprite.addEventListener( MouseEvent.CLICK, this._clickOptionsGame );
 			case "innUp": {};
 			case "innDown": {};
+			case "citySceneMainWindowClose": sprite.addEventListener( MouseEvent.CLICK, this._clickCloseCitySceneMainWindow );
 			default: throw 'Error in EventHandler._addEventsToButton. No event for button with name "$name"';
 		}
 	}
@@ -127,6 +130,7 @@ class EventHandler
 			case "gameOptions": sprite.removeEventListener( MouseEvent.CLICK, this._clickOptionsGame );
 			case "innUp": {};
 			case "innDown": {};
+			case "citySceneMainWindowClose": sprite.removeEventListener( MouseEvent.CLICK, this._clickCloseCitySceneMainWindow );
 			default: throw 'Error in EventHandler._addEventsToButton. No event for button with name "$name"';
 		}
 	}
@@ -153,8 +157,20 @@ class EventHandler
 		this._addStandartBuildingEvents( sprite );
 		switch( name )
 		{
+			//TODO: Доделать default  и другие case;
 			case "recruits": sprite.addEventListener( MouseEvent.CLICK, this._clickRecruitsBuilding );
-			default:
+			case "hospital":
+			case "tavern":
+			case "blacksmith":
+			case "merchant":
+			case "graveyard":
+			case "academy":
+			case "hermit":
+			case "questman":
+			case "fontain":
+			case "inn":
+			case "storage":
+			default: throw 'Error in EventHandler._addEventsToBuilding. No events for $name';
 		}
 	}
 
@@ -165,9 +181,36 @@ class EventHandler
 		this._removeStandartBuildingEvents( sprite );
 		switch( name )
 		{
+			//TODO: Доделать default  и другие case;
 			case "recruits": sprite.removeEventListener( MouseEvent.CLICK, this._clickRecruitsBuilding );
-			default:
+			case "hospital":
+			case "tavern":
+			case "blacksmith":
+			case "merchant":
+			case "graveyard":
+			case "academy":
+			case "hermit":
+			case "questman":
+			case "fontain":
+			case "inn":
+			case "storage":
+			default: throw 'Error in EventHandler_removeEventsFromBuilding. No events for $name';
 		}
+	}
+
+	private function _removeEventsFromHero( object:Dynamic ):Void
+	{
+
+	}
+
+	private function _removeEventsFromEnemy( object:Dynamic ):Void
+	{
+
+	}
+
+	private function _removeEventsFromItem( object:Dynamic ):Void
+	{
+
 	}
 
 	private function _checkListenerIfExist( object:Dynamic ):Int
@@ -186,13 +229,7 @@ class EventHandler
 
 	private function _clickStartGame( e:MouseEvent ):Void
 	{
-		//TODO: create cityscene, switch active scene, draw new scene, undraw old scene;
-		var sceneSystem:SceneSystem = this._parent.getSystem( "scene" );
-		var player:Player = this._parent.createPlayer( 100 , "test player" );
-
-		var scene:Scene = sceneSystem.createScene( 1001 );
-		sceneSystem.prepareScene( scene );
-		sceneSystem.changeSceneTo( scene );
+		this._parent.getSystem( "state" ).startGame();
 	}
 
 	private function _clickContinueGame( e:MouseEvent ):Void
@@ -207,59 +244,59 @@ class EventHandler
 
 	private function _clickRecruitsBuilding( e:MouseEvent ):Void
 	{
-		var ui:UserInterface = this._parent.getSystem( "ui" );
-		var deployIdMainWindow:Window.WindowDeployID = Window.WindowDeployID( 3001 );
-		var deployIdRecruitWindow:Window.WindowDeployID = Window.WindowDeployID( 3002 );
-		ui.showUiObject( deployIdMainWindow );
-		ui.showUiObject( deployIdRecruitWindow );
-		//TODO: click window to open ( mainCityWindow + recruitWindow );
+		this._parent.getSystem( "state" ).openWindow( "recruit" );
+	}
+
+	private function _clickCloseCitySceneMainWindow( e:MouseEvent ):Void
+	{
+		this._parent.getSystem( "state" ).closeWindow( "citySceneMain" );
 	}
 
 	private function _hover( e:MouseEvent ):Void
 	{
 		var sprite:Dynamic = e.currentTarget;
-		var graphicSprite:Sprite = sprite.getChildAt( 0 );
-		graphicSprite.getChildAt( 1 ).visible = true;
+		var graphicsSprite:Sprite = sprite.getChildAt( 0 );
+		graphicsSprite.getChildAt( 1 ).visible = true;
 	}
 
 	private function _unhover( e:MouseEvent ):Void
 	{
 		var sprite:Dynamic = e.currentTarget;
-		var graphicSprite:Sprite = sprite.getChildAt( 0 );
-		graphicSprite.getChildAt( 1 ).visible = false;
-		graphicSprite.getChildAt( 2 ).visible = false;
+		var graphicsSprite:Sprite = sprite.getChildAt( 0 );
+		graphicsSprite.getChildAt( 1 ).visible = false;
+		graphicsSprite.getChildAt( 2 ).visible = false;
 	}
 
 	private function _push( e:MouseEvent ):Void
 	{
 		var sprite:Dynamic = e.currentTarget;
-		var graphicSprite:Sprite = sprite.getChildAt( 0 );
-		graphicSprite.getChildAt( 2 ).visible = true;
+		var graphicsSprite:Sprite = sprite.getChildAt( 0 );
+		graphicsSprite.getChildAt( 2 ).visible = true;
 	}
 
 	private function _unpush( e:MouseEvent ):Void
 	{
 		var sprite:Dynamic = e.currentTarget;
-		var graphicSprite:Sprite = sprite.getChildAt( 0 );
-		graphicSprite.getChildAt( 2 ).visible = false;
+		var graphicsSprite:Sprite = sprite.getChildAt( 0 );
+		graphicsSprite.getChildAt( 2 ).visible = false;
 	}
 
 	private function _hoverBuilding( e:MouseEvent ):Void
 	{
 		var sprite:Dynamic = e.currentTarget;
 		var graphicsSprite:Sprite = sprite.getChildAt( 0 );
-		graphicSprite.getChildAt( 1 ).visible = true;
+		graphicsSprite.getChildAt( 1 ).visible = true;
 		var textSprite:Sprite = sprite.getChildAt( 1 );
-		textSprite.getChildAt( 0 ).visible = true;
+		textSprite.visible = true;
 	}
 
 	private function _unhoverBuilding( e:MouseEvent ):Void
 	{
 		var sprite:Dynamic = e.currentTarget;
 		var graphicsSprite:Sprite = sprite.getChildAt( 0 );
-		graphicSprite.getChildAt( 1 ).visible = false;
+		graphicsSprite.getChildAt( 1 ).visible = false;
 		var textSprite:Sprite = sprite.getChildAt( 1 );
-		textSprite.getChildAt( 0 ).visible = false;
+		textSprite.visible = false;
 	}
 
 	private function _addStandartButtonEvents( sprite:Sprite ):Void

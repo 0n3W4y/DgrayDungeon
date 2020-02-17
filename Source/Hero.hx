@@ -12,11 +12,12 @@ enum HeroDeployID
 	HeroDeployID( _:Int );
 }
 
-typedef HeroConfig = 
+typedef HeroConfig =
 {
 	var ID:HeroID;
 	var Name:String;
 	var DeployID:HeroDeployID;
+	var Rarity:String;
 }
 
 
@@ -34,7 +35,9 @@ class Hero
 	private var _itemInventory:Array<Slot>;
 	private var _itemInventorySlotsMax:Int;
 
-	
+	private var _status:String;
+
+
 	public function new():Void
 	{
 		this._type = "hero";
@@ -43,26 +46,25 @@ class Hero
 		this._name = null;
 	}
 
-	public function init():String
-	{	
-		
+	public function init( error:String ):Void
+	{
+		var err:String = 'Error in Hero.init. Name "$_name", id "$_id", deploy id "$_deployId"';
 		if( this._id == null )
-			throw 'Error in Hero.init. Name "$_name", id "$_id", deploy id "$_deployId"';
+			throw '$error. $err';
 
-		
+
 		if( this._deployId == null )
-			throw 'Error in Hero.init. Name "$_name", id "$_id", deploy id "$_deployId"';
+			throw '$error. $err';
 
-		
+
 		if( this._name == null )
-			throw 'Error in Hero.init. Name "$_name", id "$_id", deploy id "$_deployId"';
+			throw '$error. $err';
 
-		return null;
 	}
 
-	public function postInit():String
+	public function postInit():Void
 	{
-		return null;
+
 	}
 
 	public function get( value:String ):Dynamic
@@ -73,7 +75,17 @@ class Hero
 			case "deployId": return this._deployId;
 			case "name": return this._name;
 			case "type": return this._type;
+			case "status": return this._status;
 			default: throw 'Error in Hero.get. Can not get $value';
+		}
+	}
+
+	public function changeStatusTo( value:String ):Void
+	{
+		switch( value )
+		{
+			case "":
+			default: throw 'Error in Hero.ChangeStatusTo. $value is not valid status';
 		}
 	}
 

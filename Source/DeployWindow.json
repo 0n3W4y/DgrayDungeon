@@ -16,8 +16,8 @@
 		"name": "citySceneMainWindow",
 		"deployId": 3001,
 		"alwaysActive": false,
-		"x": 0.0,
-		"y": 0.0,
+		"x": 148.0,
+		"y": 40.0,
 		"imageNormalURL": "assets/images/citySceneMainWindow.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
@@ -29,15 +29,15 @@
 		"firstTextX": 30.0,
 		"firstTextY": 10.0,
 		"firstTextAlign": "left",
-		"button": [  ]
+		"button": [ 4009 ]
 	},
 
 	"3002":{
 		"name": "recruitWindow",
 		"deployId": 3002,
 		"alwaysActive": false,
-		"x": 168.0,
-		"y": 110.0,
+		"x": 166.0,
+		"y": 140.0,
 		"imageNormalURL": "assets/images/recruitWindow.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,

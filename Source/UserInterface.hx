@@ -133,7 +133,9 @@ class UserInterface
 		if( this._objectsOnUi[ check ].get( "alwaysActive" ))
 			throw 'Error in UserInterface.ShowUiObjec. Object can not be shown, while object is always active. "$deployId"';
 
-		this._objectsOnUi[ check ].get( "sprite" ).visible = true;
+
+		var sprite:Sprite = this._objectsOnUi[ check ].get( "sprite" );
+		sprite.visible = true;
 		this._objectsOnUi[ check ].changeActiveStatus();
 	}
 
@@ -146,8 +148,11 @@ class UserInterface
 		if( this._objectsOnUi[ check ].get( "alwaysActive" ))
 			throw 'Error in UserInterface.ShowUiObjec. Object can not be hide, while object is always active. "$deployId"';
 
-		this._objectsOnUi[ check ].get( "sprite" ).visible = false;
+		var sprite:Sprite = this._objectsOnUi[ check ].get( "sprite" );
+		sprite.visible = false;
 		this._objectsOnUi[ check ].changeActiveStatus();
+		if( haxe.EnumTools.EnumValueTools.equals( WindowDeployID( 3001 ), deployId ))
+			this._hideChildCitySceneMainWindow();
 	}
 
 	public function get( value:String ):Dynamic
@@ -171,7 +176,7 @@ class UserInterface
 		this._sprite.visible = true;
 	}
 
-	public function createWindow( deployId:Int ):Array<Dynamic>
+	public function createWindow( deployId:Int ):Window
 	{
 		var windowDeployId:WindowDeployID = WindowDeployID( deployId );
 		var config:Dynamic = this._parent.getSystem( "deploy" ).getWindow( windowDeployId );
@@ -210,7 +215,7 @@ class UserInterface
 
 		this._objects.push( window );
 
-		return [ window, null ];
+		return window;
 	}
 
 	public function createButton( deployId:Int ):Button
@@ -244,6 +249,22 @@ class UserInterface
 
 
 	//PRIVATE
+	private function _hideChildCitySceneMainWindow():Void
+	{
+		for( i in 0...this._objectsOnUi.length )
+		{
+			var window:Window = this._objectsOnUi[ i ];
+			var windowDeployID:WindowDeployID = window.get( "deployId" );
+			if( window.get( "activeStatus" ) )
+			{
+				if( haxe.EnumTools.EnumValueTools.equals( WindowDeployID( 3001 ), windowDeployID ))
+					continue;
+
+				this.hideUiObject( windowDeployID );
+				break; // находит первого активного, закрывает его и все.
+			}
+		}
+	}
 
 	private function _checkWidnowInObjects( deployId:WindowDeployID ):Int
 	{

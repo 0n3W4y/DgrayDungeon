@@ -42,16 +42,14 @@ class Building
 	private var _upgradeLevel:Int; // текущий уровень здания
 	private var _nextUpgradeId:Int; // deployId этого здания, но уже с апгерйдом.
 	private var _canUpgradeLevel:Bool; // можно ли улучшить здание.
-	private var _upgradePrice:Player.Money; // количество моент необходимое для апгрейда здания.
+	private var _upgradePrice:Player.Money; // количество монет необходимое для апгрейда здания.
 
 	private var _itemStorage:Array<Item>;
-	private var _itemStorageSlots:Int;
 	private var _itemStorageSlotsMax:Int;
 
 	private var _buyBackItemStorage:Array<Item>;
 
 	private var _heroStorage:Array<Hero>;
-	private var _heroStorageSlots:Int;
 	private var _heroStorageSlotsMax:Int;
 
 	public inline function new( config:BuildingConfig ):Void
@@ -72,6 +70,9 @@ class Building
 
 	public function init( error:String ):Void
 	{
+		this._heroStorage = new Array<Hero>();
+		this._itemStorage = new Array<Item>();
+
 		var err:String = 'Name:"$_name" id:"$_id" deploy id:"$_deployId"';
 
 		if( this._name == null || this._name == "" )
@@ -122,9 +123,7 @@ class Building
 			case "canUpgradeLevel": return this._canUpgradeLevel;
 			case "itemStorage": return this._itemStorage;
 			case "itemStorageMaxSlots": return this._itemStorageSlotsMax;
-			case "itemStorageSlots": return this._itemStorageSlots;
 			case "heroStorage": return this._heroStorage;
-			case "heroStorageSlots": return this._heroStorageSlots;
 			case "heroStorageSlotsMax": return this._heroStorageSlotsMax;
 			default: throw 'Error in Building.get. Can not get "$value"';
 		}
@@ -132,27 +131,61 @@ class Building
 
 	public function addHero( hero:Hero ):Void
 	{
+		if( !this.checkFreeSlotForHero() )
+			return;
 
+		this._heroStorage.push( hero );
 	}
 
 	public function removeHero( hero:Hero ):Hero
 	{
+		var id:Hero.HeroID = hero.get( "id" );
+		for( i in 0...this._heroStorage.length )
+		{
+			var currentHero:Hero = this._heroStorage[ i ];
+			if( haxe.EnumTools.EnumValueTools.equals( currentHero.get( "id" ), id ))
+			{
+				this._heroStorage.splice( i, 1 ); // при нахождении совпадения, удаляем его из хранилища.
+				break;
+			}
+		}
 		return hero;
 	}
 
 	public function addItem( item:Item ):Void
 	{
+		if( !this.checkFreeSlotForItem() )
+			return;
 
+		this._itemStorage.push( item );
 	}
 
 	public function removeItem( item:Item ):Item
 	{
+		var id:Item.ItemID = item.get( "id" );
+		for( i in 0...this._itemStorage.length )
+		{
+			var currentItem:Item = this._itemStorage[ i ];
+			if( haxe.EnumTools.EnumValueTools.equals( currentItem.get( "id" ), id ))
+			{
+				this._itemStorage.splice( i, 1 );
+				break;
+			}
+		}
 		return item;
 	}
 
 	public function checkFreeSlotForHero():Bool
 	{
-		if( this._heroStorageSlots < this._heroStorageSlotsMax )
+		if( this._heroStorage.length < this._heroStorageSlotsMax )
+			return true;
+
+		return false;
+	}
+
+	public function checkFreeSlotForItem():Bool
+	{
+		if( this._itemStorage.length < this._itemStorageSlotsMax )
 			return true;
 
 		return false;

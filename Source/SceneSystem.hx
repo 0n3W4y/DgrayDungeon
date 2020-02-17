@@ -165,7 +165,7 @@ class SceneSystem
 		if( prepared == "unprepared" )
 			throw 'Error in SceneSystem.drawScene. Scene with name: "$name" is "$prepared"';
 
-		this._scenesSprite.addChild( scene.get( "sprite" ) );
+		this._scenesSprite.addChild( scene.get( "sprite" ));
 		this._parent.getSystem( "ui" ).show();
 	}
 
@@ -282,6 +282,7 @@ class SceneSystem
         sprite.addChild( graphicsSprite );
         var textSprite:Sprite = this._createTextSprite( config );
         sprite.addChild( textSprite );
+				textSprite.visible = false;
 
         var moneyInt:Int = config.moneyAmount;
         var money:Player.Money = moneyInt;
@@ -340,6 +341,7 @@ class SceneSystem
 
 	private function _prepareCityScene( scene:Scene ):Void
 	{
+		var eventHandler:EventHandler = this._parent.getSystem( "event" );
 		var sprite:Sprite = scene.get( "sprite" );
 		var buildingsArray:Array<Building> = scene.getChilds( "building" );
 		for( i in 0...buildingsArray.length )
@@ -347,6 +349,8 @@ class SceneSystem
 			var building:Building = buildingsArray[ i ];
 			var buildingSprite:Sprite = building.get( "sprite" );
 			sprite.addChild( buildingSprite );
+			eventHandler.addEvents( building );
+
 		}
 
 		this.drawUiForScene( scene );
