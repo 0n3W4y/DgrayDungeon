@@ -1,6 +1,7 @@
 package;
 
 import Hero;
+import Player;
 
 class HeroSystem
 {
@@ -38,7 +39,47 @@ class HeroSystem
 			ID: id,
 			DeployID: heroDeployId,
 			Name: config.name,
-			Rarity: config.rarity
+			Rarity: config.rarity,
+			BuyPrice: Money( config.buyPrice ),
+			Slot0Type:String,
+			Slot0Restriction:String,
+			Slot0IsAvailable:Bool,
+			Slot1Type:String,
+			Slot1Restriction:String,
+			Slot1IsAvailable:Bool,
+			Slot2Type:String,
+			Slot2Restriction:String,
+			Slot2IsAvailable:String,
+			Slot3Type:String,
+			Slot3Restriction:String,
+			Slot3IsAvailable:Bool,
+			HealthPoints:Int,
+			Accuracy:Int,
+			Dodge:Int,
+			Block:Int,
+			CritChanse:Int,
+			BaseArmor:Int,
+			BaseDamage:Int,
+			Speed:Int,
+			CritDamage:Int,
+			Stress:Int,
+			ResistStun:Int,
+			ResistPoison:Int,
+			ResistBleed:Int,
+			ResistDeseas:Int,
+			ResistDebuff:Int,
+			ResistMove:Int,
+			ResistFire:Int,
+			ResistCold:Int,
+			PreferPosition:Array<Int>,
+			MaxPositiveTraits:Int,
+			MaxNegativeTraits:Int,
+			MaxLockedPositiveTraits:Int,
+			MaxLockedNegativeTraits:Int,
+			ActiveSkills:Array<Int>,
+			PassiveSkils:Array<Int>,
+			MaxActiveSkills:Int,
+			MaxPassiveSkills:Int
 		}
 		var hero:Hero = new Hero( configForHero );
 		hero.init( 'Error in HeroSystem.CreateHero. Hero.init' );

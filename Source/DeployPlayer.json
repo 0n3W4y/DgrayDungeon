@@ -2,7 +2,6 @@
 	"100":{
 		"deployId": 100,
 		"moneyAmount": 2500,
-		"inventoryStorageSlotsMax": 100,
-		"battleInventoryStorageSlotsMax": 10
+		"ItemInventoryMaxSlots": 10
 	}
 }

@@ -19,8 +19,7 @@ typedef PlayerConfig =
 	var ID:PlayerID;
 	var DeployID:PlayerDeployID;
 	var Name:String;
-	var InventoryStorageSlotsMax:Int;
-	var BattleInventoryStorageSlotsMax:Int;
+	var ItemInventoryMaxSlots:Int;
 	var MoneyAmount:Money;
 }
 
@@ -33,8 +32,8 @@ class Player
 	private var _moneyAmount:Money;
 
 	private var _inventory:InventorySystem;
-	private var _inventoryStorage:Array<Slot>; // Инвентарь, котоырй будет использовтаь игрок во время боевых сцен. Так же он досутпен будет, для подготовки к боевой сцены.
-	private var _inventoryStorageMaxSlots:Int;
+	private var _itemInventory:Array<Slot>; // Инвентарь, котоырй будет использовтаь игрок во время боевых сцен. Так же он досутпен будет, для подготовки к боевой сцены.
+	private var _itemInventoryMaxSlots:Int;
 
 	public inline function new( config:PlayerConfig ):Void
 	{
@@ -42,22 +41,26 @@ class Player
 		this._name = config.Name;
 		this._deployId = config.DeployID;
 		this._moneyAmount = config.MoneyAmount;
-		this._inventory = new InventorySystem({ Parent:this, InventoryName: "inventoryStorage" });
-		this._inventoryStorageMaxSlots = config.InventoryStorageSlotsMax;
+		this._inventory = new InventorySystem({ Parent:this });
+		this._itemInventoryMaxSlots = config.ItemInventoryMaxSlots;
 	}
 
 	public function init( error:String ):Void
 	{
 		var err:String = 'Name "$_name" id "$_id" deploy id "$_deployId"';
 		this._type = "player";
-		this._inventoryStorage = new Array<Slot>();
+		this._itemInventory = new Array<Slot>();
+		for( i in 0...this._itemInventoryMaxSlots )
+		{
+			this._itemInventory.push({ Type:"none", Item:null, Restriction:"none", Available:true });
+		}
 
 		if( this._name == null || this._name == "" )
 			throw '$error Wrong name. $err ';
-		
+
 		if( this._id == null )
 			throw '$error. Wrong ID. $err';
-		
+
 		if( this._deployId == null )
 			throw '$error. Wrong Deploy ID. $err';
 
