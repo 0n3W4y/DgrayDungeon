@@ -5,6 +5,9 @@ import SkillSystem;
 import TraitSystem;
 import StatSystem;
 import ResistSystem;
+import EffectSystem;
+import openfl.display.Sprite;
+
 
 enum HeroID
 {
@@ -16,6 +19,7 @@ enum HeroDeployID
 	HeroDeployID( _:Int );
 }
 
+
 typedef HeroConfig =
 {
 	var ID:HeroID;
@@ -25,24 +29,25 @@ typedef HeroConfig =
 	var BuyPrice:Player.Money;
 	var HeroName:String;
 	var HeroSurname:String;
-	var HealthPoints:Float;
-	var Accuracy:Float;
-	var Dodge:Float;
-	var Block:Float;
-	var CritChanse:Float;
-	var BaseArmor:Float;
-	var BaseDamage:Float;
-	var Speed:Float;
-	var CritDamage:Float;
-	var Stress:Float;
-	var ResistStun:Float;
-	var ResistPoison:Float;
-	var ResistBleed:Float;
-	var ResistDesease:Float;
-	var ResistDebuff:Float;
-	var ResistMove:Float;
-	var ResistFire:Float;
-	var ResistCold:Float;
+	var GraphicsSprite:Sprite;
+	var HealthPoints:Int;
+	var Accuracy:Int;
+	var Dodge:Int;
+	var Block:Int;
+	var CritChanse:Int;
+	var Defense:Int;
+	var Damage:Int;
+	var Speed:Int;
+	var CritDamage:Int;
+	var Stress:Int;
+	var ResistStun:Int;
+	var ResistPoison:Int;
+	var ResistBleed:Int;
+	var ResistDisease:Int;
+	var ResistDebuff:Int;
+	var ResistMove:Int;
+	var ResistFire:Int;
+	var ResistCold:Int;
 	var PreferPosition:Position;
 	var PreferTargetPosition:Position;
 	var MaxPositiveTraits:Int;
@@ -78,8 +83,9 @@ class Hero
 	private var _preferPosition:Position;
 	private var _preferTargetPosition:Position;
 
-	private var _traits:Array<Null>;
-	private var _skills:Array<Null>;
+	private var _traits:Array<Trait>;
+	private var _skills:Array<Skill>;
+	private var _effects:Array<Effect>;
 	private var _itemInventory:Array<Slot>; //использовтаь поле как константу, для инвентаря.
 
 	private var _inventory:InventorySystem;
@@ -87,27 +93,29 @@ class Hero
 	private var _stat:StatSystem;
 	private var _resist:ResistSystem;
 	private var _skill:SkillSystem;
+	private var _trait:TraitSystem;
+	private var _effect:EffectSystem;
 
 	//текущие значения статов.
-	private var _hp:Float;
-	private var _acc:Float;
-	private var _ddg:Float;
-	private var _block:Float;
-	private var _cc:Float;
-	private var _def:Float;
-	private var _dmg:Float;
-	private var _spd:Float;
-	private var _stress:Float;
-	private var _critDmg:Float;
+	private var _hp:HealthPoints;
+	private var _acc:Accuracy;
+	private var _ddg:Dodge;
+	private var _block:Block;
+	private var _cc:CriticalChanse;
+	private var _def:Defense;
+	private var _dmg:Damage;
+	private var _spd:Speed;
+	private var _stress:Stress;
+	private var _critDmg:CriticalDamage;
 	//текущие значения резистов.
-	private var _resistStun:Float;
-	private var _resistPoison:Float;
-	private var _resistBleed:Float;
-	private var _resistDisease:Float;
-	private var _resistDebuff:Float;
-	private var _resistMove:Float;
-	private var _resistFire:Float;
-	private var _resistCold:Float;
+	private var _resistStun:ResistStun;
+	private var _resistPoison:ResistPoison;
+	private var _resistBleed:ResistBleed;
+	private var _resistDisease:ResistDisease;
+	private var _resistDebuff:ResistDebuff;
+	private var _resistMove:ResistMove;
+	private var _resistFire:ResistFire;
+	private var _resistCold:ResistCold;
 
 	private var _status:String; // мертв, лечится, на задании  и прочие статусы.
 
@@ -123,8 +131,8 @@ class Hero
 		this._heroSurname = config.HeroSurname;
 		this._inventory = new InventorySystem({ Parent:this });
 		this._graphics = new GraphicsSystem({ Parent:this, GraphicsSprite:config.GraphicsSprite });
-		this._stat = new StatSystem({ Parent:this });
-		this._resist = new ResistSystem({ Parent:this });
+		this._stat = new StatSystem({ Parent:this, Hp:config.HealthPoints, Acc:config.Accuracy, Ddg:config.Dodge, Block:config.Block, Cc:config.CritChanse, Def:config.Defense, Dmg:config.Damage, Spd:config.Speed, Stress:config.Stress, CritDmg:config.CritDamage });
+		this._resist = new ResistSystem({ Parent:this, Stun:config.ResistStun, Poison:config.ResistPoison, Bleed:config.ResistBleed, Disease:config.ResistDisease, Debuff:config.ResistDebuff, Move:config.ResistMove, Fire:config.ResistFire, Cold:config.ResistCold });
 
 		this._hp = config.HealthPoints;
 		this._acc = config.Accuracy;
@@ -203,7 +211,7 @@ class Hero
 		}
 	}
 
-	public function getStat( stat:String ):Float
+	public function getStat( stat:String ):Dynamic
 	{
 		switch( stat )
 		{
@@ -211,7 +219,7 @@ class Hero
 			case "acc": return this._acc;
 			case "ddg": return this._ddg;
 			case "block": return this._block;
-			case "cc": return this._cc
+			case "cc": return this._cc;
 			case "def": return this._def;
 			case "dmg": return this._dmg;
 			case "spd": return this._spd;
@@ -221,7 +229,7 @@ class Hero
 		}
 	}
 
-	public function getResist( resist:String ):Float
+	public function getResist( resist:String ):Dynamic
 	{
 		switch( resist )
 		{
@@ -254,7 +262,7 @@ class Hero
 			throw 'Error in Hero.setPositionTo. can not set position to $value';
 	}
 
-	public function setStatTo( stat:String, value:Float ):Void
+	public function setStatTo( stat:String, value:Int ):Void
 	{
 		switch( stat )
 		{
@@ -272,7 +280,7 @@ class Hero
 		}
 	}
 
-	public function setResistTo( resist:String, value:FLoat ):Void
+	public function setResistTo( resist:String, value:Int ):Void
 	{
 		switch( resist )
 		{

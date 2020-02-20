@@ -2,33 +2,79 @@ package;
 
 typedef ResistConfig =
 {
-  var Stun:Float;
-  var Posion:Float;
-  var Bleed:Float;
-  var Desease:Float;
-  var Debuff:Float;
-  var Move:FLoat;
-  var Fire:Float;
-  var Cold:Float;
+  var Parent:Dynamic;
+  var Stun:Int;
+  var Poison:Int;
+  var Bleed:Int;
+  var Disease:Int;
+  var Debuff:Int;
+  var Move:Int;
+  var Fire:Int;
+  var Cold:Int;
+}
+
+abstract ResistStun( Int ) from Int
+{
+
+}
+
+abstract ResistPoison( Int ) from Int
+{
+
+}
+
+abstract ResistBleed( Int ) from Int
+{
+
+}
+
+abstract ResistDisease( Int ) from Int
+{
+
+}
+
+abstract ResistDebuff( Int ) from Int
+{
+
+}
+
+abstract ResistMove( Int ) from Int
+{
+
+}
+
+
+abstract ResistFire( Int ) from Int
+{
+
+}
+
+
+abstract ResistCold( Int ) from Int
+{
+
 }
 
 class ResistSystem
 {
-  private var _resistStun:Float;
-	private var _resistPoison:Float;
-	private var _resistBleed:Float;
-	private var _resistDisease:Float;
-	private var _resistDebuff:Float;
-	private var _resistMove:Float;
-	private var _resistFire:Float;
-	private var _resistCold:Float;
+  private var _parent:Dynamic;
+
+  private var _resistStun:Int;
+	private var _resistPoison:Int;
+	private var _resistBleed:Int;
+	private var _resistDisease:Int;
+	private var _resistDebuff:Int;
+	private var _resistMove:Int;
+	private var _resistFire:Int;
+	private var _resistCold:Int;
 
   public inline function new( config:ResistConfig ):Void
   {
+    this._parent = config.Parent;
     this._resistStun = config.Stun;
     this._resistPoison = config.Poison;
     this._resistBleed = config.Bleed;
-    this._resistDisease = config.Desease;
+    this._resistDisease = config.Disease;
     this._resistDebuff = config.Debuff;
     this._resistMove = config.Move;
     this._resistFire = config.Fire;
@@ -70,7 +116,7 @@ class ResistSystem
       throw '$err. Resist stun is $_resistStun';
   }
 
-  public function getBaseResist( resist:String ):Float
+  public function getBaseResist( resist:String ):Dynamic
   {
     switch( resist )
     {
@@ -86,7 +132,7 @@ class ResistSystem
     }
   }
 
-  public function getFullResist( resist:String ):Float
+  public function getFullResist( resist:String ):Dynamic
   {
       switch( resist )
       {
@@ -105,43 +151,43 @@ class ResistSystem
 
   //PRIVATE
 
-  private function _calculateStun():Float
+  private function _calculateStun():ResistStun
   {
-
+    return null;
   }
 
-  private function _calculatePosion():Float
+  private function _calculatePosion():ResistPoison
   {
-
+    return null;
   }
 
-  private function _calculateBleed():Float
+  private function _calculateBleed():ResistBleed
   {
-
+    return null;
   }
 
-  private function _calculateDisease():Float
+  private function _calculateDisease():ResistDisease
   {
-
+    return null;
   }
 
-  private function _calculateDebuff():Float
+  private function _calculateDebuff():ResistDebuff
   {
-
+    return null;
   }
 
-  private function _calculateMove():Float
+  private function _calculateMove():ResistMove
   {
-
+    return null;
   }
 
-  private function _calculateFire():Float
+  private function _calculateFire():ResistFire
   {
-
+    return null;
   }
 
-  private function _calculateCold():Float
+  private function _calculateCold():ResistCold
   {
-
+    return null;
   }
 }

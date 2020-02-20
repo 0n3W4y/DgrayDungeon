@@ -47,35 +47,31 @@ class Player
 
 	public function init( error:String ):Void
 	{
-		var err:String = 'Name "$_name" id "$_id" deploy id "$_deployId"';
+		var err:String = '$error. Error in Player.init. Name "$_name" id "$_id" deploy id "$_deployId"';
 		this._type = "player";
 		this._itemInventory = new Array<Slot>();
+			// заполняем инвентарь
 		for( i in 0...this._itemInventoryMaxSlots )
 		{
 			this._itemInventory.push({ Type:"none", Item:null, Restriction:"none", Available:true });
 		}
 
 		if( this._name == null || this._name == "" )
-			throw '$error Wrong name. $err ';
+			throw '$err. Wrong name';
 
 		if( this._id == null )
-			throw '$error. Wrong ID. $err';
+			throw '$err. Wrong ID';
 
 		if( this._deployId == null )
-			throw '$error. Wrong Deploy ID. $err';
+			throw '$err. Wrong Deploy ID';
 
 		if( this._moneyAmount == null )
-			throw '$error. Wrong money amount. $err';
+			throw '$err. Wrong money amount';
 
-		if( this._inventoryStorageMaxSlots < 0 || this._inventoryStorageMaxSlots == null )
-			throw '$error. Wrong Maximum item slots. $err';
+		if( this._itemInventoryMaxSlots < 0 || this._itemInventoryMaxSlots == null )
+			throw '$err. Wrong Maximum item slots';
 
-		for( i in 0...this._inventoryStorageMaxSlots )
-		{
-			this._inventoryStorage.push({ Type: "item", Item: null, Restriction: "none" });
-		}
-
-		this._inventory.init( 'Error in Player.Init. Inventory.init. $err' );
+		this._inventory.init( err );
 	}
 
 	public function postInit():Void
@@ -88,7 +84,7 @@ class Player
 		switch( value )
 		{
 			case "inventory": return this._inventory;
-			case "inventoryStorage": return this._inventoryStorage;
+			case "itemInventory": return this._itemInventory;
 			case "name": return this._name;
 			case "deployId": return this._deployId;
 			case "id": return this._id;

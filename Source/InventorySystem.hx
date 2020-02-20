@@ -5,7 +5,6 @@ import Item;
 typedef InventorySystemConfig =
 {
 	var Parent:Dynamic;
-	var InventoryName:String; // название, как получить интвентарь Array, с которым инвентарь должен работать.
 }
 
 
@@ -25,18 +24,17 @@ class InventorySystem
 	public inline function new( config:InventorySystemConfig ):Void
 	{
 		this._parent = config.Parent;
-
 	}
 
 	public function init( error:String ):Void
 	{
-		var err:String = "Error in InventorySystem.init";
-		this._inventoryName = "itemInventory";
+		var err:String = " $error. Error in InventorySystem.init";
+		this._inventoryName = "itemInventory"; //constant;
 		if( this._parent == null )
-			throw '$error. $err. Parent is null';
+			throw '$err. Parent is null';
 
 		if( this._inventory() == null )
-			throw '$error. $err. Inventory is null!';
+			throw '$err. Inventory is null!';
 
 	}
 

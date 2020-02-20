@@ -162,8 +162,7 @@ class Game
 			ID: playerId,
 			Name: name,
 			DeployID: playerDeployId,
-			InventoryStorageSlotsMax: config.inventoryStorageSlotsMax,
-			BattleInventoryStorageSlotsMax: config.battleInventoryStorageSlotsMax,
+			ItemInventoryMaxSlots: config.itemInventoryMaxSlots,
 			MoneyAmount: money
 		};
 

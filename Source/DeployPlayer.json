@@ -2,6 +2,6 @@
 	"100":{
 		"deployId": 100,
 		"moneyAmount": 2500,
-		"ItemInventoryMaxSlots": 10
+		"itemInventoryMaxSlots": 10
 	}
 }

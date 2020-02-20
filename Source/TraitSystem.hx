@@ -1,116 +1,54 @@
 package;
 
-class Traits extends Component
+typedef TraitConfig =
 {
-	private var _positive:Array<Dynamic>; 
-	private var _negative:Array<Dynamic>;
+	var Parent:Dynamic;
+}
 
-	private var _numOfPositive:Int = 0;
-	private var _numOfNegative:Int = 0;
-	private var _numOfPositiveStatic:Int = 0;
-	private var _numOfNegativeStatic:Int = 0;
+typedef Trait =
+{
+	var Type:String; // 'nevative', 'positiive';
+	var Name:String; // 'goodboy';
+	var Status:String; //'locked', 'unlocked';
+}
 
-	private var _maxNumOfPositive:Int;
-	private var _maxNumOfNegative:Int;
-	private var _maxNumOfPositiveStatic:Int;
-	private var _maxNumOfNegativeStatic:Int;
+class TraitSystem
+{
+	private var _parent:Dynamic;
 
 
-
-	public function new( parent:Entity, params:Dynamic ):Void
+	public function new( config:TraitConfig ):Void
 	{
-		super( parent, "traits" );
-		this._maxNumOfPositive = params.maxNumOfPositive;
-		this._maxNumOfNegative = params.maxNumOfNegative;
-		this._maxNumOfPositiveStatic = params.maxNumOfPositiveStatic;
-		this._maxNumOfNegativeStatic = params.maxNumOfNegativeStatic;
-		this._positive = new Array();
-		this._negative = new Array();
+		this._parent = config.Parent;
 	}
 
-	public function addTrait( trait:Dynamic, place:String ):Void
+	public function init( error:String ):Void
 	{
-		switch( place )
-		{
-			case "positive":
-			{
-				if( this._numOfPositive < _maxNumOfPositive )
-				{
-					this._positive.push( trait );
-					this._numOfPositive++;
-				}
-			}
-			case "negative":
-			{
-				if( this._numOfNegative < _maxNumOfNegative )
-				{
-					this._negative.push( trait );
-					this._numOfNegative++;
-				}
-			}
-			default: trace( "Error in Traits.addTrait, can't add trait with type: " + place );
-		}
+		var err:String = '$error. Error in TraitSystem.init';
 	}
 
-	public function removeTrait( trait:String ):Void
+	public function postInit( error:String ):Void
 	{
-		//no check;
-		for( i in 0...this._positive.length )
-		{
-			var newTrait = this._positive[ i ];
-			if( newTrait.name == trait )
-			{
-				this._positive.splice( i, 1 );
-				this._numOfPositive--;
-				return;
-			};
-		};
-		for( j in 0...this._negative.length )
-		{
-			var newTrait = this._negative[ j ];
-			if( newTrait.name == trait )
-			{
-				this._negative.splice( j, 1 );
-				this._numOfNegative--;
-				return;
-			};
-		};
+		var err:String = '$error. Error in TraitSystem.postInit';
 	}
 
-	public function getTrait( name:String ):Dynamic
+	public function addTrait(  ):Void
+	{
+
+	}
+
+	public function removeTrait( ):Void
+	{
+
+	}
+
+	public function getTrait(  ):Trait
 	{
 		return null;
 	}
 
-	public function getTraits( type:String ):Array<Dynamic>
+	public function setStaticTrait(  ):Void
 	{
-		switch( type )
-		{
-			case "positive": return this._positive;
-			case "negative": return this._negative;
-			default: { trace( "Error in Traits.getTraits, type can't be: " + type ); return null; }
-		}			
-	}
 
-	public function setStaticTrait( trait:String )
-	{
-		for( i in 0...this._positive.length )
-		{
-			var newTrait = this._positive[ i ];
-			if( newTrait.name == trait )
-			{
-				newTrait.traitStatic = true;
-				return;
-			};
-		};
-		for( j in 0...this._negative.length )
-		{
-			var newTrait = this._negative[ j ];
-			if( newTrait.name == trait )
-			{
-				newTrait.traitStatic = true;
-				return;
-			};
-		};
 	}
 }

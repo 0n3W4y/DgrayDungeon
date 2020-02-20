@@ -71,7 +71,7 @@ class HeroSystem
 			MaxPassiveSkills:FLoat
 		}
 		var hero:Hero = new Hero( configForHero );
-		hero.init( 'Error in HeroSystem.CreateHero. Hero.init' );
+		hero.init( 'Error in HeroSystem.CreateHero' );
 
 	}
 
