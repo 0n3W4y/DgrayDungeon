@@ -49,20 +49,20 @@ class Window
 
 	public function init( error:String ):Void
 	{
-		var err:String = 'Name "$_name" id "$_id" deploy id "$_deployId"';
+		var err:String = '$error. Error in Window.init. Name "$_name" id "$_id" deploy id "$_deployId"';
 		this._isActive = false; // by default status is hide;
 		this._buttonChildren = new Array<Button>();
 
 		if( this._name == null || this._name == "" )
-			throw '$error. Wrong name. $err';
+			throw '$err. Wrong name';
 
 		if( this._id == null )
-			throw '$error. Wrong ID.$err';
+			throw '$err. Wrong ID';
 
 		if( this._deployId == null )
-			throw '$error. Wrong Deploy ID. $err';
+			throw '$err. Wrong Deploy ID';
 
-		this._graphics.init( '$error. $err');
+		this._graphics.init( err );
 	}
 
 	public function postInit():Void
@@ -70,24 +70,24 @@ class Window
 
 	}
 
-	public function addChild( button:Button ):Void
+	public function addButton( button:Button ):Void
 	{
 		var name:String = button.get( "name" );
 		var id:ButtonID = button.get( "id" );
 		var check:Int = this._checkChildForExist( id );
 		if( check != null )
-			throw 'Error in Window.addChild. Found duplicate button with name: "$name"';
+			throw 'Error in Window.addButton. Found duplicate button with name: "$name"';
 
 		this._buttonChildren.push( button );
 	}
 
-	public function removeChild( button:Button ):Button
+	public function removeButton( button:Button ):Button
 	{
 		var name:String = button.get( "name" );
 		var id:ButtonID = button.get( "id" );
 		var check:Int = this._checkChildForExist( id );
 		if( check == null )
-			throw 'Error in Window.appendChild. Button with name: "$name" not found';
+			throw 'Error in Window.removeButton. Button with name: "$name" not found';
 
 		this._buttonChildren.splice( check, 1 );
 		return button;
@@ -118,7 +118,7 @@ class Window
 			case "sprite": return this._graphics.getSprite();
 			case "activeStatus": return this._isActive;
 			case "alwaysActive": return this._alwaysActive;
-			case "childs": return this._buttonChildren;
+			case "buttons": return this._buttonChildren;
 			default: throw 'Error in Window.get. Can not get "$value"';
 		}
 	}

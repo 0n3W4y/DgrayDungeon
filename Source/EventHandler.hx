@@ -17,10 +17,12 @@ class EventHandler
 {
 	private var _parent:Game;
 	private var _listeners:Array<Dynamic>;
+	private var _state:State;
 
 	public inline function new( config:EventHandlerConfig ):Void
 	{
 		this._parent = config.Parent;
+		this._state = this._parent.getSystem( "sate" );
 	}
 
 	public function init( error:String ):Void
@@ -110,6 +112,7 @@ class EventHandler
 			case "gameOptions": sprite.addEventListener( MouseEvent.CLICK, this._clickOptionsGame );
 			case "innUp": {};
 			case "innDown": {};
+			case "recruitHeroButton": sprite.addEventListener( MouseEvent.CLICK, this._clickRecruitHero );
 			case "citySceneMainWindowClose": sprite.addEventListener( MouseEvent.CLICK, this._clickCloseCitySceneMainWindow );
 			default: throw 'Error in EventHandler._addEventsToButton. No event for button with name "$name"';
 		}
@@ -130,6 +133,7 @@ class EventHandler
 			case "gameOptions": sprite.removeEventListener( MouseEvent.CLICK, this._clickOptionsGame );
 			case "innUp": {};
 			case "innDown": {};
+			case "recruitHeroButton": sprite.removeEventListener( MouseEvent.CLICK, this._clickRecruitHero );
 			case "citySceneMainWindowClose": sprite.removeEventListener( MouseEvent.CLICK, this._clickCloseCitySceneMainWindow );
 			default: throw 'Error in EventHandler._addEventsToButton. No event for button with name "$name"';
 		}
@@ -229,7 +233,7 @@ class EventHandler
 
 	private function _clickStartGame( e:MouseEvent ):Void
 	{
-		this._parent.getSystem( "state" ).startGame();
+		this._state.startGame();
 	}
 
 	private function _clickContinueGame( e:MouseEvent ):Void
@@ -244,12 +248,17 @@ class EventHandler
 
 	private function _clickRecruitsBuilding( e:MouseEvent ):Void
 	{
-		this._parent.getSystem( "state" ).openWindow( "recruit" );
+		this._state.openWindow( "recruit" );
 	}
 
 	private function _clickCloseCitySceneMainWindow( e:MouseEvent ):Void
 	{
-		this._parent.getSystem( "state" ).closeWindow( "citySceneMain" );
+		this._state.closeWindow( "citySceneMain" );
+	}
+
+	private function _clickRecruitHero( e:MouseEvent ):Void
+	{
+		this._state.recruitHero();
 	}
 
 	private function _hover( e:MouseEvent ):Void

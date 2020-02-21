@@ -331,6 +331,7 @@ class SceneSystem
 	private function _prepareBuildingRecruits( building:Building ):Void
 	{
 		//TODO: Create heroes, add heroes to building.
+		this._parent.getSystem( "state" ).generateHeroesForBuilding( building );
 	}
 
 	private function _prepareStartScene( scene:Scene ):Void

@@ -19,6 +19,12 @@ typedef DeployConfig =
 	var Item:Dynamic;
 	var Enemy:Dynamic;
 	var Player:Dynamic;
+	var System:Dynamic;
+}
+
+enum SystemDeployID
+{
+	SystemDeployID( _:Int );
 }
 
 class Deploy
@@ -31,6 +37,7 @@ class Deploy
 	private var _window:Map<WindowDeployID, Dynamic>;
 	private var _button:Map<ButtonDeployID, Dynamic>;
 	private var _item:Map<ItemDeployID, Dynamic>;
+	private var _system:Map<SystemDeployID, Dynamic>;
 
 	public inline function new( config:DeployConfig ):Void
 	{
@@ -89,28 +96,38 @@ class Deploy
 			var intKey:Int = Std.parseInt( key );
 			this._item[ ItemDeployID( intKey )] = Reflect.getProperty( config.Item, key );
 		}
+
+		this._system = new Map<SystemDeployID, Dynamic>();
+		for( key in Reflect.fields( config.System ))
+		{
+			var intKey:Int = Std.parseInt( key );
+			this._system[ SystemDeployID( intKey )] = Reflect.getProperty( config.System, key );
+		}
 	}
 
 	public function init( error:String ):Void
 	{
-		var err:String = 'Error in Deploy.init';
+		var err:String = '$error. Error in Deploy.init';
 		if( !this._scene.exists( SceneDeployID( 1000 )))
-			throw '$error. $err. Scene deploy is not valid';
+			throw '$err. Scene deploy is not valid';
 
 		if( this._building == null )
-			throw '$error. $err. Building deploy is not valid';
+			throw '$err. Building deploy is not valid';
 
 		if( this._hero == null )
-			throw '$error. $err. Hero deploy is not valid';
+			throw '$err. Hero deploy is not valid';
 
 		if( this._item == null )
-			throw '$error. $err. Item deploy is not valid';
+			throw '$err. Item deploy is not valid';
 
 		if( !this._button.exists( ButtonDeployID( 4000 )))
-			throw '$error. $err. Button deploy config is not valid!';
+			throw '$err. Button deploy config is not valid!';
 
 		if( !this._window.exists( WindowDeployID( 3000 )))
-			throw '$error. $err. Window deploy config is not valid!';
+			throw '$err. Window deploy config is not valid!';
+
+		if( !this._system.exists( SystemDeployID( 10 )))
+			throw '$err. System deploy config is not valid!';
 
 		//TODO: добавить дополнительные провеки на deploy.
 	}
@@ -177,5 +194,13 @@ class Deploy
 			throw 'Error in Deploy.getEnemy. Wrong deploy id: "$deployId"';
 
 		return this._enemy[ deployId ];
+	}
+
+	public function getSystem( deployId:SystemDeployID ):Dynamic
+	{
+		if( !this._system.exists( deployId ) )
+			throw 'Error in Deploy.getSystem. Wrong deploy id: "$deployId"';
+
+		return this._system[ deployId ];
 	}
 }

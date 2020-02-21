@@ -24,6 +24,7 @@ class Game
 	private var _eventHandler:EventHandler;
 	private var _sceneSystem:SceneSystem;
 	private var _userInterface:UserInterface;
+	private var _heroSystem:HeroSystem;
 
 
 	private var _onPause:Bool;
@@ -36,8 +37,6 @@ class Game
 
 	private var _player:Player;
 	private var _lastSave:Dynamic;
-
-	private var _playerDeploy:Map<Int, Dynamic>;
 
 	public function new( width:Int, height:Int, fps:Int, mainSprite:Sprite ):Void
 	{
@@ -56,20 +55,26 @@ class Game
 
 		var parseDataContainer:DeployConfig = this._parseData();
 
+		var err:String = 'Error in Game.new';
+
 		this._deploy = new Deploy( parseDataContainer );
-		this._deploy.init( 'Error in Game.new' );
+		this._deploy.init( err );
 
 		this._eventHandler = new EventHandler({ Parent:this });
-		this._eventHandler.init( 'Error in Game.new' );
+		this._eventHandler.init( err );
 
 		this._sceneSystem = new SceneSystem({ Parent:this, GraphicsSprite:this._scenesSprite });
-		this._sceneSystem.init( 'Error in Game.new' );
+		this._sceneSystem.init( err );
 
 		this._userInterface = new UserInterface({ Parent:this, GraphicsSprite:this._uiSprite });
-		this._userInterface.init( 'Error in Game.new' );
+		this._userInterface.init( err );
 
 		this._state = new State({ Parent:this });
-		this._state.init( 'Error in Game.new' );
+		this._state.init( err );
+
+		var heroSystemConfig = this._deploy.getSystem( SystemDeployID( 10 ));
+		this._heroSystem = new HeroSystem({ Parent:this, ManNames:heroSystemConfig.manNames, WomanNames:heroSystemConfig.womanNames, Surnames:heroSystemConfig.surnames, Rarity:heroSystemConfig.rarity, Types:heroSystemConfig.types });
+		this._heroSystem.init( err );
 
 		this._userInterface.hide();
 		this._startGame();
@@ -121,6 +126,7 @@ class Game
 			case "scene": return this._sceneSystem;
 			case "event": return this._eventHandler;
 			case "ui": return this._userInterface;
+			case "hero": return this._heroSystem;
 			default: trace( "Error in Game.getSystem; system can't be: " + system );
 		}
 		return null;
@@ -219,9 +225,9 @@ class Game
 
 	}
 
-	private function _parseData():Deploy.DeployConfig
+	private function _parseData():DeployConfig
 	{
-		var window:Dynamic = ConfigJSON.json( "c:/projects/DgrayDungeon//Source/DeployWindow.json" );
+		var window:Dynamic = ConfigJSON.json( "c:/projects/DgrayDungeon/Source/DeployWindow.json" );
 		var button:Dynamic = ConfigJSON.json( "c:/projects/DgrayDungeon/Source/DeployButton.json" );
 		var scene:Dynamic = ConfigJSON.json( "c:/projects/DgrayDungeon/Source/DeployScene.json" );
 		var building:Dynamic = ConfigJSON.json( "c:/projects/DgrayDungeon/Source/DeployBuilding.json" );
@@ -229,13 +235,9 @@ class Game
 		var item:Dynamic = ConfigJSON.json( "c:/projects/DgrayDungeon/Source/DeployItem.json" );
 		var enemy:Dynamic = ConfigJSON.json( "c:/projects/DgrayDungeon/Source/DeployEnemy.json" );
 		var player:Dynamic = ConfigJSON.json( "c:/projects/DgrayDungeon/Source/DeployPlayer.json" );
+		var system:Dynamic = ConfigJSON.json( "c:/projects/DgrayDungeon/Source/DeploySystems.json");
 
-		return { Window:window, Button:button, Scene:scene, Building:building, Hero:hero, Item:item, Enemy:enemy, Player:player };
-	}
-
-	private function _mapJsonObject( newObject:Dynamic, oldObject:Dynamic ):Void
-	{
-
+		return { Window:window, Button:button, Scene:scene, Building:building, Hero:hero, Item:item, Enemy:enemy, Player:player, System:system };
 	}
 
 	private function _startGame():Void

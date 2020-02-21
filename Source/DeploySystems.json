@@ -1,0 +1,10 @@
+{
+  "10":
+  {
+    "rarity": [ "common", "uncommon", "rare", "legendary" ],
+    "type": [ "crossbowman", "paladin", "pyromancer" ],
+    "manNames": [],
+    "womanNames": [],
+    "surnames":[]
+  }
+}

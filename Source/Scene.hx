@@ -1,7 +1,7 @@
 package;
 
 import openfl.display.Sprite;
-import Window;
+import Building;
 
 enum SceneID
 {
@@ -35,7 +35,7 @@ class Scene
 
 	private var _building:Array<Building>;
 	private var _hero:Array<Hero>;
-	
+
 
 	public inline function new( config:SceneConfig ):Void
 	{
@@ -48,7 +48,7 @@ class Scene
 	}
 
 	public function init( error:String ):Void
-	{	
+	{
 		var err:String = 'Name "$_name" id "$_id" deploy id "$_deployId"';
 		this._isPrepared = "unprepared"; // По умолчанию, сцена не готова.
 		this._building = new Array<Building>();
@@ -59,11 +59,11 @@ class Scene
 
 		if( this._id == null )
 			throw '$error Wrong ID. $err';
-		
+
 		if( this._deployId == null  )
 			throw '$error Wrong Deploy ID. $err';
-		
-		this._graphics.init( (error + err) );		
+
+		this._graphics.init( (error + err) );
 	}
 
 	public function postInit():Void
@@ -125,7 +125,7 @@ class Scene
 
 		var check:Int = this._checkChildForExist( object );
 		if( check == null )
-			return [ null, 'Error in Scene.removeChild. Scene does not have object with type: "$type" and name: "$name"' ];	
+			return [ null, 'Error in Scene.removeChild. Scene does not have object with type: "$type" and name: "$name"' ];
 
 		switch( type )
 		{
@@ -135,6 +135,16 @@ class Scene
 		}
 
 		return [ object, null ];
+	}
+
+	public function getBuildingByDeployId( id:Int ):Building
+	{
+		var deployId:BuildingDeployID = BuildingDeployID( id );
+		var check:Int = this._findBuilding( deployId );
+		if( check == null )
+			throw 'Error in Scene.getBuildingByDeployId. Can not find building with deploy id $id';
+
+		return this._building[ check ];
 	}
 
 	public function changePrepareStatus( value:String ):Void
@@ -165,6 +175,17 @@ class Scene
 		for( i in 0...container.length )
 		{
 			if( haxe.EnumTools.EnumValueTools.equals( object.get( "id" ), container[ i ].get( "id" )))
+				return i;
+		}
+
+		return null;
+	}
+
+	private function _findBuilding( deployId:BuildingDeployID ):Int
+	{
+		for( i in 0...this._building.length )
+		{
+			if(	haxe.EnumTools.EnumValueTools.equals( this._building[ i ].get( "deployId" ), deployId ))
 				return i;
 		}
 

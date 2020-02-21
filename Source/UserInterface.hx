@@ -166,6 +166,23 @@ class UserInterface
 		}
 	}
 
+	public function getWindowByDeployId( deployId:Int ):Window
+	{
+		var windowDeployId = WindowDeployID( deployId );
+		var check:Int = this._checkWindowInObjectsOnUi( windowDeployId );
+		if( check != null )
+			return this._objectsOnUi[ check ]; // возвращаем окно, котрое сейчас на активной сцене
+
+		var secondCheck:Int = this._checkWidnowInObjects( windowDeployId );
+		if( secondCheck != null )
+			return this._objects[ secondCheck ]; // возвращаем окно, котрое вообще существует.
+
+		if( check == null && secondCheck == null )
+			throw 'Error in Window.GetWindowByDeployId. Can not find window with deploy id $deployId';
+
+		return null;
+	}
+
 	public function hide():Void
 	{
 		this._sprite.visible = false;
@@ -200,14 +217,14 @@ class UserInterface
 			AlwaysActive: config.alwaysActive
 		};
 		var window:Window = new Window( configForWindow );
-		window.init( 'Error in GeneratorSystem.createWindow. Window.init' );
+		window.init( 'Error in GeneratorSystem.createWindow' );
 
 		if( config.button != null )
 		{
 			for( i in 0...config.button.length )
 			{
 				var button:Button = this.createButton( config.button[ i ] );
-				window.addChild( button );
+				window.addButton( button );
 				var buttonSprite:Sprite = button.get( "sprite" );
 				sprite.addChild( buttonSprite );
 			}

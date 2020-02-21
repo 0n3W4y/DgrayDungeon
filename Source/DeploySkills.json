@@ -48,7 +48,7 @@
 	},
 
 	"11003":{
-		"name": "High bolt",
+		"name": "Charged attack",
 		"deployId": 11003,
 		"maxUpgradeLevel": 10,
 		"damageMultiplier": 70,
@@ -80,7 +80,7 @@
 	},
 
 	"11005":{
-		"name": "Strong bolt",
+		"name": "Strong attack",
 		"deployId": 11005,
 		"maxUpgradeLevel": 10,
 		"damageMultiplier": 90,
@@ -96,10 +96,26 @@
 	},
 
 	"11006":{
-		"name": "Massive bolt",
+		"name": "Stun attack",
 		"deployId": 11006,
 		"maxUpgradeLevel": 10,
-		"damageMultiplier": 70,
+		"damageMultiplier": 60,
+		"type": "active",
+		"addEffect": "stun",
+		"removeEffect": "none",
+		"valueType": "flat",
+		"action": "substract",
+		"targetStat": [ "hp" ],
+		"duration": 1,
+		"cooldawn": 3,
+		"targetPosition":[ 0 ]
+	},
+
+	"11007":{
+		"name": "Double stun attack",
+		"deployId": 11007,
+		"maxUpgradeLevel": 10,
+		"damageMultiplier": 40,
 		"type": "active",
 		"addEffect": "stun",
 		"removeEffect": "none",
@@ -108,7 +124,55 @@
 		"targetStat": [ "hp" ],
 		"duration": 1,
 		"cooldawn": 4,
-		"targetPosition":[ 0 ]
+		"targetPosition":[ 12, 23, 34 ]
+	},
+
+	"11008":{
+		"name": "Massive stun attack",
+		"deployId": 11008,
+		"maxUpgradeLevel": 10,
+		"damageMultiplier": 20,
+		"type": "active",
+		"addEffect": "stun",
+		"removeEffect": "none",
+		"valueType": "flat",
+		"action": "substract",
+		"targetStat": [ "hp" ],
+		"duration": 1,
+		"cooldawn": 5,
+		"targetPosition":[ 1234 ]
+	},
+
+	"11009":{
+		"name": "Massive through attack",
+		"deployId": 11009,
+		"maxUpgradeLevel": 10,
+		"damageMultiplier": 30,
+		"type": "active",
+		"addEffect": "none",
+		"removeEffect": "none",
+		"valueType": "flat",
+		"action": "substract",
+		"targetStat": [ "hp" ],
+		"duration": 0,
+		"cooldawn": 5,
+		"targetPosition":[ 1234 ]
+	},
+
+	"11010":{
+		"name": "Bandages friend",
+		"deployId": 11010,
+		"maxUpgradeLevel": 10,
+		"damageMultiplier": 30,
+		"type": "active",
+		"addEffect": "none",
+		"removeEffect": "bleed",
+		"valueType": "flat",
+		"action": "add",
+		"targetStat": [ "hp" ],
+		"duration": 0,
+		"cooldawn": 2,
+		"targetPosition":[ -1, -2, -3, -4 ]
 	},
 
 

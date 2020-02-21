@@ -94,6 +94,20 @@ class Player
 		}
 	}
 
+	public function withdrawMoney( amount:Money ):Bool
+	{
+		var money:Money = this._moneyAmount - amount;
+		if( money < 0 )
+		{
+			return false;
+		}
+		else
+		{
+			this._moneyAmount = money;
+			return true;
+		}
+	}
+
 
 
 	//PRIVATE

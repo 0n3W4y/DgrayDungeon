@@ -2,20 +2,65 @@ package;
 
 import Hero;
 import Player;
+import openfl.display.Sprite;
+import openfl.text.TextField;
+import openfl.text.TextFormat;
+import openfl.text.TextFormatAlign;
+import openfl.display.Bitmap;
+import openfl.Assets;
+
+typedef HeroSystemConfig =
+{
+	var Parent:Game;
+	var ManNames:Array<String>;
+	var WomanNames:Array<String>;
+	var Surnames:Array<String>;
+	var Rarity:Array<String>;
+	var Types:Array<String>;
+}
 
 class HeroSystem
 {
 	private var _parent:Game;
+	private var _manNames:Array<String>;
+	private var _womanNames:Array<String>;
+	private var _surnames:Array<String>;
+	private var _usedNamesSurnames:Array<String>;
 
-	public function new( parent:Game ):Void
+	private var _rarity:Array<String>;
+	private var _types:Array<String>;
+
+	public function new( config:HeroSystemConfig ):Void
 	{
-		this._parent = parent;
+		this._parent = config.Parent;
+		this._manNames = config.ManNames;
+		this._womanNames = config.WomanNames;
+		this._surnames = config.Surnames;
+		this._rarity = config.Rarity;
+		this._types = config.Types;
 	}
 
 	public function init( error:String ):Void
 	{
+		var err:String = '$error. Error in HeroSystem.init';
+
 		if( this._parent == null )
-			throw '$error. Parent is null!';
+			throw '$err. Parent is wrong';
+
+		if( this._manNames == null || this._manNames.length == 0 )
+			throw '$err. Man names is wrong';
+
+		if( this._womanNames == null || this._womanNames.length == 0 )
+			throw '$err. Woman names is wrong';
+
+		if( this._surnames == null || this._surnames.length == 0 )
+			throw '$err. Surnames is wrong';
+
+		if( this._rarity == null || this._rarity.length == 0 )
+			throw '$err. Rarity is wrong';
+
+		if( this._types == null || this._types.length == 0 )
+			throw '$err Hero classes are wrong';
 	}
 
 	public function postInit( error:String ):Void
@@ -23,11 +68,51 @@ class HeroSystem
 
 	}
 
+	public function get( value:String ):Dynamic
+	{
+		switch( value )
+		{
+			case "rarity": return this._rarity;
+			case "types": return this._types;
+			default: throw 'Error in HeroSystem.get. Can not get $value';
+		}
+	}
+
+	public function generateHero( type:String, rarity:String ):Hero
+	{
+		var newType:String = null;
+		var newRarity:String = null;
+
+		if( type == "random" )
+		{
+				//TODO: создать рандом на класс героя.
+		}
+		else
+		{
+				newType = type;
+		}
+
+		if( rarity == "random" )
+		{
+			//TODO: создать рандом на легендарность героя.
+		}
+		else
+		{
+			newRarity = rarity;
+		}
+
+		var deployId:Int = 0;
+		var hero:Hero = this.createHero( deployId );
+
+		return hero;
+	}
+
 	public function createHero( deployId:Int ):Hero
 	{
-		var heroDeployId:HeroDeployID = DeroDeployID( deployId );
+		var heroDeployId:HeroDeployID = HeroDeployID( deployId );
 		var config:Dynamic = this._parent.getSystem( "deploy" ).getHero( heroDeployId );
 		var id:HeroID = HeroID( this._parent.createId() );
+		var buyPrice:Money = config.buyPrice;
 		//var sprite:Sprite = new Sprite();
 		//var graphicsSprite:Sprite = this._createGraphicsSprite( config );
 		//sprite.addChild( graphicsSprite );
@@ -40,39 +125,39 @@ class HeroSystem
 			DeployID: heroDeployId,
 			Name: config.name,
 			Rarity: config.rarity,
-			BuyPrice: Money( config.buyPrice ),
-			HealthPoints:Float,
-			Accuracy:Float,
-			Dodge:Float,
-			Block:Float,
-			CritChanse:Float,
-			BaseArmor:Float,
-			BaseDamage:Float,
-			Speed:Float,
-			CritDamage:Float,
-			Stress:Float,
-			ResistStun:Float,
-			ResistPoison:FLoat,
-			ResistBleed:FLoat,
-			ResistDeseas:FLoat,
-			ResistDebuff:FLoat,
-			ResistMove:FLoat,
-			ResistFire:FLoat,
-			ResistCold:FLoat,
-			PreferPosition:Position,
-			PreferTargetPosition:Position,
-			MaxPositiveTraits:FLoat,
-			MaxNegativeTraits:FLoat,
-			MaxLockedPositiveTraits:FLoat,
-			MaxLockedNegativeTraits:FLoat,
-			ActiveSkills:Array<Int>,
-			PassiveSkils:Array<Int>,
-			MaxActiveSkills:FLoat,
-			MaxPassiveSkills:FLoat
+			BuyPrice: buyPrice,
+			HealthPoints:config.healthPoints,
+			Accuracy:config.accuracy,
+			Dodge:config.dodge,
+			Block:config.block,
+			CritChanse:config.critChanse,
+			Defense:config.defense,
+			Damage:config.damage,
+			Speed:config.speed,
+			CritDamage:config.critDamage,
+			Stress:config.stress,
+			ResistStun:config.resistStun,
+			ResistPoison:config.resistPoison,
+			ResistBleed:config.resistBleed,
+			ResistDeseas:config.resistDisease,
+			ResistDebuff:config.resistDebuff,
+			ResistMove:config.resistMove,
+			ResistFire:config.resistFire,
+			ResistCold:config.resistCold,
+			PreferPosition:{ First:config.preferPosition[ 0 ], Second:config.preferPosition[ 1 ], Third: config.preferPosition[ 2 ], Fourth: config.preferPosition[ 3 ] },
+			PreferTargetPosition:{ First:config.preferTargetPosition[ 0 ], Second:config.preferTargetPosition[ 1 ], Third: config.preferTargetPosition[ 2 ], Fourth: config.preferTargetPosition[ 3 ] },
+			MaxPositiveTraits:config.maxPositiveTraits,
+			MaxNegativeTraits:config.maxNegativeTraits,
+			MaxLockedPositiveTraits:config.maxLockedPositiveTraits,
+			MaxLockedNegativeTraits:config.maxLockedNegativeTraits,
+			MaxActiveSkills:config.maxActiveSkills,
+			MaxPassiveSkills:config.maxPassiveSkills
 		}
 		var hero:Hero = new Hero( configForHero );
 		hero.init( 'Error in HeroSystem.CreateHero' );
 
+		//TODO: skills and traits on hero.
+		return hero;
 	}
 
 	//PRIVATE
