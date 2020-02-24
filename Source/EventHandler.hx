@@ -18,11 +18,13 @@ class EventHandler
 	private var _parent:Game;
 	private var _listeners:Array<Dynamic>;
 	private var _state:State;
+	private var _ui:UserInterface;
 
 	public inline function new( config:EventHandlerConfig ):Void
 	{
 		this._parent = config.Parent;
 		this._state = this._parent.getSystem( "sate" );
+		this._ui = this._parent.getSystem( "ui" );
 	}
 
 	public function init( error:String ):Void
@@ -248,12 +250,12 @@ class EventHandler
 
 	private function _clickRecruitsBuilding( e:MouseEvent ):Void
 	{
-		this._state.openWindow( "recruit" );
+		this._ui.openWindow( "recruit" );
 	}
 
 	private function _clickCloseCitySceneMainWindow( e:MouseEvent ):Void
 	{
-		this._state.closeWindow( "citySceneMain" );
+		this._ui.closeWindow( "citySceneMain" );
 	}
 
 	private function _clickRecruitHero( e:MouseEvent ):Void
