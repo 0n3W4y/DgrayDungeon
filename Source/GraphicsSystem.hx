@@ -35,30 +35,56 @@ class GraphicsSystem
 
 	}
 
-	public function changeFirstText( text:String ):Void
+	public function setText( text:String, place:String ):Void
 	{
 		var abstractSprite:Dynamic = this._sprite;
-		var textField:TextField = abstractSprite.getChildAt( 1 ).getChildAt( 0 );
+		var textField:TextField = null;
+		switch( place )
+		{
+			case "first": textField = abstractSprite.getChildAt( 1 ).getChildAt( 0 );
+			case "second": textField = abstractSprite.getChildAt( 1 ).getChildAt( 1 );
+			default: throw 'Error in GraphicsSystem.setText. Can not set text on $place';
+		}
 		if( textField == null )
-			throw ( "Error in GraphicsSystem.changeFirstText, TextField not found" );
+			throw ( "Error in GraphicsSystem.setText. TextField not found on $place" );
 
 		textField.text = text;
 	}
 
-	public function changeSecondText( text:String ):Void
+	public function getText( place:String ):String
 	{
-		var abstractSprite:Dynamic = this._sprite;
-		var textField:TextField = abstractSprite.getChildAt( 1 ).getChildAt( 1 ); // first getChildAt( 1 ) - sprite with textField childs.
-		if( textField == null )
-			throw ( "Error in GraphicsSystem.changeSecondText, TextField not found" );
+			var mainTextSprite:Dynamic = this._sprite.getChildAt( 1 ); // textsprite displayObjectContainer;
+			var textField:TextField = null
+			switch( place )
+			{
+				case "first": textField= mainTextSprite.getChildAt( 0 );
+				case "second": textField= mainTextSprite.getChildAt( 1 );
+				default: throw 'Error in GraphicsSysytem.getText. Can not get text at $place';
+			}
+			if( textField == null )
+				throw 'Error in GraphicsSystem.getText. No text found on child at $place';
 
-		textField.text = text;
+			return textField.text;
 	}
+
 
 	public inline function getSprite():Sprite
 	{
 		return this._sprite;
 	}
+
+	public function setPortrait( sprite:Sprite ):Void
+	{
+		var mainGraphicsSprite:Dynamic = this._sprite.getChildAt( 0 ); // graphics displayObjectContainer;
+		// portrait for button on 3 index;
+		var spriteToDelete:Sprite = mainGraphicsSprite.getChiladAt( 3 );
+		mainGraphicsSprite.addChildAt( 3 );
+		mainGraphicsSprite.removeChild( spriteToDelete );
+		// по задумке, сначала добавляется новый спрайт с портретом, сдвигая все следующие чайлды на 1. Удаляю "пустой" портрет.
+	}
+
+
+
 
 	// PRIVATE
 }

@@ -132,6 +132,16 @@ class Deploy
 		//TODO: добавить дополнительные провеки на deploy.
 	}
 
+	public function getDeploy( value:String ):Dynamic
+	{
+		switch( value )
+		{
+			case "player":
+			case "hero": return this._hero;
+			default: throw 'Error in Deploy.getDeploy. Can not get $value';
+		}
+	}
+
 	public function getWindow( deployId:Window.WindowDeployID ):Dynamic
 	{
 		if( !this._window.exists( deployId ) )

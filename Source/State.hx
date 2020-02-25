@@ -2,6 +2,9 @@ package;
 
 import Window;
 
+import openfl.display.Sprite;
+import openfl.display.Bitmap;
+
 typedef StateConfig =
 {
 	var Parent:Game;
@@ -135,6 +138,7 @@ class State
 	public function generateHeroesForBuilding( building:Building ):Void
 	{
 		var heroSystem:HeroSystem = this._parent.getSystem( "hero" );
+		var ui:UserInterface = this._parent.getSystem( "ui" );
 		var heroSlots:Int = building.get( "heroStorageSlotsMax" );
 		var buildingLevel:Int = building.get( "upgradeLevel" );
 		var rarityArray:Array<String> = this._parent.getSystem( "hero" ).get( "rarity" );
@@ -145,6 +149,19 @@ class State
 			var rarityIndex:Int = Math.floor( Math.random() * ( rarityArray.length - inverseLevel ));
 			var rarity:String = rarityArray[ rarityIndex ];
 			var hero:Hero = heroSystem.generateHero( "random", rarity );
+			var heroButton:Button = null;
+			// создаем кнопку на основе длегендарности героя ( отличие оконтовка )
+			switch( rarity )
+			{
+				case "uncommon": heroButton = ui.createButton( 4014 );
+				case "common": heroButton = ui.createButton( 4014 );
+				case "rare": heroButton = ui.createButton( 4014 );
+				case "legendary": heroButton = ui.createButton( 4014 );
+				default:
+			}
+			this.bindHeroAndButton( hero, heroButton );
+			var recruitWindow:Window = ui.getWindowByDeployId( 3002 );
+			recruitWindow.addButton( heroButton );
 		}
 
 		//TODO: запустить внутренний таймер для отсчета смены новых героев.
@@ -157,7 +174,21 @@ class State
 	{
 		var buttonId:Button.ButtonID = button.get( "id" );
 		hero.setButtonId( buttonId );
-		//TODO: get Hero full name; get hero name( class type ); get rarity, get portrait;
+
+		//create new sprite with portrait of hero, and add it to new button;
+		var buttonGraphics:GraphicsSystem = button.get( "graphics" );
+		var heroDeployId:Hero.HeroDeployID = hero.get( "deployId" );
+		var heroDeployConfig:Dynamic = this._parent.getSystem( "deploy" ).getHero( heroDeployId );
+		var urlHeroPortrait:String = heroDeployConfig.imagePortraitURL;
+		var heroPortraitSprite:Sprite = new Sprite();
+		heroPortraitSprite.addChild( new Bitmap( Assets.getBitmapData( urlHeroPortrait )));
+		buttonGraphics.setPortrait( heroPortraitSprite );
+
+		// get needed strings from hero and add them to button;
+		var fullHeroName:String = hero.get( "fullName" );
+		var heroClass:String = hero.get( "name" );
+		buttonGraphics.setText( fullHeroName, "first" );
+		buttonGraphics.setText( heroClass, "second" );
 	}
 
 	private function _bindHeroAndInnWindowButton( hero:Hero, button:Button ):Void

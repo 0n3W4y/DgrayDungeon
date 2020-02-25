@@ -27,8 +27,8 @@ class HeroSystem
 	private var _surnames:Array<String>;
 	private var _usedNamesSurnames:Array<String>;
 
-	private var _rarity:Array<String>;
-	private var _types:Array<String>;
+	private var _rarity:Array<String>; // легендарность героев.
+	private var _types:Array<String>; // типы героев
 
 	public function new( config:HeroSystemConfig ):Void
 	{
@@ -84,26 +84,31 @@ class HeroSystem
 		var newRarity:String = null;
 
 		if( type == "random" )
-		{
-				//TODO: создать рандом на класс героя.
-		}
+				newType = this._types[ Math.floor( Math.random() * this._types.length )];
 		else
-		{
 				newType = type;
-		}
 
 		if( rarity == "random" )
-		{
-			//TODO: создать рандом на легендарность героя.
-		}
+			newRarity = this._rarity[ Math.floor( Math.random() * this._rarity.length )];
 		else
-		{
 			newRarity = rarity;
+
+		var heroMap:Map<PlayerDeployID, Dynamic> = this._parent.getSystem( "deploy" ).getDeploy( "hero" );
+		var deployId:Int = 0;
+		for( key in heroMap.keys() )
+		{
+			var object:Dynamic = heroMap[ key ];
+			if( object.rarity == newRarity && object.name == newType )
+			{
+				deployId = object.deployId;
+				break;
+			}
 		}
 
-		var deployId:Int = 0;
-		var hero:Hero = this.createHero( deployId );
+		if( deployId == 0 )
+			throw 'Error in HeroSystem.generateHero. Can not generate hero with $type and $rarity';
 
+		var hero:Hero = this.createHero( deployId );
 		return hero;
 	}
 
