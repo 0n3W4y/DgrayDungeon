@@ -3,7 +3,6 @@ package;
 import openfl.display.Sprite;
 import openfl.events.MouseEvent;
 import openfl.text.TextField;
-import openfl.events.MouseEvent;
 
 import Window;
 

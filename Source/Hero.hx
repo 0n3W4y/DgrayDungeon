@@ -159,7 +159,7 @@ class Hero
 		var err:String = '$error. Error in Hero.init. Name "$_name", id "$_id", deploy id "$_deployId"';
 		this._status = "none";
 		this._itemInventory = new Array<Slot>();
-		// заполняем интвентарь для нормальной работы InventorySystem;
+		// заполняем инвентарь для нормальной работы InventorySystem;
 		// this._name == "cleric";
 		this._itemInventory.push({ Type:"weapon", Item:null, Restriction:this._name, Available:true });
 		this._itemInventory.push({ Type:"armor", Item:null, Restriction:this._name, Available:true });

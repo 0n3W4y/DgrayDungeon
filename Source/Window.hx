@@ -79,6 +79,7 @@ class Window
 			throw 'Error in Window.addButton. Found duplicate button with name: "$name"';
 
 		this._buttonChildren.push( button );
+		this.get( "sprite" ).addChild( button.get( "sprite" ));
 	}
 
 	public function removeButton( button:Button ):Button
@@ -90,6 +91,7 @@ class Window
 			throw 'Error in Window.removeButton. Button with name: "$name" not found';
 
 		this._buttonChildren.splice( check, 1 );
+		this.get( "sprite" ).removeChild( button.get( "sprite" ));
 		return button;
 	}
 
