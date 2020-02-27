@@ -118,11 +118,11 @@ class HeroSystem
 		var config:Dynamic = this._parent.getSystem( "deploy" ).getHero( heroDeployId );
 		var id:HeroID = HeroID( this._parent.createId() );
 		var buyPrice:Money = config.buyPrice;
-		//var sprite:Sprite = new Sprite();
-		//var graphicsSprite:Sprite = this._createGraphicsSprite( config );
-		//sprite.addChild( graphicsSprite );
-		//var textSprite:Sprite = this._createTextSprite( config );
-		//sprite.addChild( textSprite );
+		var sprite:Sprite = new Sprite();
+		var graphicsSprite:Sprite = this._createGraphicsSprite( config );
+		sprite.addChild( graphicsSprite );
+		var textSprite:Sprite = this._createTextSprite( config );
+		sprite.addChild( textSprite );
 
 		var configForHero =
 		{
@@ -191,8 +191,6 @@ class HeroSystem
 			bitmap.visible = false;
 			sprite.addChild( bitmap );
 		}
-
-		// TODO: Portrait for button hero, Level for button hero.
 
 		return sprite;
 	}

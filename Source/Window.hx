@@ -32,7 +32,8 @@ class Window
 	private var _isActive:Bool;
 	private var _alwaysActive:Bool;
 
-	private var _buttonChildren:Array<Button>;
+	private var _buttonChildren:Array<Button>; // вс еостлаьные кнопки.
+	private var _buttonChildrenRecruit:Array<Button>; // для хранения копок связанных с героями. ( покупка - инвентарь );
 
 	private var _graphics:GraphicsSystem;
 
@@ -74,12 +75,17 @@ class Window
 	{
 		var name:String = button.get( "name" );
 		var id:ButtonID = button.get( "id" );
+
 		var check:Int = this._checkChildForExist( id );
 		if( check != null )
 			throw 'Error in Window.addButton. Found duplicate button with name: "$name"';
 
-		this._buttonChildren.push( button );
-		this.get( "sprite" ).addChild( button.get( "sprite" ));
+		switch( name )
+		{
+			case "innWindowHeroButtonWhite", "innWindowHeroButtonGreen", "innWindowHeroButtonBlue", "innWindowHeroButtonOrange": this._addInnButton( button );
+			case "recruitHeroButtonWhite", "recruitHeroButtonGreen", "recruitHeroButtonBlue", "recruitHeroButtonOrange": this._addRecruitButton( button );
+			default: this._addButton( button );
+		}
 	}
 
 	public function removeButton( button:Button ):Button
@@ -140,6 +146,24 @@ class Window
 				return i;
 		}
 		return null;
+	}
+
+	private function _addButton( button:Button ):Void
+	{
+				this._buttonChildren.push( button );
+				this.get( "sprite" ).addChild( button.get( "sprite" ));
+	}
+
+	private function _addInnButton( button:Button ):Void
+	{
+				this._buttonChildren.push( button );
+				this.get( "sprite" ).addChild( button.get( "sprite" ));
+	}
+
+	private function _addRecruitButton( button:Button ):Void
+	{
+				this._buttonChildren.push( button );
+				this.get( "sprite" ).addChild( button.get( "sprite" ));
 	}
 
 }

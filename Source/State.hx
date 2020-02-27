@@ -154,10 +154,10 @@ class State
 			switch( rarity )
 			{
 				case "uncommon": heroButton = ui.createButton( 4014 );
-				case "common": heroButton = ui.createButton( 4014 );
-				case "rare": heroButton = ui.createButton( 4014 );
-				case "legendary": heroButton = ui.createButton( 4014 );
-				default:
+				case "common": heroButton = ui.createButton( 4015 );
+				case "rare": heroButton = ui.createButton( 4016 );
+				case "legendary": heroButton = ui.createButton( 4017 );
+				default: throw 'Error in State.generateHeroesForBuilding. Can not create button with rarity: "$rarity"';
 			}
 			this.bindHeroAndButton( hero, heroButton );
 			var recruitWindow:Window = ui.getWindowByDeployId( 3002 );
