@@ -54,7 +54,7 @@ class GraphicsSystem
 	public function getText( place:String ):String
 	{
 			var mainTextSprite:Dynamic = this._sprite.getChildAt( 1 ); // textsprite displayObjectContainer;
-			var textField:TextField = null
+			var textField:TextField = null;
 			switch( place )
 			{
 				case "first": textField= mainTextSprite.getChildAt( 0 );

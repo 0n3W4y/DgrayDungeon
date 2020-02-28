@@ -4,6 +4,7 @@ import Window;
 
 import openfl.display.Sprite;
 import openfl.display.Bitmap;
+import openfl.Assets;
 
 typedef StateConfig =
 {

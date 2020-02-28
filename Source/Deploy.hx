@@ -136,7 +136,7 @@ class Deploy
 	{
 		switch( value )
 		{
-			case "player":
+			case "player": return this._player;
 			case "hero": return this._hero;
 			default: throw 'Error in Deploy.getDeploy. Can not get $value';
 		}

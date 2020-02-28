@@ -123,6 +123,7 @@ class HeroSystem
 		sprite.addChild( graphicsSprite );
 		var textSprite:Sprite = this._createTextSprite( config );
 		sprite.addChild( textSprite );
+		var heroNameSurname:Dynamic = this._generateHeroNameSurname( config.gender );
 
 		var configForHero =
 		{
@@ -131,6 +132,9 @@ class HeroSystem
 			Name: config.name,
 			Rarity: config.rarity,
 			BuyPrice: buyPrice,
+			GraphicsSprite: sprite,
+			HeroName: heroNameSurname.name,
+			HeroSurname: heroNameSurname.surname,
 			HealthPoints:config.healthPoints,
 			Accuracy:config.accuracy,
 			Dodge:config.dodge,
@@ -144,7 +148,7 @@ class HeroSystem
 			ResistStun:config.resistStun,
 			ResistPoison:config.resistPoison,
 			ResistBleed:config.resistBleed,
-			ResistDeseas:config.resistDisease,
+			ResistDisease:config.resistDisease,
 			ResistDebuff:config.resistDebuff,
 			ResistMove:config.resistMove,
 			ResistFire:config.resistFire,
@@ -165,7 +169,67 @@ class HeroSystem
 		return hero;
 	}
 
+	public function destroyHero( hero:Hero ):Void
+	{
+		var name:String = hero.get( "name" );
+		var surname:String = hero.get( "surname" );
+		var nameSurname:String = name + surname;
+		for( i in 0...this._usedNamesSurnames.length )
+		{
+			if( this._usedNamesSurnames[ i ] == nameSurname )
+			{
+				this._usedNamesSurnames.splice( i, 1 );
+				break;
+			}
+		}
+	}
+
 	//PRIVATE
+
+
+	private function _generateHeroNameSurname( gender:String ):Dynamic
+	{
+		var name:String = null;
+		var surname:String = null;
+		var nameSurname:String = null;
+
+		var hits:Int = 100; // 100 попыток сформировать имя с фамилией;
+		for( i in 0...100 )
+		{
+			name = this._generateName( gender );
+			surname = this._generateSurname();
+			nameSurname = name + surname;
+
+			var match:Int = 0;
+			for( j in 0...this._usedNamesSurnames.length )
+			{
+				if( this._usedNamesSurnames[ j ] == nameSurname )
+					match++;
+			}
+
+			if( match == 0 )
+			{
+				this._usedNamesSurnames.push( nameSurname );
+				break;
+			}
+		}
+		return { "name": name, "surname": surname };
+	}
+
+	private function _generateName( gender:String ):String
+	{
+		switch( gender )
+		{
+			case "man": return this._manNames[ Math.floor( Math.random() * this._manNames.length )];
+			case "woman": return this._womanNames[ Math.floor( Math.random() * this._womanNames.length )];
+			default: throw 'Error in HeroSystem._generateName. Can not generate name with gender: "$gender"';
+		}
+	}
+
+	private function _generateSurname():String
+	{
+		return this._surnames[ Math.floor( Math.random() * this._surnames.length )];
+	}
 
 	private function _createGraphicsSprite( config:Dynamic ):Sprite
 	{
