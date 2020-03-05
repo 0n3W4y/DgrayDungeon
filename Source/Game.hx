@@ -127,9 +127,8 @@ class Game
 			case "event": return this._eventHandler;
 			case "ui": return this._userInterface;
 			case "hero": return this._heroSystem;
-			default: trace( "Error in Game.getSystem; system can't be: " + system );
+			default: throw 'Error in Game.getSystem. Can not get "$system"';
 		}
-		return null;
 	}
 
 	public function getMainSprite():Sprite

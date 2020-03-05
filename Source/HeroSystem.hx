@@ -43,6 +43,7 @@ class HeroSystem
 	public function init( error:String ):Void
 	{
 		var err:String = '$error. Error in HeroSystem.init';
+		this._usedNamesSurnames = new Array<String>();
 
 		if( this._parent == null )
 			throw '$err. Parent is wrong';

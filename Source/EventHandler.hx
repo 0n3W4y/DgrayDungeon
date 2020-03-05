@@ -16,13 +16,11 @@ class EventHandler
 {
 	private var _parent:Game;
 	private var _listeners:Array<Dynamic>;
-	private var _state:State;
 	private var _ui:UserInterface;
 
 	public inline function new( config:EventHandlerConfig ):Void
 	{
 		this._parent = config.Parent;
-		this._state = this._parent.getSystem( "sate" );
 		this._ui = this._parent.getSystem( "ui" );
 	}
 
@@ -234,7 +232,7 @@ class EventHandler
 
 	private function _clickStartGame( e:MouseEvent ):Void
 	{
-		this._state.startGame();
+		this._parent.getSystem( "state" ).startGame();
 	}
 
 	private function _clickContinueGame( e:MouseEvent ):Void
@@ -259,7 +257,7 @@ class EventHandler
 
 	private function _clickRecruitHero( e:MouseEvent ):Void
 	{
-		this._state.recruitHero();
+		this._parent.getSystem( "state" ).recruitHero();
 	}
 
 	private function _hover( e:MouseEvent ):Void

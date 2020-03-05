@@ -32,8 +32,7 @@ class Window
 	private var _isActive:Bool;
 	private var _alwaysActive:Bool;
 
-	private var _buttonChildren:Array<Button>; // вс еостлаьные кнопки.
-	private var _buttonChildrenRecruit:Array<Button>; // для хранения копок связанных с героями. ( покупка - инвентарь );
+	private var _buttonChildren:Array<Array<Button>>; // вс еостлаьные кнопки. [0] - all buttons; [1]- recruit buttons and Inn recruit buttons;
 
 	private var _graphics:GraphicsSystem;
 
@@ -52,7 +51,9 @@ class Window
 	{
 		var err:String = '$error. Error in Window.init. Name "$_name" id "$_id" deploy id "$_deployId"';
 		this._isActive = false; // by default status is hide;
-		this._buttonChildren = new Array<Button>();
+		this._buttonChildren = new Array<Array<Button>>();
+		this._buttonChildren.push( new Array<Button>() );
+		this._buttonChildren.push( new Array<Button>() );
 
 		if( this._name == null || this._name == "" )
 			throw '$err. Wrong name';
@@ -82,10 +83,12 @@ class Window
 
 		switch( name )
 		{
-			case "innWindowHeroButtonWhite", "innWindowHeroButtonGreen", "innWindowHeroButtonBlue", "innWindowHeroButtonOrange": this._addInnButton( button );
-			case "recruitHeroButtonWhite", "recruitHeroButtonGreen", "recruitHeroButtonBlue", "recruitHeroButtonOrange": this._addRecruitButton( button );
-			default: this._addButton( button );
+			case "innWindowHeroButtonWhite", "innWindowHeroButtonGreen", "innWindowHeroButtonBlue", "innWindowHeroButtonOrange": this._buttonChildren[ 1 ].push( button );
+			case "recruitHeroButtonWhite", "recruitHeroButtonGreen", "recruitHeroButtonBlue", "recruitHeroButtonOrange": this._buttonChildren[ 1 ].push( button );
+			default: this._buttonChildren[ 0 ].push( button );
 		}
+
+		this.get( "sprite" ).addChild( button.get( "sprite" ));
 	}
 
 	public function removeButton( button:Button ):Button
@@ -96,7 +99,13 @@ class Window
 		if( check == null )
 			throw 'Error in Window.removeButton. Button with name: "$name" not found';
 
-		this._buttonChildren.splice( check, 1 );
+		switch( name )
+		{
+			case "innWindowHeroButtonWhite", "innWindowHeroButtonGreen", "innWindowHeroButtonBlue", "innWindowHeroButtonOrange": this._buttonChildren[ 1 ].splice( check, 1 );
+			case "recruitHeroButtonWhite", "recruitHeroButtonGreen", "recruitHeroButtonBlue", "recruitHeroButtonOrange": this._buttonChildren[ 1 ].splice( check, 1 );
+			default: this._buttonChildren[ 0 ].splice( check, 1 );
+		}
+
 		this.get( "sprite" ).removeChild( button.get( "sprite" ));
 		return button;
 	}
@@ -139,31 +148,25 @@ class Window
 
 	private function _checkChildForExist( id:ButtonID ):Int
 	{
-		for( i in 0...this._buttonChildren.length )
+		var firtsContainer:Array<Button> = this._buttonChildren[ 0 ];
+		var secondContainer:Array<Button> = this._buttonChildren[ 1 ];
+
+		for( i in 0...firtsContainer.length )
 		{
-			var oldButtonId:ButtonID = this._buttonChildren[ i ].get( "id" );
+			var oldButtonId:ButtonID = firtsContainer[ i ].get( "id" );
 			if( EnumValueTools.equals( oldButtonId, id ))
 				return i;
+		}
+
+		for( j in 0...secondContainer.length )
+		{
+			var oldButtonId:ButtonID = secondContainer[ j ].get( "id" );
+			if( EnumValueTools.equals( oldButtonId, id ))
+				return j;
 		}
 		return null;
 	}
 
-	private function _addButton( button:Button ):Void
-	{
-				this._buttonChildren.push( button );
-				this.get( "sprite" ).addChild( button.get( "sprite" ));
-	}
 
-	private function _addInnButton( button:Button ):Void
-	{
-				this._buttonChildren.push( button );
-				this.get( "sprite" ).addChild( button.get( "sprite" ));
-	}
-
-	private function _addRecruitButton( button:Button ):Void
-	{
-				this._buttonChildren.push( button );
-				this.get( "sprite" ).addChild( button.get( "sprite" ));
-	}
 
 }

@@ -2,7 +2,7 @@
   "10":
   {
     "rarity": [ "common", "uncommon", "rare", "legendary" ],
-    "type": [ "crossbowman", "paladin", "pyromancer" ],
+    "types": [ "crossbowman", "paladin", "pyromancer" ],
     "manNames": [ "Axel", "John", "Luke", "Sam", "Jack", "Steve", "Mike", "Niko", "Lewis", "Valteri", "Sebastian", "Sharl", "Max", "Homer", "Bruce", "Alfred" ],
     "womanNames": [ "Susan", "Kelly", "Lesley", "Alice", "Mikki", "Jordan", "Helen", "Roxy", "Elisabeth", "Kate", "June", "Jade", "Helga" ],
     "surnames":[ "Travolta", "Goldrich", "Smith", "Simpson", "Alba", "Williams", "Jones", "Brown", "Miller", "Davis", "Wilson", "Moore", "Taylor", "Martin", "Anderson"]

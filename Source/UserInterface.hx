@@ -67,18 +67,29 @@ class UserInterface
 			sprite.visible = false;
 
 		var buttonContinueDeployId:ButtonDeployID = ButtonDeployID( 4011 );
-		var windowChilds:Array<Button> = window.get( "childs" );
-		for( j in 0...windowChilds.length )
+		var windowButtons:Array<Array<Button>> = window.get( "buttons" );
+		var buttonsOne:Array<Button> = windowButtons[ 0 ];
+		var buttonsTwo:Array<Button> = windowButtons[ 1 ];
+		for( j in 0...buttonsOne.length )
 		{
-			var button:Button = windowChilds[ j ];
+			var button:Button = buttonsOne[ j ];
 			var buttonDeployId:ButtonDeployID = button.get( "deployId" );
 			// проверяем на наличие последнего сохранение игрока. Если его нет. Кнопка "Continue" не активна.
 			if( EnumValueTools.equals( buttonContinueDeployId, buttonDeployId ))
 			{ //TODO: сделать отдельную функцию проверки кнопок и запихивание на них ивентов.
 				var saveGame:Dynamic = this._parent.getLastSave();
 				if( saveGame == null )
+				{
+					button.get( "sprite" ).alpha = 0.5;
 					continue;
+				}
 			}
+			eventHandler.addEvents( button );
+		}
+
+		for( i in 0...buttonsTwo.length )
+		{
+			var button:Button = buttonsTwo[ i ];
 			eventHandler.addEvents( button );
 		}
 
@@ -300,7 +311,7 @@ class UserInterface
 		var deployIdMainWindow:WindowDeployID = WindowDeployID( 3001 );
 		ui.hideUiObject( deployIdMainWindow );
 	}
-	
+
 	private function _hideChildCitySceneMainWindow():Void
 	{
 		for( i in 0...this._objectsOnUi.length )
