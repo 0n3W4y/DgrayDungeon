@@ -331,6 +331,9 @@ class UserInterface
 					continue;
 
 				this.hideUiObject( windowDeployID );
+				if( haxe.EnumTools.EnumValueTools.equals( windowDeployID, WindowDeployID( 3002 )))
+					this._parent.getSystem( "state" ).unchooseRecruitHeroButtons();
+
 				break; // находит первого активного, закрывает его и все.
 			}
 		}

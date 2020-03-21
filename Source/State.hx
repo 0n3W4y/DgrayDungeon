@@ -62,12 +62,14 @@ class State
 		if ( !this._checkPlayerMoneyAmount( price ) )
 		{
 			this._showWarning( '$error not enough money' );
+			this.unchooseRecruitHeroButtons();
 			return;
 		}
 
 		if( !this._checkRoomInInnInventoryForHero() )
 		{
 			this._showWarning( '$error not enough room in Inn' );
+			this.unchooseRecruitHeroButtons();
 			return;
 		}
 
@@ -140,11 +142,27 @@ class State
 				var recruitWindow:Window = this._parent.getSystem( "ui" ).getWindowByDeployId( 3002 );
 				var button:Button = recruitWindow.getButtonById( id );
 				if( !button.get( "activeStatus" ))
-					this._unchooseRecruitHeroButtons( recruitWindow.get( "buttons" ) );
+					this.unchooseRecruitHeroButtons();
 
 				button.changeActiveStatus();
 			};
 			default: throw 'Error in Stat.unchooseButton. Can not choose button with name: "$name"';
+		}
+	}
+
+	public function unchooseRecruitHeroButtons():Void
+	{
+		var recruitWindow:Window = this._parent.getSystem( "ui" ).getWindowByDeployId( 3002 );
+		var array:Array<Button> = recruitWindow.get( "buttons" );
+		for( i in 0...array.length )
+		{
+			var button:Button = array[ i ];
+			var name:String = button.get( "name" );
+			if( name == "recruitHeroButtonWhite" || name == "recruitHeroButtonBlue" || name == "recruitHeroButtonOrange" || name == "recruitHeroButtonGreen" )
+			{
+				if( button.get( "activeStatus") )
+					button.changeActiveStatus();
+			}
 		}
 	}
 
@@ -176,20 +194,6 @@ class State
 	private function _bindHeroAndInnWindowButton( hero:Hero, button:Button ):Void
 	{
 
-	}
-
-	private function _unchooseRecruitHeroButtons( array:Array<Button> ):Void
-	{
-		for( i in 0...array.length )
-		{
-			var button:Button = array[ i ];
-			var name:String = button.get( "name" );
-			if( name == "recruitHeroButtonWhite" || name == "recruitHeroButtonBlue" || name == "recruitHeroButtonOrange" || name == "recruitHeroButtonGreen" )
-			{
-				if( button.get( "activeStatus") )
-					button.changeActiveStatus();
-			}
-		}
 	}
 
 	private function _showWarning( error:String ):Void
