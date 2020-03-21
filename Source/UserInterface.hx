@@ -67,12 +67,10 @@ class UserInterface
 			sprite.visible = false;
 
 		var buttonContinueDeployId:ButtonDeployID = ButtonDeployID( 4011 );
-		var windowButtons:Array<Array<Button>> = window.get( "buttons" );
-		var buttonsOne:Array<Button> = windowButtons[ 0 ];
-		var buttonsTwo:Array<Button> = windowButtons[ 1 ];
-		for( j in 0...buttonsOne.length )
+		var windowButtons:Array<Button> = window.get( "buttons" );
+		for( j in 0...windowButtons.length )
 		{
-			var button:Button = buttonsOne[ j ];
+			var button:Button = windowButtons[ j ];
 			var buttonDeployId:ButtonDeployID = button.get( "deployId" );
 			// проверяем на наличие последнего сохранение игрока. Если его нет. Кнопка "Continue" не активна.
 			if( EnumValueTools.equals( buttonContinueDeployId, buttonDeployId ))
@@ -80,16 +78,13 @@ class UserInterface
 				var saveGame:Dynamic = this._parent.getLastSave();
 				if( saveGame == null )
 				{
-					button.get( "sprite" ).alpha = 0.5;
+					var buttonSprite:Sprite = button.get( "sprite" );
+					buttonSprite.alpha = 0.5;
+					//button.get( "sprite" ).alpha = 0.5;
+					//button.get( "sprite" ).visible = false;
 					continue;
 				}
 			}
-			eventHandler.addEvents( button );
-		}
-
-		for( i in 0...buttonsTwo.length )
-		{
-			var button:Button = buttonsTwo[ i ];
 			eventHandler.addEvents( button );
 		}
 
@@ -110,7 +105,7 @@ class UserInterface
 		var window:Window = this._objects[ check ];
 		var sprite:Sprite = window.get( "sprite" );
 		var eventHandler:EventHandler = this._parent.getSystem( "event" );
-		var windowChilds:Array<Button> = window.get( "childs" );
+		var windowChilds:Array<Button> = window.get( "buttons" );
 		for( j in 0...windowChilds.length )
 		{
 			var button:Button = windowChilds[ j ];
@@ -177,21 +172,23 @@ class UserInterface
 		}
 	}
 
-	public function openWindow( value:String ):Void
+	public function openWindow( deployId:Int ):Void
 	{
-		switch( value )
+		switch( deployId )
 		{
-			case "recruit": this._openRecruitWindow();
-			default: throw 'Error in State.openWindow. No action for $value';
+			case 3002: this._openRecruitWindow();
+			case 3100: this._openWarningWindow();
+			default: throw 'Error in UserInterface.openWindow. No action for $deployId';
 		}
 	}
 
-	public function closeWindow( value:String ):Void
+	public function closeWindow( deployId:Int ):Void
 	{
-		switch( value )
+		switch( deployId )
 		{
-			case "citySceneMain": this._closeCitySceneMainWindow();
-			default: throw 'Error in State.closeWindow. No action for $value';
+			case 3001: this._closeCitySceneMainWindow();
+			case 3100: this._closeWarningWindow();
+			default: throw 'Error in UserInterface.closeWindow. No action for $deployId';
 		}
 	}
 
@@ -270,7 +267,8 @@ class UserInterface
 		var config:Dynamic = this._parent.getSystem( "deploy" ).getButton( buttondeployId );
 
 		var id:ButtonID = ButtonID( this._parent.createId() );
-		var sprite:Sprite = new Sprite();
+		var sprite:Sprite = new DataSprite({ ID:id, Name:config.name });
+		//var sprite:Sprite = new Sprite();
 		sprite.x = config.x;
 		sprite.y = config.y;
 
@@ -298,18 +296,27 @@ class UserInterface
 
 	private function _openRecruitWindow():Void
 	{
-		var ui:UserInterface = this._parent.getSystem( "ui" );
-		var deployIdRecruitWindow:WindowDeployID = WindowDeployID( 3002 );
-		var deployIdMainWindow:WindowDeployID = WindowDeployID( 3001 );
-		ui.showUiObject( deployIdMainWindow );
-		ui.showUiObject( deployIdRecruitWindow );
+		this.showUiObject( WindowDeployID( 3001 ) );
+		this.showUiObject( WindowDeployID( 3002 ) );
 	}
 
 	private function _closeCitySceneMainWindow():Void
 	{
-		var ui:UserInterface = this._parent.getSystem( "ui" );
-		var deployIdMainWindow:WindowDeployID = WindowDeployID( 3001 );
-		ui.hideUiObject( deployIdMainWindow );
+		this.hideUiObject( WindowDeployID( 3001 ) );
+	}
+
+	private function _openWarningWindow():Void
+	{
+ 		//TODO 
+ 		// var deployIdWarningWindow:WindowDeployID = WindowDeployID( 3100 );
+ 		// this.showUiObject( deployIdWarningWindow );
+	}
+
+	private function _closeWarningWindow():Void
+	{
+		//TODO 
+ 		// var deployIdWarningWindow:WindowDeployID = WindowDeployID( 3100 );
+ 		// this.hideUiObject( deployIdWarningWindow );
 	}
 
 	private function _hideChildCitySceneMainWindow():Void
@@ -376,6 +383,13 @@ class UserInterface
 			sprite.addChild( bitmap );
 		}
 
+		if( config.imageChooseURL != null )
+		{
+			bitmap = this._createBitmap( config.imageChooseURL, config.imageChooseX, config.imageChooseY );
+			bitmap.visible = false;
+			sprite.addChild( bitmap );
+		}
+
 		// TODO: Portrait for button hero, Level for button hero.
 
 		return sprite;
@@ -428,6 +442,20 @@ class UserInterface
 			textConfig.x = config.secondTextX;
 			textConfig.y = config.secondTextY;
 			textConfig.align = config.secondTextAlign;
+			text = this._createText( textConfig );
+			sprite.addChild( text );
+		}
+
+		if( config.thirdText != null )
+		{
+			textConfig.text = config.thirdText;
+			textConfig.size = config.thirdTextSize;
+			textConfig.color = config.thirdTextColor;
+			textConfig.width = config.thirdTextWidth;
+			textConfig.height = config.thirdTextHeight;
+			textConfig.x = config.thirdTextX;
+			textConfig.y = config.thirdTextY;
+			textConfig.align = config.thirdTextAlign;
 			text = this._createText( textConfig );
 			sprite.addChild( text );
 		}

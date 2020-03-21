@@ -65,9 +65,15 @@ class Button
 	public function changeActiveStatus():Void
 	{
 		if( this._activeStatus )
+		{
 			this._activeStatus = false;
+			this._graphics.unchoose();
+		}
 		else
+		{
 			this._activeStatus = true;
+			this._graphics.choose();
+		}
 	}
 
 	public function get( value:String ):Dynamic

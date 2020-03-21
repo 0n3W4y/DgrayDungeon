@@ -32,7 +32,8 @@ class Window
 	private var _isActive:Bool;
 	private var _alwaysActive:Bool;
 
-	private var _buttonChildren:Array<Array<Button>>; // вс еостлаьные кнопки. [0] - all buttons; [1]- recruit buttons and Inn recruit buttons;
+	private var _buttonChildren:Array<Button>;
+	private var _specialButtonCounter:Int;
 
 	private var _graphics:GraphicsSystem;
 
@@ -51,9 +52,7 @@ class Window
 	{
 		var err:String = '$error. Error in Window.init. Name "$_name" id "$_id" deploy id "$_deployId"';
 		this._isActive = false; // by default status is hide;
-		this._buttonChildren = new Array<Array<Button>>();
-		this._buttonChildren.push( new Array<Button>() );
-		this._buttonChildren.push( new Array<Button>() );
+		this._buttonChildren = new Array<Button>();
 
 		if( this._name == null || this._name == "" )
 			throw '$err. Wrong name';
@@ -81,11 +80,11 @@ class Window
 		if( check != null )
 			throw 'Error in Window.addButton. Found duplicate button with name: "$name"';
 
-		switch( name )
+		this._buttonChildren.push( button );
+		if( name == "innWindowHeroButtonWhite" || name == "innWindowHeroButtonGreen" || name == "innWindowHeroButtonBlue" || name == "innWindowHeroButtonOrange" 
+			|| name == "recruitHeroButtonWhite" || name == "recruitHeroButtonGreen" || name == "recruitHeroButtonBlue" || name == "recruitHeroButtonOrange" )
 		{
-			case "innWindowHeroButtonWhite", "innWindowHeroButtonGreen", "innWindowHeroButtonBlue", "innWindowHeroButtonOrange": this._buttonChildren[ 1 ].push( button );
-			case "recruitHeroButtonWhite", "recruitHeroButtonGreen", "recruitHeroButtonBlue", "recruitHeroButtonOrange": this._buttonChildren[ 1 ].push( button );
-			default: this._buttonChildren[ 0 ].push( button );
+			this._specialButtonCounter++;
 		}
 
 		this.get( "sprite" ).addChild( button.get( "sprite" ));
@@ -99,11 +98,11 @@ class Window
 		if( check == null )
 			throw 'Error in Window.removeButton. Button with name: "$name" not found';
 
-		switch( name )
+		this._buttonChildren.splice( check, 1 );
+		if( name == "innWindowHeroButtonWhite" || name == "innWindowHeroButtonGreen" || name == "innWindowHeroButtonBlue" || name == "innWindowHeroButtonOrange" 
+			|| name == "recruitHeroButtonWhite" || name == "recruitHeroButtonGreen" || name == "recruitHeroButtonBlue" || name == "recruitHeroButtonOrange" )
 		{
-			case "innWindowHeroButtonWhite", "innWindowHeroButtonGreen", "innWindowHeroButtonBlue", "innWindowHeroButtonOrange": this._buttonChildren[ 1 ].splice( check, 1 );
-			case "recruitHeroButtonWhite", "recruitHeroButtonGreen", "recruitHeroButtonBlue", "recruitHeroButtonOrange": this._buttonChildren[ 1 ].splice( check, 1 );
-			default: this._buttonChildren[ 0 ].splice( check, 1 );
+			this._specialButtonCounter--;
 		}
 
 		this.get( "sprite" ).removeChild( button.get( "sprite" ));
@@ -136,8 +135,22 @@ class Window
 			case "activeStatus": return this._isActive;
 			case "alwaysActive": return this._alwaysActive;
 			case "buttons": return this._buttonChildren;
+			case "specialButtonCounter": return this._specialButtonCounter;
 			default: throw 'Error in Window.get. Can not get "$value"';
 		}
+	}
+
+	public function getButtonById( id:ButtonID ):Button
+	{
+		for( i in 0...this._buttonChildren.length )
+		{
+			var button:Button = this._buttonChildren[ i ];
+			if( EnumValueTools.equals( id, button.get( "id" )))
+				return button;
+		}
+
+		throw 'Error in Window.getButtonById. No button with id: "$id" in window "$_name"';
+		return null;
 	}
 
 
@@ -148,21 +161,11 @@ class Window
 
 	private function _checkChildForExist( id:ButtonID ):Int
 	{
-		var firtsContainer:Array<Button> = this._buttonChildren[ 0 ];
-		var secondContainer:Array<Button> = this._buttonChildren[ 1 ];
-
-		for( i in 0...firtsContainer.length )
+		for( i in 0...this._buttonChildren.length )
 		{
-			var oldButtonId:ButtonID = firtsContainer[ i ].get( "id" );
+			var oldButtonId:ButtonID = this._buttonChildren[ i ].get( "id" );
 			if( EnumValueTools.equals( oldButtonId, id ))
 				return i;
-		}
-
-		for( j in 0...secondContainer.length )
-		{
-			var oldButtonId:ButtonID = secondContainer[ j ].get( "id" );
-			if( EnumValueTools.equals( oldButtonId, id ))
-				return j;
 		}
 		return null;
 	}

@@ -35,14 +35,30 @@ class GraphicsSystem
 
 	}
 
+	public function choose():Void
+	{
+		var sprite:Dynamic = this._sprite.getChildAt( 0 );
+		var spriteToChange:Sprite = sprite.getChildAt( 3 );
+		spriteToChange.visible = true;
+	}
+
+	public function unchoose():Void
+	{
+		var sprite:Dynamic = this._sprite.getChildAt( 0 );
+		var spriteToChange:Sprite = sprite.getChildAt( 3 );
+		spriteToChange.visible = false;
+	}
+
 	public function setText( text:String, place:String ):Void
 	{
-		var abstractSprite:Dynamic = this._sprite;
 		var textField:TextField = null;
+		var testSprite:Dynamic = this._sprite.getChildAt( 1 );
 		switch( place )
 		{
-			case "first": textField = abstractSprite.getChildAt( 1 ).getChildAt( 0 );
-			case "second": textField = abstractSprite.getChildAt( 1 ).getChildAt( 1 );
+			case "first": textField = testSprite.getChildAt( 0 );
+			case "second": textField = testSprite.getChildAt( 1 );
+			case "third": textField = testSprite.getChildAt( 2 );
+			case "fourth": textField = testSprite.getChildAt( 3 );
 			default: throw 'Error in GraphicsSystem.setText. Can not set text on $place';
 		}
 		if( textField == null )
@@ -53,18 +69,20 @@ class GraphicsSystem
 
 	public function getText( place:String ):String
 	{
-			var mainTextSprite:Dynamic = this._sprite.getChildAt( 1 ); // textsprite displayObjectContainer;
-			var textField:TextField = null;
-			switch( place )
-			{
-				case "first": textField= mainTextSprite.getChildAt( 0 );
-				case "second": textField= mainTextSprite.getChildAt( 1 );
-				default: throw 'Error in GraphicsSysytem.getText. Can not get text at $place';
-			}
-			if( textField == null )
-				throw 'Error in GraphicsSystem.getText. No text found on child at $place';
+		var textField:TextField = null;
+		var testSprite:Dynamic = this._sprite.getChildAt( 1 );
+		switch( place )
+		{
+			case "first": textField = testSprite.getChildAt( 0 );
+			case "second": textField = testSprite.getChildAt( 1 );
+			case "third": textField = testSprite.getChildAt( 2 );
+			case "fourth": textField = testSprite.getChildAt( 3 );
+			default: throw 'Error in GraphicsSystem.setText. Can not set text on $place';
+		}
+		if( textField == null )
+			throw 'Error in GraphicsSystem.getText. No text found on child at $place';
 
-			return textField.text;
+		return textField.text;
 	}
 
 
@@ -76,11 +94,7 @@ class GraphicsSystem
 	public function setPortrait( sprite:Sprite ):Void
 	{
 		var mainGraphicsSprite:Dynamic = this._sprite.getChildAt( 0 ); // graphics displayObjectContainer;
-		// portrait for button on 3 index;
-		var spriteToDelete:Sprite = mainGraphicsSprite.getChiladAt( 3 );
-		mainGraphicsSprite.addChildAt( 3 );
-		mainGraphicsSprite.removeChild( spriteToDelete );
-		// по задумке, сначала добавляется новый спрайт с портретом, сдвигая все следующие чайлды на 1. Удаляю "пустой" портрет.
+		mainGraphicsSprite.addChild( sprite );
 	}
 
 

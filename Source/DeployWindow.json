@@ -49,7 +49,7 @@
 		"firstTextX": 0.0,
 		"firstTextY": 0.0,
 		"firstTextAlign": "left",
-		"button": [ 4015 ]
+		"button": [ 4014 ]
 	},
 
 	"3003":{
@@ -103,7 +103,7 @@
 		"deployId": 3006,
 		"alwaysActive": true,
 		"x": 1600.0,
-		"y": 40.0,
+		"y": 90.0,
 		"imageNormalURL": "assets/images/innWindow.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
@@ -112,8 +112,8 @@
 		"firstTextColor": "0xffffff",
 		"firstTextHeight": 30,
 		"firstTextWidth": 300,
-		"firstTextX": -15.0,
-		"firstTextY": 10.0,
+		"firstTextX": 0.0,
+		"firstTextY": -20.0,
 		"firstTextAlign": "center",
 		"button": [ 4007, 4008 ]
 	},

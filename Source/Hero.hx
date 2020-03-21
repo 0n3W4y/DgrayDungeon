@@ -72,6 +72,7 @@ class Hero
 	private var _id:HeroID;
 	private var _deployId:HeroDeployID;
 	private var _name:String;
+	private var _rarity:String;
 	private var _type:String;
 	private var _buyPrice:Player.Money;
 	private var _heroName:String;
@@ -125,6 +126,7 @@ class Hero
 		this._id = config.ID;
 		this._deployId = config.DeployID;
 		this._name = config.Name;
+		this._rarity = config.Rarity;
 		this._buyPrice = config.BuyPrice;
 		this._heroName = config.HeroName;
 		this._heroSurname = config.HeroSurname;
@@ -199,11 +201,12 @@ class Hero
 			case "id": return this._id;
 			case "deployId": return this._deployId;
 			case "name": return this._name;
+			case "rarity": return this._rarity;
 			case "type": return this._type;
 			case "status": return this._status;
 			case "heroName": return this._heroName;
 			case "heroSurname": return this._heroSurname;
-			case "fullHeroName": return ( this._heroName + ' ' + this._heroSurname );
+			case "fullName": return ( this._heroName + ' ' + this._heroSurname );
 			case "inventory": return this._inventory;
 			case "itemInventory": return this._itemInventory;
 			case "stat": return this._stat;

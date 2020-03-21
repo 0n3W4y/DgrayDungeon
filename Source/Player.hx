@@ -94,18 +94,13 @@ class Player
 		}
 	}
 
-	public function withdrawMoney( amount:Money ):Bool
+	public function withdrawMoney( amount:Money ):Void
 	{
 		var money:Money = this._moneyAmount - amount;
 		if( money < 0 )
-		{
-			return false;
-		}
+			throw 'Error in Player.withdrawMoney. Money Amount: "$money"';
 		else
-		{
 			this._moneyAmount = money;
-			return true;
-		}
 	}
 
 

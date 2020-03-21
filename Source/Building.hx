@@ -37,7 +37,6 @@ class Building
 	private var _sprite:Sprite;
 
 	private var _graphics:GraphicsSystem;
-	private var _inventory:InventorySystem;
 
 	private var _upgradeLevel:Int; // текущий уровень здания
 	private var _nextUpgradeId:Int; // deployId этого здания, но уже с апгерйдом.
@@ -131,8 +130,8 @@ class Building
 
 	public function addHero( hero:Hero ):Void
 	{
-		if( !this.checkFreeSlotForHero() )
-			return;
+		if( !this._checkFreeSlotForHero() )
+			throw 'Error in Building.addHero. No free slots for new one';
 
 		this._heroStorage.push( hero );
 	}
@@ -154,7 +153,7 @@ class Building
 
 	public function addItem( item:Item ):Void
 	{
-		if( !this.checkFreeSlotForItem() )
+		if( !this._checkFreeSlotForItem() )
 			return;
 
 		this._itemStorage.push( item );
@@ -175,7 +174,7 @@ class Building
 		return item;
 	}
 
-	public function checkFreeSlotForHero():Bool
+	private function _checkFreeSlotForHero():Bool
 	{
 		if( this._heroStorage.length < this._heroStorageSlotsMax )
 			return true;
@@ -183,7 +182,7 @@ class Building
 		return false;
 	}
 
-	public function checkFreeSlotForItem():Bool
+	private function _checkFreeSlotForItem():Bool
 	{
 		if( this._itemStorage.length < this._itemStorageSlotsMax )
 			return true;

@@ -76,7 +76,7 @@
 		"nextUpgradeId": 2012,
 		"canUpgradeLevel": true,
 		"upgradePrice": 10000,
-		"heroStorageSlotsMax": 6,
+		"heroStorageSlotsMax": 7,
 		"itemStorageSlotsMax": 0
 	},
 

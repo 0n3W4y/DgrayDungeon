@@ -16,12 +16,10 @@ class EventHandler
 {
 	private var _parent:Game;
 	private var _listeners:Array<Dynamic>;
-	private var _ui:UserInterface;
 
 	public inline function new( config:EventHandlerConfig ):Void
 	{
 		this._parent = config.Parent;
-		this._ui = this._parent.getSystem( "ui" );
 	}
 
 	public function init( error:String ):Void
@@ -113,6 +111,10 @@ class EventHandler
 			case "innDown": {};
 			case "recruitHeroButton": sprite.addEventListener( MouseEvent.CLICK, this._clickRecruitHero );
 			case "citySceneMainWindowClose": sprite.addEventListener( MouseEvent.CLICK, this._clickCloseCitySceneMainWindow );
+			case "recruitHeroButtonWhite", 
+				"recruitHeroButtonBlue", 
+				"recruitHeroButtonGreen", 
+				"recruitHeroButtonOrange": sprite.addEventListener( MouseEvent.CLICK, this._clickButtonHeroRecruit );
 			default: throw 'Error in EventHandler._addEventsToButton. No event for button with name "$name"';
 		}
 	}
@@ -134,6 +136,10 @@ class EventHandler
 			case "innDown": {};
 			case "recruitHeroButton": sprite.removeEventListener( MouseEvent.CLICK, this._clickRecruitHero );
 			case "citySceneMainWindowClose": sprite.removeEventListener( MouseEvent.CLICK, this._clickCloseCitySceneMainWindow );
+			case "recruitHeroButtonWhite", 
+				"recruitHeroButtonBlue", 
+				"recruitHeroButtonGreen", 
+				"recruitHeroButtonOrange": sprite.removeEventListener( MouseEvent.CLICK, this._clickButtonHeroRecruit );
 			default: throw 'Error in EventHandler._addEventsToButton. No event for button with name "$name"';
 		}
 	}
@@ -247,17 +253,23 @@ class EventHandler
 
 	private function _clickRecruitsBuilding( e:MouseEvent ):Void
 	{
-		this._ui.openWindow( "recruit" );
+		this._parent.getSystem( "ui" ).openWindow( 3002 );
 	}
 
 	private function _clickCloseCitySceneMainWindow( e:MouseEvent ):Void
 	{
-		this._ui.closeWindow( "citySceneMain" );
+		this._parent.getSystem( "ui" ).closeWindow( 3001 );
 	}
 
 	private function _clickRecruitHero( e:MouseEvent ):Void
 	{
 		this._parent.getSystem( "state" ).recruitHero();
+	}
+
+	private function _clickButtonHeroRecruit( e:MouseEvent ):Void
+	{
+		var sprite:DataSprite = e.currentTarget;
+		this._parent.getSystem( "state" ).chooseUnchooseButton( sprite.sId, sprite.sName );
 	}
 
 	private function _hover( e:MouseEvent ):Void
