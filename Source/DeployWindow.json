@@ -61,8 +61,15 @@
 		"imageNormalURL": "assets/images/panelCityWindow.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
-		"firstText": null,
-		"button": [  ]
+		"firstText": "00000",
+		"firstTextSize": 40,
+		"firstTextColor": "0xffd700",
+		"firstTextHeight": 42,
+		"firstTextWidth": 250,
+		"firstTextX": 100.0,
+		"firstTextY": 5.0,
+		"firstTextAlign": "left",
+		"button": [ 4006 ]
 	},
 
 	"3004":{

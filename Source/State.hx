@@ -51,10 +51,38 @@ class State
 
 	}
 
+	public function startJourney():Void
+	{
+		var sceneSystem:SceneSystem = this._parent.getSystem( "scene" );
+		var currentSceneName:String = sceneSystem.getActiveScene().get( "name" );
+		if( currentSceneName == "cityScene" )
+		{
+			//sceneSystem.switchSceneTo();
+		}
+		else
+		{
+			//TODO: check choose dungeon instance, check heroes in heroes widnow to dungeon, if all correctly - start journey.
+		}
+	}
+
+	public function innListUp():Void
+	{
+
+	}
+
+	public function innListDown():Void
+	{
+
+	}
+
 	public function recruitHero():Void
 	{
 		var error:String = 'You can not buy hero, because ';
-		var hero:Hero = this._findRecruitHeroForBuy();
+		var button:Button = this._findActiveRecruitButton();
+		if( button == null )
+			return;
+
+		var hero:Hero = this._findHeroFromActiveRecruitButton( button );
 		if( hero == null )
 			return;
 
@@ -75,11 +103,12 @@ class State
 
 		//after all checks
 		this._transferHeroToPlayerInn( hero );
-		this._removeHeroFromRecruitBuilding( hero );
+		this._removeHeroFromRecruitBuilding( hero, button );
 		this.withdrawMoneyFromPlayer( price );
 
 		// redraw our list;
 		this._redrawListOfHeroesInRecruitBuilding();
+		this._redrawListOfHeroesInInnBuilding();
 	}
 
 	public function withdrawMoneyFromPlayer( amount:Player.Money ):Void
@@ -90,10 +119,8 @@ class State
 		var player:Player = this._parent.getPlayer();
 		player.withdrawMoney( amount );
 		var currentMoney:Player.Money = player.get( "money" );
-		//TODO: отобразить в графике изменения в моентах.
-		// Графическая часть находится только на cityMainScene в окне, где отображены кнопки storage, options Lauch;
-		// var windowGraphics:GraphicsSystem = this._parent.getSystem( "ui" ).getWindowByDeployId( 0000 ).get( "graphics" );
-		// windowGraphics.setText( '$currentMoney', "first" );
+		var panelCityWindow:Window = this._parent.getSystem( "ui" ).getWindowByDeployId( 3003 ); // panel City Window have deploy id 3003;
+		panelCityWindow.get( "graphics" ).setText( '$currentMoney', "first" );
 	}
 
 	public function generateHeroesForBuilding( building:Building ):Void
@@ -111,21 +138,22 @@ class State
 			var rarity:String = rarityArray[ rarityIndex ];
 			var hero:Hero = heroSystem.generateHero( "random", rarity );
 			building.addHero( hero );
+
 			var heroButton:Button = null;
 			// создаем кнопку на основе легендарности героя ( отличие оконтовка )
 			switch( rarity )
 			{
-				case "uncommon": heroButton = ui.createButton( 4014 );
 				case "common": heroButton = ui.createButton( 4015 );
-				case "rare": heroButton = ui.createButton( 4016 );
-				case "legendary": heroButton = ui.createButton( 4017 );
+				case "uncommon": heroButton = ui.createButton( 4016 );			
+				case "rare": heroButton = ui.createButton( 4017 );
+				case "legendary": heroButton = ui.createButton( 4018 );
 				default: throw 'Error in State.generateHeroesForBuilding. Can not create button with rarity: "$rarity"';
 			}
 			
 			var buttonSprite:Sprite = heroButton.get( "sprite" );
 			var buttonNewY:Float = buttonSprite.height * i;
 			buttonSprite.y += buttonNewY;
-			this._bindHeroAndRecruitWindowButton( hero, heroButton );
+			this._bindHeroAndButton( hero, heroButton );
 			var recruitWindow:Window = ui.getWindowByDeployId( 3002 );
 			recruitWindow.addButton( heroButton );
 		}
@@ -143,8 +171,32 @@ class State
 				var button:Button = recruitWindow.getButtonById( id );
 				if( !button.get( "activeStatus" ))
 					this.unchooseRecruitHeroButtons();
+				else
+				{
+					this.unchooseRecruitHeroButtons();
+					return;
+				}
 
 				button.changeActiveStatus();
+				var sprite:Dynamic = button.get( "sprite" ).getChildAt( 0 );
+				var spriteToChange:Sprite = sprite.getChildAt( 3 );
+				spriteToChange.visible = true;
+			};
+			case "innWindowHeroButtonOrange", "innWindowHeroButtonBlue", "innWindowHeroButtonWhite", "innWindowHeroButtonGreen":
+			{
+				var innWindow:Window = this._parent.getSystem( "ui" ).getWindowByDeployId( 3006 ); //inn window deploy id 3009;
+				var button:Button = innWindow.getButtonById( id );
+				if( !button.get( "activeStatus" ))
+					this.uchooseInnHeroButtons();
+				else
+				{
+					this.uchooseInnHeroButtons();
+					return;
+				}
+
+				button.changeActiveStatus();
+				var sprite:Sprite = button.get( "sprite" );
+				sprite.x = -40;
 			};
 			default: throw 'Error in Stat.unchooseButton. Can not choose button with name: "$name"';
 		}
@@ -161,14 +213,39 @@ class State
 			if( name == "recruitHeroButtonWhite" || name == "recruitHeroButtonBlue" || name == "recruitHeroButtonOrange" || name == "recruitHeroButtonGreen" )
 			{
 				if( button.get( "activeStatus") )
+				{
 					button.changeActiveStatus();
+					var sprite:Dynamic = button.get( "sprite" ).getChildAt( 0 );
+					var spriteToChange:Sprite = sprite.getChildAt( 3 );
+					spriteToChange.visible = false;
+				}
+			}
+		}
+	}
+
+	public function uchooseInnHeroButtons():Void
+	{
+		var innWindow:Window = this._parent.getSystem( "ui" ).getWindowByDeployId( 3006 ); //inn window deploy id 3009;
+		var array:Array<Button> = innWindow.get( "buttons" );
+		for( i in 0...array.length )
+		{
+			var button:Button = array[ i ];
+			var name:String = button.get( "name" );
+			if( name == "innWindowHeroButtonOrange" || name == "innWindowHeroButtonBlue" || name == "innWindowHeroButtonWhite" || name == "innWindowHeroButtonGreen" )
+			{
+				if( button.get( "activeStatus") )
+				{
+					button.changeActiveStatus();
+					var sprite:Sprite = button.get( "sprite" );
+					sprite.x = 0;
+				}
 			}
 		}
 	}
 
 	//PRIVATE
 
-	private function _bindHeroAndRecruitWindowButton( hero:Hero, button:Button ):Void
+	private function _bindHeroAndButton( hero:Hero, button:Button ):Void
 	{
 		var buttonId:Button.ButtonID = button.get( "id" );
 		hero.setButtonId( buttonId );
@@ -188,11 +265,11 @@ class State
 		var heroBuyPrice:Player.Money = hero.get( "buyPrice" );
 		buttonGraphics.setText( fullHeroName, "first" );
 		buttonGraphics.setText( heroClass, "second" );
-		buttonGraphics.setText( '$heroBuyPrice', "third" );
-	}
 
-	private function _bindHeroAndInnWindowButton( hero:Hero, button:Button ):Void
-	{
+		var buttonName:String = button.get( "name" );
+
+		if( buttonName == "recruitHeroButtonWhite" || buttonName == "recruitHeroButtonBlue" || buttonName == "recruitHeroButtonOrange" || buttonName == "recruitHeroButtonGreen" )
+			buttonGraphics.setText( '$heroBuyPrice', "third" );
 
 	}
 
@@ -233,21 +310,29 @@ class State
 		if( !this._checkRoomInInnInventoryForHero() )
 			throw 'Error in State._transferHeroToPlayerInn. No room space for hero in Inn';
 		
-		this._parent.getSystem( "scene" ).getActiveScene().getBuildingByDeployId( 2010 ).addHero( hero );
-		//TODO:all
+		var innBuilding:Building = this._parent.getSystem( "scene" ).getActiveScene().getBuildingByDeployId( 2010 ); //Inn building with 2010 deploy ID;
+		innBuilding..addHero( hero );
+		var currentNumberOfHeroes:Int = innBuilding.get( "heroStorage" ).length;
+		var maximumRoomForHeroes:Int = innBuilding.get( "heroStorageSlotsMax" );
+
 		var ui:UserInterface = this._parent.getSystem( "ui" );
-		var innWindow:Window = ui.getWindowByDeployId( 3002 );
+		var innWindow:Window = ui.getWindowByDeployId( 3006 ); // inn window with deploy id 3006;
 		var rarity:String = hero.get( "rarity" );
 		var heroButton:Button = null;
 		switch( rarity )
 		{
-			case "uncommon": heroButton = ui.createButton( 4014 );
-			case "common": heroButton = ui.createButton( 4015 );
-			case "rare": heroButton = ui.createButton( 4016 );
-			case "legendary": heroButton = ui.createButton( 4017 );
+			case "common": heroButton = ui.createButton( 4019 );
+			case "uncommon": heroButton = ui.createButton( 4020 );
+			case "rare": heroButton = ui.createButton( 4021 );
+			case "legendary": heroButton = ui.createButton( 4022 );
 			default: throw 'Error in State.generateHeroesForBuilding. Can not create button with rarity: "$rarity"';
 		}
-		//this._bindHeroAndInnWindowButton( hero, newHeroButton );
+		this._bindHeroAndButton( hero, heroButton );
+		innWindow.addButton( heroButton );
+		this._parent.getSystem( "event" ).addEvents( heroButton );
+
+		var textToInn:String = 'Inn | $currentNumberOfHeroes of $maximumRoomForHeroes';
+		this._parent.getSystem( "ui" ).getWindowByDeployId( 3006 ).get( "graphics" ).setText( textToInn , "first" ); // Inn Window deploy id 3006;
 	}
 
 	private function _checkBoxInStorageInventoryForItem():Bool
@@ -256,26 +341,23 @@ class State
 		return false;
 	}
 
-	private function _removeHeroFromRecruitBuilding( hero:Hero ):Hero
+	private function _removeHeroFromRecruitBuilding( hero:Hero, button:Button ):Hero
 	{
-		var recruitWindow:Window = this._parent.getSystem( "ui" ).getWindowByDeployId( 3002 );
-		var buttonId:Button.ButtonID = hero.get( "buttonId" );
-		var button:Button = recruitWindow.getButtonById( buttonId );
+		var recruitWindow:Window = this._parent.getSystem( "ui" ).getWindowByDeployId( 3002 ); // recruit window have 3002 deploy id;
 		recruitWindow.removeButton( button );
 		var newHero:Hero = this._parent.getSystem( "scene" ).getActiveScene().getBuildingByDeployId( 2002 ).removeHero( hero );
 		return newHero;
 	}
 
-	private function _findRecruitHeroForBuy():Hero
+	private function _findActiveRecruitButton():Button
 	{
-		var recruitWindow = this._parent.getSystem( "ui" ).getWindowByDeployId( 3002 );
+		var recruitWindow = this._parent.getSystem( "ui" ).getWindowByDeployId( 3002 ); // recruit window have 3002 deploy id;
 		var buttonsArray:Array<Button> = recruitWindow.get( "buttons" );
 		var buttonToBuy:Button = null;
-		var heroToBuy:Hero = null;
 		for( i in 0...buttonsArray.length )
 		{
 			var button:Button = buttonsArray[ i ];
-			if( button.get( "activeStatus") )
+			if( button.get( "activeStatus") ) //find first active button, because we have expection - only 1 button is chosen;
 			{
 				buttonToBuy = button;
 				break;
@@ -285,9 +367,15 @@ class State
 		if( buttonToBuy == null )
 			return null;
 
-		var buttonId:Button.ButtonID = buttonToBuy.get( "id" );
+		return buttonToBuy;
+	}
+
+	private function _findHeroFromActiveRecruitButton( button:Button ):Hero
+	{
+		var buttonId:Button.ButtonID = button.get( "id" );
 		var recruitBuilding:Building = this._parent.getSystem( "scene" ).getActiveScene().getBuildingByDeployId( 2002 );
 		var heroStorage:Array<Hero> = recruitBuilding.get( "heroStorage" );
+		var heroToBuy:Hero = null;
 		for( j in 0...heroStorage.length )
 		{
 			var hero:Hero = heroStorage[ j ];
@@ -321,6 +409,49 @@ class State
 				var newY:Int = this._parent.getSystem( "deploy" ).getButton( deployId ).y;
 				buttonSprite.y = counter * buttonSprite.height + newY;
 				counter++;
+			}
+		}
+	}
+
+	private function _redrawListOfHeroesInInnBuilding():Void
+	{
+		var innWindow:Window = this._parent.getSystem( "ui" ).getWindowByDeployId( 3006 ); //inn window deploy id 3006;
+		var buttonsArray:Array<Button> = innWindow.get( "buttons" );
+		var counter:Int = 0;
+		var maxSize:Int = innWindow.get( "sprite" ).height;
+		var lastTotalY:Float = 0.0;
+		var innWindowFull:Bool = false;
+		for( i in 0...buttonsArray.length )
+		{
+			var button:Button = buttonsArray[ i ];
+			var name:String = button.get( "name" );
+			if( name == "innWindowHeroButtonOrange" || name == "innWindowHeroButtonBlue" || name == "innWindowHeroButtonWhite" || name == "innWindowHeroButtonGreen" )
+			{
+				var buttonSprite:Sprite = button.get( "sprite" );
+				// we can get Deploy ID from button, get sprite.y and add it;
+				var deployId:Button.ButtonDeployID = button.get( "deployId" );
+				var newY:Int = this._parent.getSystem( "deploy" ).getButton( deployId ).y;
+
+				if( !innWindowFull )
+				{
+					var totalY:Float = counter * buttonSprite.height + newY;
+					if( totalY >= maxSize )
+					{
+						innWindowFull = true;
+						buttonSprite.y = lastTotalY;
+						buttonSprite.visible = false;
+						continue;
+					}
+
+					buttonSprite.y = totalY;
+					lastTotalY = totalY;
+					counter++;
+				}
+				else
+				{
+					buttonSprite.y = lastTotalY;
+					buttonSprite.visible = false;
+				}
 			}
 		}
 	}

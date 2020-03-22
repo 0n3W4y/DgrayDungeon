@@ -109,12 +109,17 @@ class EventHandler
 			case "gameOptions": sprite.addEventListener( MouseEvent.CLICK, this._clickOptionsGame );
 			case "innUp": {};
 			case "innDown": {};
+			case "gameStartJourney": {};
 			case "recruitHeroButton": sprite.addEventListener( MouseEvent.CLICK, this._clickRecruitHero );
 			case "citySceneMainWindowClose": sprite.addEventListener( MouseEvent.CLICK, this._clickCloseCitySceneMainWindow );
 			case "recruitHeroButtonWhite", 
 				"recruitHeroButtonBlue", 
 				"recruitHeroButtonGreen", 
-				"recruitHeroButtonOrange": sprite.addEventListener( MouseEvent.CLICK, this._clickButtonHeroRecruit );
+				"recruitHeroButtonOrange": sprite.addEventListener( MouseEvent.CLICK, this._clickButtonHero );
+			case "innWindowHeroButtonOrange",
+				"innWindowHeroButtonBlue",
+				"innWindowHeroButtonWhite",
+				"innWindowHeroButtonGreen": sprite.addEventListener( MouseEvent.CLICK, this._clickButtonHero );
 			default: throw 'Error in EventHandler._addEventsToButton. No event for button with name "$name"';
 		}
 	}
@@ -134,12 +139,17 @@ class EventHandler
 			case "gameOptions": sprite.removeEventListener( MouseEvent.CLICK, this._clickOptionsGame );
 			case "innUp": {};
 			case "innDown": {};
+			case "gameStartJourney": {};
 			case "recruitHeroButton": sprite.removeEventListener( MouseEvent.CLICK, this._clickRecruitHero );
 			case "citySceneMainWindowClose": sprite.removeEventListener( MouseEvent.CLICK, this._clickCloseCitySceneMainWindow );
 			case "recruitHeroButtonWhite", 
 				"recruitHeroButtonBlue", 
 				"recruitHeroButtonGreen", 
-				"recruitHeroButtonOrange": sprite.removeEventListener( MouseEvent.CLICK, this._clickButtonHeroRecruit );
+				"recruitHeroButtonOrange": sprite.removeEventListener( MouseEvent.CLICK, this._clickButtonHero );
+			case "innWindowHeroButtonOrange",
+				"innWindowHeroButtonBlue",
+				"innWindowHeroButtonWhite",
+				"innWindowHeroButtonGreen": sprite.removeEventListener( MouseEvent.CLICK, this._clickButtonHero );
 			default: throw 'Error in EventHandler._addEventsToButton. No event for button with name "$name"';
 		}
 	}
@@ -266,10 +276,25 @@ class EventHandler
 		this._parent.getSystem( "state" ).recruitHero();
 	}
 
-	private function _clickButtonHeroRecruit( e:MouseEvent ):Void
+	private function _clickButtonHero( e:MouseEvent ):Void
 	{
 		var sprite:DataSprite = e.currentTarget;
 		this._parent.getSystem( "state" ).chooseUnchooseButton( sprite.sId, sprite.sName );
+	}
+
+	private function _innListUp( e:MouseEvent ):Void
+	{
+		this._parent.getSystem( "state" ).innListUp();
+	}
+
+	private function _innListDown( e:MouseEvent ):Void
+	{
+		this._parent.getSystem( "state" ).innListDown();
+	}
+
+	private function _startJourney( e:MouseEvent ):Void
+	{
+		this._parent.getSystem( "state" ).startJourney();
 	}
 
 	private function _hover( e:MouseEvent ):Void

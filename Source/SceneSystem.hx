@@ -112,6 +112,13 @@ class SceneSystem
 		{
 			var window:Int = windowArray[ i ];
 			var windowId:WindowDeployID = WindowDeployID( window );
+			if( window == 3003 ) // panelCityWindow deploy Id 3003;
+			{
+				var panelCityWindow = ui.getWindowByDeployId( 3003 );
+				var playerMoney:Player.Money = this._parent.getPlayer().get( "money" );
+				panelCityWindow.get( "graphics" ).setText( '$playerMoney', "first" );
+			}
+
 			ui.addWindowOnUi( windowId );
 		}
 

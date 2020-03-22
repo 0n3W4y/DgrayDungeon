@@ -98,7 +98,6 @@ class Window
 		if( check == null )
 			throw 'Error in Window.removeButton. Button with name: "$name" not found';
 
-		this._buttonChildren.splice( check, 1 );
 		if( name == "innWindowHeroButtonWhite" || name == "innWindowHeroButtonGreen" || name == "innWindowHeroButtonBlue" || name == "innWindowHeroButtonOrange" 
 			|| name == "recruitHeroButtonWhite" || name == "recruitHeroButtonGreen" || name == "recruitHeroButtonBlue" || name == "recruitHeroButtonOrange" )
 		{
@@ -106,6 +105,7 @@ class Window
 		}
 
 		this.get( "sprite" ).removeChild( button.get( "sprite" ));
+		this._buttonChildren.splice( check, 1 );
 		return button;
 	}
 

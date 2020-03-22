@@ -151,6 +151,7 @@ class Game
 		var result:Int = this._nextId;
 		this._nextId++;
 		return result;
+
 	}
 
 	public function createPlayer( deployId:Int, name:String ):Player

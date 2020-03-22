@@ -35,20 +35,6 @@ class GraphicsSystem
 
 	}
 
-	public function choose():Void
-	{
-		var sprite:Dynamic = this._sprite.getChildAt( 0 );
-		var spriteToChange:Sprite = sprite.getChildAt( 3 );
-		spriteToChange.visible = true;
-	}
-
-	public function unchoose():Void
-	{
-		var sprite:Dynamic = this._sprite.getChildAt( 0 );
-		var spriteToChange:Sprite = sprite.getChildAt( 3 );
-		spriteToChange.visible = false;
-	}
-
 	public function setText( text:String, place:String ):Void
 	{
 		var textField:TextField = null;
@@ -62,7 +48,7 @@ class GraphicsSystem
 			default: throw 'Error in GraphicsSystem.setText. Can not set text on $place';
 		}
 		if( textField == null )
-			throw ( "Error in GraphicsSystem.setText. TextField not found on $place" );
+			throw 'Error in GraphicsSystem.setText. TextField not found on $place';
 
 		textField.text = text;
 	}
