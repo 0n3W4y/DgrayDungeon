@@ -28,6 +28,8 @@ class Button
 	private var _type:String;
 	private var _activeStatus:Bool;
 
+	private var _heroId:Hero.HeroID;
+
 	private var _graphics:GraphicsSystem;
 
 
@@ -44,6 +46,7 @@ class Button
 	{
 		var err:String = 'Name "$_name" id "$_id" deploy id "$_deployId"';
 		this._activeStatus = false;
+		this._heroId = null;
 
 		if( this._name == null || this._name == "" )
 			throw '$error. Wrong name. $err';
@@ -81,7 +84,13 @@ class Button
 			case "graphics": return this._graphics;
 			case "sprite": return this._graphics.getSprite();
 			case "activeStatus": return this._activeStatus;
+			case "heroId": return this._heroId;
 			default: { throw( "Error in Button.get. Can't get " + value ); return null; };
 		}
+	}
+
+	public function setHeroId( id:Hero.HeroID ):Void
+	{
+		this._heroId = id;
 	}
 }

@@ -47,8 +47,15 @@ class State
 
 		var scene:Scene = sceneSystem.createScene( 1001 );
 		sceneSystem.prepareScene( scene );
-		sceneSystem.changeSceneTo( scene );
+		var sceneId:Scene.SceneID = scene.get( "id" );
+		var dungeonScene:Scene = sceneSystem.createScene( 1002 ); // start new game - create first dungeon scene;
+		sceneSystem.prepareScene( dungeonScene );
+		var dungeonSceneId:Scene.SceneID = dungeonScene.get( "id" );
 
+		scene.setSceneForFastSwitch( dungeonSceneId );
+		dungeonScene.setSceneForFastSwitch( sceneId );
+
+		sceneSystem.changeSceneTo( scene );
 	}
 
 	public function startJourney():Void
@@ -57,7 +64,7 @@ class State
 		var currentSceneName:String = sceneSystem.getActiveScene().get( "name" );
 		if( currentSceneName == "cityScene" )
 		{
-			//sceneSystem.switchSceneTo();
+			sceneSystem.fastSwitchScenes( sceneSystem.getActiveScene() );
 		}
 		else
 		{
@@ -167,36 +174,11 @@ class State
 		{
 			case "recruitHeroButtonWhite", "recruitHeroButtonBlue", "recruitHeroButtonOrange", "recruitHeroButtonGreen": 
 			{
-				var recruitWindow:Window = this._parent.getSystem( "ui" ).getWindowByDeployId( 3002 );
-				var button:Button = recruitWindow.getButtonById( id );
-				if( !button.get( "activeStatus" ))
-					this.unchooseRecruitHeroButtons();
-				else
-				{
-					this.unchooseRecruitHeroButtons();
-					return;
-				}
-
-				button.changeActiveStatus();
-				var sprite:Dynamic = button.get( "sprite" ).getChildAt( 0 );
-				var spriteToChange:Sprite = sprite.getChildAt( 3 );
-				spriteToChange.visible = true;
+				this._chooseHeroRecruitButton( id, name ); 
 			};
 			case "innWindowHeroButtonOrange", "innWindowHeroButtonBlue", "innWindowHeroButtonWhite", "innWindowHeroButtonGreen":
 			{
-				var innWindow:Window = this._parent.getSystem( "ui" ).getWindowByDeployId( 3006 ); //inn window deploy id 3009;
-				var button:Button = innWindow.getButtonById( id );
-				if( !button.get( "activeStatus" ))
-					this.uchooseInnHeroButtons();
-				else
-				{
-					this.uchooseInnHeroButtons();
-					return;
-				}
-
-				button.changeActiveStatus();
-				var sprite:Sprite = button.get( "sprite" );
-				sprite.x = -40;
+				this._chooseHeroInnButton( id, name );
 			};
 			default: throw 'Error in Stat.unchooseButton. Can not choose button with name: "$name"';
 		}
@@ -243,12 +225,60 @@ class State
 		}
 	}
 
+
+
+
+
 	//PRIVATE
+
+
+	private function _chooseHeroRecruitButton( id:Button.ButtonID, name:String ):Void
+	{
+		var recruitWindow:Window = this._parent.getSystem( "ui" ).getWindowByDeployId( 3002 );
+		var button:Button = recruitWindow.getButtonById( id );
+		if( !button.get( "activeStatus" ))
+			this.unchooseRecruitHeroButtons();
+		else
+		{
+			this.unchooseRecruitHeroButtons();
+			return;
+		}
+
+		button.changeActiveStatus();
+		var sprite:Dynamic = button.get( "sprite" ).getChildAt( 0 );
+		var spriteToChange:Sprite = sprite.getChildAt( 3 );
+		spriteToChange.visible = true;
+	}
+
+	private function _chooseHeroInnButton( id:Button.ButtonID, name:String ):Void
+	{
+		var sceneName:String = this._parent.getSystem( "scene" ).getActiveScene();
+		if( sceneName == "cityScene" )
+		{
+			var innWindow:Window = this._parent.getSystem( "ui" ).getWindowByDeployId( 3006 ); //inn window deploy id 3009;
+			var button:Button = innWindow.getButtonById( id );
+			if( !button.get( "activeStatus" ))
+				this.uchooseInnHeroButtons();
+			else
+			{
+				this.uchooseInnHeroButtons();
+				return;
+			}
+
+			button.changeActiveStatus();
+			var sprite:Sprite = button.get( "sprite" );
+			sprite.x = -40;
+		}
+		else
+		{
+			//TODO: find hero, get portrait, add portrait to window with portraits hero to dungeon, change chooseStatus button 
+		}
+	}
 
 	private function _bindHeroAndButton( hero:Hero, button:Button ):Void
 	{
-		var buttonId:Button.ButtonID = button.get( "id" );
-		hero.setButtonId( buttonId );
+		var heroId:Hero.HeroID = hero.get( "id" );
+		button.setHeroId( heroId );
 
 		//create new sprite with portrait of hero, and add it to new button;
 		var buttonGraphics:GraphicsSystem = button.get( "graphics" );
@@ -311,7 +341,7 @@ class State
 			throw 'Error in State._transferHeroToPlayerInn. No room space for hero in Inn';
 		
 		var innBuilding:Building = this._parent.getSystem( "scene" ).getActiveScene().getBuildingByDeployId( 2010 ); //Inn building with 2010 deploy ID;
-		innBuilding..addHero( hero );
+		innBuilding.addHero( hero );
 		var currentNumberOfHeroes:Int = innBuilding.get( "heroStorage" ).length;
 		var maximumRoomForHeroes:Int = innBuilding.get( "heroStorageSlotsMax" );
 
@@ -372,14 +402,14 @@ class State
 
 	private function _findHeroFromActiveRecruitButton( button:Button ):Hero
 	{
-		var buttonId:Button.ButtonID = button.get( "id" );
+		var heroId:Hero.HeroID = button.get( "heroId" );
 		var recruitBuilding:Building = this._parent.getSystem( "scene" ).getActiveScene().getBuildingByDeployId( 2002 );
 		var heroStorage:Array<Hero> = recruitBuilding.get( "heroStorage" );
 		var heroToBuy:Hero = null;
 		for( j in 0...heroStorage.length )
 		{
 			var hero:Hero = heroStorage[ j ];
-			if( haxe.EnumTools.EnumValueTools.equals( hero.get( "buttonId"), buttonId ))
+			if( haxe.EnumTools.EnumValueTools.equals( hero.get( "id"), heroId ))
 			{
 				heroToBuy = hero;
 				break;

@@ -69,25 +69,65 @@ class SceneSystem
 		this._scenesArray.push( scene );
 	}
 
-	public function removeScene( scene:Scene ):Array<Dynamic>
+	public function removeScene( scene:Scene ):Scene
 	{
 		var name:String = scene.get( "name" );
 		var check = this._checkSceneIfExist( scene );
 		if( check == null )
-			return [ null, 'Error in SceneSystem.addScene. Scene with name "$name" does not exist.' ];
+			throw 'Error in SceneSystem.addScene. Scene with name "$name" does not exist.';
 
-		var sceneToReturn:Scene = this._scenesArray[ check ];
+		this.undrawUiForScene( scene );
+		this._destroyUiForScene( scene );
 		this._scenesArray.splice( check, 1 );
-		return [ sceneToReturn, null ];
+		return scene;
 	}
 
-	public function fastSwitchSceneTo( scene:Scene ):Void // fast switch between scenes, hide active and show scene;
-	{													//Использовать для перемещения между сценой города и выбором данжа.
-		if( this._activeScene != null )
-			this.hideScene( this._activeScene );
+	public function fastSwitchScenes( scene:Scene ):Void
+	{
+		var sceneName:String = scene.get( "name" );
+		var sceneId:SceneID = scene.get( "id" );
+		var sceneDeployId:SceneDeployID = scene.get( "deployId" );
+		var activeSceneId:SceneID = this._activeScene.get( "id" );
+		if( !haxe.EnumTools.EnumValueTools.equals( sceneId, activeSceneId ))
+			throw 'Error in SceneSystem.fastSwitchScenes. Cannot switch scenes, becase scene is not active';
+		
+		var sceneToSwitchId:SceneID = scene.get( "sceneForFastSwitch" );
+		if( sceneToSwitchId == null )
+			throw 'Error in SceneSystem.switchCitySceneToChooseDungeonScene. Can not switch scene, because scene for fast switch is null';
 
-		this._activeScene = scene;
-		this.showScene( scene );
+		var sceneToFastSwitch:Scene = this.getSceneById( sceneToSwitchId );
+		var sceneToFastSwitchIsDrawed:Bool = sceneToFastSwitch.get( "isDrawed" );
+		var sceneToFastSwitchDeployId:SceneDeployID = sceneToFastSwitch.get( "deployId" );
+
+		this._activeScene = sceneToFastSwitch;
+		this.hideScene( scene );
+
+		if( sceneName == "cityScene" )
+		{
+			if( sceneToFastSwitchIsDrawed )
+			{
+				this.showScene( sceneToFastSwitch ); // показываем ранее скрытую сцену выбора данжа.
+				this.drawUiForScene( sceneToFastSwitch ); // прорисовываем окна интерфейса для сцены выбора данжа.
+			}
+			else
+			{
+				this.drawScene( sceneToFastSwitch );
+				this._parent.getSystem( "ui" ).closeAllActiveWindows();
+			}
+		}
+		else
+		{
+			if( sceneToFastSwitchIsDrawed )
+			{
+				this.showScene( sceneToFastSwitch ); // показываем сцену города.
+				this.undrawUiForScene( scene ); // убираем окна с интерфейса для сцены выбора данжа.
+			}
+			else
+			{
+				throw 'Error in SceneSystem.fastSwitchScenes. City Scene not drawed!!!!!';
+			}
+		}
+		
 	}
 
 	public function changeSceneTo( scene:Scene ):Void //full undraw active scene, and draw new scene;
@@ -156,6 +196,7 @@ class SceneSystem
 		{
 			case "startScene": this._prepareStartScene( scene );
 			case "cityScene": this._prepareCityScene( scene );
+			case "chooseDungeonScene": this._prepareChooseDungeonScene( scene );
 			default: throw 'Error in SceneSystem.drawScene. Scene with name "$name" can not to be draw, no function for it.';
 		}
 	}
@@ -170,10 +211,17 @@ class SceneSystem
 		var name:String = scene.get( "name" );
 		var prepared:String = scene.get( "prepared" );
 		if( prepared == "unprepared" )
-			throw 'Error in SceneSystem.drawScene. Scene with name: "$name" is "$prepared"';
+			throw 'Error in SceneSystem.drawScene. Scene "$name" is "$prepared"';
+
+		var isDrawed:Bool = scene.get( "isDrawed" );
+		if( isDrawed )
+			throw 'Error in SceneSystem,drawScene. Scene "$name" already drawed';
+
 
 		this._scenesSprite.addChild( scene.get( "sprite" ));
+		this.drawUiForScene( scene );
 		this._parent.getSystem( "ui" ).show();
+		scene.setDrawed( true );
 	}
 
 	public function undrawScene( scene:Scene ):Void
@@ -182,6 +230,7 @@ class SceneSystem
 		this._scenesSprite.removeChild( sprite );
 		this._parent.getSystem( "ui" ).hide();
 		this.undrawUiForScene( scene );
+		scene.setDrawed( false );
 	}
 
 	public function drawLoader():Void
@@ -343,7 +392,6 @@ class SceneSystem
 
 	private function _prepareStartScene( scene:Scene ):Void
 	{
-		this.drawUiForScene( scene );
 		scene.changePrepareStatus( "prepared" );
 	}
 
@@ -361,8 +409,27 @@ class SceneSystem
 
 		}
 
-		this.drawUiForScene( scene );
 		scene.changePrepareStatus( "prepared" );
+	}
+
+	private function _prepareChooseDungeonScene( scene:Scene ):Void
+	{
+		scene.changePrepareStatus( "prepared" );
+	}
+
+	private function _destroyUiForScene( scene:Scene ):Void
+	{
+		var ui:UserInterface = this._parent.getSystem( "ui" );
+		var sceneDeployId:SceneDeployID = scene.get( "deployId" );
+		var configScene:Dynamic = this._parent.getSystem( "deploy" ).getScene( sceneDeployId );
+		var windowArray:Array<Int> = configScene.window;
+
+		for( i in 0...windowArray.length )
+		{
+			var window:Int = windowArray[ i ];
+			var windowId:WindowDeployID = WindowDeployID( window );
+			ui.destroyWindow( windowId );
+		}
 	}
 
 	private function _checkSceneIfExist( scene:Scene ):Int

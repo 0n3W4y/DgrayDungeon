@@ -109,7 +109,7 @@ class EventHandler
 			case "gameOptions": sprite.addEventListener( MouseEvent.CLICK, this._clickOptionsGame );
 			case "innUp": {};
 			case "innDown": {};
-			case "gameStartJourney": {};
+			case "gameStartJourney": sprite.addEventListener( MouseEvent.CLICK, this._startJourney );
 			case "recruitHeroButton": sprite.addEventListener( MouseEvent.CLICK, this._clickRecruitHero );
 			case "citySceneMainWindowClose": sprite.addEventListener( MouseEvent.CLICK, this._clickCloseCitySceneMainWindow );
 			case "recruitHeroButtonWhite", 
@@ -139,7 +139,7 @@ class EventHandler
 			case "gameOptions": sprite.removeEventListener( MouseEvent.CLICK, this._clickOptionsGame );
 			case "innUp": {};
 			case "innDown": {};
-			case "gameStartJourney": {};
+			case "gameStartJourney": sprite.removeEventListener( MouseEvent.CLICK, this._startJourney );
 			case "recruitHeroButton": sprite.removeEventListener( MouseEvent.CLICK, this._clickRecruitHero );
 			case "citySceneMainWindowClose": sprite.removeEventListener( MouseEvent.CLICK, this._clickCloseCitySceneMainWindow );
 			case "recruitHeroButtonWhite", 

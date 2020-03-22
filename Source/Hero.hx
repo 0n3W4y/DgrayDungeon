@@ -117,7 +117,6 @@ class Hero
 	private var _resistCold:ResistCold;
 
 	private var _status:String; // мертв, лечится, на задании  и прочие статусы.
-	private var _buttonId:Button.ButtonID;
 
 
 	public function new( config:HeroConfig ):Void
@@ -189,11 +188,6 @@ class Hero
 
 	}
 
-	public function setButtonId( id:Button.ButtonID ):Void
-	{
-		this._buttonId = id;
-	}
-
 	public function get( value:String ):Dynamic
 	{
 		switch( value )
@@ -214,7 +208,6 @@ class Hero
 			case "preferPosition": return this._preferPosition;
 			case "preferTarget": return this._preferTargetPosition;
 			case "position": return this._position;
-			case "buttonId": return this._buttonId;
 			case "buyPrice": return this._buyPrice;
 			default: throw 'Error in Hero.get. Can not get $value';
 		}

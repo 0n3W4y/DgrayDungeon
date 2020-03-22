@@ -132,7 +132,7 @@ class Window
 			case "type": return this._type;
 			case "graphics": return this._graphics;
 			case "sprite": return this._graphics.getSprite();
-			case "activeStatus": return this._isActive;
+			case "isActive": return this._isActive;
 			case "alwaysActive": return this._alwaysActive;
 			case "buttons": return this._buttonChildren;
 			case "specialButtonCounter": return this._specialButtonCounter;

@@ -161,6 +161,22 @@ class UserInterface
 			this._hideChildCitySceneMainWindow();
 	}
 
+	public function closeAllActiveWindows():Void
+	{
+		for( i in 0...this._objectsOnUi.length )
+		{
+			var window:Window = this._objectsOnUi[ i ];
+			var status:Bool = window.get( "isActive" );
+			var alwaysActive:Bool = window.get( "alwaysActive" );
+			var deployId:WindowDeployID = window.get( "deployId" );
+			if( status && !alwaysActive )
+			{
+				var deployIdInt:Int = this._parent.getSystem( "deploy" ).getWindow( deployId ).deployId;
+				this.closeWindow( deployIdInt );
+			}
+		}
+	}
+
 	public function get( value:String ):Dynamic
 	{
 		switch( value )
@@ -325,7 +341,7 @@ class UserInterface
 		{
 			var window:Window = this._objectsOnUi[ i ];
 			var windowDeployID:WindowDeployID = window.get( "deployId" );
-			if( window.get( "activeStatus" ) )
+			if( window.get( "isActive" ) )
 			{
 				if( haxe.EnumTools.EnumValueTools.equals( WindowDeployID( 3001 ), windowDeployID ))
 					continue;

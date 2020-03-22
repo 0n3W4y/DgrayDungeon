@@ -30,6 +30,7 @@ class Player
 	private var _deployId:PlayerDeployID;
 	private var _type:String;
 	private var _moneyAmount:Money;
+	private var _gameProgress:String;
 
 	private var _inventory:InventorySystem;
 	private var _itemInventory:Array<Slot>; // Инвентарь, котоырй будет использовтаь игрок во время боевых сцен. Так же он досутпен будет, для подготовки к боевой сцены.
@@ -49,6 +50,7 @@ class Player
 	{
 		var err:String = '$error. Error in Player.init. Name "$_name" id "$_id" deploy id "$_deployId"';
 		this._type = "player";
+		this._gameProgress = "none";
 		this._itemInventory = new Array<Slot>();
 			// заполняем инвентарь
 		for( i in 0...this._itemInventoryMaxSlots )
@@ -90,6 +92,7 @@ class Player
 			case "id": return this._id;
 			case "type": return this._type;
 			case "money": return this._moneyAmount;
+			case "gameProgress": return this._gameProgress;
 			default: throw 'Error in Player.get. Not valid value: "$value"';
 		}
 	}
