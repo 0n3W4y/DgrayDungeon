@@ -409,7 +409,7 @@ class State
 		for( j in 0...heroStorage.length )
 		{
 			var hero:Hero = heroStorage[ j ];
-			if( haxe.EnumTools.EnumValueTools.equals( hero.get( "id"), heroId ))
+			if( haxe.EnumTools.EnumValueTools.equals( hero.get( "id" ), heroId ))
 			{
 				heroToBuy = hero;
 				break;

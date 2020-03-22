@@ -2,7 +2,6 @@ package;
 
 import openfl.display.Sprite;
 
-import InventorySystem;
 
 enum BuildingDeployID
 {
