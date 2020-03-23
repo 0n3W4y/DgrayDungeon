@@ -344,7 +344,6 @@ class State
 		var id:Hero.HeroID = null;
 		var ui:UserInterface = this._parent.getSystem( "ui" );
 		var buttonsArray:Array<Button> = ui.getWindowByDeployId( 3004 ).get( "buttons" ); // chooseheroToDungeon Window deploy id 3004
-		var isOk:Bool = false;
 		for( i in 0...buttonsArray.length )
 		{
 			var button:Button = buttonsArray[ i ];
@@ -353,6 +352,8 @@ class State
 			{
 				id = button.get( "heroId" );
 				button.removeHeroId();
+				var sprite:Dynamic = button.get( "sprite" ).getChildAt( 0 );
+				sprite.removeChildAt( 3 ); // by default portrait on this button on index 3;
 				this._parent.getSystem( "event" ).removeEvents( button ); // убираем ивенты с кнопки, что бы лишний раз не вызывать функции.
 				break;
 			}
