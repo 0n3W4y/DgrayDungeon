@@ -332,12 +332,10 @@ class State
 			return; // no room for heroes into dungeon;
 
 		// меняем статус кнопки героя в Inn Building. Для того, что бы он не был добавлен дважды.
-		if( buttonToChoose == null )
-			throw 'Error in State._chooseHeroToDungeon. Button to choose is NULL!';
 
-		buttonToChoose.changeActiveStatus(); // choose button;
+		button.changeActiveStatus(); // choose button;
 		//TODO: Some graphics changes like pos+- or do alpha = 0.5;
-		var sprite:Sprite = buttonToChoose.get( "sprite" );
+		var sprite:Sprite = button.get( "sprite" );
 		sprite.blendMode = BlendMode.INVERT;
 	}
 
@@ -555,11 +553,12 @@ class State
 
 	private function _findInnButtonById( id:Button.ButtonID ):Button
 	{
+		var ui:UserInterface = this._parent.getSystem( "ui" );
 		var buttonsArray:Array<Button> = ui.getWindowByDeployId( 3006 ).get( "buttons" ); // inn window deploy id 3006;
 		for( i in 0...buttonsArray.length )
 		{
 			var button:Button = buttonsArray[ i ];
-			if( haxe.EnumTools.EnumValueTools.equals( button.get( "id" ), buttonId ))
+			if( haxe.EnumTools.EnumValueTools.equals( button.get( "id" ), id ))
 				return button;
 		}
 
@@ -577,7 +576,7 @@ class State
 
 	private function _findHeroFromInnBuildingById( heroId:Hero.HeroID ):Hero
 	{
-		var innBuilding:Building = this._parent.getSystem( "scene" ).getActiveScene().getBuildingByDeployId( 2010 );//inn Building 2010 deploy ID;
+		var innBuilding:Building = this._parent.getSystem( "scene" ).getSceneByName( "cityScene" ).getBuildingByDeployId( 2010 );//inn Building 2010 deploy ID;
 		var heroStorage:Array<Hero> = innBuilding.get( "heroStorage" );
 		for( j in 0...heroStorage.length )
 		{
