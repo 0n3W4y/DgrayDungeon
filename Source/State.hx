@@ -5,6 +5,7 @@ import Window;
 import openfl.display.Sprite;
 import openfl.display.Bitmap;
 import openfl.Assets;
+import openfl.display.BlendMode;
 
 typedef StateConfig =
 {
@@ -89,7 +90,8 @@ class State
 		if( button == null )
 			return;
 
-		var hero:Hero = this._findHeroFromActiveRecruitButton( button );
+		var heroId:Hero.HeroID = button.get( "heroId" );
+		var hero:Hero = this._findHeroFromRecruitBuilding( heroId );
 		if( hero == null )
 			return;
 
@@ -151,12 +153,12 @@ class State
 			switch( rarity )
 			{
 				case "common": heroButton = ui.createButton( 4015 );
-				case "uncommon": heroButton = ui.createButton( 4016 );			
+				case "uncommon": heroButton = ui.createButton( 4016 );
 				case "rare": heroButton = ui.createButton( 4017 );
 				case "legendary": heroButton = ui.createButton( 4018 );
 				default: throw 'Error in State.generateHeroesForBuilding. Can not create button with rarity: "$rarity"';
 			}
-			
+
 			var buttonSprite:Sprite = heroButton.get( "sprite" );
 			var buttonNewY:Float = buttonSprite.height * i;
 			buttonSprite.y += buttonNewY;
@@ -168,13 +170,35 @@ class State
 		//TODO: запустить внутренний таймер для отсчета смены новых героев.
 	}
 
+	public function unchooseHeroToDungeon( id:Button.ButtonID, name:String ):Void
+	{
+		var buttonsArray:Array<Button> = this._parent.getSystem( "ui" ).getWindowByDeployId( 3004 ).get( "buttons" ); // chooseHeroToDungeon Window deploy id is 3004;
+		for( i in 0...buttonsArray.length )
+		{
+			var button:Button = buttonsArray[ i ];
+			if( haxe.EnumTools.EnumValueTools.equals( id, button.get( "id" )))
+			{
+				var heroId:Hero.HeroID = button.get( "heroId" );
+				if( heroId != null )
+				{
+					this._unchooseHeroToDungeon( id );
+					return;
+				}
+				else
+				{
+					throw 'Error in State.unchooseHeroToDungeon. Button "$name", without HeroId!';
+				}
+			}
+		}
+	}
+
 	public function chooseUnchooseButton( id:Button.ButtonID, name:String ):Void
 	{
 		switch( name )
 		{
-			case "recruitHeroButtonWhite", "recruitHeroButtonBlue", "recruitHeroButtonOrange", "recruitHeroButtonGreen": 
+			case "recruitHeroButtonWhite", "recruitHeroButtonBlue", "recruitHeroButtonOrange", "recruitHeroButtonGreen":
 			{
-				this._chooseHeroRecruitButton( id, name ); 
+				this._chooseHeroRecruitButton( id, name );
 			};
 			case "innWindowHeroButtonOrange", "innWindowHeroButtonBlue", "innWindowHeroButtonWhite", "innWindowHeroButtonGreen":
 			{
@@ -269,9 +293,85 @@ class State
 			var sprite:Sprite = button.get( "sprite" );
 			sprite.x = -40;
 		}
-		else
+		else // других сцен в которых будут эти кнопки нет. Остается - выбор подзеелья.
 		{
-			//TODO: find hero, get portrait, add portrait to window with portraits hero to dungeon, change chooseStatus button 
+			this._chooseHeroToDungeon( id );
+		}
+	}
+
+	private function _chooseHeroToDungeon( buttonId:Button.ButtonID ):Void
+	{
+		var ui:UserInterface = this._parent.getSystem( "ui" );
+		var button:Button = _findInnButtonById( buttonId );
+
+		if( button == null )
+			throw 'Error in State._chooseHeroToDungeon. There is no button "$buttonId" in Inn window.';
+
+		if( button.get( "activeStatus") )
+			return; // вовзаращем, так как кнопка уже активна - значит герой уже используется.
+
+		var id:Hero.HeroID = button.get( "heroId" );
+		var buttonsArray:Array<Button> = ui.getWindowByDeployId( 3004 ).get( "buttons" ); // chooseheroToDungeon Window deploy id 3004
+		var isOk:Bool = false;
+		for( i in 0...buttonsArray.length )
+		{
+			var button:Button = buttonsArray[ i ];
+			var heroId:Hero.HeroID = button.get( "heroId" );
+			if( heroId == null )
+			{
+				button.setHeroId( id );
+				var hero:Hero = this._findHeroFromInnBuildingById( id );
+				this._bindHeroAndButton( hero, button );
+				this._parent.getSystem( "event" ).addEvents( button );
+				isOk = true;
+				break;
+			}
+		}
+
+		if( !isOk )
+			return; // no room for heroes into dungeon;
+
+		// меняем статус кнопки героя в Inn Building. Для того, что бы он не был добавлен дважды.
+		if( buttonToChoose == null )
+			throw 'Error in State._chooseHeroToDungeon. Button to choose is NULL!';
+
+		buttonToChoose.changeActiveStatus(); // choose button;
+		//TODO: Some graphics changes like pos+- or do alpha = 0.5;
+		var sprite:Sprite = buttonToChoose.get( "sprite" );
+		sprite.blendMode = BlendMode.INVERT;
+	}
+
+	private function _unchooseHeroToDungeon( buttonId:Button.ButtonID ):Void
+	{
+		var id:Hero.HeroID = null;
+		var ui:UserInterface = this._parent.getSystem( "ui" );
+		var buttonsArray:Array<Button> = ui.getWindowByDeployId( 3004 ).get( "buttons" ); // chooseheroToDungeon Window deploy id 3004
+		var isOk:Bool = false;
+		for( i in 0...buttonsArray.length )
+		{
+			var button:Button = buttonsArray[ i ];
+			var oldButtonId:Button.ButtonID = button.get( "id" );
+			if( haxe.EnumTools.EnumValueTools.equals( oldButtonId, buttonId ))
+			{
+				id = button.get( "heroId" );
+				button.removeHeroId();
+				this._parent.getSystem( "event" ).removeEvents( button ); // убираем ивенты с кнопки, что бы лишний раз не вызывать функции.
+				break;
+			}
+		}
+
+		// меняем статус кнопки героя в Inn Building. Для того, что бы его можно было перевыбрать.
+		var newButtonsArray:Array<Button> = ui.getWindowByDeployId( 3006 ).get( "buttons" ); // Inn window deploy id 3006;
+		for( j in 0...newButtonsArray.length )
+		{
+			var button:Button = newButtonsArray[ j ];
+			var buttonHeroId:Hero.HeroID = button.get( "heroId" );
+			if( haxe.EnumTools.EnumValueTools.equals( buttonHeroId, id ))
+			{
+				button.changeActiveStatus(); // choose button;
+				var sprite:Sprite = button.get( "sprite" );
+				sprite.blendMode = BlendMode.NORMAL;
+			}
 		}
 	}
 
@@ -289,14 +389,15 @@ class State
 		heroPortraitSprite.addChild( new Bitmap( Assets.getBitmapData( urlHeroPortrait )));
 		buttonGraphics.setPortrait( heroPortraitSprite );
 
+		var buttonName:String = button.get( "name" );
+		if ( buttonName == "choosenHeroToDungeon" )
+			return;
 		// get needed strings from hero and add them to button;
 		var fullHeroName:String = hero.get( "fullName" );
 		var heroClass:String = hero.get( "name" );
 		var heroBuyPrice:Player.Money = hero.get( "buyPrice" );
 		buttonGraphics.setText( fullHeroName, "first" );
 		buttonGraphics.setText( heroClass, "second" );
-
-		var buttonName:String = button.get( "name" );
 
 		if( buttonName == "recruitHeroButtonWhite" || buttonName == "recruitHeroButtonBlue" || buttonName == "recruitHeroButtonOrange" || buttonName == "recruitHeroButtonGreen" )
 			buttonGraphics.setText( '$heroBuyPrice', "third" );
@@ -339,11 +440,9 @@ class State
 	{
 		if( !this._checkRoomInInnInventoryForHero() )
 			throw 'Error in State._transferHeroToPlayerInn. No room space for hero in Inn';
-		
+
 		var innBuilding:Building = this._parent.getSystem( "scene" ).getActiveScene().getBuildingByDeployId( 2010 ); //Inn building with 2010 deploy ID;
 		innBuilding.addHero( hero );
-		var currentNumberOfHeroes:Int = innBuilding.get( "heroStorage" ).length;
-		var maximumRoomForHeroes:Int = innBuilding.get( "heroStorageSlotsMax" );
 
 		var ui:UserInterface = this._parent.getSystem( "ui" );
 		var innWindow:Window = ui.getWindowByDeployId( 3006 ); // inn window with deploy id 3006;
@@ -360,9 +459,7 @@ class State
 		this._bindHeroAndButton( hero, heroButton );
 		innWindow.addButton( heroButton );
 		this._parent.getSystem( "event" ).addEvents( heroButton );
-
-		var textToInn:String = 'Inn | $currentNumberOfHeroes of $maximumRoomForHeroes';
-		this._parent.getSystem( "ui" ).getWindowByDeployId( 3006 ).get( "graphics" ).setText( textToInn , "first" ); // Inn Window deploy id 3006;
+		this._updateInnText();
 	}
 
 	private function _checkBoxInStorageInventoryForItem():Bool
@@ -383,43 +480,13 @@ class State
 	{
 		var recruitWindow = this._parent.getSystem( "ui" ).getWindowByDeployId( 3002 ); // recruit window have 3002 deploy id;
 		var buttonsArray:Array<Button> = recruitWindow.get( "buttons" );
-		var buttonToBuy:Button = null;
 		for( i in 0...buttonsArray.length )
 		{
 			var button:Button = buttonsArray[ i ];
 			if( button.get( "activeStatus") ) //find first active button, because we have expection - only 1 button is chosen;
-			{
-				buttonToBuy = button;
-				break;
-			}
+				return button;
 		}
-
-		if( buttonToBuy == null )
-			return null;
-
-		return buttonToBuy;
-	}
-
-	private function _findHeroFromActiveRecruitButton( button:Button ):Hero
-	{
-		var heroId:Hero.HeroID = button.get( "heroId" );
-		var recruitBuilding:Building = this._parent.getSystem( "scene" ).getActiveScene().getBuildingByDeployId( 2002 );
-		var heroStorage:Array<Hero> = recruitBuilding.get( "heroStorage" );
-		var heroToBuy:Hero = null;
-		for( j in 0...heroStorage.length )
-		{
-			var hero:Hero = heroStorage[ j ];
-			if( haxe.EnumTools.EnumValueTools.equals( hero.get( "id" ), heroId ))
-			{
-				heroToBuy = hero;
-				break;
-			}
-		}
-
-		if( heroToBuy == null )
-			return null;
-
-		return heroToBuy;
+		return null;
 	}
 
 	private function _redrawListOfHeroesInRecruitBuilding():Void
@@ -484,6 +551,55 @@ class State
 				}
 			}
 		}
+	}
+
+	private function _findInnButtonById( id:Button.ButtonID ):Button
+	{
+		var buttonsArray:Array<Button> = ui.getWindowByDeployId( 3006 ).get( "buttons" ); // inn window deploy id 3006;
+		for( i in 0...buttonsArray.length )
+		{
+			var button:Button = buttonsArray[ i ];
+			if( haxe.EnumTools.EnumValueTools.equals( button.get( "id" ), buttonId ))
+				return button;
+		}
+
+		return null;
+	}
+
+	private function _updateInnText():Void
+	{
+		var innBuilding:Building = this._parent.getSystem( "scene" ).getActiveScene().getBuildingByDeployId( 2010 ); //Inn building with 2010 deploy ID;
+		var currentNumberOfHeroes:Int = innBuilding.get( "heroStorage" ).length;
+		var maximumRoomForHeroes:Int = innBuilding.get( "heroStorageSlotsMax" );
+		var textToInn:String = 'Inn | $currentNumberOfHeroes of $maximumRoomForHeroes';
+		this._parent.getSystem( "ui" ).getWindowByDeployId( 3006 ).get( "graphics" ).setText( textToInn , "first" ); // Inn Window deploy id 3006;
+	}
+
+	private function _findHeroFromInnBuildingById( heroId:Hero.HeroID ):Hero
+	{
+		var innBuilding:Building = this._parent.getSystem( "scene" ).getActiveScene().getBuildingByDeployId( 2010 );//inn Building 2010 deploy ID;
+		var heroStorage:Array<Hero> = innBuilding.get( "heroStorage" );
+		for( j in 0...heroStorage.length )
+		{
+			var hero:Hero = heroStorage[ j ];
+			if( haxe.EnumTools.EnumValueTools.equals( hero.get( "id" ), heroId ))
+				return hero;
+		}
+		return null;
+	}
+
+	private function _findHeroFromRecruitBuilding( heroId:Hero.HeroID ):Hero
+	{
+		var recruitBuilding:Building = this._parent.getSystem( "scene" ).getActiveScene().getBuildingByDeployId( 2002 ); // recruit building deploy id 2002;
+		var heroStorage:Array<Hero> = recruitBuilding.get( "heroStorage" );
+		for( j in 0...heroStorage.length )
+		{
+			var hero:Hero = heroStorage[ j ];
+			if( haxe.EnumTools.EnumValueTools.equals( hero.get( "id" ), heroId ))
+				return hero;
+		}
+
+		return null;
 	}
 
 }

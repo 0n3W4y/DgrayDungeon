@@ -173,6 +173,22 @@ class Building
 		return item;
 	}
 
+	public function getHeroById( id:Hero.HeroID ):Hero
+	{
+		for( i in 0...this._heroStorage.length )
+		{
+			var hero:Hero = this._heroStorage[ i ];
+			var heroId:Hero.HeroID = hero.get ( "id" );
+			if( haxe.EnumTools.EnumValueTools.equals( id, heroId ))
+				return hero;
+		}
+		throw 'Error in Building.getHeroById.There is no hero "$id" in "$_name"';
+		return null;
+	}
+
+
+	//PRIVATE
+
 	private function _checkFreeSlotForHero():Bool
 	{
 		if( this._heroStorage.length < this._heroStorageSlotsMax )

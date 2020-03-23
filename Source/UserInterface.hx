@@ -67,6 +67,7 @@ class UserInterface
 			sprite.visible = false;
 
 		var buttonContinueDeployId:ButtonDeployID = ButtonDeployID( 4011 );
+		var buttonChoosenHeroToDungeon:ButtonDeployID = ButtonDeployID( 4023 );
 		var windowButtons:Array<Button> = window.get( "buttons" );
 		for( j in 0...windowButtons.length )
 		{
@@ -79,11 +80,13 @@ class UserInterface
 				if( saveGame == null )
 				{
 					var buttonSprite:Sprite = button.get( "sprite" );
-					buttonSprite.alpha = 0.5;
-					//button.get( "sprite" ).alpha = 0.5;
-					//button.get( "sprite" ).visible = false;
+					buttonSprite.alpha = 0.5; // сделатьна половину прозрачной - в силу своей не активности.
 					continue;
 				}
+			}
+			else if( EnumValueTools.equals( buttonChoosenHeroToDungeon, buttonDeployId ))
+			{
+				continue; // не добавлять ивенты на кнопку, пока не окажется там выбранный герой.
 			}
 			eventHandler.addEvents( button );
 		}
@@ -265,10 +268,24 @@ class UserInterface
 		{
 			for( i in 0...config.button.length )
 			{
-				var button:Button = this.createButton( config.button[ i ] );
-				window.addButton( button );
-				var buttonSprite:Sprite = button.get( "sprite" );
-				sprite.addChild( buttonSprite );
+				if( deployId == 3004 )
+				{
+						for( j in 0...4 )
+						{
+							var button:Button = this.createButton( config.button[ i ] );
+							window.addButton( button );
+							var buttonSprite:Sprite = button.get( "sprite" );
+							buttonSprite.x += j * buttonSprite.width;
+							sprite.addChild( buttonSprite );
+						}
+				}
+				else
+				{
+					var button:Button = this.createButton( config.button[ i ] );
+					window.addButton( button );
+					var buttonSprite:Sprite = button.get( "sprite" );
+					sprite.addChild( buttonSprite );
+				}
 			}
 		}
 
@@ -323,14 +340,14 @@ class UserInterface
 
 	private function _openWarningWindow():Void
 	{
- 		//TODO 
+ 		//TODO
  		// var deployIdWarningWindow:WindowDeployID = WindowDeployID( 3100 );
  		// this.showUiObject( deployIdWarningWindow );
 	}
 
 	private function _closeWarningWindow():Void
 	{
-		//TODO 
+		//TODO
  		// var deployIdWarningWindow:WindowDeployID = WindowDeployID( 3100 );
  		// this.hideUiObject( deployIdWarningWindow );
 	}

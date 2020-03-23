@@ -112,9 +112,10 @@ class EventHandler
 			case "gameStartJourney": sprite.addEventListener( MouseEvent.CLICK, this._startJourney );
 			case "recruitHeroButton": sprite.addEventListener( MouseEvent.CLICK, this._clickRecruitHero );
 			case "citySceneMainWindowClose": sprite.addEventListener( MouseEvent.CLICK, this._clickCloseCitySceneMainWindow );
-			case "recruitHeroButtonWhite", 
-				"recruitHeroButtonBlue", 
-				"recruitHeroButtonGreen", 
+			case "choosenHeroToDungeon": sprite.addEventListener( MouseEvent.CLICK, this._clickRemoveChoosenHeroToDungeon );
+			case "recruitHeroButtonWhite",
+				"recruitHeroButtonBlue",
+				"recruitHeroButtonGreen",
 				"recruitHeroButtonOrange": sprite.addEventListener( MouseEvent.CLICK, this._clickButtonHero );
 			case "innWindowHeroButtonOrange",
 				"innWindowHeroButtonBlue",
@@ -142,9 +143,10 @@ class EventHandler
 			case "gameStartJourney": sprite.removeEventListener( MouseEvent.CLICK, this._startJourney );
 			case "recruitHeroButton": sprite.removeEventListener( MouseEvent.CLICK, this._clickRecruitHero );
 			case "citySceneMainWindowClose": sprite.removeEventListener( MouseEvent.CLICK, this._clickCloseCitySceneMainWindow );
-			case "recruitHeroButtonWhite", 
-				"recruitHeroButtonBlue", 
-				"recruitHeroButtonGreen", 
+			case "choosenHeroToDungeon": sprite.removeEventListener( MouseEvent.CLICK, this._clickRemoveChoosenHeroToDungeon );
+			case "recruitHeroButtonWhite",
+				"recruitHeroButtonBlue",
+				"recruitHeroButtonGreen",
 				"recruitHeroButtonOrange": sprite.removeEventListener( MouseEvent.CLICK, this._clickButtonHero );
 			case "innWindowHeroButtonOrange",
 				"innWindowHeroButtonBlue",
@@ -295,6 +297,12 @@ class EventHandler
 	private function _startJourney( e:MouseEvent ):Void
 	{
 		this._parent.getSystem( "state" ).startJourney();
+	}
+
+	private function _clickRemoveChoosenHeroToDungeon( e:MouseEvent ):Void
+	{
+		var sprite:DataSprite = e.currentTarget;
+		this._parent.getSystem( "state" ).unchooseHeroToDungeon( sprite.sId, sprite.sName );
 	}
 
 	private function _hover( e:MouseEvent ):Void

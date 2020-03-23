@@ -82,7 +82,7 @@
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
 		"firstText": null,
-		"button": [  ]
+		"button": [ 4023 ]
 	},
 
 	"3005":{
@@ -143,7 +143,26 @@
 		"firstTextY": 10.0,
 		"firstTextAlign": "center",
 		"button": [  ]
-	}
+	},
 
+	"3008":{
+		"name": "chooseDungeonQuestWindow",
+		"deployId": 3008,
+		"alwaysActive": true,
+		"x": 0.0,
+		"y": 10.0,
+		"imageNormalURL": "assets/images/chooseDungeonQuestWindow.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"firstText": "",
+		"firstTextSize": 26,
+		"firstTextColor": "0xffffff",
+		"firstTextHeight": 30,
+		"firstTextWidth": 300,
+		"firstTextX": 0.0,
+		"firstTextY": 0.0,
+		"firstTextAlign": "center",
+		"button": [ 4005 ]
+	}
 
 }

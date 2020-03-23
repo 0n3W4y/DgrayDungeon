@@ -87,8 +87,8 @@
 	"4005":{
 		"name": "chooseDungeonBackToCityButton",
 		"deployId": 4005,
-		"x": 100.0,
-		"y": 150.0,
+		"x": 300.0,
+		"y": 10.0,
 		"imageNormalURL": "assets/images/backToCityButton.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
@@ -98,7 +98,7 @@
 		"imagePushURL": "assets/images/backToCityButton_push.png",
 		"imagePushX": 0.0,
 		"imagePushY": 0.0,
-		"firstText": "BACK",
+		"firstText": "Back to city",
 		"firstTextSize": 38,
 		"firstTextColor": "0xffffff",
 		"firstTextHeight": 40,
@@ -633,5 +633,22 @@
 		"thirdTextX": 250.0,
 		"thirdTextY": 5.0,
 		"thirdTextAlign": "left"
+	},
+
+	"4023":{
+		"name": "choosenHeroToDungeon",
+		"deployId": 4023,
+		"x": 0.0,
+		"y": 0.0,
+		"imageNormalURL": "assets/images/recruitWindowHeroPicture.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"imageHoverURL": "assets/images/recruitWindowHeroPicture.png",
+		"imageHoverX": 0.0,
+		"imageHoverY": 0.0,
+		"imagePushURL": "assets/images/recruitWindowHeroPicture.png",
+		"imagePushX": 0.0,
+		"imagePushY": 0.0,
+		"firstText": null
 	}
 }

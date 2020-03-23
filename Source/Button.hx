@@ -93,4 +93,9 @@ class Button
 	{
 		this._heroId = id;
 	}
+
+	public function removeHeroId():Void
+	{
+		this._heroId = null;
+	}
 }
