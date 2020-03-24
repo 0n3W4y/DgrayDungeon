@@ -24,6 +24,6 @@
 		"imageNormalURL": "assets/images/chooseDungeonSceneOne.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
-		"window": [ 3004 ]
+		"window": [ 3004, 3008 ]
 	}
 }

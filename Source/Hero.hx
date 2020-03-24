@@ -256,7 +256,7 @@ class Hero
 		}
 	}
 
-	public function setPositionTo( value:String ):Void
+	public function setPosition( value:String ):Void
 	{
 		if( value == "first" || value == "second" || value == "third" || value == "fourth" )
 			this._position = value;

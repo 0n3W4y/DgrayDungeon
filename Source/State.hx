@@ -69,7 +69,27 @@ class State
 		}
 		else
 		{
-			//TODO: check choose dungeon instance, check heroes in heroes widnow to dungeon, if all correctly - start journey.
+
+			var checkDungeon:Button = this._findChoosenDungeon();
+			if( checkDungeon == null )
+			{
+				this._showWarning( 'Please choose dunheon');
+				// или выбать первую кнопку, которая будет в списке :)
+				return;
+			}
+
+			var check:Bool = this._checkFullPartyHeroes();
+			if( !check )
+			{
+				//Todo - сделать функцию, которая примет значение текста и 2-х кнопок да и нет. Функция должна будет забиндить кнопки на ответ "да", ответ "нет".
+				// после чего, в зависимости от ответа и забиндинных функций конкретно для этого окна ( которое будет создаваться в момент вызова ) будет выполнены следующие функции
+				// который были переданы с аргументами.
+				//return;
+			}
+
+			var heroes:Array<Hero> = this._findHeroToDungeon();
+			var choosenDungeon:Dynamic = this._findChoosenDungeon(); // find active button in all windows on scene; { "dungeon": "cave", "difficulty": "easy" };
+			this._prepareJourneyToDungeon( heroes, choosenDungeon );
 		}
 	}
 
@@ -255,6 +275,15 @@ class State
 
 	//PRIVATE
 
+
+	private function _prepareJourneyToDungeon( array:Array<Hero>, dungeon:Dynamic ):Void
+	{
+			//TODO:
+			//1. open shop window, to buy staff for dungeon, like water, food, bandages, healthkits, shovel, e.t.c
+			//2. Create dungeon by config,
+			//3. Copy heroes to dungeon scene ( do shadow copy of each hero )
+			//	this._setPositionHeroesToDungeonFromArray( array );
+	}
 
 	private function _chooseHeroRecruitButton( id:Button.ButtonID, name:String ):Void
 	{
@@ -600,6 +629,51 @@ class State
 		}
 
 		return null;
+	}
+
+	private function _checkFullPartyHeroes():Bool
+	{
+		var buttonsArray:Array<Button> = this._parent.getSystem( "ui" ).getWindowByDeployId( 3004 ).get( "buttons" ); //chooseHeroToDungeonWindow deploy id 3004;
+		for( i in 0...buttonsArray.length )
+		{
+			var button:Button = buttonsArray[ i ];
+			if( button.get( "heroId" ) != null )
+				return false;
+		}
+		return true;
+	}
+
+
+	private function _findHeroToDungeon():Array<Hero>
+	{
+		var buttonsArray:Array<Button> = this._parent.getSystem( "ui" ).getWindowByDeployId( 3004 ).get( "buttons" ); //chooseHeroToDungeonWindow deploy id 3004;
+		var heroesArray:Array<Hero> = new Array<Hero>();
+		for( i in 0...buttonsArray.length )
+		{
+			var button:Button = buttonsArray[ i ];
+			var heroId:Hero.HeroID = button.get( "heroId" );
+			if( heroId != null )
+			{
+				var hero:Hero = this._findHeroFromInnBuildingById( heroId );
+				heroesArray.push( hero );
+			}
+		}
+		return heroesArray;
+	}
+
+	private function _setPositionHeroesToDungeonFromArray( array:Array<Hero> ):Void
+	{
+		for( i in 0...array.length )
+		{
+			switch( i )
+			{
+				case 0: array[ i ].setPosition( "first" );
+				case 1: array[ i ].setPosition( "second" );
+				case 2: array[ i ].setPosition( "third" );
+				case 3: array[ i ].setPosition( "fourth" );
+				default: throw 'Error in State._setPositionHeroesToDungeonFromArray. Can not add position for "$i" in heroes array';
+			}
+		}
 	}
 
 }
