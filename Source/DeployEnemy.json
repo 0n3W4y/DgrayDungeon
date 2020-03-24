@@ -39,9 +39,9 @@
 		"maxPassiveSkills":2
 	},
 
-	"14005": {
+	"14004": {
 		"name": "skeletonArcher",
-		"deployId": 14005,
+		"deployId": 14004,
 		"rarity": "common",
 		"gender": "man",
 		"imageNormalURL": "assets/images/enemy.png",

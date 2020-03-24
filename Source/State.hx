@@ -94,7 +94,8 @@ class State
 
 	public function backToCitySceneFromChooseDungeon():Void
 	{
-		//TODO:
+		var sceneSystem:SceneSystem = this._parent.getSystem( "scene" );
+		sceneSystem.fastSwitchScenes( sceneSystem.getActiveScene() );
 	}
 
 	public function innListUp():Void
