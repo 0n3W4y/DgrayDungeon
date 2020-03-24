@@ -113,6 +113,7 @@ class EventHandler
 			case "recruitHeroButton": sprite.addEventListener( MouseEvent.CLICK, this._clickRecruitHero );
 			case "citySceneMainWindowClose": sprite.addEventListener( MouseEvent.CLICK, this._clickCloseCitySceneMainWindow );
 			case "choosenHeroToDungeon": sprite.addEventListener( MouseEvent.CLICK, this._clickRemoveChoosenHeroToDungeon );
+			case "chooseDungeonBackToCityButton": sprite.addEventListener( MouseEvent.CLICK, this._clickBackToCitySceneFromChooseDungeon );
 			case "recruitHeroButtonWhite",
 				"recruitHeroButtonBlue",
 				"recruitHeroButtonGreen",
@@ -144,6 +145,7 @@ class EventHandler
 			case "recruitHeroButton": sprite.removeEventListener( MouseEvent.CLICK, this._clickRecruitHero );
 			case "citySceneMainWindowClose": sprite.removeEventListener( MouseEvent.CLICK, this._clickCloseCitySceneMainWindow );
 			case "choosenHeroToDungeon": sprite.removeEventListener( MouseEvent.CLICK, this._clickRemoveChoosenHeroToDungeon );
+			case "chooseDungeonBackToCityButton": sprite.removeEventListener( MouseEvent.CLICK, this._clickBackToCitySceneFromChooseDungeon );
 			case "recruitHeroButtonWhite",
 				"recruitHeroButtonBlue",
 				"recruitHeroButtonGreen",
@@ -303,6 +305,11 @@ class EventHandler
 	{
 		var sprite:DataSprite = e.currentTarget;
 		this._parent.getSystem( "state" ).unchooseHeroToDungeon( sprite.sId, sprite.sName );
+	}
+
+	private function _clickBackToCitySceneFromChooseDungeon( e:MouseEvent ):Void
+	{
+		this._parent.getSystem( "state" ).backToCitySceneFromChooseDungeon();
 	}
 
 	private function _hover( e:MouseEvent ):Void

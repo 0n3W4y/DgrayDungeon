@@ -70,10 +70,10 @@ class State
 		else
 		{
 
-			var checkDungeon:Button = this._findChoosenDungeon();
-			if( checkDungeon == null )
+			var choosenDungeon:Button = this._findChoosenDungeon(); // find active button in all windows on scene; { "dungeon": "cave", "difficulty": "easy" };
+			if( choosenDungeon == null )
 			{
-				this._showWarning( 'Please choose dunheon');
+				this._showWarning( 'Please choose a dungeon');
 				// или выбать первую кнопку, которая будет в списке :)
 				return;
 			}
@@ -88,9 +88,13 @@ class State
 			}
 
 			var heroes:Array<Hero> = this._findHeroToDungeon();
-			var choosenDungeon:Dynamic = this._findChoosenDungeon(); // find active button in all windows on scene; { "dungeon": "cave", "difficulty": "easy" };
 			this._prepareJourneyToDungeon( heroes, choosenDungeon );
 		}
+	}
+
+	public function backToCitySceneFromChooseDungeon():Void
+	{
+		//TODO:
 	}
 
 	public function innListUp():Void
@@ -643,6 +647,12 @@ class State
 		return true;
 	}
 
+	private function _findChoosenDungeon():Dynamic
+	{
+		var difficulty:String = "easy";
+		var dungeon:String = "cave";
+		return { "dungeon": dungeon, "difficulty": difficulty };
+	}
 
 	private function _findHeroToDungeon():Array<Hero>
 	{
