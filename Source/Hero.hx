@@ -19,6 +19,23 @@ enum HeroDeployID
 	HeroDeployID( _:Int );
 }
 
+typedef HeroSpeed = Int;
+typedef HeroDamage = Int;
+typedef HeroHealthPoints = Int;
+typedef HeroBlock = Int;
+typedef HeroDamage = Int;
+typedef HeroAccuracy = Int;
+typedef HeroCritChanse = Int;
+typedef HeroCritDamage = Int;
+typedef HeroResistStun = Int;
+typedef HeroResistMove = Int;
+typedef HeroResistBleed = Int;
+typedef HeroResistDebuff = Int;
+typedef HeroResistPoison = Int;
+typedef HeroResistCold = Int;
+typedef HeroResistFire = Int;
+typedef HeroStress = Int;
+
 
 typedef HeroConfig =
 {
