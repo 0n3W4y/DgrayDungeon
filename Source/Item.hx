@@ -23,8 +23,8 @@ typedef ItemConfig =
 	var Rarity:String;
 	var Restriction: Array<String>;
 	var FullName:String;
-	var Amount:ItemAmount;
-	var AmountMax:ItemAmount;
+	var Amount:Amount;
+	var AmountMax:Amount;
 	var PriceBuy:Player.Money;
 	var PriceSell:Player.Money;
 	var UpgradeLevel:Int;
@@ -41,8 +41,8 @@ typedef ItemConfig =
 	var CritChanse:Hero.CritChanse;
 	var CritDamage:Hero.CritDamage;
 	var Speed:Hero.Speed;
-	var HealthPoints: Hero.HealthPoints,
-	var ResistStun:Hero.ResistStun,
+	var HealthPoints: Hero.HealthPoints;
+	var ResistStun:Hero.ResistStun;
 	var ResistPoison:Hero.ResistPoison;
 	var ResistBleed:Hero.ResistBleed;
 	var ResistDisease:Hero.ResistDisease;
@@ -50,7 +50,6 @@ typedef ItemConfig =
 	var ResistMove:Hero.ResistMove;
 	var ResistFire:Hero.ResistFire;
 	var ResistCold:Hero.ResistCold;
-	var GraphicsSprite:Sprite;
 }
 
 class Item
@@ -91,8 +90,6 @@ class Item
 	private var _resistFire:Hero.ResistFire;
 	private var _resistCold:Hero.ResistCold;
 
-	private var _sprite:Sprite;
-
 	public function new( config:ItemConfig ):Void
 	{
 		this._id = config.ID;
@@ -126,7 +123,6 @@ class Item
 		this._resistMove = config.ResistMove;
 		this._resistFire = config.ResistFire;
 		this._resistCold = config.ResistCold;
-		this._sprite = config.GraphicsSprite;
 	}
 
 	public function init( error:String ):Void

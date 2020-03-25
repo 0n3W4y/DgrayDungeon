@@ -11,8 +11,6 @@
 		"imageHoverX": 0.0,
 		"imageHoverY": 0.0,
 		"imagePortraitURL": "assets/images/hero_portrait.png",
-		"imagePortraitX": null,
-		"imagePortraitY": null,
 		"firstText": null,
 		"buyPrice": 50,
 		"healthPoints": 100,
@@ -33,7 +31,7 @@
 		"resistMove": 5,
 		"resistFire": 5,
 		"resistCold": 5,
-		"preferPosition": [ 100, 90, 50, 40 ],
+		"preferPosition": [ 40, 50, 90, 100 ],
 		"preferTargetPosition": [ 40, 50, 80, 100 ],
 		"maxPositiveTraits": 4,
 		"maxNegativeTraits": 8,
@@ -42,7 +40,9 @@
 		"activeSkills":[ 11000 ],
 		"passiveSkils":[ 11500 ],
 		"maxActiveSkills":2,
-		"maxPassiveSkills":2
+		"maxPassiveSkills":2,
+		"baseWeapon": 20000,
+		"baseArmor": 25000
 	},
 
 	"10001": {
@@ -88,7 +88,9 @@
 		"activeSkills":[ 11000 ],
 		"passiveSkils":[ 11500 ],
 		"maxActiveSkills":3,
-		"maxPassiveSkills":3
+		"maxPassiveSkills":3,
+		"baseWeapon": 20000,
+		"baseArmor": 25000
 	},
 
 	"10002": {
@@ -134,7 +136,9 @@
 		"activeSkills":[ 11000 ],
 		"passiveSkils":[ 11500 ],
 		"maxActiveSkills":4,
-		"maxPassiveSkills":4
+		"maxPassiveSkills":4,
+		"baseWeapon": 20000,
+		"baseArmor": 25000
 	},
 
 	"10003": {
@@ -180,7 +184,9 @@
 		"activeSkills":[ 11000 ],
 		"passiveSkils":[ 11500 ],
 		"maxActiveSkills":5,
-		"maxPassiveSkills":5
+		"maxPassiveSkills":5,
+		"baseWeapon": 20000,
+		"baseArmor": 25000
 	},
 
 	"10004": {
@@ -226,7 +232,9 @@
 		"activeSkills":[ 11000 ],
 		"passiveSkils":[ 11500 ],
 		"maxActiveSkills":2,
-		"maxPassiveSkills":2
+		"maxPassiveSkills":2,
+		"baseWeapon": 20000,
+		"baseArmor": 25000
 	},
 
 	"10005": {
@@ -272,7 +280,9 @@
 		"activeSkills":[ 11000 ],
 		"passiveSkils":[ 11500 ],
 		"maxActiveSkills":3,
-		"maxPassiveSkills":3
+		"maxPassiveSkills":3,
+		"baseWeapon": 20000,
+		"baseArmor": 25000
 	},
 
 	"10006": {
@@ -318,7 +328,9 @@
 		"activeSkills":[ 11000 ],
 		"passiveSkils":[ 11500 ],
 		"maxActiveSkills":4,
-		"maxPassiveSkills":4
+		"maxPassiveSkills":4,
+		"baseWeapon": 20000,
+		"baseArmor": 25000
 	},
 
 	"10007": {
@@ -364,7 +376,9 @@
 		"activeSkills":[ 11000 ],
 		"passiveSkils":[ 11500 ],
 		"maxActiveSkills":5,
-		"maxPassiveSkills":5
+		"maxPassiveSkills":5,
+		"baseWeapon": 20000,
+		"baseArmor": 25000
 	},
 
 	"10008": {
@@ -410,7 +424,9 @@
 		"activeSkills":[ 11000 ],
 		"passiveSkils":[ 11500 ],
 		"maxActiveSkills":2,
-		"maxPassiveSkills":2
+		"maxPassiveSkills":2,
+		"baseWeapon": 20000,
+		"baseArmor": 25000
 	},
 
 	"10009": {
@@ -456,7 +472,9 @@
 		"activeSkills":[ 11000 ],
 		"passiveSkils":[ 11500 ],
 		"maxActiveSkills":3,
-		"maxPassiveSkills":3
+		"maxPassiveSkills":3,
+		"baseWeapon": 20000,
+		"baseArmor": 25000
 	},
 
 	"10010": {
@@ -502,7 +520,9 @@
 		"activeSkills":[ 11000 ],
 		"passiveSkils":[ 11500 ],
 		"maxActiveSkills":4,
-		"maxPassiveSkills":4
+		"maxPassiveSkills":4,
+		"baseWeapon": 20000,
+		"baseArmor": 25000
 	},
 
 	"10011": {
@@ -548,7 +568,9 @@
 		"activeSkills":[ 11000 ],
 		"passiveSkils":[ 11500 ],
 		"maxActiveSkills":5,
-		"maxPassiveSkills":5
+		"maxPassiveSkills":5,
+		"baseWeapon": 20000,
+		"baseArmor": 25000
 	}
 
 }

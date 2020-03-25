@@ -138,6 +138,7 @@ class Deploy
 		{
 			case "player": return this._player;
 			case "hero": return this._hero;
+			case "item": return this._item;
 			default: throw 'Error in Deploy.getDeploy. Can not get $value';
 		}
 	}

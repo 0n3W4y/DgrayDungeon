@@ -19,22 +19,22 @@ enum HeroDeployID
 	HeroDeployID( _:Int );
 }
 
-typedef HeroSpeed = Int;
-typedef HeroDamage = Int;
-typedef HeroHealthPoints = Int;
-typedef HeroBlock = Int;
-typedef HeroDamage = Int;
-typedef HeroAccuracy = Int;
-typedef HeroCritChanse = Int;
-typedef HeroCritDamage = Int;
-typedef HeroResistStun = Int;
-typedef HeroResistMove = Int;
-typedef HeroResistBleed = Int;
-typedef HeroResistDebuff = Int;
-typedef HeroResistPoison = Int;
-typedef HeroResistCold = Int;
-typedef HeroResistFire = Int;
-typedef HeroStress = Int;
+typedef Speed = Int;
+typedef Damage = Int;
+typedef HealthPoints = Int;
+typedef Block = Int;
+typedef Damage = Int;
+typedef Accuracy = Int;
+typedef CritChanse = Int;
+typedef CritDamage = Int;
+typedef ResistStun = Int;
+typedef ResistMove = Int;
+typedef ResistBleed = Int;
+typedef ResistDebuff = Int;
+typedef ResistPoison = Int;
+typedef ResistCold = Int;
+typedef ResistFire = Int;
+typedef Stress = Int;
 
 
 typedef HeroConfig =
@@ -47,24 +47,24 @@ typedef HeroConfig =
 	var HeroName:String;
 	var HeroSurname:String;
 	var GraphicsSprite:Sprite;
-	var HealthPoints:Int;
-	var Accuracy:Int;
-	var Dodge:Int;
-	var Block:Int;
-	var CritChanse:Int;
-	var Defense:Int;
-	var Damage:Int;
-	var Speed:Int;
-	var CritDamage:Int;
-	var Stress:Int;
-	var ResistStun:Int;
-	var ResistPoison:Int;
-	var ResistBleed:Int;
-	var ResistDisease:Int;
-	var ResistDebuff:Int;
-	var ResistMove:Int;
-	var ResistFire:Int;
-	var ResistCold:Int;
+	var HealthPoints:HealthPoints;
+	var Accuracy:Accuracy;
+	var Dodge:Dodge;
+	var Block:Block;
+	var CritChanse:CritChanse;
+	var Defense:Defense;
+	var Damage:Damage;
+	var Speed:Speed;
+	var CritDamage:CritDamage;
+	var Stress:Stress;
+	var ResistStun:ResistStun;
+	var ResistPoison:ResistPoison;
+	var ResistBleed:ResistBleed;
+	var ResistDisease:ResistDisease;
+	var ResistDebuff:ResistDebuff;
+	var ResistMove:ResistMove;
+	var ResistFire:ResistFire;
+	var ResistCold:ResistCold;
 	var PreferPosition:Position;
 	var PreferTargetPosition:Position;
 	var MaxPositiveTraits:Int;
@@ -113,16 +113,16 @@ class Hero
 	private var _effect:EffectSystem;
 
 	//текущие значения статов.
-	private var _hp:HealthPoints;
-	private var _acc:Accuracy;
-	private var _ddg:Dodge;
+	private var _healthPoints:HealthPoints;
+	private var _accuracy:Accuracy;
+	private var _dodge:Dodge;
 	private var _block:Block;
-	private var _cc:CriticalChanse;
-	private var _def:Defense;
-	private var _dmg:Damage;
-	private var _spd:Speed;
+	private var _critChanse:CriticalChanse;
+	private var _defense:Defense;
+	private var _damage:Damage;
+	private var _speed:Speed;
 	private var _stress:Stress;
-	private var _critDmg:CriticalDamage;
+	private var _critDamage:CriticalDamage;
 	//текущие значения резистов.
 	private var _resistStun:ResistStun;
 	private var _resistPoison:ResistPoison;
@@ -151,16 +151,16 @@ class Hero
 		this._stat = new StatSystem({ Parent:this, Hp:config.HealthPoints, Acc:config.Accuracy, Ddg:config.Dodge, Block:config.Block, Cc:config.CritChanse, Def:config.Defense, Dmg:config.Damage, Spd:config.Speed, Stress:config.Stress, CritDmg:config.CritDamage });
 		this._resist = new ResistSystem({ Parent:this, Stun:config.ResistStun, Poison:config.ResistPoison, Bleed:config.ResistBleed, Disease:config.ResistDisease, Debuff:config.ResistDebuff, Move:config.ResistMove, Fire:config.ResistFire, Cold:config.ResistCold });
 
-		this._hp = config.HealthPoints;
-		this._acc = config.Accuracy;
-		this._ddg = config.Dodge;
+		this._healthPoints = config.HealthPoints;
+		this._accuracy = config.Accuracy;
+		this._dodge = config.Dodge;
 		this._block = config.Block;
-		this._cc = config.CritChanse;
-		this._def = config.Defense;
-		this._dmg = config.Damage;
-		this._spd = config.Speed;
+		this._critChanse = config.CritChanse;
+		this._defense = config.Defense;
+		this._damage = config.Damage;
+		this._speed = config.Speed;
 		this._stress = config.Stress;
-		this._critDmg = config.CritDamage;
+		this._critDamage = config.CritDamage;
 
 		this._resistStun = config.ResistStun;
 		this._resistPoison = config.ResistPoison;
