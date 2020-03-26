@@ -20,16 +20,32 @@ class ItemSystem
 		var err:String = '$error. Error in ItemSystem.init';
 	}
 
-	public function generateItem( name:String, itemType:String, rarity:String ):Item
+	public function generateItem( name:String, itemType:String, rarity:String ):Item // name: LongSword, itemType: Weapon, rarity: "common";
 	{
 		var deployItem:Map<ItemDeployID, Dynamic> = this._parent.getSystem( "deploy" ).getDeploy( "item" ); // full config of items;
-		 
+		var generatedName = name;
+		var generatedItemType = itemType;
+		var generatedRarity = rarity;
+
+		if( itemType == null )
+			generatedItemType = this._generatedItemType();
+
+		if( rarity == null )
+			generatedRarity = this._generateRarity();
+
+		if( name == null )
+			generatedName = this._generateName( generatedItemType );
+
+		for( key in deployItem )
+		{
+
+		}
 		return null;
 	}
 
-	public function createItem( deployId:ItemDeployID ):Item
+	public function createItem( deployId:Int ):Item
 	{
-		var config:Dynamic = this._parent.getSystem( "deploy" ).getItem( deployId );
+		var config:Dynamic = this._parent.getSystem( "deploy" ).getItem( ItemDeployID( deployId ) );
 		var id:Int = this._parent.createId();
 		var secondConfig:Dynamic = this.generatePriceAndStats( config );
 		var sprite:Sprite = new DataSprite( );
@@ -69,7 +85,7 @@ class ItemSystem
 			ResistDebuff: Hero.ResistDebuff( secondConfig.resistDebuff ),
 			ResistMove: Hero.ResistMove( secondConfig.resistMove ),
 			ResistFire: Hero.ResistFire( secondConfig.resistFire ),
-			ResistCold: Hero.ResistCold( secondConfig.resistCold )			
+			ResistCold: Hero.ResistCold( secondConfig.resistCold )
 		}
 
 		return null;
@@ -78,7 +94,7 @@ class ItemSystem
 	public function generatePriceAndStats( config:Dynamic ):Dynamic
 	{
 		// by default, all stats is 0; in next function we ignore 0 and take only -value and +value;
-		var configToReturn:Dynamic = 
+		var configToReturn:Dynamic =
 		{
 			"priceBuy": 0,
 			"priceSell": 0,
@@ -118,7 +134,7 @@ class ItemSystem
 
 			var cursed:Int = 1;
 			var cursedNumber:Int = Math.floor( Math.random() * 100 ); // [ 0 - 99 ];
-			if( cursedNumber < cursedStat ) // Если число меньше значения, значит считаем что *да*. 
+			if( cursedNumber < cursedStat ) // Если число меньше значения, значит считаем что *да*.
 				cursed = -1;
 
 			var defaultStatValue:Int = Reflect.field( extraStats, stat );
@@ -128,9 +144,36 @@ class ItemSystem
 			var defaultBuyPrice:Int = Reflect.filed( config, key );
 			priceBuy += Math.round( statValue * defaultBuyPrice / defaultStatValue ); // ищем среднюю цену относительно максимальной цены за максимальный стат
 			configToReturn.priceBuy = priceBuy;
-		}		
+		}
 
 		priceSell += Math.round( priceSell * priceBuy / config.priceBuy ); // ищем среднюю цену относительно начальной цени и конечной.
 		return configToReturn;
+	}
+
+
+	// PRIVATE
+
+
+	private function _generateName( itemType:String ):String
+	{
+		var array:Array<String> = null;
+		switch( itemType )
+		{
+			case "weapon": array = [ "longSword", "swordAndShield", "hummerAndShield", "crossbow", "oilAndCandle" ];
+			case "armor": array = [ "breastArmor", "chainMail", "robe" ];
+			default: throw 'Error in ItemSystem._generateName. can not generate name with "$itemType"';
+		}
+		return array[ Math.floor( Math.random() * array.length )];
+	}
+
+	private function _generateRarity():String
+	{
+		var array:Array<String> = [ "common", "uncommon", "rare", "legendary" ];
+		return array[ Math.floor( Math.random() * array.length )];
+	}
+
+	private function _generateItemType():String
+	{
+
 	}
 }

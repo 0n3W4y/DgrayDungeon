@@ -173,6 +173,8 @@ class State
 			var hero:Hero = heroSystem.generateHero( "random", rarity );
 			building.addHero( hero );
 
+			//create hero weapon and armor;
+
 			var heroButton:Button = null;
 			// создаем кнопку на основе легендарности героя ( отличие оконтовка )
 			switch( rarity )

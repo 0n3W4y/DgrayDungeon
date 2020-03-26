@@ -41,8 +41,8 @@
 		"passiveSkils":[ 11500 ],
 		"maxActiveSkills":2,
 		"maxPassiveSkills":2,
-		"baseWeapon": 20000,
-		"baseArmor": 25000
+		"baseWeapon": 20012,
+		"baseArmor": 25004
 	},
 
 	"10001": {
@@ -89,8 +89,8 @@
 		"passiveSkils":[ 11500 ],
 		"maxActiveSkills":3,
 		"maxPassiveSkills":3,
-		"baseWeapon": 20000,
-		"baseArmor": 25000
+		"baseWeapon": 20012,
+		"baseArmor": 25004
 	},
 
 	"10002": {
@@ -137,8 +137,8 @@
 		"passiveSkils":[ 11500 ],
 		"maxActiveSkills":4,
 		"maxPassiveSkills":4,
-		"baseWeapon": 20000,
-		"baseArmor": 25000
+		"baseWeapon": 20012,
+		"baseArmor": 25004
 	},
 
 	"10003": {
@@ -185,8 +185,8 @@
 		"passiveSkils":[ 11500 ],
 		"maxActiveSkills":5,
 		"maxPassiveSkills":5,
-		"baseWeapon": 20000,
-		"baseArmor": 25000
+		"baseWeapon": 20012,
+		"baseArmor": 25004
 	},
 
 	"10004": {
@@ -233,7 +233,7 @@
 		"passiveSkils":[ 11500 ],
 		"maxActiveSkills":2,
 		"maxPassiveSkills":2,
-		"baseWeapon": 20000,
+		"baseWeapon": 20008,
 		"baseArmor": 25000
 	},
 
@@ -281,7 +281,7 @@
 		"passiveSkils":[ 11500 ],
 		"maxActiveSkills":3,
 		"maxPassiveSkills":3,
-		"baseWeapon": 20000,
+		"baseWeapon": 20008,
 		"baseArmor": 25000
 	},
 
@@ -329,7 +329,7 @@
 		"passiveSkils":[ 11500 ],
 		"maxActiveSkills":4,
 		"maxPassiveSkills":4,
-		"baseWeapon": 20000,
+		"baseWeapon": 20008,
 		"baseArmor": 25000
 	},
 
@@ -377,7 +377,7 @@
 		"passiveSkils":[ 11500 ],
 		"maxActiveSkills":5,
 		"maxPassiveSkills":5,
-		"baseWeapon": 20000,
+		"baseWeapon": 20008,
 		"baseArmor": 25000
 	},
 
@@ -425,8 +425,8 @@
 		"passiveSkils":[ 11500 ],
 		"maxActiveSkills":2,
 		"maxPassiveSkills":2,
-		"baseWeapon": 20000,
-		"baseArmor": 25000
+		"baseWeapon": 20016,
+		"baseArmor": 25008
 	},
 
 	"10009": {
@@ -473,8 +473,8 @@
 		"passiveSkils":[ 11500 ],
 		"maxActiveSkills":3,
 		"maxPassiveSkills":3,
-		"baseWeapon": 20000,
-		"baseArmor": 25000
+		"baseWeapon": 20016,
+		"baseArmor": 25008
 	},
 
 	"10010": {
@@ -521,8 +521,8 @@
 		"passiveSkils":[ 11500 ],
 		"maxActiveSkills":4,
 		"maxPassiveSkills":4,
-		"baseWeapon": 20000,
-		"baseArmor": 25000
+		"baseWeapon": 20016,
+		"baseArmor": 25008
 	},
 
 	"10011": {
@@ -569,8 +569,8 @@
 		"passiveSkils":[ 11500 ],
 		"maxActiveSkills":5,
 		"maxPassiveSkills":5,
-		"baseWeapon": 20000,
-		"baseArmor": 25000
+		"baseWeapon": 20016,
+		"baseArmor": 25008
 	}
 
 }
