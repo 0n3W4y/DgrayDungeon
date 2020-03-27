@@ -25,6 +25,7 @@ class Game
 	private var _sceneSystem:SceneSystem;
 	private var _userInterface:UserInterface;
 	private var _heroSystem:HeroSystem;
+	private var _itemSystem:ItemSystem;
 
 
 	private var _onPause:Bool;
@@ -76,6 +77,9 @@ class Game
 		this._heroSystem = new HeroSystem({ Parent:this, ManNames:heroSystemConfig.manNames, WomanNames:heroSystemConfig.womanNames, Surnames:heroSystemConfig.surnames, Rarity:heroSystemConfig.rarity, Types:heroSystemConfig.types });
 		this._heroSystem.init( err );
 
+		this._itemSystem = new ItemSystem({ Parent:this });
+		this._itemSystem.init( err );
+
 		this._userInterface.hide();
 		this._startGame();
 	}
@@ -84,7 +88,7 @@ class Game
 	{
 		var time = Std.int( Math.ffloor( this._delta ) );
 
-		this._mainLoop = new Timer( 10 ); // 100 обновлений в секунду. ТЕСТ
+		this._mainLoop = new Timer( time );
 		this._mainLoop.run = function()
 		{
 			this._tick();
@@ -111,9 +115,9 @@ class Game
 
 	public function changeFpsTo( fps:Int ):Void
 	{
+		this.stop();
 		this._fps = fps;
 		this._calculateDelta();
-		this.stop();
 		this.start();
 	}
 
@@ -127,6 +131,7 @@ class Game
 			case "event": return this._eventHandler;
 			case "ui": return this._userInterface;
 			case "hero": return this._heroSystem;
+			case "item": return this._itemSystem;
 			default: throw 'Error in Game.getSystem. Can not get "$system"';
 		}
 	}
