@@ -12,34 +12,35 @@ enum ItemDeployID
 	ItemDeployID( _:Int );
 }
 
-typedef Amount = Int;
+typedef ItemAmount = Int;
 
 typedef ItemConfig =
 {
 	var Name:String;
 	var ID:ItemID;
 	var ItemType:String;
-	var DeployId:ItemDeployID;
+	var DeployID:ItemDeployID;
 	var Rarity:String;
 	var Restriction: Array<String>;
 	var FullName:String;
-	var Amount:Amount;
-	var AmountMax:Amount;
+	var Amount: ItemAmount;
+	var AmountMax: ItemAmount;
 	var PriceBuy:Player.Money;
 	var PriceSell:Player.Money;
 	var UpgradeLevel:Int;
 	var UpgradeLevelMax:Int;
 	var UpgradeLevelPrice:Player.Money;
 	var UpgradeLevelMultiplier:Int;
-	var Damage:Hero.Damage;
-	var Defense:Hero.Defense;
+	var GraphicsSprite:Sprite;
+	var Damage: Hero.Damage;
+	var Defense: Hero.Defense;
 	var ExtraDamage: Hero.Damage;
 	var ExtraDefense: Hero.Defense;
 	var Accuracy:Hero.Accuracy;
 	var Dodge:Hero.Dodge;
 	var Block:Hero.Block;
-	var CritChanse:Hero.CritChanse;
-	var CritDamage:Hero.CritDamage;
+	var CriticalChanse:Hero.CriticalChanse;
+	var CriticalDamage:Hero.CriticalDamage;
 	var Speed:Hero.Speed;
 	var HealthPoints: Hero.HealthPoints;
 	var ResistStun:Hero.ResistStun;
@@ -63,12 +64,14 @@ class Item
 	private var _restriction:Array<String>;
 	private var _fullName:String;
 
-	private var _amount:Amount;
-	private var _amountMax:Amount;
+	private var _amount:ItemAmount;
+	private var _amountMax:ItemAmount;
 	private var _priceBuy:Player.Money;
 	private var _priceSell:Player.Money;
 	private var _upgradeLevel:Int;
 	private var _upgradeLevelPrice:Player.Money;
+
+	private var _graphics:GraphicsSystem;
 
 	private var _damage:Hero.Damage;
 	private var _defense:Hero.Defense;
@@ -77,11 +80,11 @@ class Item
 	private var _accuracy:Hero.Accuracy;
 	private var _dodge:Hero.Dodge;
 	private var _block:Hero.Block;
-	private var _critChanse:Hero.CritChanse;
-	private var _critDamage:Hero.CritDamage;
+	private var _criticalChanse:Hero.CriticalChanse;
+	private var _criticalDamage:Hero.CriticalDamage;
 	private var _speed:Hero.Speed;
-	private var _healthPoints: Hero.HealthPoints,
-	private var _resistStun:Hero.ResistStun,
+	private var _healthPoints: Hero.HealthPoints;
+	private var _resistStun:Hero.ResistStun;
 	private var _resistPoison:Hero.ResistPoison;
 	private var _resistBleed:Hero.ResistBleed;
 	private var _resistDisease:Hero.ResistDisease;
@@ -111,8 +114,8 @@ class Item
 		this._accuracy = config.Accuracy;
 		this._dodge = config.Dodge;
 		this._block = config.Block;
-		this._critChanse = config.CritChanse;
-		this._critDamage = config.CritDamage;
+		this._criticalChanse = config.CriticalChanse;
+		this._criticalDamage = config.CriticalDamage;
 		this._speed = config.Speed;
 		this._healthPoints = config.HealthPoints;
 		this._resistStun = config.ResistStun;
@@ -123,6 +126,8 @@ class Item
 		this._resistMove = config.ResistMove;
 		this._resistFire = config.ResistFire;
 		this._resistCold = config.ResistCold;
+
+		this._graphics = new GraphicsSystem({ Parent:this, GraphicsSprite:config.GraphicsSprite });
 	}
 
 	public function init( error:String ):Void
@@ -149,7 +154,7 @@ class Item
 		if( this._amount == null || this._amount < 0 )
 			throw '$err. amount "$_amount"';
 
-		if( this.amountMax == null || this._amountMax < 0 )
+		if( this._amountMax == null || this._amountMax < 0 )
 			throw '$err. Max amount "$_amountMax"';
 
 		if( this._priceBuy == null || this._priceBuy < 0 )
@@ -185,13 +190,13 @@ class Item
 		if( this._block == null )
 			throw '$err. Block is null';
 
-		if( this._critChanse == null )
+		if( this._criticalChanse == null )
 			throw '$err. Crit Chanse is null';
 
 		if( this._speed == null )
 			throw '$err. Speed is null';
 
-		if( this._critDamage == null )
+		if( this._criticalDamage == null )
 			throw '$err. Crit damage is null';
 
 		if( this._healthPoints == null )
@@ -200,7 +205,7 @@ class Item
 		if( this._resistStun == null )
 			throw '$err. Resist Stun is null';
 
-		if( this._resistPioson== null )
+		if( this._resistPoison== null )
 			throw '$err. Resist Poison is null';
 
 		if( this._resistDisease == null )
@@ -221,9 +226,7 @@ class Item
 		if( this._resistCold == null )
 			throw '$err. Resist cold is null';
 
-		if( this._sprite == null )
-			throw '$err. Sprite is null';
-
+		this._graphics.init( '$err' );
 	}
 
 	public function postInit( error:String ):Void
@@ -239,7 +242,7 @@ class Item
 			case "name": return this._name;
 			case "type": return this._type;
 			case "itemType": return this._itemType;
-			case "sprite": return this._sprite;
+			case "sprite": return this._graphics.getSprite();
 			case "rarity": return this._rarity;
 			case "restriction": return this._restriction;
 			case "fullName": return this._fullName;
@@ -258,11 +261,13 @@ class Item
 		this._fullName = value;
 	}
 
-	public function setAmount( value:Amount ):Void
+	public function setAmount( value:ItemAmount ):Void
 	{
-		this._amount = value;
-		if( this._amount > this._amountMax )
+		var summ:ItemAmount = this._amount + value;
+		if( summ > this._amountMax )
 			throw 'Error in Item.setAmount. Max amount of this item "$_amountMax", current "$_amount"';
+
+		this._amount = summ;
 	}
 
 	public function setPrice( type:String, value:Player.Money ):Void
@@ -298,14 +303,14 @@ class Item
 			case "accuracy": return this._accuracy;
 			case "dodge": return this._dodge;
 			case "block": return this._block;
-			case "critDamage": return this._critDamage;
-			case "critChanse": return this._critChanse;
+			case "criticalDamage": return this._criticalDamage;
+			case "criticalChanse": return this._criticalChanse;
 			case "speed": return this._speed;
 			case "healthPoints": return this._healthPoints;
 			case "resistStun": return this._resistStun;
 			case "resistPoison": return this._resistPoison;
 			case "resistBleed": return this._resistBleed;
-			case "resistDesiase": return this._resistdisease;
+			case "resistDesiase": return this._resistDisease;
 			case "resistDebuff": return this._resistDebuff;
 			case "resistMove": return this._resistMove;
 			case "resistFire": return this._resistFire;
@@ -325,14 +330,14 @@ class Item
 			case "accuracy": this._accuracy = value;
 			case "dodge": this._dodge = value;
 			case "block": this._block = value;
-			case "critDamage": this._critDamage = value;
-			case "critChanse": this._critChanse = value;
+			case "criticalDamage": this._criticalDamage = value;
+			case "criticalChanse": this._criticalChanse = value;
 			case "speed": this._speed = value;
 			case "healthPoints": this._healthPoints = value;
 			case "resistStun": this._resistStun = value;
 			case "resistPoison": this._resistPoison = value;
 			case "resistBleed": this._resistBleed = value;
-			case "resistDesiase": this._resistdisease = value;
+			case "resistDesiase": this._resistDisease = value;
 			case "resistDebuff": this._resistDebuff = value;
 			case "resistMove": this._resistMove = value;
 			case "resistFire": this._resistFire = value;

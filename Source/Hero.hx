@@ -3,8 +3,6 @@ package;
 import InventorySystem;
 import SkillSystem;
 import TraitSystem;
-import StatSystem;
-import ResistSystem;
 import EffectSystem;
 import openfl.display.Sprite;
 
@@ -23,10 +21,11 @@ typedef Speed = Int;
 typedef Damage = Int;
 typedef HealthPoints = Int;
 typedef Block = Int;
-typedef Damage = Int;
 typedef Accuracy = Int;
-typedef CritChanse = Int;
-typedef CritDamage = Int;
+typedef Dodge = Int;
+typedef Defense = Int;
+typedef CriticalChanse = Int;
+typedef CriticalDamage = Int;
 typedef ResistStun = Int;
 typedef ResistMove = Int;
 typedef ResistBleed = Int;
@@ -34,6 +33,7 @@ typedef ResistDebuff = Int;
 typedef ResistPoison = Int;
 typedef ResistCold = Int;
 typedef ResistFire = Int;
+typedef ResistDisease = Int;
 typedef Stress = Int;
 
 
@@ -51,11 +51,11 @@ typedef HeroConfig =
 	var Accuracy:Accuracy;
 	var Dodge:Dodge;
 	var Block:Block;
-	var CritChanse:CritChanse;
+	var CriticalChanse:CriticalChanse;
 	var Defense:Defense;
 	var Damage:Damage;
 	var Speed:Speed;
-	var CritDamage:CritDamage;
+	var CriticalDamage:CriticalDamage;
 	var Stress:Stress;
 	var ResistStun:ResistStun;
 	var ResistPoison:ResistPoison;
@@ -106,8 +106,6 @@ class Hero
 
 	private var _inventory:InventorySystem;
 	private var _graphics:GraphicsSystem;
-	private var _stat:StatSystem;
-	private var _resist:ResistSystem;
 	private var _skill:SkillSystem;
 	private var _trait:TraitSystem;
 	private var _effect:EffectSystem;
@@ -117,12 +115,12 @@ class Hero
 	private var _accuracy:Accuracy;
 	private var _dodge:Dodge;
 	private var _block:Block;
-	private var _critChanse:CriticalChanse;
+	private var _criticalChanse:CriticalChanse;
 	private var _defense:Defense;
 	private var _damage:Damage;
 	private var _speed:Speed;
 	private var _stress:Stress;
-	private var _critDamage:CriticalDamage;
+	private var _criticalDamage:CriticalDamage;
 	//текущие значения резистов.
 	private var _resistStun:ResistStun;
 	private var _resistPoison:ResistPoison;
@@ -148,20 +146,17 @@ class Hero
 		this._heroSurname = config.HeroSurname;
 		this._inventory = new InventorySystem({ Parent:this });
 		this._graphics = new GraphicsSystem({ Parent:this, GraphicsSprite:config.GraphicsSprite });
-		this._stat = new StatSystem({ Parent:this, Hp:config.HealthPoints, Acc:config.Accuracy, Ddg:config.Dodge, Block:config.Block, Cc:config.CritChanse, Def:config.Defense, Dmg:config.Damage, Spd:config.Speed, Stress:config.Stress, CritDmg:config.CritDamage });
-		this._resist = new ResistSystem({ Parent:this, Stun:config.ResistStun, Poison:config.ResistPoison, Bleed:config.ResistBleed, Disease:config.ResistDisease, Debuff:config.ResistDebuff, Move:config.ResistMove, Fire:config.ResistFire, Cold:config.ResistCold });
 
 		this._healthPoints = config.HealthPoints;
 		this._accuracy = config.Accuracy;
 		this._dodge = config.Dodge;
 		this._block = config.Block;
-		this._critChanse = config.CritChanse;
+		this._criticalChanse = config.CriticalChanse;
 		this._defense = config.Defense;
 		this._damage = config.Damage;
 		this._speed = config.Speed;
 		this._stress = config.Stress;
-		this._critDamage = config.CritDamage;
-
+		this._criticalDamage = config.CriticalDamage;
 		this._resistStun = config.ResistStun;
 		this._resistPoison = config.ResistPoison;
 		this._resistBleed = config.ResistBleed;
@@ -193,10 +188,59 @@ class Hero
 		if( this._name == null )
 			throw '$err';
 
+		if( this._damage == null )
+			throw '$err. Damage is null';
+
+		if( this._defense == null )
+			throw '$err. Defense is null';
+
+		if( this._accuracy == null )
+			throw '$err. Accuracy is null';
+
+		if( this._dodge == null )
+			throw '$err. Dodge is null';
+
+		if( this._block == null )
+			throw '$err. Block is null';
+
+		if( this._criticalChanse == null )
+			throw '$err. Crit Chanse is null';
+
+		if( this._speed == null )
+			throw '$err. Speed is null';
+
+		if( this._criticalDamage == null )
+			throw '$err. Crit damage is null';
+
+		if( this._healthPoints == null )
+			throw '$err. Health Points is null';
+
+		if( this._resistStun == null )
+			throw '$err. Resist Stun is null';
+
+		if( this._resistPoison== null )
+			throw '$err. Resist Poison is null';
+
+		if( this._resistDisease == null )
+			throw '$err. Resist Disease is null';
+
+		if( this._resistBleed == null )
+			throw '$err. Rresist Bleed is null';
+
+		if( this._resistDebuff == null )
+			throw '$err. Resist debuff is null';
+
+		if( this._resistMove == null )
+			throw '$err. Resist Move is null';
+
+		if( this._resistFire == null )
+			throw '$err. Resist fire is null';
+
+		if( this._resistCold == null )
+			throw '$err. Resist cold is null';
+
 		this._inventory.init( err );
 		this._graphics.init( err );
-		this._stat.init( err );
-		this._resist.init( err );
 
 	}
 
@@ -220,8 +264,6 @@ class Hero
 			case "fullName": return ( this._heroName + ' ' + this._heroSurname );
 			case "inventory": return this._inventory;
 			case "itemInventory": return this._itemInventory;
-			case "stat": return this._stat;
-			case "resist": return this._resist;
 			case "preferPosition": return this._preferPosition;
 			case "preferTarget": return this._preferTargetPosition;
 			case "position": return this._position;
@@ -234,16 +276,16 @@ class Hero
 	{
 		switch( stat )
 		{
-			case "hp": return this._hp;
-			case "acc": return this._acc;
-			case "ddg": return this._ddg;
+			case "hp": return this._healthPoints;
+			case "acc": return this._accuracy;
+			case "ddg": return this._dodge;
 			case "block": return this._block;
-			case "cc": return this._cc;
-			case "def": return this._def;
-			case "dmg": return this._dmg;
-			case "spd": return this._spd;
+			case "cc": return this._criticalChanse;
+			case "def": return this._defense;
+			case "dmg": return this._damage;
+			case "spd": return this._speed;
 			case "stress": return this._stress;
-			case "critDmg": return this._critDmg;
+			case "critDmg": return this._criticalDamage;
 			default: throw 'Error in Hero.getStat. can not get $stat';
 		}
 	}
@@ -285,16 +327,16 @@ class Hero
 	{
 		switch( stat )
 		{
-			case "hp": this._hp = value;
-			case "acc": this._acc = value;
-			case "ddg": this._ddg = value;
+			case "hp": this._healthPoints = value;
+			case "acc": this._accuracy = value;
+			case "ddg": this._dodge = value;
 			case "block": this._block = value;
-			case "cc": this._cc = value;
-			case "def": this._def = value;
-			case "dmg": this._dmg = value;
-			case "spd": this._spd = value;
+			case "cc": this._criticalChanse = value;
+			case "def": this._defense = value;
+			case "dmg": this._damage = value;
+			case "spd": this._speed = value;
 			case "stress": this._stress = value;
-			case "critDmg": this._critDmg = value;
+			case "critDmg": this._criticalDamage = value;
 			default: throw 'Error in Hero.setStatTo. Can not set $stat';
 		}
 	}

@@ -174,12 +174,14 @@ class State
 			building.addHero( hero );
 
 			//create hero weapon and armor;
-			var itemSystem:ItemSysytem = this._parent.getSystem( "item" );
+			var itemSystem:ItemSystem = this._parent.getSystem( "item" );
+			var heroDeployId:Hero.HeroDeployID = hero.get( "deployId" );
+			var config:Dynamic = this._parent.getSystem( "deploy" ).getHero( heroDeployId );
 			var armor:Item = itemSystem.createItem( config.baseArmor );
 			var weapon:Item = itemSystem.createItem( config.baseWeapon );
 			var heroInventory:InventorySystem = hero.get( "inventory" );
-			heroInventory.add( armor );
-			heroInventory.add( weapon );
+			heroInventory.addItem( armor );
+			heroInventory.addItem( weapon );
 
 			var heroButton:Button = null;
 			// создаем кнопку на основе легендарности героя ( отличие оконтовка )

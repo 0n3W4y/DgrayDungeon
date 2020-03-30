@@ -43,7 +43,7 @@ class InventorySystem
 
 	}
 
-	public function add( item:Item ):Void
+	public function addItem( item:Item ):Void
 	{
 		var itemId:ItemID = item.get( "id" );
 		var check:Int = this._checkDuplicate( itemId );
@@ -61,21 +61,27 @@ class InventorySystem
 		inventory[ slotIndex ].Item = item;
 	}
 
-	public function remove( item:Item ):Item
+	public function removeItem( item:Item ):Item
 	{
 		var itemId:ItemID = item.get( "id" );
 		var check:Int = this._checkDuplicate( itemId );
 		if( check == null )
 			throw 'Error in InventorySystem.add. Can not remove item, because  item not available in inventory "$itemId", "$item.get( "name" )"';
 
-		var slotIndex:Int = this._findSlotForItem( item );
-		if( slotIndex == null )
-			throw 'Error in InventorySystem.add. Can not add item, because no slot for this item "$itemId", "$item.get( "name" )"';
+		var inventory:Array<Slot> = this._inventory();
+		inventory[ check ].Item = null;
+
+		return item;
 	}
 
 	public function getItemById( itemId:ItemID ):Item
 	{
-		return null;
+		var check:Int = this._checkDuplicate( itemId );
+		if( check == null )
+			throw 'Error in InventorySystem.getItemDyId. No item with id "$itemId"';
+
+	 var inventory:Array<Slot> = this._inventory();
+	 return inventory[ check ].Item;
 	}
 
 	//PRIVATE

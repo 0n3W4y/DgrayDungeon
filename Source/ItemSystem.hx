@@ -3,12 +3,15 @@ package;
 import openfl.display.Sprite;
 import openfl.display.Bitmap;
 import openfl.Assets;
+import openfl.text.TextField;
+import openfl.text.TextFormatAlign;
+import openfl.text.TextFormat;
 
 import Item;
 
 typedef ItemSystemConfig =
 {
-	Parent:Game;
+	var Parent:Game;
 }
 
 class ItemSystem
@@ -23,7 +26,7 @@ class ItemSystem
 	public function init( error:String ):Void
 	{
 		var err:String = '$error. Error in ItemSystem.init';
-		if( this._parent == "null" )
+		if( this._parent == null )
 			throw '$err. Parent is null';
 	}
 
@@ -35,7 +38,7 @@ class ItemSystem
 		var generatedRarity = rarity;
 
 		if( itemType == "generate" && name == "generate" )
-			generatedItemType = this._generatedItemType();
+			generatedItemType = this._generateItemType();
 
 		if( rarity == "generate" )
 			generatedRarity = this._generateRarity();
@@ -69,41 +72,42 @@ class ItemSystem
 			Name: config.name,
 			ID: ItemID( id ),
 			ItemType: config.itemType,
-			DeployId: ItemDeployID( config.deployId ),
+			DeployID: ItemDeployID( config.deployId ),
 			Rarity: config.rarity,
 			Restriction: config.restriction,
 			FullName: config.fullName,
-			Amount: Amount( config.amount ),
-			AmountMax: Amount( config.amountMax ),
-			PriceBuy: Player.Money( secondConfig.priceBuy ),
-			PriceSell: Player.Money( secondConfig.priceSell ),
+			Amount: config.amount,
+			AmountMax: config.amountMax,
+			PriceBuy: secondConfig.priceBuy,
+			PriceSell: secondConfig.priceSell,
 			UpgradeLevel: config.upgradeLevel,
 			UpgradeLevelMax: config.upgradeLevelMax,
-			UpgradeLevelPrice: Player.Money( secondConfig.upgradeLevelPrice ),
+			UpgradeLevelPrice: secondConfig.upgradeLevelPrice,
 			UpgradeLevelMultiplier: config.upgradeLevelMultiplier,
-			Damage: Hero.Damage( secondConfig.damage ),
-			Defense: Hero.Defense( secondConfig.defense ),
-			ExtraDamage: Hero.Damage( secondConfig.extraDamage ),
-			ExtraDefense: Hero.Defense( secondConfig.extraDefense ),
-			Accuracy: Hero.Accuracy( secondConfig.accuracy ),
-			Dodge: Hero.Dodge( secondConfig.dodge ),
-			Block: Hero.Block( secondConfig.block ),
-			CritChanse: Hero.CritChanse( secondConfig.critChanse ),
-			CritDamage: Hero.CritDamage( secondConfig.critDamage ),
-			Speed: Hero.Speed( secondConfig.speed ),
-			HealthPoints: Hero.HealthPoints( secondConfig.healthPoints ),
-			ResistStun: Hero.ResistStun( secondConfig.resistStun ),
-			ResistPoison: Hero.ResistPoison( secondConfig.resistPoison ),
-			ResistBleed: Hero.ResistBleed( secondConfig.resistBleed ),
-			ResistDisease: Hero.ResistDisease( secondConfig.resistDisease ),
-			ResistDebuff: Hero.ResistDebuff( secondConfig.resistDebuff ),
-			ResistMove: Hero.ResistMove( secondConfig.resistMove ),
-			ResistFire: Hero.ResistFire( secondConfig.resistFire ),
-			ResistCold: Hero.ResistCold( secondConfig.resistCold )
+			GraphicsSprite: sprite,
+			Damage: secondConfig.damage,
+			Defense: secondConfig.defense,
+			ExtraDamage: secondConfig.extraDamage,
+			ExtraDefense: secondConfig.extraDefense,
+			Accuracy: secondConfig.accuracy,
+			Dodge: secondConfig.dodge,
+			Block: secondConfig.block,
+			CriticalChanse: secondConfig.critChanse,
+			CriticalDamage: secondConfig.critDamage,
+			Speed: secondConfig.speed,
+			HealthPoints: secondConfig.healthPoints,
+			ResistStun: secondConfig.resistStun,
+			ResistPoison: secondConfig.resistPoison,
+			ResistBleed: secondConfig.resistBleed,
+			ResistDisease: secondConfig.resistDisease,
+			ResistDebuff: secondConfig.resistDebuff,
+			ResistMove: secondConfig.resistMove,
+			ResistFire: secondConfig.resistFire,
+			ResistCold: secondConfig.resistCold
 		}
 
 		var item:Item = new Item( itemConfig );
-		item.init();
+		item.init( 'Error in ItemSystem.createItem.');
 
 		//TODO: Sprite for item;
 		return item;
@@ -122,7 +126,7 @@ class ItemSystem
 			"accuracy": 0,
 			"dodge": 0,
 			"block": 0,
-			"critChanse": 0,
+			"critiChanse": 0,
 			"critDamage": 0,
 			"speed": 0,
 			"defense": 0,
@@ -162,7 +166,7 @@ class ItemSystem
 			var statValue:Int = cursed * Math.floor( Math.random() * ( defaultStatValue + 1 )); // +1 because we using Math.floor();
 			Reflect.setField( configToReturn, stat, statValue );
 			var key:String = stat + "BuyPrice";
-			var defaultBuyPrice:Int = Reflect.filed( config, key );
+			var defaultBuyPrice:Int = Reflect.field( config, key );
 			var addedPrice:Int = Math.round( statValue * defaultBuyPrice / defaultStatValue ); // ищем среднюю цену относительно максимальной цены за максимальный стат
 			priceBuy += addedPrice;
 			configToReturn.upgradeLevelPrice += Math.round( addedPrice / 2 );
@@ -218,7 +222,7 @@ class ItemSystem
 			case "legendary": rarityNumber = 3;
 			default: throw 'Error in ItemSystem._foundDeployIdForItem. Bad rarity "$rarity"';
 		}
-		switch( type ):
+		switch( type )
 		{
 			case "weapon":
 			{
