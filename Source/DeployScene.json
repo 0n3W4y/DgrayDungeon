@@ -25,5 +25,17 @@
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
 		"window": [ 3004, 3008 ]
+	},
+
+	"1100":{
+		"name": "dungeonCaveOne",
+		"deployId": 1100,
+		"imageNormalUrl": "assets/images/dungeonCave_1.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"imageSecondUrl": "assets/images/dungeonCave_1.png",
+		"imageSecondX": 1920.0,
+		"imageSecondY": 0,
+		"window": [ 3010 ]
 	}
 }

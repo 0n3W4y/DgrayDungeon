@@ -163,6 +163,63 @@
 		"firstTextY": 0.0,
 		"firstTextAlign": "center",
 		"button": [ 4005 ]
+	},
+
+	"3009":{
+		"name": "dungeonSceneQuestWindow",
+		"deployId": 3009,
+		"alwaysActive": true,
+		"x": 0.0,
+		"y": 10.0,
+		"imageNormalURL": "assets/images/dungeonSceneQuestWindow.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"firstText": "",
+		"firstTextSize": 26,
+		"firstTextColor": "0xffffff",
+		"firstTextHeight": 30,
+		"firstTextWidth": 300,
+		"firstTextX": 0.0,
+		"firstTextY": 0.0,
+		"firstTextAlign": "center",
+		"secondText": "",
+		"secondTextSize": 26,
+		"secondtextColor": "0xffffff",
+		"secondTextHeoght": 30,
+		"secondTextWidth": 300,
+		"secondTextX": 0.0,
+		"secondTextY": 0.0,
+		"secondTextAlign": "center",
+		"button": [ 4024 ]
+	},
+
+	"3010":{
+		"name": "dungeonSceneMainWodnow",
+		"deployId": 3010,
+		"alwaysActive": true,
+		"x": 0.0,
+		"y": 10.0,
+		"imageNormalURL": "assets/images/dungeonSceneMainWodnow.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"firstText": "",
+		"firstTextSize": 26,
+		"firstTextColor": "0xffffff",
+		"firstTextHeight": 30,
+		"firstTextWidth": 300,
+		"firstTextX": 0.0,
+		"firstTextY": 0.0,
+		"firstTextAlign": "center",
+		"secondText": "",
+		"secondTextSize": 26,
+		"secondtextColor": "0xffffff",
+		"secondTextHeoght": 30,
+		"secondTextWidth": 300,
+		"secondTextX": 0.0,
+		"secondTextY": 0.0,
+		"secondTextAlign": "center",
+		"button": [  ]
 	}
+	
 
 }

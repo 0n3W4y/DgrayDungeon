@@ -650,5 +650,22 @@
 		"imagePushX": 0.0,
 		"imagePushY": 0.0,
 		"firstText": null
+	},
+
+	"4024":{
+		"name": "battleSceneExitDungeon",
+		"deployId": 4024,
+		"x": 0.0,
+		"y": 0.0,
+		"imageNormalURL": "assets/images/citySceneMainWindowExitButton.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"imageHoverURL": "assets/images/citySceneMainWindowExitButton_hover.png",
+		"imageHoverX": 0.0,
+		"imageHoverY": 0.0,
+		"imagePushURL": "assets/images/citySceneMainWindowExitButton_push.png",
+		"imagePushX": 0.0,
+		"imagePushY": 0.0,
+		"firstText": null
 	}
 }

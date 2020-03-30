@@ -168,7 +168,7 @@ class ItemSystem
 			var key:String = stat + "BuyPrice";
 			var defaultBuyPrice:Int = Reflect.field( config, key );
 			var addedPrice:Int = Math.round( statValue * defaultBuyPrice / defaultStatValue ); // ищем среднюю цену относительно максимальной цены за максимальный стат
-			priceBuy += addedPrice;
+			configToReturn.priceBuy += addedPrice;
 			configToReturn.upgradeLevelPrice += Math.round( addedPrice / 2 );
 		}
 
