@@ -70,7 +70,7 @@ class State
 		else
 		{
 
-			var choosenDungeon:Button = this._findChoosenDungeon(); // find active button in all windows on scene; { "dungeon": "cave", "difficulty": "easy" };
+			var choosenDungeon:Int = this._findChoosenDungeon(); // find active button in all windows on scene; { "dungeon": "cave", "difficulty": "easy" };
 			if( choosenDungeon == null )
 			{
 				this._showWarning( 'Please choose a dungeon');
@@ -81,10 +81,9 @@ class State
 			var check:Bool = this._checkFullPartyHeroes();
 			if( !check )
 			{
-				//Todo - сделать функцию, которая примет значение текста и 2-х кнопок да и нет. Функция должна будет забиндить кнопки на ответ "да", ответ "нет".
-				// после чего, в зависимости от ответа и забиндинных функций конкретно для этого окна ( которое будет создаваться в момент вызова ) будет выполнены следующие функции
-				// который были переданы с аргументами.
-				//return;
+				var answer:Bool = this._showYesNoWindow( "Party not full, do u wish to start without full party?" );
+				if( !answer )
+				 return;
 			}
 
 			var heroes:Array<Hero> = this._findHeroToDungeon();
@@ -291,13 +290,16 @@ class State
 	//PRIVATE
 
 
-	private function _prepareJourneyToDungeon( array:Array<Hero>, dungeon:Dynamic ):Void
+	private function _prepareJourneyToDungeon( array:Array<Hero>, dungeon:Int ):Void
 	{
 			//TODO:
 			//1. open shop window, to buy staff for dungeon, like water, food, bandages, healthkits, shovel, e.t.c
 			//2. Create dungeon by config,
 			//3. Copy heroes to dungeon scene ( do shadow copy of each hero )
 			//	this._setPositionHeroesToDungeonFromArray( array );
+			var sceneSystem:SceneSystem = this._parent.getSystem( "scene" );
+			var scene:Scene = sceneSystem.createScene( dungeon );
+			sceneSystem.changeSceneTo( scene );
 	}
 
 	private function _chooseHeroRecruitButton( id:Button.ButtonID, name:String ):Void
@@ -658,11 +660,29 @@ class State
 		return true;
 	}
 
-	private function _findChoosenDungeon():Dynamic
+	private function _findChoosenDungeon():Int
 	{
+		//TODO: Find active button, then find window where this button placed;
+		// switch founded optiouns
 		var difficulty:String = "easy";
 		var dungeon:String = "cave";
-		return { "dungeon": dungeon, "difficulty": difficulty };
+
+		var difficultyNumber:Int = 0;
+		switch( difficulty )
+		{
+			case "normal": difficultyNumber = 1;
+			case "hard": difficultyNumber = 2;
+			case "extreme": difficultyNumber = 3;
+			default: throw 'Error in State._findChoosenDungeon. There is no difficulty "$difficulty" in this dungeon';
+		}
+
+		switch( dungeon )
+		{
+			case "cave": return ( 1100 + difficultyNumber ); // in deployScene все сцены пронумерованы по возрастанию сложности.
+			default: throw 'Error in State._findChoosenDungeon';
+		}
+
+		return null;
 	}
 
 	private function _findHeroToDungeon():Array<Hero>
@@ -696,5 +716,6 @@ class State
 			}
 		}
 	}
+
 
 }

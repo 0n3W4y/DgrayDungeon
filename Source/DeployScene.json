@@ -36,6 +36,15 @@
 		"imageSecondUrl": "assets/images/dungeonCave_1.png",
 		"imageSecondX": 1920.0,
 		"imageSecondY": 0,
-		"window": [ 3010 ]
+		"window": [ 3010 ],
+		"dungeonLength": 40,
+		"enemyEventsMin": 2,
+		"enemyEventsMax": 8,
+		"population": [ "skeletonArcher", "skeletonSwrodsman", "superSlime" ],
+		"bosses": [ "superSkeleton" ],
+		"quest": [ "quest1", "quest2" ],
+		"maxSceneObjects": 10,
+		"minSceneObjects": 4,
+		"sceneObjects": [ "fontain", "trap1", "trap2" ]
 	}
 }

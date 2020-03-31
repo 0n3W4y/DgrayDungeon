@@ -90,7 +90,7 @@ class SceneSystem
 		var activeSceneId:SceneID = this._activeScene.get( "id" );
 		if( !haxe.EnumTools.EnumValueTools.equals( sceneId, activeSceneId ))
 			throw 'Error in SceneSystem.fastSwitchScenes. Cannot switch scenes, becase scene is not active';
-		
+
 		var sceneToSwitchId:SceneID = scene.get( "sceneForFastSwitch" );
 		if( sceneToSwitchId == null )
 			throw 'Error in SceneSystem.switchCitySceneToChooseDungeonScene. Can not switch scene, because scene for fast switch is null';
@@ -127,7 +127,7 @@ class SceneSystem
 				throw 'Error in SceneSystem.fastSwitchScenes. City Scene not drawed!!!!!';
 			}
 		}
-		
+
 	}
 
 	public function changeSceneTo( scene:Scene ):Void //full undraw active scene, and draw new scene;
@@ -197,6 +197,7 @@ class SceneSystem
 			case "startScene": this._prepareStartScene( scene );
 			case "cityScene": this._prepareCityScene( scene );
 			case "chooseDungeonScene": this._prepareChooseDungeonScene( scene );
+			case "dungeonCaveOne": this._prepareDungeonScene( scene );
 			default: throw 'Error in SceneSystem.drawScene. Scene with name "$name" can not to be draw, no function for it.';
 		}
 	}
@@ -417,6 +418,12 @@ class SceneSystem
 		scene.changePrepareStatus( "prepared" );
 	}
 
+	private function _prepareDungeonScene( scene:Scene ):Void
+	{
+		scene.changePrepareStatus( "prepared" );
+		//TODO:
+	}
+
 	private function _destroyUiForScene( scene:Scene ):Void
 	{
 		var ui:UserInterface = this._parent.getSystem( "ui" );
@@ -449,34 +456,34 @@ class SceneSystem
 
 		if( config.imageNormalURL != null )
 		{
-			bitmap = this._createBitmap( config.imageNormalURL, config.imageNormalX, config.imageNormalY );
+			bitmap = this._createBitmap( config.imageNormalURL );
+			bitmap.x = config.imageNormalX;
+			bitmap.y = config.imageNormalY;
 			sprite.addChild( bitmap );
 		}
 
-		if( config.imageHoverURL != null )
+		if( config.imageSecondURL != null )
 		{
-			bitmap = this._createBitmap( config.imageHoverURL, config.imageHoverX, config.imageHoverY );
-			bitmap.visible = false;
+			bitmap = this._createBitmap( config.imageHoverURL );
+			bitmap.x = config.imageSecondX;
+			bitmap.y = config.imageSecondY;
 			sprite.addChild( bitmap );
 		}
 
-		if( config.imagePushURL != null )
+		if( config.imageThirdURL != null )
 		{
-			bitmap = this._createBitmap( config.imagePushURL, config.imagePushX, config.imagePushY );
-			bitmap.visible = false;
+			bitmap = this._createBitmap( config.imagePushURL );
+			bitmap.x = config.imageThirdX;
+			bitmap.y = config.imageThirdY;
 			sprite.addChild( bitmap );
 		}
-
-		// TODO: Portrait for button hero, Level for button hero.
 
 		return sprite;
 	}
 
-	private function _createBitmap( url:String, x:Float, y:Float ):Bitmap
+	private function _createBitmap( url:String ):Bitmap
 	{
 		var bitmap:Bitmap = new Bitmap( Assets.getBitmapData( url ) );
-		bitmap.x = x;
-		bitmap.y = y;
 		return bitmap;
 	}
 
