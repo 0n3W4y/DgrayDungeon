@@ -59,6 +59,55 @@ class State
 		sceneSystem.changeSceneTo( scene );
 	}
 
+	public function continueGame():Void
+	{
+		//TODO: show loading window();
+		// get json file from save directory;
+		// get all keys from json file;
+		// create player, load his fields;
+		// create cityScene, load all buildings,
+		// 
+	}
+
+	public function optionsGame():Void
+	{
+
+	}
+
+	public function openWindow( deployId:Int ):Void
+	{
+		var ui:UserInterface = this._parent.getSystem( "ui" );
+		switch( deployId )
+		{
+			case 3002 : 
+			{
+				var activeWindowDeployId:WindowDeployID = ui.findChildCitySceneMainWindow();
+				if( activeWindowDeployId == null )// значит на экране нет октрытых окон;
+				{
+					ui.showUiObject( WindowDeployID( 3001 )); // открываем главное окно сцены.
+					ui.showUiObject( WindowDeployID( deployId )); // открываем дополнительное окно.
+				}
+				else
+				{
+					ui.hideUiObject( activeWindowDeployId ); // скрываем ранее открытое окно.
+					ui.showUiObject( WindowDeployID( deployId )); // открываем вызванное окно.
+				}
+				
+			}
+			default: throw 'Error in State.openWindow. Can not open window "$name"';
+		}
+	}
+
+	public function closeWindow( deployId:Int ):Void
+	{
+		var ui:UserInterface = this._parent.getSystem( "ui" );
+		switch( deployId )
+		{
+			case 3001: ui.closeAllActiveWindows();
+			default: throw 'Error in State.closeWindow. Can not close window "$name"';
+		}
+	}
+
 	public function startJourney():Void
 	{
 		var sceneSystem:SceneSystem = this._parent.getSystem( "scene" );
@@ -97,12 +146,12 @@ class State
 		sceneSystem.fastSwitchScenes( sceneSystem.getActiveScene() );
 	}
 
-	public function innListUp():Void
+	public function innHeroListUp():Void
 	{
 
 	}
 
-	public function innListDown():Void
+	public function innHeroListDown():Void
 	{
 
 	}
@@ -158,6 +207,24 @@ class State
 
 	public function generateHeroesForBuilding( building:Building ):Void
 	{
+		// убираем всех героев из инвентаря здания.
+		building.clearHeroStorage();
+		// убираем все кнопки, связанные с героями по имени ( так проще );
+		var recruitWindow:Window = ui.getWindowByDeployId( 3002 );
+		var recruitWindowButtons:Array<Button> = recruitWindow.get( "buttons" );
+		var index:Int = 0;
+		for( j in 0...recruitWindowButtons.length )
+		{
+			var button:Button = recruitWindowButtons[ index ];
+			var buttonName:String = button.get( "name" );
+			if( buttonName == "recruitHeroButtonWhite" || buttonName == "recruitHeroButtonBlue" || buttonName == "recruitHeroButtonOrange" || buttonName == "recruitHeroButtonGreen" )
+			{
+				recruitWindow.removeButton( button );
+				continue;
+			}
+			index++;
+		}	
+
 		var heroSystem:HeroSystem = this._parent.getSystem( "hero" );
 		var ui:UserInterface = this._parent.getSystem( "ui" );
 		var heroSlots:Int = building.get( "heroStorageSlotsMax" );
@@ -197,7 +264,6 @@ class State
 			var buttonNewY:Float = buttonSprite.height * i;
 			buttonSprite.y += buttonNewY;
 			this._bindHeroAndButton( hero, heroButton );
-			var recruitWindow:Window = ui.getWindowByDeployId( 3002 );
 			recruitWindow.addButton( heroButton );
 		}
 
@@ -280,6 +346,16 @@ class State
 					sprite.x = 0;
 				}
 			}
+		}
+	}
+
+	public function onSceneEventDing( event:SceneSystem.SceneEvent ):Void
+	{
+		var eventName:String = event.SceneEventName;
+		var scene:Scene = this._parent.getSystem( "scene" ).getSceneById( event.SceneID );
+		switch( eventName )
+		{
+			case "generateHeroesForRecruitBuilding": this.generateHeroesForBuilding( scene.getBuildingByDeployId( 2002 ) );
 		}
 	}
 
@@ -515,6 +591,9 @@ class State
 
 	private function _removeHeroFromRecruitBuilding( hero:Hero, button:Button ):Hero
 	{
+		if( button == null )
+			button = this._findActiveRecruitButton();
+		
 		var recruitWindow:Window = this._parent.getSystem( "ui" ).getWindowByDeployId( 3002 ); // recruit window have 3002 deploy id;
 		recruitWindow.removeButton( button );
 		var newHero:Hero = this._parent.getSystem( "scene" ).getActiveScene().getBuildingByDeployId( 2002 ).removeHero( hero );
@@ -716,6 +795,5 @@ class State
 			}
 		}
 	}
-
 
 }

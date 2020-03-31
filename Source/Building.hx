@@ -186,6 +186,16 @@ class Building
 		return null;
 	}
 
+	public function clearHeroStorage():Void
+	{
+		this._heroStorage = new Array<Hero>();
+	}
+
+	public function clearItemStorage():Void
+	{
+		this._itemStorage = new Array<Item>();
+	}
+
 
 	//PRIVATE
 

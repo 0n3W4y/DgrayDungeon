@@ -56,7 +56,7 @@ class GraphicsSystem
 	public function getText( place:String ):String
 	{
 		var textField:TextField = null;
-		var testSprite:Dynamic = this._sprite.getChildAt( 1 );
+		var testSprite:Dynamic = this._sprite.getChildAt( 1 ); //Text sprite;
 		switch( place )
 		{
 			case "first": textField = testSprite.getChildAt( 0 );
@@ -77,10 +77,20 @@ class GraphicsSystem
 		return this._sprite;
 	}
 
-	public function setPortrait( sprite:Sprite ):Void
+	public function addGraphics( bitmap:Bitmap ):Void
 	{
 		var mainGraphicsSprite:Dynamic = this._sprite.getChildAt( 0 ); // graphics displayObjectContainer;
 		mainGraphicsSprite.addChild( sprite );
+	}
+
+	public function removeGraphicsAt ( num:Int ):Void
+	{
+		var mainGraphicsSprite:Dynamic = this._sprite.getChildAt( 0 ); // graphics displayObjectContainer;
+		var bitmap:Bitmap = mainGraphicsSprite.getChildAt( num );
+		if( btimap == null )
+			throw 'Error in GraphicsSystem.removeGraphicsAt. No chial at "$num"';
+
+		mainGraphicsSprite.removeChildAt( num );
 	}
 
 

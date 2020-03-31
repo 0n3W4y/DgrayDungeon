@@ -2,7 +2,7 @@
 	"1000":{
 		"name": "startScene",
 		"deployId": 1000,
-		"imageNormalURL": "assets/images/background_game.png",
+		"imageNormalURL": "assets/images/scenes/background_game.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
 		"window": [ 3000 ]
@@ -11,7 +11,7 @@
 	"1001":{
 		"name": "cityScene",
 		"deployId": 1001,
-		"imageNormalURL": "assets/images/citySceneBackround.png",
+		"imageNormalURL": "assets/images/scenes/citySceneBackround.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
 		"window": [ 3003, 3001, 3002, 3006 ],
@@ -21,7 +21,7 @@
 	"1002":{
 		"name": "chooseDungeonScene",
 		"deployId": 1002,
-		"imageNormalURL": "assets/images/chooseDungeonSceneOne.png",
+		"imageNormalURL": "assets/images/scenes/chooseDungeonSceneOne.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
 		"window": [ 3004, 3008 ]
@@ -30,10 +30,10 @@
 	"1100":{
 		"name": "dungeonCaveOne",
 		"deployId": 1100,
-		"imageNormalUrl": "assets/images/dungeonCave_1.png",
+		"imageNormalUrl": "assets/images/scenes/dungeonCave_1.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
-		"imageSecondUrl": "assets/images/dungeonCave_1.png",
+		"imageSecondUrl": "assets/images/scenes/dungeonCave_1.png",
 		"imageSecondX": 1920.0,
 		"imageSecondY": 0,
 		"window": [ 3010 ],

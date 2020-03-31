@@ -2,10 +2,10 @@
 	"2000":{
 		"name": "hospital",
 		"deployId": 2000,
-		"imageNormalURL": "assets/images/hospital.png",
+		"imageNormalURL": "assets/images/buildings/hospital.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
-		"imageHoverURL": "assets/images/hospital_m.png",
+		"imageHoverURL": "assets/images/buildings/hospital_m.png",
 		"imageHoverX": 0.0,
 		"imageHoverY": 0.0,
 		"x": 650.0,
@@ -23,16 +23,17 @@
 		"canUpgradeLevel": true,
 		"upgradePrice": 10000,
 		"heroStorageSlotsMax": 3,
-		"itemStorageSlotsMax": 0
+		"itemStorageSlotsMax": 0,
+		"events":[ "out", "over", "click" ]
 	},
 
 	"2001":{
 		"name": "tavern",
 		"deployId": 2001,
-		"imageNormalURL": "assets/images/tavern.png",
+		"imageNormalURL": "assets/images/buildings/tavern.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
-		"imageHoverURL": "assets/images/tavern_m.png",
+		"imageHoverURL": "assets/images/buildings/tavern_m.png",
 		"imageHoverX": 0.0,
 		"imageHoverY": 0.0,
 		"x": 990.0,
@@ -50,16 +51,17 @@
 		"canUpgradeLevel": true,
 		"upgradePrice": 10000,
 		"heroStorageSlotsMax": 0,
-		"itemStorageSlotsMax": 0
+		"itemStorageSlotsMax": 0,
+		"events":[ "out", "over", "click" ]
 	},
 
 	"2002":{
 		"name": "recruits",
 		"deployId": 2002,
-		"imageNormalURL": "assets/images/recruits.png",
+		"imageNormalURL": "assets/images/buildings/recruits.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
-		"imageHoverURL": "assets/images/recruits_m.png",
+		"imageHoverURL": "assets/images/buildings/recruits_m.png",
 		"imageHoverX": 0.0,
 		"imageHoverY": 0.0,
 		"x": 1100.0,
@@ -77,16 +79,18 @@
 		"canUpgradeLevel": true,
 		"upgradePrice": 10000,
 		"heroStorageSlotsMax": 7,
-		"itemStorageSlotsMax": 0
+		"itemStorageSlotsMax": 0,
+		"generateHeroEventTime": 60000,
+		"events":[ "out", "over", "click" ]
 	},
 
 	"2003":{
 		"name": "blacksmith",
 		"deployId": 2003,
-		"imageNormalURL": "assets/images/blacksmith.png",
+		"imageNormalURL": "assets/images/buildings/blacksmith.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
-		"imageHoverURL": "assets/images/blacksmith_m.png",
+		"imageHoverURL": "assets/images/buildings/blacksmith_m.png",
 		"imageHoverX": 0.0,
 		"imageHoverY": 0.0,
 		"x": 100.0,
@@ -104,16 +108,17 @@
 		"canUpgradeLevel": true,
 		"upgradePrice": 10000,
 		"heroStorageSlotsMax": 0,
-		"itemStorageSlotsMax": 12
+		"itemStorageSlotsMax": 12,
+		"events":[ "out", "over", "click" ]
 	},
 
 	"2004":{
 		"name": "merchant",
 		"deployId": 2004,
-		"imageNormalURL": "assets/images/merchant.png",
+		"imageNormalURL": "assets/images/buildings/merchant.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
-		"imageHoverURL": "assets/images/merchant_m.png",
+		"imageHoverURL": "assets/images/buildings/merchant_m.png",
 		"imageHoverX": 0.0,
 		"imageHoverY": 0.0,
 		"x": 300.0,
@@ -131,16 +136,18 @@
 		"canUpgradeLevel": true,
 		"upgradePrice": 10000,
 		"heroStorageSlotsMax": 0,
-		"itemStorageSlotsMax": 0
+		"itemStorageSlotsMax": 0,
+		"generateHeroEventTime": 60000,
+		"events":[ "out", "over", "click" ]
 	},
 
 	"2005":{
 		"name": "graveyard",
 		"deployId": 2005,
-		"imageNormalURL": "assets/images/graveyard.png",
+		"imageNormalURL": "assets/images/buildings/graveyard.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
-		"imageHoverURL": "assets/images/graveyard_m.png",
+		"imageHoverURL": "assets/images/buildings/graveyard_m.png",
 		"imageHoverX": 0.0,
 		"imageHoverY": 0.0,
 		"x": 680.0,
@@ -158,16 +165,17 @@
 		"canUpgradeLevel": true,
 		"upgradePrice": 10000,
 		"heroStorageSlotsMax": 0,
-		"itemStorageSlotsMax": 0
+		"itemStorageSlotsMax": 0,
+		"events":[ "out", "over", "click" ]
 	},
 
 	"2006":{
 		"name": "academy",
 		"deployId": 2006,
-		"imageNormalURL": "assets/images/academy.png",
+		"imageNormalURL": "assets/images/buildings/academy.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
-		"imageHoverURL": "assets/images/academy_m.png",
+		"imageHoverURL": "assets/images/buildings/academy_m.png",
 		"imageHoverX": 0.0,
 		"imageHoverY": 0.0,
 		"x": 450.0,
@@ -185,16 +193,17 @@
 		"canUpgradeLevel": true,
 		"upgradePrice": 10000,
 		"heroStorageSlotsMax": 0,
-		"itemStorageSlotsMax": 0
+		"itemStorageSlotsMax": 0,
+		"events":[ "out", "over", "click" ]
 	},
 
 	"2007":{
 		"name": "hermit",
 		"deployId": 2007,
-		"imageNormalURL": "assets/images/hermit.png",
+		"imageNormalURL": "assets/images/buildings/hermit.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
-		"imageHoverURL": "assets/images/hermit_m.png",
+		"imageHoverURL": "assets/images/buildings/hermit_m.png",
 		"imageHoverX": 0.0,
 		"imageHoverY": 0.0,
 		"x": 0.0,
@@ -212,16 +221,17 @@
 		"canUpgradeLevel": true,
 		"upgradePrice": 10000,
 		"heroStorageSlotsMax": 0,
-		"itemStorageSlotsMax": 0
+		"itemStorageSlotsMax": 0,
+		"events":[ "out", "over", "click" ]
 	},
 
 	"2008":{
 		"name": "questman",
 		"deployId": 2008,
-		"imageNormalURL": "assets/images/questman.png",
+		"imageNormalURL": "assets/images/buildings/questman.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
-		"imageHoverURL": "assets/images/questman_m.png",
+		"imageHoverURL": "assets/images/buildings/questman_m.png",
 		"imageHoverX": 0.0,
 		"imageHoverY": 0.0,
 		"x": 550.0,
@@ -239,16 +249,17 @@
 		"canUpgradeLevel": true,
 		"upgradePrice": 10000,
 		"heroStorageSlotsMax": 0,
-		"itemStorageSlotsMax": 0
+		"itemStorageSlotsMax": 0,
+		"events":[ "out", "over", "click" ]
 	},
 
 	"2009":{
 		"name": "fontain",
 		"deployId": 2009,
-		"imageNormalURL": "assets/images/fontain.png",
+		"imageNormalURL": "assets/images/buildings/fontain.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
-		"imageHoverURL": "assets/images/fontain_m.png",
+		"imageHoverURL": "assets/images/buildings/fontain_m.png",
 		"imageHoverX": 0.0,
 		"imageHoverY": 0.0,
 		"x": 700.0,
@@ -266,7 +277,8 @@
 		"canUpgradeLevel": true,
 		"upgradePrice": 10000,
 		"heroStorageSlotsMax": 0,
-		"itemStorageSlotsMax": 0
+		"itemStorageSlotsMax": 0,
+		"events":[ "out", "over", "click" ]
 	},
 
 	"2010":{
@@ -282,7 +294,8 @@
 		"canUpgradeLevel": false,
 		"upgradePrice": 0,
 		"heroStorageSlotsMax": 20,
-		"itemStorageSlotsMax": 0
+		"itemStorageSlotsMax": 0,
+		"events":[]
 	},
 
 	"2011":{
@@ -298,6 +311,7 @@
 		"canUpgradeLevel": false,
 		"upgradePrice": 0,
 		"heroStorageSlotsMax": 0,
-		"itemStorageSlotsMax": 100
+		"itemStorageSlotsMax": 100,
+		"events":[]
 	}
 }

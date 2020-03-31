@@ -4,16 +4,17 @@
 		"deployId": 4000,
 		"x": 0.0,
 		"y": 0.0,
-		"imageNormalURL": "assets/images/button_dungeon_a.png",
+		"imageNormalURL": "assets/images/buttons/button_dungeon_a.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
-		"imageHoverURL": "assets/images/button_dungeon_a.png",
+		"imageHoverURL": "assets/images/buttons/button_dungeon_a.png",
 		"imageHoverX": 0.0,
 		"imageHoverY": 0.0,
-		"imagePushURL": "assets/images/button_dungeon_a_choose.png",
+		"imagePushURL": "assets/images/buttons/button_dungeon_a_choose.png",
 		"imagePushX": 0.0,
 		"imagePushY": 0.0,
-		"firstText": null
+		"firstText": null,
+		"events":[ "up", "down", "out", "over", "click" ]
 	},
 
 	"4001":{
@@ -21,16 +22,17 @@
 		"deployId": 4001,
 		"x": 0.0,
 		"y": 0.0,
-		"imageNormalURL": "assets/images/button_dungeon_b.png",
+		"imageNormalURL": "assets/images/buttons/button_dungeon_b.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
-		"imageHoverURL": "assets/images/button_dungeon_b.png",
+		"imageHoverURL": "assets/images/buttons/button_dungeon_b.png",
 		"imageHoverX": 0.0,
 		"imageHoverY": 0.0,
-		"imagePushURL": "assets/images/button_dungeon_b_choose.png",
+		"imagePushURL": "assets/images/buttons/button_dungeon_b_choose.png",
 		"imagePushX": 0.0,
 		"imagePushY": 0.0,
-		"firstText": null
+		"firstText": null,
+		"events":[ "up", "down", "out", "over", "click" ]
 	},
 
 	"4002":{
@@ -38,16 +40,17 @@
 		"deployId": 4002,
 		"x": 0.0,
 		"y": 0.0,
-		"imageNormalURL": "assets/images/button_dungeon_c.png",
+		"imageNormalURL": "assets/images/buttons/button_dungeon_c.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
-		"imageHoverURL": "assets/images/button_dungeon_c.png",
+		"imageHoverURL": "assets/images/buttons/button_dungeon_c.png",
 		"imageHoverX": 0.0,
 		"imageHoverY": 0.0,
-		"imagePushURL": "assets/images/button_dungeon_c_choose.png",
+		"imagePushURL": "assets/images/buttons/button_dungeon_c_choose.png",
 		"imagePushX": 0.0,
 		"imagePushY": 0.0,
-		"firstText": null
+		"firstText": null,
+		"events":[ "up", "down", "out", "over", "click" ]
 	},
 
 	"4003":{
@@ -55,33 +58,35 @@
 		"deployId": 4003,
 		"x": 0.0,
 		"y": 0.0,
-		"imageNormalURL": "assets/images/button_dungeon_d.png",
+		"imageNormalURL": "assets/images/buttons/button_dungeon_d.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
-		"imageHoverURL": "assets/images/button_dungeon_d.png",
+		"imageHoverURL": "assets/images/buttons/button_dungeon_d.png",
 		"imageHoverX": 0.0,
 		"imageHoverY": 0.0,
-		"imagePushURL": "assets/images/button_dungeon_d_choose.png",
+		"imagePushURL": "assets/images/buttons/button_dungeon_d_choose.png",
 		"imagePushX": 0.0,
 		"imagePushY": 0.0,
-		"firstText": null
+		"firstText": null,
+		"events":[ "up", "down", "out", "over", "click" ]
 	},
 
 	"4004":{
-		"name": "dungeonButtonExtreme",
+		"name": "noname",
 		"deployId": 4004,
 		"x": 0.0,
 		"y": 0.0,
-		"imageNormalURL": "assets/images/button_dungeon_d.png",
+		"imageNormalURL": "assets/images/buttons/button_dungeon_d.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
-		"imageHoverURL": "assets/images/button_dungeon_d.png",
+		"imageHoverURL": "assets/images/buttons/button_dungeon_d.png",
 		"imageHoverX": 0.0,
 		"imageHoverY": 0.0,
-		"imagePushURL": "assets/images/button_dungeon_d_choose.png",
+		"imagePushURL": "assets/images/buttons/button_dungeon_d_choose.png",
 		"imagePushX": 0.0,
 		"imagePushY": 0.0,
-		"firstText": null
+		"firstText": null,
+		"events":[ "up", "down", "out", "over", "click" ]
 	},
 
 	"4005":{
@@ -89,13 +94,13 @@
 		"deployId": 4005,
 		"x": 300.0,
 		"y": 10.0,
-		"imageNormalURL": "assets/images/backToCityButton.png",
+		"imageNormalURL": "assets/images/buttons/backToCityButton.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
-		"imageHoverURL": "assets/images/backToCityButton_hover.png",
+		"imageHoverURL": "assets/images/buttons/backToCityButton_hover.png",
 		"imageHoverX": 0.0,
 		"imageHoverY": 0.0,
-		"imagePushURL": "assets/images/backToCityButton_push.png",
+		"imagePushURL": "assets/images/buttons/backToCityButton_push.png",
 		"imagePushX": 0.0,
 		"imagePushY": 0.0,
 		"firstText": "Back to city",
@@ -105,7 +110,8 @@
 		"firstTextWidth": 140,
 		"firstTextX": 30.0,
 		"firstTextY": 10.0,
-		"firstTextAlign": "left"
+		"firstTextAlign": "left",
+		"events":[ "up", "down", "out", "over", "click" ]
 	},
 
 	"4006":{
@@ -113,13 +119,13 @@
 		"deployId": 4006,
 		"x": 860.0,
 		"y": 5.0,
-		"imageNormalURL": "assets/images/button_a.png",
+		"imageNormalURL": "assets/images/buttons/button_a.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
-		"imageHoverURL": "assets/images/button_a_hover.png",
+		"imageHoverURL": "assets/images/buttons/button_a_hover.png",
 		"imageHoverX": 0.0,
 		"imageHoverY": 0.0,
-		"imagePushURL": "assets/images/button_a_push.png",
+		"imagePushURL": "assets/images/buttons/button_a_push.png",
 		"imagePushX": 0.0,
 		"imagePushY": 0.0,
 		"firstText": "JOURNEY",
@@ -129,7 +135,8 @@
 		"firstTextWidth": 140,
 		"firstTextX": 75.0,
 		"firstTextY": 5.0,
-		"firstTextAlign": "center"
+		"firstTextAlign": "center",
+		"events":[ "up", "down", "out", "over", "click" ]
 	},
 
 	"4007":{
@@ -137,16 +144,17 @@
 		"deployId": 4007,
 		"x": 105.0,
 		"y": 810.0,
-		"imageNormalURL": "assets/images/button_c.png",
+		"imageNormalURL": "assets/images/buttons/button_c.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
-		"imageHoverURL": "assets/images/button_c_hover.png",
+		"imageHoverURL": "assets/images/buttons/button_c_hover.png",
 		"imageHoverX": 0.0,
 		"imageHoverY": 0.0,
-		"imagePushURL": "assets/images/button_c_push.png",
+		"imagePushURL": "assets/images/buttons/button_c_push.png",
 		"imagePushX": 0.0,
 		"imagePushY": 0.0,
-		"firstText": null
+		"firstText": null,
+		"events":[ "up", "down", "out", "over", "click" ]
 	},
 
 	"4008":{
@@ -154,16 +162,17 @@
 		"deployId": 4008,
 		"x": 25.0,
 		"y": 810.0,
-		"imageNormalURL": "assets/images/button_d.png",
+		"imageNormalURL": "assets/images/buttons/button_d.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
-		"imageHoverURL": "assets/images/button_d_hover.png",
+		"imageHoverURL": "assets/images/buttons/button_d_hover.png",
 		"imageHoverX": 0.0,
 		"imageHoverY": 0.0,
-		"imagePushURL": "assets/images/button_d_push.png",
+		"imagePushURL": "assets/images/buttons/button_d_push.png",
 		"imagePushX": 0.0,
 		"imagePushY": 0.0,
-		"firstText": null
+		"firstText": null,
+		"events":[ "up", "down", "out", "over", "click" ]
 	},
 
 	"4009":{
@@ -171,16 +180,17 @@
 		"deployId": 4009,
 		"x": 1340.0,
 		"y": 30.0,
-		"imageNormalURL": "assets/images/citySceneMainWindowExitButton.png",
+		"imageNormalURL": "assets/images/buttons/citySceneMainWindowExitButton.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
-		"imageHoverURL": "assets/images/citySceneMainWindowExitButton.png",
+		"imageHoverURL": "assets/images/buttons/citySceneMainWindowExitButton.png",
 		"imageHoverX": 0.0,
 		"imageHoverY": 0.0,
-		"imagePushURL": "assets/images/citySceneMainWindowExitButton_push.png",
+		"imagePushURL": "assets/images/buttons/citySceneMainWindowExitButton_push.png",
 		"imagePushX": 0.0,
 		"imagePushY": 0.0,
-		"firstText": null
+		"firstText": null,
+		"events":[ "up", "down", "out", "over", "click" ]
 	},
 
 	"4010":{
@@ -188,13 +198,13 @@
 		"deployId": 4010,
 		"x": 75.0,
 		"y": 145.0,
-		"imageNormalURL": "assets/images/button_b.png",
+		"imageNormalURL": "assets/images/buttons/button_b.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
-		"imageHoverURL": "assets/images/button_b_hover.png",
+		"imageHoverURL": "assets/images/buttons/button_b_hover.png",
 		"imageHoverX": 0.0,
 		"imageHoverY": 0.0,
-		"imagePushURL": "assets/images/button_b_push.png",
+		"imagePushURL": "assets/images/buttons/button_b_push.png",
 		"imagePushX": 0.0,
 		"imagePushY": 0.0,
 		"firstText": "New",
@@ -204,7 +214,8 @@
 		"firstTextWidth": 410,
 		"firstTextX": 0.0,
 		"firstTextY": 0.0,
-		"firstTextAlign": "center"
+		"firstTextAlign": "center",
+		"events":[ "up", "down", "out", "over", "click" ]
 	},
 
 	"4011":{
@@ -212,13 +223,13 @@
 		"deployId": 4011,
 		"x": 75.0,
 		"y": 25.0,
-		"imageNormalURL": "assets/images/button_b.png",
+		"imageNormalURL": "assets/images/buttons/button_b.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
-		"imageHoverURL": "assets/images/button_b_hover.png",
+		"imageHoverURL": "assets/images/buttons/button_b_hover.png",
 		"imageHoverX": 0.0,
 		"imageHoverY": 0.0,
-		"imagePushURL": "assets/images/button_b_push.png",
+		"imagePushURL": "assets/images/buttons/button_b_push.png",
 		"imagePushX": 0.0,
 		"imagePushY": 0.0,
 		"firstText": "Continue",
@@ -228,7 +239,8 @@
 		"firstTextWidth": 410,
 		"firstTextX": 0.0,
 		"firstTextY": 0.0,
-		"firstTextAlign": "center"
+		"firstTextAlign": "center",
+		"events":[ "up", "down", "out", "over", "click" ]
 	},
 
 	"4012":{
@@ -236,13 +248,13 @@
 		"deployId": 4012,
 		"x": 75.0,
 		"y": 265.0,
-		"imageNormalURL": "assets/images/button_b.png",
+		"imageNormalURL": "assets/images/buttons/button_b.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
-		"imageHoverURL": "assets/images/button_b_hover.png",
+		"imageHoverURL": "assets/images/buttons/button_b_hover.png",
 		"imageHoverX": 0.0,
 		"imageHoverY": 0.0,
-		"imagePushURL": "assets/images/button_b_push.png",
+		"imagePushURL": "assets/images/buttons/button_b_push.png",
 		"imagePushX": 0.0,
 		"imagePushY": 0.0,
 		"firstText": "Options",
@@ -252,7 +264,8 @@
 		"firstTextWidth": 410,
 		"firstTextX": 0.0,
 		"firstTextY": 0.0,
-		"firstTextAlign": "center"
+		"firstTextAlign": "center",
+		"events":[ "up", "down", "out", "over", "click" ]
 	},
 
 	"4013":{
@@ -260,13 +273,13 @@
 		"deployId": 4013,
 		"x": 75.0,
 		"y": 385.0,
-		"imageNormalURL": "assets/images/button_b.png",
+		"imageNormalURL": "assets/images/buttons/button_b.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
-		"imageHoverURL": "assets/images/button_b_hover.png",
+		"imageHoverURL": "assets/images/buttons/button_b_hover.png",
 		"imageHoverX": 0.0,
 		"imageHoverY": 0.0,
-		"imagePushURL": "assets/images/button_b_push.png",
+		"imagePushURL": "assets/images/buttons/button_b_push.png",
 		"imagePushX": 0.0,
 		"imagePushY": 0.0,
 		"firstText": "Authors",
@@ -276,7 +289,8 @@
 		"firstTextWidth": 410,
 		"firstTextX": 0.0,
 		"firstTextY": 0.0,
-		"firstTextAlign": "center"
+		"firstTextAlign": "center",
+		"events":[ "up", "down", "out", "over", "click" ]
 	},
 
 	"4014":{
@@ -284,13 +298,13 @@
 		"deployId": 4014,
 		"x": 1000.0,
 		"y": 770.0,
-		"imageNormalURL": "assets/images/button_a.png",
+		"imageNormalURL": "assets/images/buttons/button_a.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
-		"imageHoverURL": "assets/images/button_a_hover.png",
+		"imageHoverURL": "assets/images/buttons/button_a_hover.png",
 		"imageHoverX": 0.0,
 		"imageHoverY": 0.0,
-		"imagePushURL": "assets/images/button_a_push.png",
+		"imagePushURL": "assets/images/buttons/button_a_push.png",
 		"imagePushX": 0.0,
 		"imagePushY": 0.0,
 		"firstText": "Recruit",
@@ -300,7 +314,8 @@
 		"firstTextWidth": 220,
 		"firstTextX": 0.0,
 		"firstTextY": 0.0,
-		"firstTextAlign": "center"
+		"firstTextAlign": "center",
+		"events":[ "up", "down", "out", "over", "click" ]
 	},
 
 	"4015":{
@@ -308,16 +323,13 @@
 		"deployId": 4015,
 		"x": 850.0,
 		"y": 30.0,
-		"imageNormalURL": "assets/images/buttonHeroRecruit_white.png",
+		"imageNormalURL": "assets/images/buttons/buttonHeroRecruit_white.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
-		"imageHoverURL": "assets/images/buttonHeroRecruit_white.png",
+		"imageHoverURL": "assets/images/buttons/buttonHeroRecruit_white.png",
 		"imageHoverX": 0.0,
 		"imageHoverY": 0.0,
-		"imagePushURL": "assets/images/buttonHeroRecruit_white.png",
-		"imagePushX": 0.0,
-		"imagePushY": 0.0,
-		"imageChooseURL":"assets/images/buttonHeroRecruit_white.png",
+		"imageChooseURL":"assets/images/buttons/buttonHeroRecruit_white.png",
 		"imageChooseX": 0.0,
 		"imageChooseY": 0.0,
 		"firstText": "N/A",
@@ -343,7 +355,8 @@
 		"thirdTextWidth": 180,
 		"thirdTextX": 320.0,
 		"thirdTextY": 50.0,
-		"thirdTextAlign": "left"
+		"thirdTextAlign": "left",
+		"events":[ "out", "over", "click" ]
 	},
 
 	"4016":{
@@ -351,16 +364,13 @@
 		"deployId": 4016,
 		"x": 850.0,
 		"y": 30.0,
-		"imageNormalURL": "assets/images/buttonHeroRecruit_green.png",
+		"imageNormalURL": "assets/images/buttons/buttonHeroRecruit_green.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
-		"imageHoverURL": "assets/images/buttonHeroRecruit_green.png",
+		"imageHoverURL": "assets/images/buttons/buttonHeroRecruit_green.png",
 		"imageHoverX": 0.0,
 		"imageHoverY": 0.0,
-		"imagePushURL": "assets/images/buttonHeroRecruit_green.png",
-		"imagePushX": 0.0,
-		"imagePushY": 0.0,
-		"imageChooseURL":"assets/images/buttonHeroRecruit_green.png",
+		"imageChooseURL":"assets/images/buttons/buttonHeroRecruit_green.png",
 		"imageChooseX": 0.0,
 		"imageChooseY": 0.0,
 		"firstText": "N/A",
@@ -386,7 +396,8 @@
 		"thirdTextWidth": 180,
 		"thirdTextX": 320.0,
 		"thirdTextY": 50.0,
-		"thirdTextAlign": "left"
+		"thirdTextAlign": "left",
+		"events":[ "out", "over", "click" ]
 	},
 
 	"4017":{
@@ -394,16 +405,13 @@
 		"deployId": 4017,
 		"x": 850.0,
 		"y": 30.0,
-		"imageNormalURL": "assets/images/buttonHeroRecruit_blue.png",
+		"imageNormalURL": "assets/images/buttons/buttonHeroRecruit_blue.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
-		"imageHoverURL": "assets/images/buttonHeroRecruit_blue.png",
+		"imageHoverURL": "assets/images/buttons/buttonHeroRecruit_blue.png",
 		"imageHoverX": 0.0,
 		"imageHoverY": 0.0,
-		"imagePushURL": "assets/images/buttonHeroRecruit_blue.png",
-		"imagePushX": 0.0,
-		"imagePushY": 0.0,
-		"imageChooseURL":"assets/images/buttonHeroRecruit_blue.png",
+		"imageChooseURL":"assets/images/buttons/buttonHeroRecruit_blue.png",
 		"imageChooseX": 0.0,
 		"imageChooseY": 0.0,
 		"firstText": "N/A",
@@ -429,7 +437,8 @@
 		"thirdTextWidth": 180,
 		"thirdTextX": 320.0,
 		"thirdTextY": 50.0,
-		"thirdTextAlign": "left"
+		"thirdTextAlign": "left",
+		"events":[ "out", "over", "click" ]
 	},
 
 	"4018":{
@@ -437,16 +446,13 @@
 		"deployId": 4018,
 		"x": 850.0,
 		"y": 30.0,
-		"imageNormalURL": "assets/images/buttonHeroRecruit_orange.png",
+		"imageNormalURL": "assets/images/buttons/buttonHeroRecruit_orange.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
-		"imageHoverURL": "assets/images/buttonHeroRecruit_orange.png",
+		"imageHoverURL": "assets/images/buttons/buttonHeroRecruit_orange.png",
 		"imageHoverX": 0.0,
 		"imageHoverY": 0.0,
-		"imagePushURL": "assets/images/buttonHeroRecruit_orange.png",
-		"imagePushX": 0.0,
-		"imagePushY": 0.0,
-		"imageChooseURL":"assets/images/buttonHeroRecruit_orange.png",
+		"imageChooseURL":"assets/images/buttons/buttonHeroRecruit_orange.png",
 		"imageChooseX": 0.0,
 		"imageChooseY": 0.0,
 		"firstText": "N/A",
@@ -472,7 +478,8 @@
 		"thirdTextWidth": 180,
 		"thirdTextX": 320.0,
 		"thirdTextY": 50.0,
-		"thirdTextAlign": "left"
+		"thirdTextAlign": "left",
+		"events":[ "out", "over", "click" ]
 	},
 
 	"4019":{
@@ -480,15 +487,12 @@
 		"deployId": 4019,
 		"x": 0.0,
 		"y": 10.0,
-		"imageNormalURL": "assets/images/buttonHeroInn_white.png",
+		"imageNormalURL": "assets/images/buttons/buttonHeroInn_white.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
-		"imageHoverURL": "assets/images/buttonHeroInn_white.png",
+		"imageHoverURL": "assets/images/buttons/buttonHeroInn_white.png",
 		"imageHoverX": 0.0,
 		"imageHoverY": 0.0,
-		"imagePushURL": "assets/images/buttonHeroInn_white.png",
-		"imagePushX": 0.0,
-		"imagePushY": 0.0,
 		"firstText": "N/A",
 		"firstTextSize": 20,
 		"firstTextColor": "0xffffff",
@@ -512,7 +516,8 @@
 		"thirdTextWidth": 90,
 		"thirdTextX": 250.0,
 		"thirdTextY": 5.0,
-		"thirdTextAlign": "left"
+		"thirdTextAlign": "left",
+		"events":[ "out", "over", "click" ]
 	},
 
 	"4020":{
@@ -520,15 +525,12 @@
 		"deployId": 4020,
 		"x": 0.0,
 		"y": 10.0,
-		"imageNormalURL": "assets/images/buttonHeroInn_green.png",
+		"imageNormalURL": "assets/images/buttons/buttonHeroInn_green.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
-		"imageHoverURL": "assets/images/buttonHeroInn_green.png",
+		"imageHoverURL": "assets/images/buttons/buttonHeroInn_green.png",
 		"imageHoverX": 0.0,
 		"imageHoverY": 0.0,
-		"imagePushURL": "assets/images/buttonHeroInn_green.png",
-		"imagePushX": 0.0,
-		"imagePushY": 0.0,
 		"firstText": "N/A",
 		"firstTextSize": 20,
 		"firstTextColor": "0xffffff",
@@ -552,7 +554,8 @@
 		"thirdTextWidth": 90,
 		"thirdTextX": 250.0,
 		"thirdTextY": 5.0,
-		"thirdTextAlign": "left"
+		"thirdTextAlign": "left",
+		"events":[ "out", "over", "click" ]
 	},
 
 	"4021":{
@@ -560,15 +563,12 @@
 		"deployId": 4021,
 		"x": 0.0,
 		"y": 10.0,
-		"imageNormalURL": "assets/images/buttonHeroInn_blue.png",
+		"imageNormalURL": "assets/images/buttons/buttonHeroInn_blue.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
-		"imageHoverURL": "assets/images/buttonHeroInn_blue.png",
+		"imageHoverURL": "assets/images/buttons/buttonHeroInn_blue.png",
 		"imageHoverX": 0.0,
 		"imageHoverY": 0.0,
-		"imagePushURL": "assets/images/buttonHeroInn_blue.png",
-		"imagePushX": 0.0,
-		"imagePushY": 0.0,
 		"firstText": "N/A",
 		"firstTextSize": 20,
 		"firstTextColor": "0xffffff",
@@ -592,7 +592,8 @@
 		"thirdTextWidth": 90,
 		"thirdTextX": 250.0,
 		"thirdTextY": 5.0,
-		"thirdTextAlign": "left"
+		"thirdTextAlign": "left",
+		"events":[ "out", "over", "click" ]
 	},
 
 	"4022":{
@@ -600,15 +601,12 @@
 		"deployId": 4022,
 		"x": 0.0,
 		"y": 10.0,
-		"imageNormalURL": "assets/images/buttonHeroInn_orange.png",
+		"imageNormalURL": "assets/images/buttons/buttonHeroInn_orange.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
-		"imageHoverURL": "assets/images/buttonHeroInn_orange.png",
+		"imageHoverURL": "assets/images/buttons/buttonHeroInn_orange.png",
 		"imageHoverX": 0.0,
 		"imageHoverY": 0.0,
-		"imagePushURL": "assets/images/buttonHeroInn_orange.png",
-		"imagePushX": 0.0,
-		"imagePushY": 0.0,
 		"firstText": "N/A",
 		"firstTextSize": 20,
 		"firstTextColor": "0xffffff",
@@ -632,7 +630,8 @@
 		"thirdTextWidth": 90,
 		"thirdTextX": 250.0,
 		"thirdTextY": 5.0,
-		"thirdTextAlign": "left"
+		"thirdTextAlign": "left",
+		"events":[ "out", "over", "click" ]
 	},
 
 	"4023":{
@@ -640,16 +639,14 @@
 		"deployId": 4023,
 		"x": 0.0,
 		"y": 0.0,
-		"imageNormalURL": "assets/images/recruitWindowHeroPicture.png",
+		"imageNormalURL": "assets/images/buttons/recruitWindowHeroPicture.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
-		"imageHoverURL": "assets/images/recruitWindowHeroPicture.png",
+		"imageHoverURL": "assets/images/buttons/recruitWindowHeroPicture.png",
 		"imageHoverX": 0.0,
 		"imageHoverY": 0.0,
-		"imagePushURL": "assets/images/recruitWindowHeroPicture.png",
-		"imagePushX": 0.0,
-		"imagePushY": 0.0,
-		"firstText": null
+		"firstText": null,
+		"events":[ "out", "over", "click" ]
 	},
 
 	"4024":{
@@ -657,15 +654,41 @@
 		"deployId": 4024,
 		"x": 0.0,
 		"y": 0.0,
-		"imageNormalURL": "assets/images/citySceneMainWindowExitButton.png",
+		"imageNormalURL": "assets/images/buttons/citySceneMainWindowExitButton.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
-		"imageHoverURL": "assets/images/citySceneMainWindowExitButton_hover.png",
+		"imageHoverURL": "assets/images/buttons/citySceneMainWindowExitButton_hover.png",
 		"imageHoverX": 0.0,
 		"imageHoverY": 0.0,
-		"imagePushURL": "assets/images/citySceneMainWindowExitButton_push.png",
+		"imagePushURL": "assets/images/buttons/citySceneMainWindowExitButton_push.png",
 		"imagePushX": 0.0,
 		"imagePushY": 0.0,
-		"firstText": null
+		"firstText": null,
+		"events":[ "up", "down", "out", "over", "click" ]
+	},
+
+	"4025":{
+		"name": "buyItemFromMerchant",
+		"deployId": 4025,
+		"x": 1000.0,
+		"y": 770.0,
+		"imageNormalURL": "assets/images/buttons/button_a.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"imageHoverURL": "assets/images/buttons/button_a_hover.png",
+		"imageHoverX": 0.0,
+		"imageHoverY": 0.0,
+		"imagePushURL": "assets/images/buttons/button_a_push.png",
+		"imagePushX": 0.0,
+		"imagePushY": 0.0,
+		"firstText": "Buy",
+		"firstTextSize": 34,
+		"firstTextColor": "0xffffff",
+		"firstTextHeight": 36,
+		"firstTextWidth": 220,
+		"firstTextX": 0.0,
+		"firstTextY": 0.0,
+		"firstTextAlign": "center",
+		"events":[ "up", "down", "out", "over", "click" ]
 	}
 }

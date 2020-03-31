@@ -191,25 +191,6 @@ class UserInterface
 		}
 	}
 
-	public function openWindow( deployId:Int ):Void
-	{
-		switch( deployId )
-		{
-			case 3002: this._openRecruitWindow();
-			case 3100: this._openWarningWindow();
-			default: throw 'Error in UserInterface.openWindow. No action for $deployId';
-		}
-	}
-
-	public function closeWindow( deployId:Int ):Void
-	{
-		switch( deployId )
-		{
-			case 3001: this._closeCitySceneMainWindow();
-			case 3100: this._closeWarningWindow();
-			default: throw 'Error in UserInterface.closeWindow. No action for $deployId';
-		}
-	}
 
 	public function getWindowByDeployId( deployId:Int ):Window
 	{
@@ -323,36 +304,7 @@ class UserInterface
 		return button;
 	}
 
-
-
-	//PRIVATE
-
-	private function _openRecruitWindow():Void
-	{
-		this.showUiObject( WindowDeployID( 3001 ) );
-		this.showUiObject( WindowDeployID( 3002 ) );
-	}
-
-	private function _closeCitySceneMainWindow():Void
-	{
-		this.hideUiObject( WindowDeployID( 3001 ) );
-	}
-
-	private function _openWarningWindow():Void
-	{
- 		//TODO
- 		// var deployIdWarningWindow:WindowDeployID = WindowDeployID( 3100 );
- 		// this.showUiObject( deployIdWarningWindow );
-	}
-
-	private function _closeWarningWindow():Void
-	{
-		//TODO
- 		// var deployIdWarningWindow:WindowDeployID = WindowDeployID( 3100 );
- 		// this.hideUiObject( deployIdWarningWindow );
-	}
-
-	private function _hideChildCitySceneMainWindow():Void
+	public function findChildCitySceneMainWindow():WindowDeployID
 	{
 		for( i in 0...this._objectsOnUi.length )
 		{
@@ -361,16 +313,20 @@ class UserInterface
 			if( window.get( "isActive" ) )
 			{
 				if( haxe.EnumTools.EnumValueTools.equals( WindowDeployID( 3001 ), windowDeployID ))
-					continue;
+					continue; // игнорируем само окно citySceneMainWindow.
 
-				this.hideUiObject( windowDeployID );
-				if( haxe.EnumTools.EnumValueTools.equals( windowDeployID, WindowDeployID( 3002 )))
-					this._parent.getSystem( "state" ).unchooseRecruitHeroButtons();
-
-				break; // находит первого активного, закрывает его и все.
+				return windowDeployID; // возвращаем первое активное окно. ( Открыть несколько окон нельзя ).
 			}
 		}
+
+		return null;
 	}
+
+
+
+	//PRIVATE
+
+
 
 	private function _checkWidnowInObjects( deployId:WindowDeployID ):Int
 	{
@@ -401,40 +357,43 @@ class UserInterface
 
 		if( config.imageNormalURL != null )
 		{
-			bitmap = this._createBitmap( config.imageNormalURL, config.imageNormalX, config.imageNormalY );
+			bitmap = this._createBitmap( config.imageNormalURL );
+			bitmap.x = config.imageNormalX;
+			bitmap.y = config.imageNormalY;
 			sprite.addChild( bitmap );
 		}
 
 		if( config.imageHoverURL != null )
 		{
-			bitmap = this._createBitmap( config.imageHoverURL, config.imageHoverX, config.imageHoverY );
+			bitmap = this._createBitmap( config.imageHoverURL );
+			bitmap.x = config.imageHoverX;
+			bitmap.y = config.imageHoverY;
 			bitmap.visible = false;
 			sprite.addChild( bitmap );
 		}
 
 		if( config.imagePushURL != null )
 		{
-			bitmap = this._createBitmap( config.imagePushURL, config.imagePushX, config.imagePushY );
+			bitmap = this._createBitmap( config.imagePushURL );
+			bitmap.x = config.imagePushX;
+			bitmap.y = config.imagePushY;
 			bitmap.visible = false;
 			sprite.addChild( bitmap );
 		}
 
 		if( config.imageChooseURL != null )
 		{
-			bitmap = this._createBitmap( config.imageChooseURL, config.imageChooseX, config.imageChooseY );
+			bitmap = this._createBitmap( config.imageChooseURL );
+			bitmap.x = config.imageChooseX;
+			bitmap.y = config.imageChooseY;
 			bitmap.visible = false;
 			sprite.addChild( bitmap );
 		}
-
-		// TODO: Portrait for button hero, Level for button hero.
-
 		return sprite;
 	}
-	private function _createBitmap( url:String, x:Float, y:Float ):Bitmap
+	private function _createBitmap( url:String ):Bitmap
 	{
 		var bitmap:Bitmap = new Bitmap( Assets.getBitmapData( url ) );
-		bitmap.x = x;
-		bitmap.y = y;
 		return bitmap;
 	}
 

@@ -21,6 +21,7 @@ typedef SceneConfig =
 	var GraphicsSprite:Sprite;
 }
 
+
 class Scene
 {
 	private var _id:SceneID;
@@ -73,11 +74,6 @@ class Scene
 	public function postInit():Void
 	{
 
-	}
-
-	public function update( time:Float ):Void
-	{
-		// update all Entities;
 	}
 
 	public function get( value:String ):Dynamic

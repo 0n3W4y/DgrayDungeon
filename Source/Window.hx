@@ -33,7 +33,6 @@ class Window
 	private var _alwaysActive:Bool;
 
 	private var _buttonChildren:Array<Button>;
-	private var _specialButtonCounter:Int;
 
 	private var _graphics:GraphicsSystem;
 
@@ -81,12 +80,6 @@ class Window
 			throw 'Error in Window.addButton. Found duplicate button with name: "$name"';
 
 		this._buttonChildren.push( button );
-		if( name == "innWindowHeroButtonWhite" || name == "innWindowHeroButtonGreen" || name == "innWindowHeroButtonBlue" || name == "innWindowHeroButtonOrange" 
-			|| name == "recruitHeroButtonWhite" || name == "recruitHeroButtonGreen" || name == "recruitHeroButtonBlue" || name == "recruitHeroButtonOrange" )
-		{
-			this._specialButtonCounter++;
-		}
-
 		this.get( "sprite" ).addChild( button.get( "sprite" ));
 	}
 
@@ -97,12 +90,6 @@ class Window
 		var check:Int = this._checkChildForExist( id );
 		if( check == null )
 			throw 'Error in Window.removeButton. Button with name: "$name" not found';
-
-		if( name == "innWindowHeroButtonWhite" || name == "innWindowHeroButtonGreen" || name == "innWindowHeroButtonBlue" || name == "innWindowHeroButtonOrange" 
-			|| name == "recruitHeroButtonWhite" || name == "recruitHeroButtonGreen" || name == "recruitHeroButtonBlue" || name == "recruitHeroButtonOrange" )
-		{
-			this._specialButtonCounter--;
-		}
 
 		this.get( "sprite" ).removeChild( button.get( "sprite" ));
 		this._buttonChildren.splice( check, 1 );
@@ -135,7 +122,6 @@ class Window
 			case "isActive": return this._isActive;
 			case "alwaysActive": return this._alwaysActive;
 			case "buttons": return this._buttonChildren;
-			case "specialButtonCounter": return this._specialButtonCounter;
 			default: throw 'Error in Window.get. Can not get "$value"';
 		}
 	}

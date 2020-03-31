@@ -39,287 +39,113 @@ class EventHandler
 	public function addEvents( object:Dynamic ):Void
 	{
 		var name:String = object.get( "name" );
+		var type:String = object.get( "type" );
 		var check:Int = this._checkListenerIfExist( object );
 		if( check != null )
-			throw 'Error in EventHandler._addEventsToButton. Object with name: "$name" already in listeners';
-
-		this._addEvents( object );
+			throw 'Error in EventHandler.addEvents. Object with name: "$name" already in listeners';
+		
+		switch ( type )
+		{
+			case "button": this._addButtonEvents( object );
+			case "building": this._addBuildingEvents( object );
+			default: throw 'Error in EventHandler.AddEvents. No events for "$type"';
+		}
 		this._listeners.push( object );
 	}
 
 	public function removeEvents( object:Dynamic ):Void
 	{
 		var name:String = object.get( "name" );
+		var type:String = object.get( "type" );
 		var check:Int = this._checkListenerIfExist( object );
-
-		var sprite:Sprite = object.get( "sprite" ); // Проверяю, есть ли на кнопке какой-либо эвент( так я решил проблему с кнопкой continue xD );
-		if( !sprite.hasEventListener( "click" ) )
-			return;
-
 		if( check == null )
-			throw 'Error in EventHandler.removeEvent. Object with name: "$name" does not exist';
+			throw 'Error in EventHandler.removeEvents. Can not find "$name" in listeners';
 
-		this._removeEvents( object );
+		switch ( type )
+		{
+			case "button": this._removeButtonEvents( object );
+			case "building": this._removeBuildingEvents( object );
+			default: throw 'Error in EventHandler.AddEvents. No events for "$type"';
+		}
 		this._listeners.splice( check, 1 );
 	}
 
+
+
+
+
 	// PRIVATE
 
-	private function _removeEvents( object:Dynamic ):Void
+
+
+	private function _clickButton( e:MouseEvent ):Void
 	{
-		var type:String = object.get( "type" );
-		switch( type )
-		{
-			case "button": this._removeEventsFromButton( object );
-			case "hero": this._removeEventsFromHero( object );
-			case "enemy": this._removeEventsFromEnemy( object );
-			case "item": this._removeEventsFromItem( object );
-			case "building": this._removeEventsFromBuilding( object );
-			default: throw 'Error in EventHandler._removeEvent. No events found for type "$type"';
-		}
-	}
-
-	private function _addEvents( object:Dynamic ):Void
-	{
-		var type:String = object.get( "type" );
-
-		switch( type )
-		{
-			case "button":  this._addEventsToButton( object );
-			case "hero": this._addEventsToHero( object );
-			case "enemy": this._addEventsToEnemy( object );
-			case "item": this._addEventsToItem( object );
-			case "building": this._addEventsToBuilding( object );
-			default: throw 'Error in EventHandler._addEvent. No events found for type "$type"';
-		}
-	}
-
-	private function _addEventsToButton( object:Dynamic ):Void
-	{
-		// click будем разбирать по имени кнопки.
-		var name:String = object.get( "name" );
-		var sprite:Sprite = object.get( "sprite" );
-
-		this._addStandartButtonEvents( sprite ); // Добавляем стандартные ивенты как hover, unhover, push, unpush.
-
+		var sprite:DataSprite = e.currentTarget;
+		var id:Button.ButtonID = sprite.sId;
+		var name:String = sprite.sName;
+		var state:State = this._parent.getSystem( "state" );
 		switch( name )
 		{
-			case "gameStart": sprite.addEventListener( MouseEvent.CLICK, this._clickStartGame );
-			case "gameContinue": sprite.addEventListener( MouseEvent.CLICK, this._clickContinueGame );
-			case "gameOptions": sprite.addEventListener( MouseEvent.CLICK, this._clickOptionsGame );
-			case "innUp": {};
-			case "innDown": {};
-			case "gameStartJourney": sprite.addEventListener( MouseEvent.CLICK, this._startJourney );
-			case "recruitHeroButton": sprite.addEventListener( MouseEvent.CLICK, this._clickRecruitHero );
-			case "citySceneMainWindowClose": sprite.addEventListener( MouseEvent.CLICK, this._clickCloseCitySceneMainWindow );
-			case "choosenHeroToDungeon": sprite.addEventListener( MouseEvent.CLICK, this._clickRemoveChoosenHeroToDungeon );
-			case "chooseDungeonBackToCityButton": sprite.addEventListener( MouseEvent.CLICK, this._clickBackToCitySceneFromChooseDungeon );
+			case "gameStart": state.startGame();
+			case "gameContinue": state.continueGame();
+			case "gameOptions": state.optionsGame();
+			case "innUp": state.innHeroListUp();
+			case "innDown": state.innHeroListDown();
+			case "gameStartJourney": state.startJourney();
+			case "recruitHeroButton": state.recruitHero();
+			case "citySceneMainWindowClose": state.closeWindow( 3001 );
+			case "choosenHeroToDungeon": state.choosenHeroToDungeon( id );
+			case "chooseDungeonBackToCityButton": state.backToCitySceneFromChooseDungeon();
 			case "recruitHeroButtonWhite",
 				"recruitHeroButtonBlue",
 				"recruitHeroButtonGreen",
-				"recruitHeroButtonOrange": sprite.addEventListener( MouseEvent.CLICK, this._clickButtonHero );
+				"recruitHeroButtonOrange": state.chooseRecruitHeroButton( id );
 			case "innWindowHeroButtonOrange",
 				"innWindowHeroButtonBlue",
 				"innWindowHeroButtonWhite",
-				"innWindowHeroButtonGreen": sprite.addEventListener( MouseEvent.CLICK, this._clickButtonHero );
+				"innWindowHeroButtonGreen": state.chooseInnheroButton( id );
 			default: throw 'Error in EventHandler._addEventsToButton. No event for button with name "$name"';
 		}
 	}
 
-	private function _removeEventsFromButton( object:Dynamic ):Void
+	private function _clickBuilding( e:MouseEvent ):Void
 	{
-		//hasEventListener (type:String):Bool
-		var name:String = object.get( "name" );
-		var sprite:Sprite = object.get( "sprite" );
-
-		this._removeStandartButtonEvents( sprite ); // Убираем стандартные ивенты как hover, unhover, push, unpush.
-
-		switch( name )
-		{
-			case "gameStart": sprite.removeEventListener( MouseEvent.CLICK, this._clickStartGame );
-			case "gameContinue": sprite.removeEventListener( MouseEvent.CLICK, this._clickContinueGame );
-			case "gameOptions": sprite.removeEventListener( MouseEvent.CLICK, this._clickOptionsGame );
-			case "innUp": {};
-			case "innDown": {};
-			case "gameStartJourney": sprite.removeEventListener( MouseEvent.CLICK, this._startJourney );
-			case "recruitHeroButton": sprite.removeEventListener( MouseEvent.CLICK, this._clickRecruitHero );
-			case "citySceneMainWindowClose": sprite.removeEventListener( MouseEvent.CLICK, this._clickCloseCitySceneMainWindow );
-			case "choosenHeroToDungeon": sprite.removeEventListener( MouseEvent.CLICK, this._clickRemoveChoosenHeroToDungeon );
-			case "chooseDungeonBackToCityButton": sprite.removeEventListener( MouseEvent.CLICK, this._clickBackToCitySceneFromChooseDungeon );
-			case "recruitHeroButtonWhite",
-				"recruitHeroButtonBlue",
-				"recruitHeroButtonGreen",
-				"recruitHeroButtonOrange": sprite.removeEventListener( MouseEvent.CLICK, this._clickButtonHero );
-			case "innWindowHeroButtonOrange",
-				"innWindowHeroButtonBlue",
-				"innWindowHeroButtonWhite",
-				"innWindowHeroButtonGreen": sprite.removeEventListener( MouseEvent.CLICK, this._clickButtonHero );
-			default: throw 'Error in EventHandler._addEventsToButton. No event for button with name "$name"';
-		}
-	}
-
-	private function _addEventsToHero( object:Dynamic ):Void
-	{
-
-	}
-
-	private function _addEventsToItem( object:Dynamic ):Void
-	{
-
-	}
-
-	private function _addEventsToEnemy( object:Dynamic ):Void
-	{
-
-	}
-
-	private function _addEventsToBuilding( object:Dynamic ):Void
-	{
-		var name:String = object.get( "name" );
-		var sprite:Sprite = object.get( "sprite" );
-		this._addStandartBuildingEvents( sprite );
+		var sprite:DataSprite = e.currentTarget;
+		var id:Building.BuildingID = sprite.sId;
+		var name:String = sprite.sName;
+		var state:State = this._parent.getSystem( "state" );
 		switch( name )
 		{
 			//TODO: Доделать default  и другие case;
-			case "recruits": sprite.addEventListener( MouseEvent.CLICK, this._clickRecruitsBuilding );
-			case "hospital":
-			case "tavern":
-			case "blacksmith":
-			case "merchant":
-			case "graveyard":
-			case "academy":
-			case "hermit":
-			case "questman":
-			case "fontain":
-			case "inn":
-			case "storage":
+			case "recruits": state.openWindow( 3002 );
+			//case "hospital": state.openWindow(  );
+			//case "tavern": state.openWindow(  );
+			//case "blacksmith": state.openWindow(  );
+			//case "merchant": state.openWindow(  );
+			//case "graveyard": state.openWindow(  );
+			//case "academy": state.openWindow(  );
+			//case "hermit": state.openWindow(  );
+			//case "questman": state.openWindow(  );
+			//case "fontain": state.openWindow(  );
+			//case "inn": state.openWindow(  );
+			//case "storage": state.openWindow(  );
 			default: throw 'Error in EventHandler._addEventsToBuilding. No events for $name';
 		}
 	}
 
-	private function _removeEventsFromBuilding( object:Dynamic ):Void
-	{
-		var name:String = object.get( "name" );
-		var sprite:Sprite = object.get( "sprite" );
-		this._removeStandartBuildingEvents( sprite );
-		switch( name )
-		{
-			//TODO: Доделать default  и другие case;
-			case "recruits": sprite.removeEventListener( MouseEvent.CLICK, this._clickRecruitsBuilding );
-			case "hospital":
-			case "tavern":
-			case "blacksmith":
-			case "merchant":
-			case "graveyard":
-			case "academy":
-			case "hermit":
-			case "questman":
-			case "fontain":
-			case "inn":
-			case "storage":
-			default: throw 'Error in EventHandler_removeEventsFromBuilding. No events for $name';
-		}
-	}
 
-	private function _removeEventsFromHero( object:Dynamic ):Void
-	{
 
-	}
 
-	private function _removeEventsFromEnemy( object:Dynamic ):Void
-	{
 
-	}
 
-	private function _removeEventsFromItem( object:Dynamic ):Void
-	{
-
-	}
-
-	private function _checkListenerIfExist( object:Dynamic ):Int
-	{
-		var type:String = object.get( "type" );
-		for( i in 0...this._listeners.length )
-		{
-			if( this._listeners[ i ].get( "type" ) != type )
-				continue;
-
-			if( haxe.EnumTools.EnumValueTools.equals( this._listeners[ i ].get( "id" ), object.get( "id" )))
-				return i;
-		}
-		return null;
-	}
-
-	private function _clickStartGame( e:MouseEvent ):Void
-	{
-		this._parent.getSystem( "state" ).startGame();
-	}
-
-	private function _clickContinueGame( e:MouseEvent ):Void
-	{
-
-	}
-
-	private function _clickOptionsGame( e:MouseEvent ):Void
-	{
-
-	}
-
-	private function _clickRecruitsBuilding( e:MouseEvent ):Void
-	{
-		this._parent.getSystem( "ui" ).openWindow( 3002 );
-	}
-
-	private function _clickCloseCitySceneMainWindow( e:MouseEvent ):Void
-	{
-		this._parent.getSystem( "ui" ).closeWindow( 3001 );
-	}
-
-	private function _clickRecruitHero( e:MouseEvent ):Void
-	{
-		this._parent.getSystem( "state" ).recruitHero();
-	}
-
-	private function _clickButtonHero( e:MouseEvent ):Void
-	{
-		var sprite:DataSprite = e.currentTarget;
-		this._parent.getSystem( "state" ).chooseUnchooseButton( sprite.sId, sprite.sName );
-	}
-
-	private function _innListUp( e:MouseEvent ):Void
-	{
-		this._parent.getSystem( "state" ).innListUp();
-	}
-
-	private function _innListDown( e:MouseEvent ):Void
-	{
-		this._parent.getSystem( "state" ).innListDown();
-	}
-
-	private function _startJourney( e:MouseEvent ):Void
-	{
-		this._parent.getSystem( "state" ).startJourney();
-	}
-
-	private function _clickRemoveChoosenHeroToDungeon( e:MouseEvent ):Void
-	{
-		var sprite:DataSprite = e.currentTarget;
-		this._parent.getSystem( "state" ).unchooseHeroToDungeon( sprite.sId, sprite.sName );
-	}
-
-	private function _clickBackToCitySceneFromChooseDungeon( e:MouseEvent ):Void
-	{
-		this._parent.getSystem( "state" ).backToCitySceneFromChooseDungeon();
-	}
-
-	private function _hover( e:MouseEvent ):Void
+	private function _hoverButton( e:MouseEvent ):Void
 	{
 		var sprite:Dynamic = e.currentTarget;
 		var graphicsSprite:Sprite = sprite.getChildAt( 0 );
 		graphicsSprite.getChildAt( 1 ).visible = true;
 	}
 
-	private function _unhover( e:MouseEvent ):Void
+	private function _unhoverButton( e:MouseEvent ):Void
 	{
 		var sprite:Dynamic = e.currentTarget;
 		var graphicsSprite:Sprite = sprite.getChildAt( 0 );
@@ -327,14 +153,14 @@ class EventHandler
 		graphicsSprite.getChildAt( 2 ).visible = false;
 	}
 
-	private function _push( e:MouseEvent ):Void
+	private function _pushButton( e:MouseEvent ):Void
 	{
 		var sprite:Dynamic = e.currentTarget;
 		var graphicsSprite:Sprite = sprite.getChildAt( 0 );
 		graphicsSprite.getChildAt( 2 ).visible = true;
 	}
 
-	private function _unpush( e:MouseEvent ):Void
+	private function _unpushButton( e:MouseEvent ):Void
 	{
 		var sprite:Dynamic = e.currentTarget;
 		var graphicsSprite:Sprite = sprite.getChildAt( 0 );
@@ -359,31 +185,97 @@ class EventHandler
 		textSprite.visible = false;
 	}
 
-	private function _addStandartButtonEvents( sprite:Sprite ):Void
+	private function _addButtonEvents( object:Button ):Void
 	{
-		sprite.addEventListener( MouseEvent.MOUSE_OUT, this._unhover );
-		sprite.addEventListener( MouseEvent.MOUSE_OVER, this._hover );
-		sprite.addEventListener( MouseEvent.MOUSE_UP, this._unpush );
-		sprite.addEventListener( MouseEvent.MOUSE_DOWN, this._push );
+		var buttonDeployId:Button.ButtonDeployID = object.get( "deployId" );
+		var events:Array<String> = this._parent.getSystem( "deploy" ).getButton( buttonDeployId ).events;
+		var sprite:Sprite = object.get( "sprite" );
+		for( i in 0...events.length )
+		{
+			var event:String = events[ i ];
+			switch( event )
+			{
+				case "up": sprite.addEventListener( MouseEvent.MOUSE_UP, this._unpushButton );
+				case "down": sprite.addEventListener( MouseEvent.MOUSE_DOWN, this._pushButton );
+				case "out": sprite.addEventListener( MouseEvent.MOUSE_OUT, this._unhoverButton );
+				case "over": sprite.addEventListener( MouseEvent.MOUSE_OVER, this._hoverButton );
+				case "click": sprite.addEventListener( MouseEvent.MOUSE_CLICK, this._clickButton );
+				default: throw 'Error in EventHandler._addButtonEvents. No Event found for "$event"';
+			}
+		}		
 	}
 
-	private function _removeStandartButtonEvents( sprite:Sprite ):Void
+	private function _removetButtonEvents( object:Button ):Void
 	{
-		sprite.removeEventListener( MouseEvent.MOUSE_OUT, this._unhover );
-		sprite.removeEventListener( MouseEvent.MOUSE_OVER, this._hover );
-		sprite.removeEventListener( MouseEvent.MOUSE_UP, this._unpush );
-		sprite.removeEventListener( MouseEvent.MOUSE_DOWN, this._push );
+		var buttonDeployId:Button.ButtonDeployID = object.get( "deployId" );
+		var events:Array<String> = this._parent.getSystem( "deploy" ).getButton( buttonDeployId ).events;
+		var sprite:Sprite = object.get( "sprite" );
+		for( i in 0...events.length )
+		{
+			var event:String = events[ i ];
+			switch( event )
+			{
+				case "up": sprite.removeEventListener( MouseEvent.MOUSE_UP, this._unpushButton );
+				case "down": sprite.removeEventListener( MouseEvent.MOUSE_DOWN, this._pushButton );
+				case "out": sprite.removeEventListener( MouseEvent.MOUSE_OUT, this._unhoverButton );
+				case "over": sprite.removeEventListener( MouseEvent.MOUSE_OVER, this._hoverButton );
+				case "click": sprite.removeEventListener( MouseEvent.MOUSE_CLICK, this._clickButton );
+				default: throw 'Error in EventHandler._addButtonEvents. No Event found for "$event"';
+			}
+		}
 	}
 
-	private function _addStandartBuildingEvents( sprite:Sprite ):Void
+	private function _addBuildingEvents( object:Building ):Void
 	{
-		sprite.addEventListener( MouseEvent.MOUSE_OVER, this._hoverBuilding );
-		sprite.addEventListener( MouseEvent.MOUSE_OUT, this._unhoverBuilding );
+		var buildingDeployId:Building.BuildingDeployID = object.get( "deployId" );
+		var events:Array<String> = this._parent.getSystem( "deploy" ).getButton( buttonDeployId ).events;
+		var sprite:Sprite = object.get( "sprite" );
+		for( i in 0...events.length )
+		{
+			var event:String = events[ i ];
+			switch( event )
+			{
+				//case "up": sprite.addEventListener( MouseEvent.MOUSE_UP, this._unpushBuilding );
+				//case "down": sprite.addEventListener( MouseEvent.MOUSE_DOWN, this._pushBuilding );
+				case "out": sprite.addEventListener( MouseEvent.MOUSE_OUT, this._unhoverBuilding );
+				case "over": sprite.addEventListener( MouseEvent.MOUSE_OVER, this._hoverBuilding );
+				case "click": sprite.addEventListener( MouseEvent.MOUSE_CLICK, this._clickBuilding );
+				default: throw 'Error in EventHandler._addBuildingEvents. No Event found for "$event"';
+			}
+		}
 	}
 
-	private function _removeStandartBuildingEvents( sprite:Sprite ):Void
+	private function _removeBuildingEvents( sprite:Sprite ):Void
 	{
-		sprite.removeEventListener( MouseEvent.MOUSE_OVER, this._hoverBuilding );
-		sprite.removeEventListener( MouseEvent.MOUSE_OUT, this._unhoverBuilding );
+		var buildingDeployId:Building.BuildingDeployID = object.get( "deployId" );
+		var events:Array<String> = this._parent.getSystem( "deploy" ).getButton( buttonDeployId ).events;
+		var sprite:Sprite = object.get( "sprite" );
+		for( i in 0...events.length )
+		{
+			var event:String = events[ i ];
+			switch( event )
+			{
+				//case "up": sprite.removeEventListener( MouseEvent.MOUSE_UP, this._unpushBuilding );
+				//case "down": sprite.removeEventListener( MouseEvent.MOUSE_DOWN, this._pushBuilding );
+				case "out": sprite.removeEventListener( MouseEvent.MOUSE_OUT, this._unhoverBuilding );
+				case "over": sprite.removeEventListener( MouseEvent.MOUSE_OVER, this._hoverBuilding );
+				case "click": sprite.removeEventListener( MouseEvent.MOUSE_CLICK, this._clickBuilding );
+				default: throw 'Error in EventHandler._removeBuildingEvents. No Event found for "$event"';
+			}
+		}
 	}
+
+	private function _checkListenerIfExist( object:Dynamic ):Int
+		{
+			var type:String = object.get( "type" );
+			for( i in 0...this._listeners.length )
+			{
+				if( this._listeners[ i ].get( "type" ) != type )
+					continue;
+	
+				if( haxe.EnumTools.EnumValueTools.equals( this._listeners[ i ].get( "id" ), object.get( "id" )))
+					return i;
+			}
+			return null;
+		}
 }

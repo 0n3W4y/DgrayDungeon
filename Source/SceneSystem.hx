@@ -17,12 +17,21 @@ typedef SceneSystemConfig =
 	var GraphicsSprite:Sprite;
 }
 
+typedef SceneEvent = 
+{
+	var SceneID:SceneID;
+	var SceneEventName:String;
+	var SceneEventTime:Int;
+}
+
 class SceneSystem
 {
 	private var _parent:Game;
 	private var _scenesArray:Array<Scene>;
 	private var _scenesSprite:Sprite;
 	private var _activeScene:Scene;
+
+	private var _sceneEvents:Array<SceneEvent>;
 
 
 	public function new( config:SceneSystemConfig ):Void
@@ -50,13 +59,10 @@ class SceneSystem
 		return null;
 	}
 
-	public function update( time:Float ):Void
+	public function update( time:Int ):Void
 	{
 		//we can add scenes to array , who need to update, and remove them if don't need to update;
-		for( i in 0...this._scenesArray.length )
-		{
-			this._scenesArray[ i ].update( time );
-		}
+		this._upfateSceneEvents( time );
 	}
 
 	public function addScene( scene:Scene ):Void
@@ -447,6 +453,18 @@ class SceneSystem
 				return i;
 		}
 		return null;
+	}
+
+	private function _upfateSceneEvents( time:Int ):Void
+	{
+		var state:State = this._parent.getSystem( "state" );
+		for( i in 0...this._sceneEvents.length )
+		{
+			var event:SceneEvent = this._sceneEvents[ i ];
+			event.SceneEventTime -= time;
+			if( event.SceneEventTime <= 0 )
+				state.onSceneEventDing( event );
+		}
 	}
 
 	private function _createGraphicsSprite( config:Dynamic ):Sprite

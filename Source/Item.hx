@@ -31,7 +31,6 @@ typedef ItemConfig =
 	var UpgradeLevelMax:Int;
 	var UpgradeLevelPrice:Player.Money;
 	var UpgradeLevelMultiplier:Int;
-	var GraphicsSprite:Sprite;
 	var Damage: Hero.Damage;
 	var Defense: Hero.Defense;
 	var ExtraDamage: Hero.Damage;
@@ -70,8 +69,6 @@ class Item
 	private var _priceSell:Player.Money;
 	private var _upgradeLevel:Int;
 	private var _upgradeLevelPrice:Player.Money;
-
-	private var _graphics:GraphicsSystem;
 
 	private var _damage:Hero.Damage;
 	private var _defense:Hero.Defense;
@@ -126,8 +123,6 @@ class Item
 		this._resistMove = config.ResistMove;
 		this._resistFire = config.ResistFire;
 		this._resistCold = config.ResistCold;
-
-		this._graphics = new GraphicsSystem({ Parent:this, GraphicsSprite:config.GraphicsSprite });
 	}
 
 	public function init( error:String ):Void
@@ -225,8 +220,6 @@ class Item
 
 		if( this._resistCold == null )
 			throw '$err. Resist cold is null';
-
-		this._graphics.init( '$err' );
 	}
 
 	public function postInit( error:String ):Void
@@ -242,7 +235,6 @@ class Item
 			case "name": return this._name;
 			case "type": return this._type;
 			case "itemType": return this._itemType;
-			case "sprite": return this._graphics.getSprite();
 			case "rarity": return this._rarity;
 			case "restriction": return this._restriction;
 			case "fullName": return this._fullName;
