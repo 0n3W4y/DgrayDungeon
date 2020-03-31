@@ -2,6 +2,7 @@ package;
 
 import openfl.display.Sprite;
 import openfl.text.TextField;
+import openfl.display.Bitmap;
 
 typedef GraphicsSystemconfig =
 {
@@ -80,14 +81,14 @@ class GraphicsSystem
 	public function addGraphics( bitmap:Bitmap ):Void
 	{
 		var mainGraphicsSprite:Dynamic = this._sprite.getChildAt( 0 ); // graphics displayObjectContainer;
-		mainGraphicsSprite.addChild( sprite );
+		mainGraphicsSprite.addChild( bitmap );
 	}
 
 	public function removeGraphicsAt ( num:Int ):Void
 	{
 		var mainGraphicsSprite:Dynamic = this._sprite.getChildAt( 0 ); // graphics displayObjectContainer;
 		var bitmap:Bitmap = mainGraphicsSprite.getChildAt( num );
-		if( btimap == null )
+		if( bitmap == null )
 			throw 'Error in GraphicsSystem.removeGraphicsAt. No chial at "$num"';
 
 		mainGraphicsSprite.removeChildAt( num );

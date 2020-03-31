@@ -1,5 +1,6 @@
 package;
 
+import Button.ButtonID;
 import Window;
 
 import openfl.display.Sprite;
@@ -156,6 +157,23 @@ class State
 
 	}
 
+	public function chooseRecruitHeroButton( id:Button.ButtonID):Void
+	{
+		var button:Button = this._findRecruitButtonById( id );
+		var sprite:Sprite = button.get( "sprite" ).getChildAt( 0 );
+		if( button.get( "activeStatus" ))
+		{
+			button.changeActiveStatus();			
+			sprite.getChildAt( 2 ).visible = false; // На 2 индексе на кнопках, которые могут быть выбраны находится картинка выбора кнопки
+		}
+		else
+		{
+			this.unchooseAllRecruitHeroButton();
+			button.changeActiveStatus();			
+			sprite.getChildAt( 2 ).visible = true;
+		}
+	}
+
 	public function recruitHero():Void
 	{
 		var error:String = 'You can not buy hero, because ';
@@ -172,14 +190,14 @@ class State
 		if ( !this._checkPlayerMoneyAmount( price ) )
 		{
 			this._showWarning( '$error not enough money' );
-			this.unchooseRecruitHeroButtons();
+			this.chooseRecruitHeroButton( button.get( "id" ));
 			return;
 		}
 
 		if( !this._checkRoomInInnInventoryForHero() )
 		{
 			this._showWarning( '$error not enough room in Inn' );
-			this.unchooseRecruitHeroButtons();
+			this.chooseRecruitHeroButton( button.get( "id" ));
 			return;
 		}
 
@@ -292,42 +310,22 @@ class State
 		}
 	}
 
-	public function chooseUnchooseButton( id:Button.ButtonID, name:String ):Void
-	{
-		switch( name )
+	public function unchooseAllRecruitHeroButton():Void
 		{
-			case "recruitHeroButtonWhite", "recruitHeroButtonBlue", "recruitHeroButtonOrange", "recruitHeroButtonGreen":
+			var array:Array<Button> = this._parent.getSystem( "ui" ).getWindowByDeployId( 3002 ).get( "buttons");//recruit window
+			for( i in 0...array.length )
 			{
-				this._chooseHeroRecruitButton( id, name );
-			};
-			case "innWindowHeroButtonOrange", "innWindowHeroButtonBlue", "innWindowHeroButtonWhite", "innWindowHeroButtonGreen":
-			{
-				this._chooseHeroInnButton( id, name );
-			};
-			default: throw 'Error in Stat.unchooseButton. Can not choose button with name: "$name"';
-		}
-	}
-
-	public function unchooseRecruitHeroButtons():Void
-	{
-		var recruitWindow:Window = this._parent.getSystem( "ui" ).getWindowByDeployId( 3002 );
-		var array:Array<Button> = recruitWindow.get( "buttons" );
-		for( i in 0...array.length )
-		{
-			var button:Button = array[ i ];
-			var name:String = button.get( "name" );
-			if( name == "recruitHeroButtonWhite" || name == "recruitHeroButtonBlue" || name == "recruitHeroButtonOrange" || name == "recruitHeroButtonGreen" )
-			{
-				if( button.get( "activeStatus") )
+				var button:Button = array[ i ];
+				if( button.get( "activeStatus" ))
 				{
 					button.changeActiveStatus();
-					var sprite:Dynamic = button.get( "sprite" ).getChildAt( 0 );
-					var spriteToChange:Sprite = sprite.getChildAt( 3 );
-					spriteToChange.visible = false;
+					var sprite:Sprite = button.get( "sprite" ).getChildAt( 0 );
+					sprite.getChildAt( 2 ).visible = false;
+					break; // Выбрана может быть только 1 кнопка.
+	
 				}
 			}
 		}
-	}
 
 	public function uchooseInnHeroButtons():Void
 	{
@@ -795,5 +793,22 @@ class State
 			}
 		}
 	}
+
+	private function _findRecruitButtonById( id:Button.ButtonID ):Button
+	{
+		var array:Array<Button> = this._parent.getSystem( "ui" ).getWindowByDeployId( 3002 ).get( "buttons"); //recruit window
+		for( i in 0...array.length )
+		{
+			var button:Button = array[ i ];
+			var buttonId:Button.ButtonID = button.get( "id" );
+			if( haxe.EnumTools.EnumValueTools.equals( buttonId, id ))
+				return button;
+		}
+
+		throw 'Error in State._findRecruitButtonById. No button fund in recruit window';
+		return null;
+	}
+
+	
 
 }
