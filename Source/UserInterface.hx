@@ -112,7 +112,10 @@ class UserInterface
 		for( j in 0...windowChilds.length )
 		{
 			var button:Button = windowChilds[ j ];
-			eventHandler.removeEvents( button );
+			var sprite:Sprite = button.get( "sprite" );
+			if( sprite.hasEventListener( "CLICK" ))
+				eventHandler.removeEvents( button );
+			
 		}
 		this._objectsOnUi.splice( exist, 1 ); // убираем окно по индексу check, одно.
 		this._sprite.removeChild( sprite );
@@ -244,7 +247,7 @@ class UserInterface
 		{
 			for( i in 0...config.button.length )
 			{
-				if( deployId == 3004 )
+				if( deployId == 3004 ) // choose hero To Dungeon buttons in chooseDungeon scene;
 				{
 						for( j in 0...4 )
 						{

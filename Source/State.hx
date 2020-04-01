@@ -47,15 +47,11 @@ class State
 		var sceneSystem:SceneSystem = this._parent.getSystem( "scene" );
 		var player:Player = this._parent.createPlayer( 100 , "test player" );
 
+		// start new game - create both scenes;
 		var scene:Scene = sceneSystem.createScene( 1001 );
-		sceneSystem.prepareScene( scene );
 		var sceneId:Scene.SceneID = scene.get( "id" );
-		var dungeonScene:Scene = sceneSystem.createScene( 1002 ); // start new game - create first dungeon scene;
-		sceneSystem.prepareScene( dungeonScene );
+		var dungeonScene:Scene = sceneSystem.createScene( 1002 ); 
 		var dungeonSceneId:Scene.SceneID = dungeonScene.get( "id" );
-
-		scene.setSceneForFastSwitch( dungeonSceneId );
-		dungeonScene.setSceneForFastSwitch( sceneId );
 
 		sceneSystem.changeSceneTo( scene );
 	}
@@ -118,7 +114,8 @@ class State
 		var currentSceneName:String = sceneSystem.getActiveScene().get( "name" );
 		if( currentSceneName == "cityScene" )
 		{
-			sceneSystem.fastSwitchScenes( sceneSystem.getActiveScene() );
+			var dungeonScene:Scene = sceneSystem.getSceneByName( "chooseDungeonScene" );
+			sceneSystem.changeSceneTo( dungeonScene );
 		}
 		else
 		{
@@ -146,7 +143,8 @@ class State
 	public function backToCitySceneFromChooseDungeon():Void
 	{
 		var sceneSystem:SceneSystem = this._parent.getSystem( "scene" );
-		sceneSystem.fastSwitchScenes( sceneSystem.getActiveScene() );
+		var cityScene:Scene = sceneSystem.getSceneByName( "cityScene" );
+		sceneSystem.changeSceneTo( cityScene );
 	}
 
 	public function innHeroListUp():Void
@@ -307,6 +305,11 @@ class State
 		//TODO: запустить внутренний таймер для отсчета смены новых героев.
 	}
 
+	public function generateItemsForBuilding( building:Building ):Void
+	{
+
+	}
+
 	public function unchooseHeroToDungeon( id:Button.ButtonID ):Void
 	{
 		var button:Button = this._parent.getSystem( "ui" ).getWindowByDeployId( 3004 ).getButtonById( id ); // chooseHeroToDungeon Window deploy id is 3004;
@@ -364,6 +367,18 @@ class State
 				sprite.x = 0;
 				break; //выбрана может быть только одна кнопка.
 			}
+		}
+	}
+
+	public function clearAllChooseHeroToDungeonButton():Void
+	{
+		var buttons:Array<Button> = this._parent.getSystem( "ui" ).getWindowByDeployId( 3004 ).get( "buttons" ); // chooseHeroToDungeon Window deploy id is 3004;
+		for( i in 0...buttons.length )
+		{
+			var button:Button = buttons[ i ];
+			var heroId:Hero.HeroID = button.get( "heroId" );
+			if( heroId != null )
+				this.unchooseHeroToDungeon( button.get( "id" ));
 		}
 	}
 

@@ -27,6 +27,18 @@
 		"window": [ 3004, 3008 ]
 	},
 
+	"1003":{
+		"name": "loader",
+		"deployId": 1003,
+		"imageNormalURL": "assets/images/scenes/loader.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"imageSecondURL": "assets/images/scenes/loader_line.png",
+		"imageSecondX": 100.0,
+		"imageSecondY": 800.0
+	},
+
+
 	"1100":{
 		"name": "dungeonCaveOne",
 		"deployId": 1100,

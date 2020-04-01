@@ -84,12 +84,22 @@ class GraphicsSystem
 		mainGraphicsSprite.addChild( bitmap );
 	}
 
+	public function getGraphicsAt( num:Int ):Bitmap
+	{
+		var mainGraphicsSprite:Dynamic = this._sprite.getChildAt( 0 ); // graphics displayObjectContainer;
+		var bitmap:Bitmap = mainGraphicsSprite.getChildAt( num );
+		if( bitmap == null )
+			throw 'Error in GraphicsSystem.getGraphicsAt. No bitmap at "$num"';
+		
+		return bitmap;
+	}
+
 	public function removeGraphicsAt ( num:Int ):Void
 	{
 		var mainGraphicsSprite:Dynamic = this._sprite.getChildAt( 0 ); // graphics displayObjectContainer;
 		var bitmap:Bitmap = mainGraphicsSprite.getChildAt( num );
 		if( bitmap == null )
-			throw 'Error in GraphicsSystem.removeGraphicsAt. No chial at "$num"';
+			throw 'Error in GraphicsSystem.removeGraphicsAt. No bitmap at "$num"';
 
 		mainGraphicsSprite.removeChildAt( num );
 	}

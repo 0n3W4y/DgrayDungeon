@@ -254,7 +254,6 @@ class Game
 		this._lastSave = this._checkForSave();
 
 		var scene:Scene = this._sceneSystem.createScene( 1000 );
-		this._sceneSystem.prepareScene( scene );
 		this._sceneSystem.changeSceneTo( scene );
 
 		this.start();

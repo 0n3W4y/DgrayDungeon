@@ -1,5 +1,6 @@
 package;
 
+import haxe.EnumTools;
 import openfl.display.Sprite;
 import openfl.display.Bitmap;
 import openfl.Assets;
@@ -22,6 +23,7 @@ typedef SceneEvent =
 	var SceneID:SceneID;
 	var SceneEventName:String;
 	var SceneEventTime:Float;
+	var SceneEventCurrentTime:Float;
 }
 
 class SceneSystem
@@ -30,6 +32,7 @@ class SceneSystem
 	private var _scenesArray:Array<Scene>;
 	private var _scenesSprite:Sprite;
 	private var _activeScene:Scene;
+	private var _sceneAfterLoader:Scene;
 
 	private var _sceneEvents:Array<SceneEvent>;
 
@@ -63,13 +66,13 @@ class SceneSystem
 	public function update( time:Float ):Void
 	{
 		//we can add scenes to array , who need to update, and remove them if don't need to update;
-		this._upfateSceneEvents( time );
+		this._updateSceneEvents( time );
 	}
 
 	public function addScene( scene:Scene ):Void
 	{
 		var name:String = scene.get( "name" );
-		var check = this._checkSceneIfExist( scene );
+		var check = this._checkSceneByDeployId( scene.get( "deployId" ));
 		if( check != null )
 			throw 'Error in SceneSystem.addScene. Scene with name "$name" already in.';
 
@@ -79,176 +82,71 @@ class SceneSystem
 	public function removeScene( scene:Scene ):Scene
 	{
 		var name:String = scene.get( "name" );
-		var check = this._checkSceneIfExist( scene );
+		var check = this._checkSceneByDeployId( scene.get( "deployId" ));
 		if( check == null )
 			throw 'Error in SceneSystem.addScene. Scene with name "$name" does not exist.';
 
-		this.undrawUiForScene( scene );
+		this._undrawUiForScene( scene );
 		this._destroyUiForScene( scene );
 		this._scenesArray.splice( check, 1 );
 		return scene;
 	}
 
-	public function fastSwitchScenes( scene:Scene ):Void
-	{
-		var sceneName:String = scene.get( "name" );
-		var sceneId:SceneID = scene.get( "id" );
-		var sceneDeployId:SceneDeployID = scene.get( "deployId" );
-		var activeSceneId:SceneID = this._activeScene.get( "id" );
-		if( !haxe.EnumTools.EnumValueTools.equals( sceneId, activeSceneId ))
-			throw 'Error in SceneSystem.fastSwitchScenes. Cannot switch scenes, becase scene is not active';
-
-		var sceneToSwitchId:SceneID = scene.get( "sceneForFastSwitch" );
-		if( sceneToSwitchId == null )
-			throw 'Error in SceneSystem.switchCitySceneToChooseDungeonScene. Can not switch scene, because scene for fast switch is null';
-
-		var sceneToFastSwitch:Scene = this.getSceneById( sceneToSwitchId );
-		var sceneToFastSwitchIsDrawed:Bool = sceneToFastSwitch.get( "isDrawed" );
-		var sceneToFastSwitchDeployId:SceneDeployID = sceneToFastSwitch.get( "deployId" );
-
-		this._activeScene = sceneToFastSwitch;
-		this.hideScene( scene );
-
-		if( sceneName == "cityScene" )
-		{
-			if( sceneToFastSwitchIsDrawed )
-			{
-				this.showScene( sceneToFastSwitch ); // показываем ранее скрытую сцену выбора данжа.
-				this.drawUiForScene( sceneToFastSwitch ); // прорисовываем окна интерфейса для сцены выбора данжа.
-			}
-			else
-			{
-				this.drawScene( sceneToFastSwitch );
-				this._parent.getSystem( "ui" ).closeAllActiveWindows();
-			}
-		}
-		else
-		{
-			if( sceneToFastSwitchIsDrawed )
-			{
-				this.showScene( sceneToFastSwitch ); // показываем сцену города.
-				this.undrawUiForScene( scene ); // убираем окна с интерфейса для сцены выбора данжа.
-			}
-			else
-			{
-				throw 'Error in SceneSystem.fastSwitchScenes. City Scene not drawed!!!!!';
-			}
-		}
-
-	}
-
 	public function changeSceneTo( scene:Scene ):Void //full undraw active scene, and draw new scene;
 	{
-		//TODO: Loader;
-
-		if( this._activeScene != null )
-			this.undrawScene( this._activeScene );
-
-		this._activeScene = scene;
-		this.drawScene( scene );
-	}
-
-	public function drawUiForScene( scene:Scene ):Void
-	{
-		var ui:UserInterface = this._parent.getSystem( "ui" );
-		var sceneDeployId:SceneDeployID = scene.get( "deployId" );
-		var configScene:Dynamic = this._parent.getSystem( "deploy" ).getScene( sceneDeployId );
-		var windowArray:Array<Int> = configScene.window;
-
-		for( i in 0...windowArray.length )
+		var sceneName:String = scene.get( "name" );
+		switch( sceneName )
 		{
-			var window:Int = windowArray[ i ];
-			var windowId:WindowDeployID = WindowDeployID( window );
-			if( window == 3003 ) // panelCityWindow deploy Id 3003;
-			{
-				var panelCityWindow = ui.getWindowByDeployId( 3003 );
-				var playerMoney:Player.Money = this._parent.getPlayer().get( "money" );
-				panelCityWindow.get( "graphics" ).setText( '$playerMoney', "first" );
-			}
-
-			ui.addWindowOnUi( windowId );
+			case "startScene": this._changeSceneToStartScene( scene );
+			case "cityScene": this._changeSceneToCityScene( scene );
+			case "chooseDungeonScene": this._changeSceneToChooseDungeonScene( scene );
+			default: throw 'Error in SceneSystem.changeSceneTo. Can not change scene to "$sceneName"';
 		}
 
+		this._parent.getSystem( "ui" ).show();
 	}
 
-	public function undrawUiForScene( scene:Scene ):Void
+	public function createSceneEvent( sceneId:SceneID, eventType:String, time:Float ):Void
 	{
-		var ui:UserInterface = this._parent.getSystem( "ui" );
-		var sceneDeployId:SceneDeployID = scene.get( "deployId" );
-		var configScene:Dynamic = this._parent.getSystem( "deploy" ).getScene( sceneDeployId );
-		var windowArray:Array<Int> = configScene.window;
-
-		for( i in 0...windowArray.length )
+		switch( eventType )
 		{
-			var window:Int = windowArray[ i ];
-			var windowId:WindowDeployID = WindowDeployID( window );
-			ui.removeWindowFromUi( windowId );
+			case "reviewScene": this._sceneEvents.push({ SceneID: sceneId, SceneEventName: eventType, SceneEventTime: time, SceneEventCurrentTime: time });
+			case "showScene": this._sceneEvents.push({ SceneID:sceneId, SceneEventName: eventType, SceneEventTime: time, SceneEventCurrentTime: time });
+			case "hideScene": this._sceneEvents.push({ SceneID:sceneId, SceneEventName: eventType, SceneEventTime: time, SceneEventCurrentTime: time });
+			case "checkShowLoader": this._sceneEvents.push({ SceneID:sceneId, SceneEventName: eventType, SceneEventTime: time, SceneEventCurrentTime: time });
+			case "undrawSceneWithHide": this._sceneEvents.push({ SceneID:sceneId, SceneEventName: eventType, SceneEventTime: time, SceneEventCurrentTime: time });
+			default: throw 'Error in SceneSystem.createSceneEvent. can not create "$eventType"';
+		}
+	}
+
+	public function removeSceneEvent( sceneId:SceneID, eventType:String ):Void
+	{
+		for( i in 0...this._sceneEvents.length )
+		{
+			var event:SceneEvent = this._sceneEvents[ i ];
+			if( event.SceneEventName == eventType && haxe.EnumTools.EnumValueTools.equals( sceneId, event.SceneID ))
+			{
+				this._sceneEvents.splice( i, 1 );
+				return;
+			}
 		}
 	}
 
 	public function showScene( scene:Scene ):Void
 	{
-		scene.get( "sprite" ).visible = true;
+		this.createSceneEvent( scene.get( "id" ), "showScene", 2000 );
+		//scene.get( "sprite" ).visible = true;
 	}
 
 	public function hideScene( scene:Scene ):Void
 	{
-		scene.get( "sprite" ).visible = false;
+		this.createSceneEvent( scene.get( "id" ), "hideScene", 2000 );
+		//scene.get( "sprite" ).visible = false;
 	}
 
-	public function prepareScene( scene:Scene ):Void
+	public function undrawSceneWithHide( scene:Scene ):Void
 	{
-		var name:String = scene.get( "name" );
-		switch( name )
-		{
-			case "startScene": this._prepareStartScene( scene );
-			case "cityScene": this._prepareCityScene( scene );
-			case "chooseDungeonScene": this._prepareChooseDungeonScene( scene );
-			case "dungeonCaveOne": this._prepareDungeonScene( scene );
-			default: throw 'Error in SceneSystem.drawScene. Scene with name "$name" can not to be draw, no function for it.';
-		}
-	}
-
-	public function prepareUiForScene( scene:Scene ):Void
-	{
-
-	}
-
-	public function drawScene( scene:Scene ):Void
-	{
-		var name:String = scene.get( "name" );
-		var prepared:String = scene.get( "prepared" );
-		if( prepared == "unprepared" )
-			throw 'Error in SceneSystem.drawScene. Scene "$name" is "$prepared"';
-
-		var isDrawed:Bool = scene.get( "isDrawed" );
-		if( isDrawed )
-			throw 'Error in SceneSystem,drawScene. Scene "$name" already drawed';
-
-
-		this._scenesSprite.addChild( scene.get( "sprite" ));
-		this.drawUiForScene( scene );
-		this._parent.getSystem( "ui" ).show();
-		scene.setDrawed( true );
-	}
-
-	public function undrawScene( scene:Scene ):Void
-	{
-		var sprite:Sprite = scene.get( "sprite" );
-		this._scenesSprite.removeChild( sprite );
-		this._parent.getSystem( "ui" ).hide();
-		this.undrawUiForScene( scene );
-		scene.setDrawed( false );
-	}
-
-	public function drawLoader():Void
-	{
-
-	}
-
-	public function undrawLoader():Void
-	{
-
+		this.createSceneEvent( scene.get( "id" ), "undrawSceneWithHide", 2000 );
 	}
 
 	public function getParent():Game
@@ -372,31 +270,86 @@ class SceneSystem
 
     public function prepareBuilding( building:Building ):Void
     {
+		var state:State = this._parent.getSystem( "state" );
     	var name:String = building.get( "name" );
     	switch( name )
     	{
-    		case "recruits": this._prepareBuildingRecruits( building );
+    		case "recruits": state.generateHeroesForBuilding( building );
     		case "hospital": {};
     		case "fontain": {};
     		case "inn": {};
     		case "tavern": {};
     		case "blacksmith": {};
-    		case "merchant": {};
+    		case "merchant": state.generateItemsForBuilding( building );
     		case "graveyard": {};
     		case "academy": {};
     		case "hermit": {};
     		case "questman": {};
     		default: throw 'Error. in SceneSystem.prepareBuilding. No action found for building "$name"';
     	}
-    }
+	}
+	
+
+
+
 
 	//PRIVATE
 
-	private function _prepareBuildingRecruits( building:Building ):Void
+
+
+	private function _drawScene( scene:Scene ):Void
 	{
-		//TODO: Create heroes, add heroes to building.
-		this._parent.getSystem( "state" ).generateHeroesForBuilding( building );
+		var name:String = scene.get( "name" );
+		var prepared:String = scene.get( "prepared" );
+		if( prepared == "unprepared" )
+			throw 'Error in SceneSystem.drawScene. Scene "$name" is "$prepared"';
+
+		var isDrawed:Bool = scene.get( "isDrawed" );
+		if( isDrawed )
+			throw 'Error in SceneSystem._drawScene. Scene "$name" already drawed';
+
+		var sceneSprite:Sprite = scene.get( "sprite" );
+		sceneSprite.alpha = 0.0;
+		//this.createSceneEvent( scene.get( "id" ), "reviewScene", 2000 );
+		this._scenesSprite.addChild( scene.get( "sprite" ));
+		this._drawUiForScene( scene );
+		scene.setDrawed( true );
 	}
+
+	private function _undrawScene( scene:Scene ):Void
+	{
+		var name:String = scene.get( "name" );
+		var isDrawed:Bool = scene.get( "isDrawed" );
+		if( !isDrawed )
+			throw 'Error in SceneSystem._undrawScene. Scene "$name" not drawed yet';
+
+		var sceneSprite:Sprite = scene.get( "sprite" );
+		this._scenesSprite.removeChild( sceneSprite );
+		this._undrawUiForScene( scene );
+		scene.setDrawed( false );
+	}
+
+	private function _updateSceneEvents( time:Float ):Void
+	{
+		for( i in 0...this._sceneEvents.length )
+		{
+			var event:SceneEvent = this._sceneEvents[ i ];
+			if( event == null )
+				return;
+
+			event.SceneEventCurrentTime -= time;
+			switch( event.SceneEventName )
+			{
+				case "reviewScene":	this._reviewScene( event.SceneID, event.SceneEventTime, event.SceneEventCurrentTime );
+				case "showScene": this._showScene( event.SceneID, event.SceneEventTime, event.SceneEventCurrentTime );
+				case "hideScene": this._hideScene( event.SceneID, event.SceneEventTime, event.SceneEventCurrentTime );
+				case "checkShowLoader": this._checkShowLoader( event.SceneID, event.SceneEventTime, event.SceneEventCurrentTime );
+				case "undrawSceneWithHide": this._undrawSceneWithHide( event.SceneID, event.SceneEventTime, event.SceneEventCurrentTime );
+				default: throw 'Error in SceneSystem._updateSceneEvents. No event found for "$event"';
+			}
+		}
+	}
+
 
 	private function _prepareStartScene( scene:Scene ):Void
 	{
@@ -417,6 +370,11 @@ class SceneSystem
 
 		}
 
+		var panelCityWindow = this._parent.getSystem( "ui" ).getWindowByDeployId( 3003 ); // panel city Window
+		var playerMoney:Player.Money = this._parent.getPlayer().get( "money" );
+		panelCityWindow.get( "graphics" ).setText( '$playerMoney', "first" );
+
+
 		scene.changePrepareStatus( "prepared" );
 	}
 
@@ -429,6 +387,155 @@ class SceneSystem
 	{
 		scene.changePrepareStatus( "prepared" );
 		//TODO:
+	}
+
+	private function _prepareSceneLoader( scene:Scene ):Void
+	{
+		scene.changePrepareStatus( "prepared" );
+	}
+
+	
+
+	private function _drawLoader( scene:Scene ):Void
+	{
+		var bitmap:Bitmap = scene.get( "graphics" ).getGraphicsAt( 1 );
+		bitmap.width = 0;
+
+		this._scenesSprite.addChild( scene.get( "sprite" ));
+		scene.setDrawed( true );
+	}
+
+	private function _undrawLoader( scene:Scene ):Void
+	{
+		this._scenesSprite.removeChild( scene.get( "sprite" ));
+		scene.setDrawed( false );
+	}
+
+	private function _doLoader():Void
+	{
+		var nextScene:Scene = this._sceneAfterLoader;
+		if( nextScene == null )
+			throw 'Error in SceneSystem._doLoader. Next Scene is null';
+
+		var sceneName:String = nextScene.get( "name" );
+		switch( sceneName )
+		{
+			case "cityScene":
+			{
+				var scenePrepared:String = nextScene.get( "prepared" );
+				// change loader sprite (1) to %;
+				if( scenePrepared == "unprepared" )
+					this._prepareCityScene( nextScene );
+
+				//change loader sprite (1) to %;
+				this._drawScene( nextScene );
+				//change loader sprite (1) to 100%;
+				this.createSceneEvent( this._activeScene.get( "id" ), "hideScene", 2000 );
+				this._activeScene = nextScene;
+				this._parent.getSystem( "ui" ).show();
+
+			}
+			default: throw 'Error in SceneSystem._doLoader. Can not load scene "$sceneName" from loader ';
+		}
+				
+		
+	}
+
+	
+
+	
+
+	private function _changeSceneToStartScene( scene:Scene ):Void
+	{
+		var currentScene:Scene = this._activeScene;
+		var sceneLoader:Scene;
+		if( currentScene == null ) // делаем вывод, что это начало игры.
+		{
+
+			sceneLoader = this.createScene( 1003 ); // create loader;
+			this._prepareSceneLoader( sceneLoader );
+
+			this._prepareStartScene( scene );
+			this._drawScene( scene );
+			this.createSceneEvent( scene.get( "id" ), "showScene", 2000 );
+			this._activeScene = scene;
+		}
+		else
+		{
+			//TODO: draw loader, save game - do progress in loader, undraw old scene - do progress in loader, - draw new scene - do progress, remove loader, show scene;
+			sceneLoader = this.getSceneByName( "loader" );
+			this._sceneAfterLoader = scene;
+		
+		}
+	}
+
+	private function _changeSceneToCityScene( scene:Scene ):Void
+	{
+		var currentScene:Scene = this._activeScene;
+		var sceneName:String = currentScene.get( "name" );
+		var sceneLoader:Scene = this.getSceneByName( "loader" );
+		switch( sceneName )
+		{
+			case "chooseDungeonScene":
+			{
+				this.hideScene( currentScene );
+				this._parent.getSystem( "ui" ).closeAllActiveWindows();
+				this._parent.getSystem( "state" ).clearAllChooseHeroToDungeonButton();
+				this._activeScene = scene;
+			}
+			case "startScene":
+			{
+				this._parent.getSystem( "ui" ).hide();
+				this._sceneAfterLoader = scene;
+				this.undrawSceneWithHide( this._activeScene );
+				this._activeScene = sceneLoader;
+				this._drawLoader( sceneLoader );
+				this.createSceneEvent( sceneLoader.get( "id" ), "checkShowLoader", 4000 );	
+			}
+			default: throw 'Error in SceneSystem._changeSceneToCityScene. Can not change to City scene from "$sceneName"';
+		}
+	}
+
+	private function _changeSceneToChooseDungeonScene( scene:Scene ):Void
+	{
+
+	}
+
+	private function _drawUiForScene( scene:Scene ):Void
+	{
+		var ui:UserInterface = this._parent.getSystem( "ui" );
+		var sceneDeployId:SceneDeployID = scene.get( "deployId" );
+		var configScene:Dynamic = this._parent.getSystem( "deploy" ).getScene( sceneDeployId );
+		var windowArray:Array<Int> = configScene.window;
+
+		for( i in 0...windowArray.length )
+		{
+			var window:Int = windowArray[ i ];
+			var windowId:WindowDeployID = WindowDeployID( window );
+			if( window == 3003 ) // panelCityWindow deploy Id 3003;
+			{
+				var panelCityWindow = ui.getWindowByDeployId( 3003 );
+				var playerMoney:Player.Money = this._parent.getPlayer().get( "money" );
+				panelCityWindow.get( "graphics" ).setText( '$playerMoney', "first" );
+			}
+
+			ui.addWindowOnUi( windowId );
+		}
+	}
+
+	private function _undrawUiForScene( scene:Scene ):Void
+	{
+		var ui:UserInterface = this._parent.getSystem( "ui" );
+		var sceneDeployId:SceneDeployID = scene.get( "deployId" );
+		var configScene:Dynamic = this._parent.getSystem( "deploy" ).getScene( sceneDeployId );
+		var windowArray:Array<Int> = configScene.window;
+
+		for( i in 0...windowArray.length )
+		{
+			var window:Int = windowArray[ i ];
+			var windowId:WindowDeployID = WindowDeployID( window );
+			ui.removeWindowFromUi( windowId );
+		}
 	}
 
 	private function _destroyUiForScene( scene:Scene ):Void
@@ -446,26 +553,16 @@ class SceneSystem
 		}
 	}
 
-	private function _checkSceneIfExist( scene:Scene ):Int
+	private function _checkSceneByDeployId( id:SceneDeployID ):Int
 	{
 		for( i in 0...this._scenesArray.length )
 		{
-			if( scene.get( "id" ).match( this._scenesArray[ i ].get( "id" ) ) )
+			var scene:Scene = this._scenesArray[ i ];
+			var sceneDeployId:SceneDeployID = scene.get( "deployId" );
+			if( haxe.EnumTools.EnumValueTools.equals( id, sceneDeployId ))
 				return i;
 		}
 		return null;
-	}
-
-	private function _upfateSceneEvents( time:Float ):Void
-	{
-		var state:State = this._parent.getSystem( "state" );
-		for( i in 0...this._sceneEvents.length )
-		{
-			var event:SceneEvent = this._sceneEvents[ i ];
-			event.SceneEventTime -= time;
-			if( event.SceneEventTime <= 0 )
-				state.onSceneEventDing( event );
-		}
 	}
 
 	private function _createGraphicsSprite( config:Dynamic ):Sprite
@@ -481,19 +578,19 @@ class SceneSystem
 			sprite.addChild( bitmap );
 		}
 
-		if( config.imageSecondURL != null )
+		if( config.imageHoverURL != null )
 		{
 			bitmap = this._createBitmap( config.imageHoverURL );
-			bitmap.x = config.imageSecondX;
-			bitmap.y = config.imageSecondY;
+			bitmap.x = config.imageHoverX;
+			bitmap.y = config.imageHoverY;
 			sprite.addChild( bitmap );
 		}
 
-		if( config.imageThirdURL != null )
+		if( config.imageSecondURL != null )
 		{
-			bitmap = this._createBitmap( config.imagePushURL );
-			bitmap.x = config.imageThirdX;
-			bitmap.y = config.imageThirdY;
+			bitmap = this._createBitmap( config.imageSecondURL );
+			bitmap.x = config.imageSecondX;
+			bitmap.y = config.imageSecondY;
 			sprite.addChild( bitmap );
 		}
 
@@ -502,8 +599,7 @@ class SceneSystem
 
 	private function _createBitmap( url:String ):Bitmap
 	{
-		var bitmap:Bitmap = new Bitmap( Assets.getBitmapData( url ) );
-		return bitmap;
+		return new Bitmap( Assets.getBitmapData( url ));
 	}
 
 	private function _createTextSprite( config:Dynamic ):Sprite
@@ -585,5 +681,87 @@ class SceneSystem
         	throw( "Some errors in SceneSystem._createText. In config some values is NULL. Text: " + text.text );
 
         return txt;
+	}
+
+
+
+
+
+
+	// TEST
+	private function _reviewScene( id:SceneID, time:Float, currentTime:Float ):Void
+	{
+		var scene:Scene = this.getSceneById( id );
+		var sprite:Sprite = scene.get( "sprite" );
+		if( currentTime <= 0 )
+		{
+			sprite.alpha = 1.0;
+			this.removeSceneEvent( id, "reviewScene");
+			return;
+		}
+		var newAlpha:Float = -1*( 1/time )*currentTime + 1;
+		sprite.alpha = newAlpha;
+	}
+
+	private function _showScene( id:SceneID, time:Float, currentTime:Float ):Void
+	{
+		var scene:Scene = this.getSceneById( id );
+		var sprite:Sprite = scene.get( "sprite" );
+		if( currentTime <= 0 )
+		{
+			sprite.alpha = 1.0;
+			this.removeSceneEvent( id, "showScene");
+			return;
+		}
+		if( !sprite.visible )
+		{
+			sprite.alpha = 0.0;
+			sprite.visible = true;
+		}
+		var newAlpha:Float = -1*( 1/time )*currentTime + 1;
+		sprite.alpha = newAlpha;
+	}
+
+	private function _hideScene( id:SceneID, time:Float, currentTime:Float ):Void
+	{
+		var scene:Scene = this.getSceneById( id );
+		var sprite:Sprite = scene.get( "sprite" );
+		if( currentTime <= 0 )
+		{
+			sprite.alpha = 0.0;
+			sprite.visible = false;
+			this.removeSceneEvent( id, "hideScene");
+			this.createSceneEvent( this._activeScene.get( "id" ), "showScene", 2000 );
+			return;
+		}
+		var newAlpha:Float = ( 1/time )*currentTime;
+		sprite.alpha = newAlpha;
+	}
+
+	private function _checkShowLoader( id:SceneID, time:Float, currentTime:Float ):Void
+	{
+		var scene:Scene = this.getSceneById( id );
+		var sprite:Sprite = scene.get( "sprite" );
+		if( sprite.alpha >= 1.0 )
+		{
+			this.removeSceneEvent( id, "checkShowLoader");
+			this._doLoader();
+		}
+	}
+
+	private function _undrawSceneWithHide( id:SceneID, time:Float, currentTime:Float ):Void
+	{
+		var scene:Scene = this.getSceneById( id );
+		var sprite:Sprite = scene.get( "sprite" );
+		if( currentTime <= 0 )
+		{
+			sprite.alpha = 0.0;
+			sprite.visible = false;
+			this.removeSceneEvent( id, "undrawSceneWithHide" );
+			this._undrawScene( scene );
+			return;
+		}
+		var newAlpha:Float = ( 1/time )*currentTime;
+		sprite.alpha = newAlpha;
 	}
 }

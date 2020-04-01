@@ -30,7 +30,6 @@ class Scene
 	private var _name:String;
 
 	private var _isPrepared:String;
-	private var _sceneForFastSwitch:SceneID;
 	private var _isDrawed:Bool;
 
 	private var _graphics:GraphicsSystem;
@@ -54,7 +53,6 @@ class Scene
 	{
 		var err:String = 'Name "$_name" id "$_id" deploy id "$_deployId"';
 		this._isPrepared = "unprepared"; // По умолчанию, сцена не готова.
-		this._sceneForFastSwitch = null;
 		this._isDrawed = false;
 		this._building = new Array<Building>();
 		this._hero = new Array<Hero>();
@@ -88,14 +86,8 @@ class Scene
 			case "sprite": return this._sprite;
 			case "prepared": return this._isPrepared;
 			case "isDrawed": return this._isDrawed;
-			case "sceneForFastSwitch": return this._sceneForFastSwitch;
 			default: throw 'Error in Scene.get. No getter for "$value"';
 		}
-	}
-
-	public function setSceneForFastSwitch( id:SceneID ):Void
-	{
-		this._sceneForFastSwitch = id;
 	}
 
 	public function setDrawed( bool:Bool ):Void

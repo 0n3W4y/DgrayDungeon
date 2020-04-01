@@ -129,18 +129,22 @@ class ItemSystem
 			"resistCold": 0
 		}
 
-		var extraStats:Array<String> = config.extraStats;
+		var configExtraStats:Array<String> = config.extraStats;
+		var extraStats:Array<String> = configExtraStats.copy();
 		var maxExtraStats:Int = config.maxExtraStats;
 		var cursedStat:Int = config.cursedStat; // получаем процент, котоырй покажет будет ли статы отрицательной или положительной.
+		var deployId:Int = config.deployId;
+
+		if( extraStats == null )
+			throw 'Error in IemSystem.generatePriceAndStats. Array with extra stats is null in deploy id "$deployId"';
 
 		if( maxExtraStats == null )
-			throw 'Error in ItemSyste.generatePriceAndStats. Max Extra stats "$maxExtraStats"';
+			throw 'Error in ItemSyste.generatePriceAndStats. Max Extra stats "$maxExtraStats" in deploy id "$deployId"';
 		//choose  stats for item; yes, random; and check - cursed or not;
 		// if cursed stat have "-" value;
 		for( i in 0...maxExtraStats )
 		{
-			var arrayLength:Int = extraStats.length;
-			var stat:String = extraStats[ Math.floor( Math.random() * arrayLength ) ]; // получаем рандомную стату из аррэя
+			var stat:String = extraStats[ Math.floor( Math.random() * extraStats.length ) ]; // получаем рандомную стату из аррэя
 			extraStats.remove( stat );// во избежании повторов, удаляем из массива.
 
 			// рандомно получаем отрицательной или положительной будет стата.
@@ -161,7 +165,7 @@ class ItemSystem
 			configToReturn.upgradeLevelPrice += Math.round( addedPrice / 2 ); // увеличиваем стоимость апгрейда.
 		}
 
-		configToReturn.priceSell += Math.round( configToReturn.priceSell * configToReturn.priceBuy / config.priceBuy ); // ищем среднюю цену относительно начальной цени и конечной.
+		configToReturn.priceSell = Math.round( configToReturn.priceSell * configToReturn.priceBuy / config.priceBuy ); // ищем среднюю цену относительно начальной цени и конечной.
 
 		if( config.damage == null )
 			configToReturn.defense = config.defense;
@@ -169,10 +173,16 @@ class ItemSystem
 			configToReturn.damage = config.damage;
 
 		if( configToReturn.priceBuy <= 0 )
+		{
 			configToReturn.priceBuy = config.priceBuy;
-
-		if( configToReturn.priceSell <= 0 )
 			configToReturn.priceSell = config.priceSell;
+		}
+			
+		if( configToReturn.priceSell <= 0 )
+			configToReturn.priceSell = 1;
+
+		if( configToReturn.priceBuy < configToReturn.priceSell )
+			configToReturn.priceSell = 1;
 
 		if( configToReturn.upgradeLevelPrice <= 0 )
 			configToReturn.upgradeLevelPrice = config.upgradeLevelPrice;
