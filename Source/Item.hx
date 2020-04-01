@@ -95,6 +95,7 @@ class Item
 		this._id = config.ID;
 		this._name = config.Name;
 		this._deployId = config.DeployID;
+		this._itemType = config.ItemType;
 		this._rarity = config.Rarity;
 		this._fullName = config.FullName;
 		this._restriction = config.Restriction;
@@ -136,7 +137,10 @@ class Item
 
 		if( this._deployId == null )
 			throw '$err. deploy id is null';
-
+		
+		if( this._itemType == null )
+			throw '$err. item type null';
+		
 		if( this._rarity == null )
 			throw '$err. rarity is null';
 

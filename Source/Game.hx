@@ -31,10 +31,10 @@ class Game
 	private var _onPause:Bool;
 	private var _fps:Int;
 	private var _mainLoop:Timer;
-	private var _currentTime:Int;
-	private var _lastTime:Int;
-	private var _delta:Int;
-	private var _doubleDelta:Int;
+	private var _currentTime:Float;
+	private var _lastTime:Float;
+	private var _delta:Float;
+	private var _doubleDelta:Float;
 
 	private var _player:Player;
 	private var _lastSave:Dynamic;
@@ -86,7 +86,7 @@ class Game
 
 	public function start():Void
 	{
-		var time = Std.int( Math.floor( this._delta ) );
+		var time:Int = Std.int( Math.ffloor( this._delta ));
 
 		this._mainLoop = new Timer( time );
 		this._mainLoop.run = function()
@@ -205,7 +205,7 @@ class Game
 	private function _tick():Void
 	{
 		this._currentTime = Date.now().getTime();
-		var delta:Int = this._currentTime - this._lastTime;
+		var delta:Float = this._currentTime - this._lastTime;
 
 		if ( delta >= this._delta ){
 			if( delta >= this._doubleDelta ){
@@ -217,7 +217,7 @@ class Game
 		this._sUpdate(); // special update; обновление дейсвтий мыши на графические объкты.
 	}
 
-	private function _update( time:Int ):Void
+	private function _update( time:Float ):Void
 	{
 		if( !this._onPause )
 		{
@@ -249,7 +249,7 @@ class Game
 	{
 		this._gameStart = Date.now().getTime();
 		this._calculateDelta();
-		this._lastTime = 0.0;
+		this._lastTime = 0;
 
 		this._lastSave = this._checkForSave();
 

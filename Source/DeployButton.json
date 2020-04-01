@@ -690,5 +690,30 @@
 		"firstTextY": 0.0,
 		"firstTextAlign": "center",
 		"events":[ "up", "down", "out", "over", "click" ]
+	},
+
+	"4026":{
+		"name": "warningWindowOk",
+		"deployId": 4026,
+		"x": 170.0,
+		"y": 130.0,
+		"imageNormalURL": "assets/images/buttons/button_a.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"imageHoverURL": "assets/images/buttons/button_a_hover.png",
+		"imageHoverX": 0.0,
+		"imageHoverY": 0.0,
+		"imagePushURL": "assets/images/buttons/button_a_push.png",
+		"imagePushX": 0.0,
+		"imagePushY": 0.0,
+		"firstText": "OK",
+		"firstTextSize": 34,
+		"firstTextColor": "0xffffff",
+		"firstTextHeight": 36,
+		"firstTextWidth": 220,
+		"firstTextX": 0.0,
+		"firstTextY": 0.0,
+		"firstTextAlign": "center",
+		"events":[ "up", "down", "out", "over", "click" ]
 	}
 }

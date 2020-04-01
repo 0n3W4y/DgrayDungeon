@@ -80,9 +80,10 @@ class State
 		var ui:UserInterface = this._parent.getSystem( "ui" );
 		switch( deployId )
 		{
-			case 3002 : 
+			case 3002: 
 			{
-				var activeWindowDeployId:WindowDeployID = ui.findChildCitySceneMainWindow();
+				var activeWindow:Window = ui.findChildCitySceneMainWindow();
+				var activeWindowDeployId = activeWindow.get( "deployId" );
 				if( activeWindowDeployId == null )// значит на экране нет октрытых окон;
 				{
 					ui.showUiObject( WindowDeployID( 3001 )); // открываем главное окно сцены.
@@ -95,7 +96,8 @@ class State
 				}
 				
 			}
-			default: throw 'Error in State.openWindow. Can not open window "$name"';
+			case 3100: ui.showUiObject( WindowDeployID( deployId ));
+			default: throw 'Error in State.openWindow. Can not open window "$deployId"';
 		}
 	}
 
@@ -105,7 +107,8 @@ class State
 		switch( deployId )
 		{
 			case 3001: ui.closeAllActiveWindows();
-			default: throw 'Error in State.closeWindow. Can not close window "$name"';
+			case 3100: this._closeWarningWindow();
+			default: throw 'Error in State.closeWindow. Can not close window "$deployId"';
 		}
 	}
 
@@ -123,7 +126,7 @@ class State
 			var choosenDungeon:Int = this._findChoosenDungeon(); // find active button in all windows on scene; { "dungeon": "cave", "difficulty": "easy" };
 			if( choosenDungeon == null )
 			{
-				this._showWarning( 'Please choose a dungeon');
+				this._openWarninWindow( 'Please choose a dungeon');
 				// или выбать первую кнопку, которая будет в списке :)
 				return;
 			}
@@ -131,9 +134,8 @@ class State
 			var check:Bool = this._checkFullPartyHeroes();
 			if( !check )
 			{
-				var answer:Bool = this._showYesNoWindow( "Party not full, do u wish to start without full party?" );
-				if( !answer )
-				 return;
+				//TODO: сделать окно, которое спросит у игрока, хочет ли он продолжать в неполном составе.
+				// показать окно, забиндить клавиши как ( cancel - closeWindow; "ok" - this._prepareToJourney; );
 			}
 
 			var heroes:Array<Hero> = this._findHeroToDungeon();
@@ -157,22 +159,39 @@ class State
 
 	}
 
-	public function chooseRecruitHeroButton( id:Button.ButtonID):Void
+	public function chooseButton( name:String, id:Button.ButtonID):Void
 	{
-		var button:Button = this._findRecruitButtonById( id );
-		var sprite:Sprite = button.get( "sprite" ).getChildAt( 0 );
-		if( button.get( "activeStatus" ))
+		switch( name )
 		{
-			button.changeActiveStatus();			
-			sprite.getChildAt( 2 ).visible = false; // На 2 индексе на кнопках, которые могут быть выбраны находится картинка выбора кнопки
-		}
-		else
-		{
-			this.unchooseAllRecruitHeroButton();
-			button.changeActiveStatus();			
-			sprite.getChildAt( 2 ).visible = true;
-		}
+			case "recruitHeroButtonWhite",
+			"recruitHeroButtonBlue",
+			"recruitHeroButtonGreen",
+			"recruitHeroButtonOrange": this._chooseRecruitHeroButton( id );
+			case "innWindowHeroButtonOrange",
+			"innWindowHeroButtonBlue",
+			"innWindowHeroButtonWhite",
+			"innWindowHeroButtonGreen": this._chooseInnHeroButton( id );
+			default: throw 'Error in State.chooseButton. Can not choose "$name"';
+		}	
 	}
+
+	public function unchooseButton( name:String, id:Button.ButtonID ):Void
+	{
+		switch( name )
+		{
+			case "recruitHeroButtonWhite",
+			"recruitHeroButtonBlue",
+			"recruitHeroButtonGreen",
+			"recruitHeroButtonOrange": this._unchooseRecruitHeroButton( id );
+			case "innWindowHeroButtonOrange",
+			"innWindowHeroButtonBlue",
+			"innWindowHeroButtonWhite",
+			"innWindowHeroButtonGreen": this._unchooseInnHeroButton( id );
+			default: throw 'Error in State.unchooseButton. Can not unchoose "$name"';
+		}	
+	}
+
+	
 
 	public function recruitHero():Void
 	{
@@ -189,15 +208,15 @@ class State
 		var price:Player.Money = hero.get( "buyPrice" );
 		if ( !this._checkPlayerMoneyAmount( price ) )
 		{
-			this._showWarning( '$error not enough money' );
-			this.chooseRecruitHeroButton( button.get( "id" ));
+			this._openWarninWindow( '$error not enough money' );
+			this._unchooseRecruitHeroButton( button.get( "id" ));
 			return;
 		}
 
 		if( !this._checkRoomInInnInventoryForHero() )
 		{
-			this._showWarning( '$error not enough room in Inn' );
-			this.chooseRecruitHeroButton( button.get( "id" ));
+			this._openWarninWindow( '$error not enough room in Inn' );
+			this._unchooseRecruitHeroButton( button.get( "id" ));
 			return;
 		}
 
@@ -228,7 +247,7 @@ class State
 		// убираем всех героев из инвентаря здания.
 		building.clearHeroStorage();
 		// убираем все кнопки, связанные с героями по имени ( так проще );
-		var recruitWindow:Window = ui.getWindowByDeployId( 3002 );
+		var recruitWindow:Window = this._parent.getSystem( "ui" ).getWindowByDeployId( 3002 );
 		var recruitWindowButtons:Array<Button> = recruitWindow.get( "buttons" );
 		var index:Int = 0;
 		for( j in 0...recruitWindowButtons.length )
@@ -288,61 +307,62 @@ class State
 		//TODO: запустить внутренний таймер для отсчета смены новых героев.
 	}
 
-	public function unchooseHeroToDungeon( id:Button.ButtonID, name:String ):Void
+	public function unchooseHeroToDungeon( id:Button.ButtonID ):Void
 	{
-		var buttonsArray:Array<Button> = this._parent.getSystem( "ui" ).getWindowByDeployId( 3004 ).get( "buttons" ); // chooseHeroToDungeon Window deploy id is 3004;
-		for( i in 0...buttonsArray.length )
+		var button:Button = this._parent.getSystem( "ui" ).getWindowByDeployId( 3004 ).getButtonById( id ); // chooseHeroToDungeon Window deploy id is 3004;
+		var heroId:Hero.HeroID = button.get( "heroId" );
+		if( heroId != null )
 		{
-			var button:Button = buttonsArray[ i ];
-			if( haxe.EnumTools.EnumValueTools.equals( id, button.get( "id" )))
+			var heroId:Hero.HeroID = button.get( "heroId" );
+			button.removeHeroId();
+			var graphics:GraphicsSystem = button.get( "graphics" ).removeGraphicsAt( 2 ); // 2 index is portrait;
+			this._parent.getSystem( "event" ).removeEvents( button ); // убираем ивенты с кнопки, что бы лишний раз не вызывать функции.
+
+			// меняем статус кнопки героя в Inn Building. Для того, что бы его можно было перевыбрать.
+			var newButtonsArray:Array<Button> = this._parent.getSystem( "ui" ).getWindowByDeployId( 3006 ).get( "buttons" ); // Inn window deploy id 3006;
+			for( j in 0...newButtonsArray.length )
 			{
-				var heroId:Hero.HeroID = button.get( "heroId" );
-				if( heroId != null )
+				var innButton:Button = newButtonsArray[ j ];
+				var buttonHeroId:Hero.HeroID = innButton.get( "heroId" );
+				if( haxe.EnumTools.EnumValueTools.equals( buttonHeroId, heroId ))
 				{
-					this._unchooseHeroToDungeon( id );
-					return;
+					this._unchooseInnHeroButton( innButton.get( "id" ));
 				}
-				else
-				{
-					throw 'Error in State.unchooseHeroToDungeon. Button "$name", without HeroId!';
-				}
+			}
+		}
+		throw 'Error in State.unchooseHeroToDungeon. Button "$id", without HeroId!';
+	}
+
+	public function unchooseActiveRecruitHeroButton():Void
+	{
+		var array:Array<Button> = this._parent.getSystem( "ui" ).getWindowByDeployId( 3002 ).get( "buttons");//recruit window
+		for( i in 0...array.length )
+		{
+			var button:Button = array[ i ];
+			if( button.get( "activeStatus" ))
+			{
+				button.changeActiveStatus();
+				var sprite:Sprite = button.get( "sprite" ).getChildAt( 0 );
+				sprite.getChildAt( 2 ).visible = false;
+				break; // Выбрана может быть только 1 кнопка.
+
 			}
 		}
 	}
 
-	public function unchooseAllRecruitHeroButton():Void
-		{
-			var array:Array<Button> = this._parent.getSystem( "ui" ).getWindowByDeployId( 3002 ).get( "buttons");//recruit window
-			for( i in 0...array.length )
-			{
-				var button:Button = array[ i ];
-				if( button.get( "activeStatus" ))
-				{
-					button.changeActiveStatus();
-					var sprite:Sprite = button.get( "sprite" ).getChildAt( 0 );
-					sprite.getChildAt( 2 ).visible = false;
-					break; // Выбрана может быть только 1 кнопка.
-	
-				}
-			}
-		}
-
-	public function uchooseInnHeroButtons():Void
+	private function uchooseActiveInnHeroButton():Void
 	{
 		var innWindow:Window = this._parent.getSystem( "ui" ).getWindowByDeployId( 3006 ); //inn window deploy id 3009;
 		var array:Array<Button> = innWindow.get( "buttons" );
 		for( i in 0...array.length )
 		{
 			var button:Button = array[ i ];
-			var name:String = button.get( "name" );
-			if( name == "innWindowHeroButtonOrange" || name == "innWindowHeroButtonBlue" || name == "innWindowHeroButtonWhite" || name == "innWindowHeroButtonGreen" )
+			if( button.get( "activeStatus") )
 			{
-				if( button.get( "activeStatus") )
-				{
-					button.changeActiveStatus();
-					var sprite:Sprite = button.get( "sprite" );
-					sprite.x = 0;
-				}
+				button.changeActiveStatus();
+				var sprite:Sprite = button.get( "sprite" );
+				sprite.x = 0;
+				break; //выбрана может быть только одна кнопка.
 			}
 		}
 	}
@@ -376,56 +396,11 @@ class State
 			sceneSystem.changeSceneTo( scene );
 	}
 
-	private function _chooseHeroRecruitButton( id:Button.ButtonID, name:String ):Void
-	{
-		var recruitWindow:Window = this._parent.getSystem( "ui" ).getWindowByDeployId( 3002 );
-		var button:Button = recruitWindow.getButtonById( id );
-		if( !button.get( "activeStatus" ))
-			this.unchooseRecruitHeroButtons();
-		else
-		{
-			this.unchooseRecruitHeroButtons();
-			return;
-		}
-
-		button.changeActiveStatus();
-		var sprite:Dynamic = button.get( "sprite" ).getChildAt( 0 );
-		var spriteToChange:Sprite = sprite.getChildAt( 3 );
-		spriteToChange.visible = true;
-	}
-
-	private function _chooseHeroInnButton( id:Button.ButtonID, name:String ):Void
-	{
-		var sceneName:String = this._parent.getSystem( "scene" ).getActiveScene();
-		if( sceneName == "cityScene" )
-		{
-			var innWindow:Window = this._parent.getSystem( "ui" ).getWindowByDeployId( 3006 ); //inn window deploy id 3009;
-			var button:Button = innWindow.getButtonById( id );
-			if( !button.get( "activeStatus" ))
-				this.uchooseInnHeroButtons();
-			else
-			{
-				this.uchooseInnHeroButtons();
-				return;
-			}
-
-			button.changeActiveStatus();
-			var sprite:Sprite = button.get( "sprite" );
-			sprite.x = -40;
-		}
-		else // других сцен в которых будут эти кнопки нет. Остается - выбор подзеелья.
-		{
-			this._chooseHeroToDungeon( id );
-		}
-	}
 
 	private function _chooseHeroToDungeon( buttonId:Button.ButtonID ):Void
 	{
 		var ui:UserInterface = this._parent.getSystem( "ui" );
-		var button:Button = _findInnButtonById( buttonId );
-
-		if( button == null )
-			throw 'Error in State._chooseHeroToDungeon. There is no button "$buttonId" in Inn window.';
+		var button:Button = this._findInnButtonById( buttonId );
 
 		if( button.get( "activeStatus") )
 			return; // вовзаращем, так как кнопка уже активна - значит герой уже используется.
@@ -435,14 +410,14 @@ class State
 		var isOk:Bool = false;
 		for( i in 0...buttonsArray.length )
 		{
-			var button:Button = buttonsArray[ i ];
+			var dungeonbutton:Button = buttonsArray[ i ];
 			var heroId:Hero.HeroID = button.get( "heroId" );
 			if( heroId == null )
 			{
-				button.setHeroId( id );
+				dungeonbutton.setHeroId( id );
 				var hero:Hero = this._findHeroFromInnBuildingById( id );
-				this._bindHeroAndButton( hero, button );
-				this._parent.getSystem( "event" ).addEvents( button );
+				this._bindHeroAndButton( hero, dungeonbutton );
+				this._parent.getSystem( "event" ).addEvents( dungeonbutton );
 				isOk = true;
 				break;
 			}
@@ -452,46 +427,9 @@ class State
 			return; // no room for heroes into dungeon;
 
 		// меняем статус кнопки героя в Inn Building. Для того, что бы он не был добавлен дважды.
-
-		button.changeActiveStatus(); // choose button;
-		//TODO: Some graphics changes like pos+- or do alpha = 0.5;
+		button.changeActiveStatus();
 		var sprite:Sprite = button.get( "sprite" );
-		sprite.blendMode = BlendMode.INVERT;
-	}
-
-	private function _unchooseHeroToDungeon( buttonId:Button.ButtonID ):Void
-	{
-		var id:Hero.HeroID = null;
-		var ui:UserInterface = this._parent.getSystem( "ui" );
-		var buttonsArray:Array<Button> = ui.getWindowByDeployId( 3004 ).get( "buttons" ); // chooseheroToDungeon Window deploy id 3004
-		for( i in 0...buttonsArray.length )
-		{
-			var button:Button = buttonsArray[ i ];
-			var oldButtonId:Button.ButtonID = button.get( "id" );
-			if( haxe.EnumTools.EnumValueTools.equals( oldButtonId, buttonId ))
-			{
-				id = button.get( "heroId" );
-				button.removeHeroId();
-				var sprite:Dynamic = button.get( "sprite" ).getChildAt( 0 );
-				sprite.removeChildAt( 3 ); // by default portrait on this button on index 3;
-				this._parent.getSystem( "event" ).removeEvents( button ); // убираем ивенты с кнопки, что бы лишний раз не вызывать функции.
-				break;
-			}
-		}
-
-		// меняем статус кнопки героя в Inn Building. Для того, что бы его можно было перевыбрать.
-		var newButtonsArray:Array<Button> = ui.getWindowByDeployId( 3006 ).get( "buttons" ); // Inn window deploy id 3006;
-		for( j in 0...newButtonsArray.length )
-		{
-			var button:Button = newButtonsArray[ j ];
-			var buttonHeroId:Hero.HeroID = button.get( "heroId" );
-			if( haxe.EnumTools.EnumValueTools.equals( buttonHeroId, id ))
-			{
-				button.changeActiveStatus(); // choose button;
-				var sprite:Sprite = button.get( "sprite" );
-				sprite.blendMode = BlendMode.NORMAL;
-			}
-		}
+		sprite.x = -40;
 	}
 
 	private function _bindHeroAndButton( hero:Hero, button:Button ):Void
@@ -499,40 +437,16 @@ class State
 		var heroId:Hero.HeroID = hero.get( "id" );
 		button.setHeroId( heroId );
 
-		//create new sprite with portrait of hero, and add it to new button;
-		var buttonGraphics:GraphicsSystem = button.get( "graphics" );
-		var heroDeployId:Hero.HeroDeployID = hero.get( "deployId" );
-		var heroDeployConfig:Dynamic = this._parent.getSystem( "deploy" ).getHero( heroDeployId );
-		var urlHeroPortrait:String = heroDeployConfig.imagePortraitURL;
-		var heroPortraitSprite:Sprite = new Sprite();
-		heroPortraitSprite.addChild( new Bitmap( Assets.getBitmapData( urlHeroPortrait )));
-		buttonGraphics.setPortrait( heroPortraitSprite );
+		this._addHeroPortraitToButton( hero, button );
 
 		var buttonName:String = button.get( "name" );
 		if ( buttonName == "choosenHeroToDungeon" )
 			return;
-		// get needed strings from hero and add them to button;
-		var fullHeroName:String = hero.get( "fullName" );
-		var heroClass:String = hero.get( "name" );
-		var heroBuyPrice:Player.Money = hero.get( "buyPrice" );
-		buttonGraphics.setText( fullHeroName, "first" );
-		buttonGraphics.setText( heroClass, "second" );
-
-		if( buttonName == "recruitHeroButtonWhite" || buttonName == "recruitHeroButtonBlue" || buttonName == "recruitHeroButtonOrange" || buttonName == "recruitHeroButtonGreen" )
-			buttonGraphics.setText( '$heroBuyPrice', "third" );
-
+		
+		this._addHeroTextToButton( hero, button );
 	}
 
-	private function _showWarning( error:String ):Void
-	{
-		// временно будет trace;
-		trace( error );
-		return;
-		var ui:UserInterface = this._parent.getSystem( "ui" );
-		var warningWindow:Window = ui.getWindowByDeployId( 3100 ); // warningWindow Deploy ID;
-		warningWindow.get( "graphics" ).setText( error, "first" );
-		ui.openWindow( 3100 );
-	}
+	
 
 	private function _checkPlayerMoneyAmount( price:Player.Money ):Bool
 	{
@@ -675,20 +589,6 @@ class State
 		}
 	}
 
-	private function _findInnButtonById( id:Button.ButtonID ):Button
-	{
-		var ui:UserInterface = this._parent.getSystem( "ui" );
-		var buttonsArray:Array<Button> = ui.getWindowByDeployId( 3006 ).get( "buttons" ); // inn window deploy id 3006;
-		for( i in 0...buttonsArray.length )
-		{
-			var button:Button = buttonsArray[ i ];
-			if( haxe.EnumTools.EnumValueTools.equals( button.get( "id" ), id ))
-				return button;
-		}
-
-		return null;
-	}
-
 	private function _updateInnText():Void
 	{
 		var innBuilding:Building = this._parent.getSystem( "scene" ).getActiveScene().getBuildingByDeployId( 2010 ); //Inn building with 2010 deploy ID;
@@ -796,19 +696,105 @@ class State
 
 	private function _findRecruitButtonById( id:Button.ButtonID ):Button
 	{
-		var array:Array<Button> = this._parent.getSystem( "ui" ).getWindowByDeployId( 3002 ).get( "buttons"); //recruit window
-		for( i in 0...array.length )
-		{
-			var button:Button = array[ i ];
-			var buttonId:Button.ButtonID = button.get( "id" );
-			if( haxe.EnumTools.EnumValueTools.equals( buttonId, id ))
-				return button;
-		}
-
-		throw 'Error in State._findRecruitButtonById. No button fund in recruit window';
-		return null;
+		return this._parent.getSystem( "ui" ).getWindowByDeployId( 3002 ).getButtonById( id ); //recruit window
 	}
 
+	private function _findInnButtonById( id:Button.ButtonID ):Button
+	{
+		return this._parent.getSystem( "ui" ).getWindowByDeployId( 3006 ).getButtonById( id ); //inn window
+	}
+
+	private function _chooseRecruitHeroButton( id:Button.ButtonID ):Void
+	{
+		var button:Button = this._findRecruitButtonById( id );
+		this.unchooseActiveRecruitHeroButton();
+		button.changeActiveStatus();
+
+	}
+
+	public function _unchooseRecruitHeroButton( id:Button.ButtonID ):Void
+	{
+		var button:Button = this._findRecruitButtonById( id );
+		button.changeActiveStatus();
+	}
+
+	
+
+	private function _chooseInnHeroButton( id:Button.ButtonID ):Void
+	{
+		var sceneName:String = this._parent.getSystem( "scene" ).getActiveScene();
+		if( sceneName == "cityScene" )
+		{
+			//TODO: ui.findActiveWindow(); retrun window.get( "name" ) -> switch ;
+			var activeWindow:Window = this._parent.getSystem( "ui" ).findChildCitySceneMainWindow();
+			var activeWindowName:String = activeWindow.get( "name" );
+			switch( activeWindowName )
+			{
+				case "":
+				default: throw 'Error in State._chooseInnHeroButton. Can not choose button "$id" because active window is "$activeWindowName"';
+			}
+		}
+		else // chooseDungeonScene;
+		{
+			this._chooseHeroToDungeon( id );
+		}
+	}
+
+	private function _unchooseInnHeroButton( id:Button.ButtonID ):Void
+	{
+		var sceneName:String = this._parent.getSystem( "scene" ).getActiveScene();
+		if( sceneName == "cityScene" )
+		{
+			var button:Button = this._findInnButtonById( id );	
+			button.changeActiveStatus();
+			var sprite:Sprite = button.get( "sprite" );
+			sprite.x = 0;
+		}
+	}
+
+
+	private function _addHeroPortraitToButton( hero:Hero, button:Button ):Void
+	{
+		var buttonGraphics:GraphicsSystem = button.get( "graphics" );
+		var heroDeployId:Hero.HeroDeployID = hero.get( "deployId" );
+		var heroDeployConfig:Dynamic = this._parent.getSystem( "deploy" ).getHero( heroDeployId );
+		var urlHeroPortrait:String = heroDeployConfig.imagePortraitURL;
+		var heroPortraitBitmap:Bitmap = new Bitmap( Assets.getBitmapData( urlHeroPortrait ));
+		buttonGraphics.addGraphics( heroPortraitBitmap );
+	}
+
+	private function _addHeroTextToButton( hero:Hero, button:Button ):Void
+	{
+		var buttonName:String = button.get( "name" );
+		var buttonGraphics:GraphicsSystem = button.get( "graphics" );
+		var fullHeroName:String = hero.get( "fullName" );
+		var heroClass:String = hero.get( "name" );
+		var heroBuyPrice:Player.Money = hero.get( "buyPrice" );
+		buttonGraphics.setText( fullHeroName, "first" );
+		buttonGraphics.setText( heroClass, "second" );
+
+		if( buttonName == "recruitHeroButtonWhite" || buttonName == "recruitHeroButtonBlue" || buttonName == "recruitHeroButtonOrange" || buttonName == "recruitHeroButtonGreen" )
+			buttonGraphics.setText( '$heroBuyPrice', "third" );
+	}
+
+	private function _closeWarningWindow():Void
+	{
+		var ui:UserInterface = this._parent.getSystem( "ui" );
+		var warningWindow:Window = ui.getWindowByDeployId( 3100 ); // warningWindow Deploy ID;
+		ui.removeWindowFromUi( warningWindow.get( "deployId" ));
+		ui.destroyWindow( warningWindow.get( "deployId" ));
+	}
+
+	private function _openWarninWindow( error:String ):Void
+	{
+		var ui:UserInterface = this._parent.getSystem( "ui" );
+		var warningWindow:Window = ui.createWindow( 3100 ); // warningWindow Deploy ID;
+		warningWindow.get( "graphics" ).setText( error, "first" );
+		ui.addWindowOnUi( warningWindow.get( "deployId" ));
+		this.openWindow( 3100 );
+		// создать окно, доабвить на ui ( что бы у него был приоритет по z-index ), показать. Кнопка получит ивент на закрытие.
+		
+	}
 	
 
 }

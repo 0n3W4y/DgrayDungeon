@@ -9,7 +9,7 @@ import openfl.Assets;
 
 import Window;
 import Button;
-import haxe.EnumTools.EnumValueTools;
+import haxe.EnumTools;
 
 typedef UserInterfaceConfig =
 {
@@ -80,7 +80,7 @@ class UserInterface
 				if( saveGame == null )
 				{
 					var buttonSprite:Sprite = button.get( "sprite" );
-					buttonSprite.alpha = 0.5; // сделатьна половину прозрачной - в силу своей не активности.
+					buttonSprite.alpha = 0.5; // сделать на половину прозрачной - в силу своей не активности.
 					continue;
 				}
 			}
@@ -160,8 +160,6 @@ class UserInterface
 		var sprite:Sprite = this._objectsOnUi[ check ].get( "sprite" );
 		sprite.visible = false;
 		this._objectsOnUi[ check ].changeActiveStatus();
-		if( haxe.EnumTools.EnumValueTools.equals( WindowDeployID( 3001 ), deployId ))
-			this._hideChildCitySceneMainWindow();
 	}
 
 	public function closeAllActiveWindows():Void
@@ -173,10 +171,7 @@ class UserInterface
 			var alwaysActive:Bool = window.get( "alwaysActive" );
 			var deployId:WindowDeployID = window.get( "deployId" );
 			if( status && !alwaysActive )
-			{
-				var deployIdInt:Int = this._parent.getSystem( "deploy" ).getWindow( deployId ).deployId;
-				this.closeWindow( deployIdInt );
-			}
+				this.hideUiObject( deployId );
 		}
 	}
 
@@ -304,7 +299,7 @@ class UserInterface
 		return button;
 	}
 
-	public function findChildCitySceneMainWindow():WindowDeployID
+	public function findChildCitySceneMainWindow():Window
 	{
 		for( i in 0...this._objectsOnUi.length )
 		{
@@ -315,7 +310,7 @@ class UserInterface
 				if( haxe.EnumTools.EnumValueTools.equals( WindowDeployID( 3001 ), windowDeployID ))
 					continue; // игнорируем само окно citySceneMainWindow.
 
-				return windowDeployID; // возвращаем первое активное окно. ( Открыть несколько окон нельзя ).
+				return window; // возвращаем первое активное окно. ( Открыть несколько окон нельзя ).
 			}
 		}
 

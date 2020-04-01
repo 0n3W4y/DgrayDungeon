@@ -21,7 +21,7 @@ typedef SceneEvent =
 {
 	var SceneID:SceneID;
 	var SceneEventName:String;
-	var SceneEventTime:Int;
+	var SceneEventTime:Float;
 }
 
 class SceneSystem
@@ -52,6 +52,7 @@ class SceneSystem
 
 		this._activeScene = null;
 		this._scenesArray = new Array<Scene>();
+		this._sceneEvents = new Array<SceneEvent>();
 	}
 
 	public function postInit():String
@@ -59,7 +60,7 @@ class SceneSystem
 		return null;
 	}
 
-	public function update( time:Int ):Void
+	public function update( time:Float ):Void
 	{
 		//we can add scenes to array , who need to update, and remove them if don't need to update;
 		this._upfateSceneEvents( time );
@@ -455,7 +456,7 @@ class SceneSystem
 		return null;
 	}
 
-	private function _upfateSceneEvents( time:Int ):Void
+	private function _upfateSceneEvents( time:Float ):Void
 	{
 		var state:State = this._parent.getSystem( "state" );
 		for( i in 0...this._sceneEvents.length )

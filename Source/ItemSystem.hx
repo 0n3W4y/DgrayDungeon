@@ -79,8 +79,8 @@ class ItemSystem
 			Accuracy: secondConfig.accuracy,
 			Dodge: secondConfig.dodge,
 			Block: secondConfig.block,
-			CriticalChanse: secondConfig.critChanse,
-			CriticalDamage: secondConfig.critDamage,
+			CriticalChanse: secondConfig.criticalChanse,
+			CriticalDamage: secondConfig.criticalDamage,
 			Speed: secondConfig.speed,
 			HealthPoints: secondConfig.healthPoints,
 			ResistStun: secondConfig.resistStun,
@@ -105,16 +105,16 @@ class ItemSystem
 		// by default, all stats is 0; in calculate we ignore 0 and take only -value and +value;
 		var configToReturn:Dynamic =
 		{
-			"priceBuy": 0,
-			"priceSell": 0,
-			"upgradeLevelPrice": 0,
+			"priceBuy": config.priceBuy,
+			"priceSell": config.priceSell,
+			"upgradeLevelPrice": config.upgradeLevelPrice,
 			"damage": 0,
 			"extraDamage": 0,
 			"accuracy": 0,
 			"dodge": 0,
 			"block": 0,
-			"critiChanse": 0,
-			"critDamage": 0,
+			"criticalChanse": 0,
+			"criticalDamage": 0,
 			"speed": 0,
 			"defense": 0,
 			"extraDefense": 0,
@@ -129,44 +129,53 @@ class ItemSystem
 			"resistCold": 0
 		}
 
-		var priceBuy:Int = config.priceBuy;
-		var priceSell:Int = config.priceSell;
 		var extraStats:Array<String> = config.extraStats;
-		var maxExtraStats:Int = config.maxEstraStats;
-		var cursedStat:Int = config.cursedStat;
-		var upgradeLevelPrice:Int = config.upgradeLevelPrice;
+		var maxExtraStats:Int = config.maxExtraStats;
+		var cursedStat:Int = config.cursedStat; // получаем процент, котоырй покажет будет ли статы отрицательной или положительной.
 
+		if( maxExtraStats == null )
+			throw 'Error in ItemSyste.generatePriceAndStats. Max Extra stats "$maxExtraStats"';
 		//choose  stats for item; yes, random; and check - cursed or not;
 		// if cursed stat have "-" value;
 		for( i in 0...maxExtraStats )
 		{
-			var randomIndex:Int = Math.floor( Math.random() * extraStats.length );
-			var stat:String = extraStats[ randomIndex ];
-			extraStats.splice( randomIndex, 1 );// во избежании повторов, удаляем из массива.
+			var arrayLength:Int = extraStats.length;
+			var stat:String = extraStats[ Math.floor( Math.random() * arrayLength ) ]; // получаем рандомную стату из аррэя
+			extraStats.remove( stat );// во избежании повторов, удаляем из массива.
 
-			var cursed:Int = 1;
+			// рандомно получаем отрицательной или положительной будет стата.
+			var cursedMultiplier:Int = 1;
 			var cursedNumber:Int = Math.floor( Math.random() * 100 ); // [ 0 - 99 ];
 			if( cursedNumber < cursedStat ) // Если число меньше значения, значит считаем что *да*.
-				cursed = -1;
+				cursedMultiplier = -1;
 
-			var defaultStatValue:Int = Reflect.field( extraStats, stat );
-			var statValue:Int = cursed * Math.floor( Math.random() * ( defaultStatValue + 1 )); // +1 because we using Math.floor();
-			Reflect.setField( configToReturn, stat, statValue );
-			var key:String = stat + "BuyPrice";
-			var defaultBuyPrice:Int = Reflect.field( config, key );
+			var defaultStatValue:Int = Reflect.field( config, stat ); // получаем стандартное занчение статы из конфига
+			var statValue:Int = cursedMultiplier * Math.floor( Math.random() * ( defaultStatValue + 1 )); // +1 because we using Math.floor();
+			Reflect.setField( configToReturn, stat, statValue ); // записываем значение в конфиг для возврата.
+
+			var key:String = stat + "BuyPrice"; // получаем что-то типа resistColdBuyPrice;
+			var defaultBuyPrice:Int = Reflect.field( config, key ); // получаем стоимость за эту стату в максимальном ее значении.
+
 			var addedPrice:Int = Math.round( statValue * defaultBuyPrice / defaultStatValue ); // ищем среднюю цену относительно максимальной цены за максимальный стат
 			configToReturn.priceBuy += addedPrice;
-			configToReturn.upgradeLevelPrice += Math.round( addedPrice / 2 );
+			configToReturn.upgradeLevelPrice += Math.round( addedPrice / 2 ); // увеличиваем стоимость апгрейда.
 		}
 
-		configToReturn.priceBuy = priceBuy;
-		priceSell += Math.round( priceSell * priceBuy / config.priceBuy ); // ищем среднюю цену относительно начальной цени и конечной.
-		configToReturn.priceSell = priceSell;
+		configToReturn.priceSell += Math.round( configToReturn.priceSell * configToReturn.priceBuy / config.priceBuy ); // ищем среднюю цену относительно начальной цени и конечной.
 
 		if( config.damage == null )
 			configToReturn.defense = config.defense;
 		else
 			configToReturn.damage = config.damage;
+
+		if( configToReturn.priceBuy <= 0 )
+			configToReturn.priceBuy = config.priceBuy;
+
+		if( configToReturn.priceSell <= 0 )
+			configToReturn.priceSell = config.priceSell;
+
+		if( configToReturn.upgradeLevelPrice <= 0 )
+			configToReturn.upgradeLevelPrice = config.upgradeLevelPrice;
 
 		return configToReturn;
 	}
