@@ -102,8 +102,6 @@ class SceneSystem
 			case "chooseDungeonScene": this._changeSceneToChooseDungeonScene( scene );
 			default: throw 'Error in SceneSystem.changeSceneTo. Can not change scene to "$sceneName"';
 		}
-
-		this._parent.getSystem( "ui" ).show();
 	}
 
 	public function createSceneEvent( sceneId:SceneID, eventType:String, time:Float ):Void
@@ -134,19 +132,19 @@ class SceneSystem
 
 	public function showScene( scene:Scene ):Void
 	{
-		this.createSceneEvent( scene.get( "id" ), "showScene", 2000 );
+		this.createSceneEvent( scene.get( "id" ), "showScene", 1000 );
 		//scene.get( "sprite" ).visible = true;
 	}
 
 	public function hideScene( scene:Scene ):Void
 	{
-		this.createSceneEvent( scene.get( "id" ), "hideScene", 2000 );
+		this.createSceneEvent( scene.get( "id" ), "hideScene", 1000 );
 		//scene.get( "sprite" ).visible = false;
 	}
 
 	public function undrawSceneWithHide( scene:Scene ):Void
 	{
-		this.createSceneEvent( scene.get( "id" ), "undrawSceneWithHide", 2000 );
+		this.createSceneEvent( scene.get( "id" ), "undrawSceneWithHide", 1000 );
 	}
 
 	public function getParent():Game
@@ -237,9 +235,9 @@ class SceneSystem
             throw 'Error in SceneSystem.createBuilding. Deploy ID: $deployId doesnt exist';
 
         var id:BuildingID = BuildingID( this._parent.createId() );
-        var sprite:Sprite = new Sprite();
-				sprite.x = config.x;
-				sprite.y = config.y;
+        var sprite:Sprite = new DataSprite({ ID: id, Name: config.name });
+		sprite.x = config.x;
+		sprite.y = config.y;
         var graphicsSprite:Sprite = this._createGraphicsSprite( config );
         sprite.addChild( graphicsSprite );
         var textSprite:Sprite = this._createTextSprite( config );
@@ -310,7 +308,7 @@ class SceneSystem
 
 		var sceneSprite:Sprite = scene.get( "sprite" );
 		sceneSprite.alpha = 0.0;
-		//this.createSceneEvent( scene.get( "id" ), "reviewScene", 2000 );
+		//this.createSceneEvent( scene.get( "id" ), "reviewScene", 1000 );
 		this._scenesSprite.addChild( scene.get( "sprite" ));
 		this._drawUiForScene( scene );
 		scene.setDrawed( true );
@@ -430,9 +428,9 @@ class SceneSystem
 				//change loader sprite (1) to %;
 				this._drawScene( nextScene );
 				//change loader sprite (1) to 100%;
-				this.createSceneEvent( this._activeScene.get( "id" ), "hideScene", 2000 );
+				this.createSceneEvent( this._activeScene.get( "id" ), "hideScene", 500 );
 				this._activeScene = nextScene;
-				this._parent.getSystem( "ui" ).show();
+				//this._parent.getSystem( "ui" ).show();
 
 			}
 			default: throw 'Error in SceneSystem._doLoader. Can not load scene "$sceneName" from loader ';
@@ -457,7 +455,7 @@ class SceneSystem
 
 			this._prepareStartScene( scene );
 			this._drawScene( scene );
-			this.createSceneEvent( scene.get( "id" ), "showScene", 2000 );
+			this.createSceneEvent( scene.get( "id" ), "showScene", 1000 );
 			this._activeScene = scene;
 		}
 		else
@@ -583,6 +581,7 @@ class SceneSystem
 			bitmap = this._createBitmap( config.imageHoverURL );
 			bitmap.x = config.imageHoverX;
 			bitmap.y = config.imageHoverY;
+			bitmap.visible = false;
 			sprite.addChild( bitmap );
 		}
 
@@ -710,6 +709,7 @@ class SceneSystem
 		if( currentTime <= 0 )
 		{
 			sprite.alpha = 1.0;
+			this._parent.getSystem( "ui" ).show();
 			this.removeSceneEvent( id, "showScene");
 			return;
 		}
@@ -731,7 +731,7 @@ class SceneSystem
 			sprite.alpha = 0.0;
 			sprite.visible = false;
 			this.removeSceneEvent( id, "hideScene");
-			this.createSceneEvent( this._activeScene.get( "id" ), "showScene", 2000 );
+			this.createSceneEvent( this._activeScene.get( "id" ), "showScene", 1000 );
 			return;
 		}
 		var newAlpha:Float = ( 1/time )*currentTime;

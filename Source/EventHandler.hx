@@ -119,17 +119,17 @@ class EventHandler
 		{
 			//TODO: Доделать default  и другие case;
 			case "recruits": state.openWindow( 3002 );
-			//case "hospital": state.openWindow(  );
-			//case "tavern": state.openWindow(  );
-			//case "blacksmith": state.openWindow(  );
-			//case "merchant": state.openWindow(  );
-			//case "graveyard": state.openWindow(  );
-			//case "academy": state.openWindow(  );
-			//case "hermit": state.openWindow(  );
-			//case "questman": state.openWindow(  );
-			//case "fontain": state.openWindow(  );
-			//case "inn": state.openWindow(  );
-			//case "storage": state.openWindow(  );
+			case "hospital": state.openWindow( 3001 );
+			case "tavern": state.openWindow( 3001 );
+			case "blacksmith": state.openWindow( 3001 );
+			case "merchant": state.openWindow( 3001 );
+			case "graveyard": state.openWindow( 3001 );
+			case "academy": state.openWindow( 3001 );
+			case "hermit": state.openWindow( 3001 );
+			case "questman": state.openWindow( 3001 );
+			case "fontain": state.openWindow( 3001 );
+			case "inn": state.openWindow( 3001 );
+			case "storage": state.openWindow( 3001 );
 			default: throw 'Error in EventHandler._addEventsToBuilding. No events for $name';
 		}
 	}
@@ -149,8 +149,13 @@ class EventHandler
 	private function _unhoverButton( e:MouseEvent ):Void
 	{
 		var sprite:Dynamic = e.currentTarget;
+		var name:String = sprite.sName;
 		var graphicsSprite:Sprite = sprite.getChildAt( 0 );
 		graphicsSprite.getChildAt( 1 ).visible = false;
+		if( name == "recruitHeroButtonWhite" || name == "recruitHeroButtonGreen" || name == "recruitHeroButtonBlue" || name == "recruitHeroButtonOrange" 
+			|| name == "innWindowHeroButtonOrange" || name == "innWindowHeroButtonBlue" || name == "innWindowHeroButtonGreen" || name == "innWindowHeroButtonWhite" )
+			return;
+		
 		graphicsSprite.getChildAt( 2 ).visible = false;
 	}
 

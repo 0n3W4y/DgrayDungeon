@@ -76,17 +76,18 @@ class State
 		var ui:UserInterface = this._parent.getSystem( "ui" );
 		switch( deployId )
 		{
+			case 3001: {}; // empty;
 			case 3002: 
 			{
 				var activeWindow:Window = ui.findChildCitySceneMainWindow();
-				var activeWindowDeployId = activeWindow.get( "deployId" );
-				if( activeWindowDeployId == null )// значит на экране нет октрытых окон;
+				if( activeWindow == null )// значит на экране нет октрытых окон;
 				{
 					ui.showUiObject( WindowDeployID( 3001 )); // открываем главное окно сцены.
 					ui.showUiObject( WindowDeployID( deployId )); // открываем дополнительное окно.
 				}
 				else
 				{
+					var activeWindowDeployId = activeWindow.get( "deployId" );
 					ui.hideUiObject( activeWindowDeployId ); // скрываем ранее открытое окно.
 					ui.showUiObject( WindowDeployID( deployId )); // открываем вызванное окно.
 				}
@@ -724,6 +725,8 @@ class State
 		var button:Button = this._findRecruitButtonById( id );
 		this.unchooseActiveRecruitHeroButton();
 		button.changeActiveStatus();
+		var sprite:Sprite = button.get( "sprite" ).getChildAt( 0 );
+		sprite.getChildAt( 2 ).visible = true;
 
 	}
 
