@@ -1,5 +1,6 @@
 package;
 
+import openfl.display.Graphics;
 import haxe.EnumTools;
 import openfl.display.Sprite;
 import openfl.display.Bitmap;
@@ -26,6 +27,15 @@ typedef SceneEvent =
 	var SceneEventCurrentTime:Float;
 }
 
+typedef BuildingEvent =
+{
+	var SceneID:SceneID;
+	var BuildingID:BuildingID;
+	var BuildingEventName:String;
+	var BuildingEventTime:Float;
+	var BuildingEventCurrentTime:Float;
+}
+
 class SceneSystem
 {
 	private var _parent:Game;
@@ -35,6 +45,7 @@ class SceneSystem
 	private var _sceneAfterLoader:Scene;
 
 	private var _sceneEvents:Array<SceneEvent>;
+	private var _buildingEvents:Array<BuildingEvent>;
 
 
 	public function new( config:SceneSystemConfig ):Void
@@ -56,6 +67,7 @@ class SceneSystem
 		this._activeScene = null;
 		this._scenesArray = new Array<Scene>();
 		this._sceneEvents = new Array<SceneEvent>();
+		this._buildingEvents = new Array<BuildingEvent>();
 	}
 
 	public function postInit():String
@@ -67,6 +79,7 @@ class SceneSystem
 	{
 		//we can add scenes to array , who need to update, and remove them if don't need to update;
 		this._updateSceneEvents( time );
+		this._updateBuildingEvents( time );
 	}
 
 	public function addScene( scene:Scene ):Void
@@ -104,30 +117,30 @@ class SceneSystem
 		}
 	}
 
-	public function createSceneEvent( sceneId:SceneID, eventType:String, time:Float ):Void
+	public function createBuildingEvent( sceneId:SceneID, buildingId:BuildingID, eventType:String, time:Float ):Void
 	{
-		switch( eventType )
-		{
-			case "reviewScene": this._sceneEvents.push({ SceneID: sceneId, SceneEventName: eventType, SceneEventTime: time, SceneEventCurrentTime: time });
-			case "showScene": this._sceneEvents.push({ SceneID:sceneId, SceneEventName: eventType, SceneEventTime: time, SceneEventCurrentTime: time });
-			case "hideScene": this._sceneEvents.push({ SceneID:sceneId, SceneEventName: eventType, SceneEventTime: time, SceneEventCurrentTime: time });
-			case "checkShowLoader": this._sceneEvents.push({ SceneID:sceneId, SceneEventName: eventType, SceneEventTime: time, SceneEventCurrentTime: time });
-			case "undrawSceneWithHide": this._sceneEvents.push({ SceneID:sceneId, SceneEventName: eventType, SceneEventTime: time, SceneEventCurrentTime: time });
-			default: throw 'Error in SceneSystem.createSceneEvent. can not create "$eventType"';
-		}
+		if( eventType == "updateListOfRecruits" || eventType == "updateListOfItems" )
+			this._buildingEvents.push({ SceneID: sceneId, BuildingID: buildingId, BuildingEventName: eventType, BuildingEventTime: time, BuildingEventCurrentTime: time });
+		else
+			throw 'Error in SceneSystem.createBuildingEvent. Can not create "$eventType"';
 	}
 
-	public function removeSceneEvent( sceneId:SceneID, eventType:String ):Void
+	public function removeBuildingEvent( event:BuildingEvent ):Void
 	{
-		for( i in 0...this._sceneEvents.length )
-		{
-			var event:SceneEvent = this._sceneEvents[ i ];
-			if( event.SceneEventName == eventType && haxe.EnumTools.EnumValueTools.equals( sceneId, event.SceneID ))
-			{
-				this._sceneEvents.splice( i, 1 );
-				return;
-			}
-		}
+		this._buildingEvents.remove( event );
+	}
+
+	public function createSceneEvent( sceneId:SceneID, eventType:String, time:Float ):Void
+	{
+		if( eventType == "reviewScene" || eventType == "showScene" || eventType == "hideScene" || eventType == "checkShowLoader" || eventType == "undrawSceneWithHide" )
+			this._sceneEvents.push({ SceneID: sceneId, SceneEventName: eventType, SceneEventTime: time, SceneEventCurrentTime: time });
+		else
+			throw 'Error in SceneSystem.createSceneEvent. Can not create "$eventType"';		
+	}
+
+	public function removeSceneEvent( event:SceneEvent ):Void
+	{
+		this._sceneEvents.remove( event );
 	}
 
 	public function showScene( scene:Scene ):Void
@@ -219,7 +232,6 @@ class SceneSystem
 			{
 				var building:Building = this.createBuilding( configBuilding[ j ] );
 				scene.addChild( building );
-				this.prepareBuilding( building );
 			}
 		}
 
@@ -272,13 +284,13 @@ class SceneSystem
     	var name:String = building.get( "name" );
     	switch( name )
     	{
-    		case "recruits": state.generateHeroesForBuilding( building );
+    		case "recruits": {};
     		case "hospital": {};
     		case "fontain": {};
     		case "inn": {};
     		case "tavern": {};
     		case "blacksmith": {};
-    		case "merchant": state.generateItemsForBuilding( building );
+    		case "merchant": {};
     		case "graveyard": {};
     		case "academy": {};
     		case "hermit": {};
@@ -312,6 +324,7 @@ class SceneSystem
 		this._scenesSprite.addChild( scene.get( "sprite" ));
 		this._drawUiForScene( scene );
 		scene.setDrawed( true );
+		this._afterDrawScene( scene );
 	}
 
 	private function _undrawScene( scene:Scene ):Void
@@ -333,19 +346,37 @@ class SceneSystem
 		{
 			var event:SceneEvent = this._sceneEvents[ i ];
 			if( event == null )
-				return;
+				return;// защита после того, как предыдущий ивент был удален.
 
 			event.SceneEventCurrentTime -= time;
 			switch( event.SceneEventName )
 			{
-				case "reviewScene":	this._reviewScene( event.SceneID, event.SceneEventTime, event.SceneEventCurrentTime );
-				case "showScene": this._showScene( event.SceneID, event.SceneEventTime, event.SceneEventCurrentTime );
-				case "hideScene": this._hideScene( event.SceneID, event.SceneEventTime, event.SceneEventCurrentTime );
-				case "checkShowLoader": this._checkShowLoader( event.SceneID, event.SceneEventTime, event.SceneEventCurrentTime );
-				case "undrawSceneWithHide": this._undrawSceneWithHide( event.SceneID, event.SceneEventTime, event.SceneEventCurrentTime );
+				case "reviewScene":	this._reviewScene( event );
+				case "showScene": this._showScene( event );
+				case "hideScene": this._hideScene( event );
+				case "checkShowLoader": this._checkShowLoader( event );
+				case "undrawSceneWithHide": this._undrawSceneWithHide( event );
 				default: throw 'Error in SceneSystem._updateSceneEvents. No event found for "$event"';
 			}
 		}
+	}
+
+	private function _updateBuildingEvents( time:Float ):Void
+	{
+		for( i in 0...this._buildingEvents.length )
+		{
+			var event:BuildingEvent = this._buildingEvents[ i ];
+			if( event == null )
+				return; // защита после того, как предыдущий ивент был удален.
+
+			event.BuildingEventCurrentTime -= time;
+			switch ( event.BuildingEventName )
+			{
+				case "updateListOfRecruits": this._updateListOfRecruits( event );
+				default: throw 'Error in SceneSystem._updateBuildingEvents. No event found for "$event"';
+			}
+		}
+		
 	}
 
 
@@ -365,6 +396,7 @@ class SceneSystem
 			var buildingSprite:Sprite = building.get( "sprite" );
 			sprite.addChild( buildingSprite );
 			eventHandler.addEvents( building );
+			this.prepareBuilding( building );
 
 		}
 
@@ -497,6 +529,20 @@ class SceneSystem
 	private function _changeSceneToChooseDungeonScene( scene:Scene ):Void
 	{
 
+	}
+
+	private function _afterDrawScene( scene:Scene ):Void
+	{
+		var sceneName:String = scene.get( "name" );
+		switch( sceneName )
+		{
+			case "cityScene":
+			{
+				var state:State = this._parent.getSystem( "state" );
+				state.generateHeroesForRecruitBuilding();
+				state.generateItemsForMerchantBuilding();
+			}
+		}
 	}
 
 	private function _drawUiForScene( scene:Scene ):Void
@@ -688,29 +734,29 @@ class SceneSystem
 
 
 	// TEST
-	private function _reviewScene( id:SceneID, time:Float, currentTime:Float ):Void
+	private function _reviewScene( event:SceneEvent ):Void
 	{
-		var scene:Scene = this.getSceneById( id );
+		var scene:Scene = this.getSceneById( event.SceneID );
 		var sprite:Sprite = scene.get( "sprite" );
-		if( currentTime <= 0 )
+		if( event.SceneEventCurrentTime <= 0 )
 		{
 			sprite.alpha = 1.0;
-			this.removeSceneEvent( id, "reviewScene");
+			this.removeSceneEvent( event );
 			return;
 		}
-		var newAlpha:Float = -1*( 1/time )*currentTime + 1;
+		var newAlpha:Float = -1*( 1/event.SceneEventTime )*event.SceneEventCurrentTime + 1;
 		sprite.alpha = newAlpha;
 	}
 
-	private function _showScene( id:SceneID, time:Float, currentTime:Float ):Void
+	private function _showScene( event:SceneEvent ):Void
 	{
-		var scene:Scene = this.getSceneById( id );
+		var scene:Scene = this.getSceneById( event.SceneID );
 		var sprite:Sprite = scene.get( "sprite" );
-		if( currentTime <= 0 )
+		if( event.SceneEventCurrentTime <= 0 )
 		{
 			sprite.alpha = 1.0;
 			this._parent.getSystem( "ui" ).show();
-			this.removeSceneEvent( id, "showScene");
+			this.removeSceneEvent( event );
 			return;
 		}
 		if( !sprite.visible )
@@ -718,50 +764,77 @@ class SceneSystem
 			sprite.alpha = 0.0;
 			sprite.visible = true;
 		}
-		var newAlpha:Float = -1*( 1/time )*currentTime + 1;
+		var newAlpha:Float = -1*( 1/event.SceneEventTime )*event.SceneEventCurrentTime + 1;
 		sprite.alpha = newAlpha;
 	}
 
-	private function _hideScene( id:SceneID, time:Float, currentTime:Float ):Void
+	private function _hideScene( event:SceneEvent ):Void
 	{
-		var scene:Scene = this.getSceneById( id );
+		var scene:Scene = this.getSceneById( event.SceneID );
 		var sprite:Sprite = scene.get( "sprite" );
-		if( currentTime <= 0 )
+		if( event.SceneEventCurrentTime <= 0 )
 		{
 			sprite.alpha = 0.0;
 			sprite.visible = false;
-			this.removeSceneEvent( id, "hideScene");
+			this.removeSceneEvent( event );
 			this.createSceneEvent( this._activeScene.get( "id" ), "showScene", 1000 );
 			return;
 		}
-		var newAlpha:Float = ( 1/time )*currentTime;
+		var newAlpha:Float = ( 1/event.SceneEventTime )*event.SceneEventCurrentTime;
 		sprite.alpha = newAlpha;
 	}
 
-	private function _checkShowLoader( id:SceneID, time:Float, currentTime:Float ):Void
+	private function _checkShowLoader( event:SceneEvent ):Void
 	{
-		var scene:Scene = this.getSceneById( id );
+		var scene:Scene = this.getSceneById( event.SceneID );
 		var sprite:Sprite = scene.get( "sprite" );
 		if( sprite.alpha >= 1.0 )
 		{
-			this.removeSceneEvent( id, "checkShowLoader");
+			this.removeSceneEvent( event );
 			this._doLoader();
 		}
 	}
 
-	private function _undrawSceneWithHide( id:SceneID, time:Float, currentTime:Float ):Void
+	private function _undrawSceneWithHide( event:SceneEvent ):Void
 	{
-		var scene:Scene = this.getSceneById( id );
+		var scene:Scene = this.getSceneById( event.SceneID );
 		var sprite:Sprite = scene.get( "sprite" );
-		if( currentTime <= 0 )
+		if( event.SceneEventCurrentTime <= 0 )
 		{
 			sprite.alpha = 0.0;
 			sprite.visible = false;
-			this.removeSceneEvent( id, "undrawSceneWithHide" );
+			this.removeSceneEvent( event );
 			this._undrawScene( scene );
 			return;
 		}
-		var newAlpha:Float = ( 1/time )*currentTime;
+		var newAlpha:Float = ( 1/event.SceneEventTime )*event.SceneEventCurrentTime;
 		sprite.alpha = newAlpha;
+	}
+
+	private function _updateListOfRecruits( event:BuildingEvent ):Void
+	{
+		
+		if( event.BuildingEventCurrentTime%1000 <= 34 ) // 1000/ 60 = 16.6 , x2 = 33.2; - in game.hx 
+		{
+			var num = event.BuildingEventCurrentTime/1000;
+			var minute = Math.ffloor((num / 60) % 60);
+			var strMinute = '$minute';
+			if( minute < 10 )
+				strMinute = '0' + '$minute';
+			var seconds = Math.ffloor(num % 60);
+			var strSeconds = '$seconds';
+			if( seconds < 10 )
+				strSeconds = '0' + '$seconds';
+
+			var string:String = 'Next recruits in $strMinute:$strSeconds';
+			this._parent.getSystem( "ui" ).setTextToWindow( 3002, string, "timer" );
+		}
+
+		if( event.BuildingEventCurrentTime <= 34 )
+		{
+			this.removeBuildingEvent( event );
+			this._parent.getSystem( "state" ).generateHeroesForRecruitBuilding();
+		}
+		
 	}
 }

@@ -110,6 +110,7 @@ class HeroSystem
 			throw 'Error in HeroSystem.generateHero. Can not generate hero with $type and $rarity';
 
 		var hero:Hero = this.createHero( deployId );
+		this._creatWeaponArmorForHero( hero );
 		return hero;
 	}
 
@@ -187,6 +188,21 @@ class HeroSystem
 
 	//PRIVATE
 
+
+
+
+	private function _creatWeaponArmorForHero( hero:Hero ):Void
+	{
+		//create hero weapon and armor;
+		var itemSystem:ItemSystem = this._parent.getSystem( "item" );
+		var heroDeployId:Hero.HeroDeployID = hero.get( "deployId" );
+		var config:Dynamic = this._parent.getSystem( "deploy" ).getHero( heroDeployId );
+		var armor:Item = itemSystem.createItem( config.baseArmor );
+		var weapon:Item = itemSystem.createItem( config.baseWeapon );
+		var heroInventory:InventorySystem = hero.get( "inventory" );
+		heroInventory.addItem( armor );
+		heroInventory.addItem( weapon );
+	}
 
 	private function _generateHeroNameSurname( gender:String ):Dynamic
 	{

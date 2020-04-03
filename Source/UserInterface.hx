@@ -320,11 +320,42 @@ class UserInterface
 		return null;
 	}
 
+	public function setTextToWindow( window:Int, text:String, type:String ):Void
+	{
+		switch( window )
+		{
+			case 3002: this._setTextToRecruitWindow( text, type );
+			case 3006: this._setTextToInnWindow( text, type );
+			default: throw 'Error in UserInterface. Can no set text to "$window"';
+		}
+	}
+
 
 
 	//PRIVATE
 
 
+
+
+	private function _setTextToRecruitWindow( text:String, type:String ):Void
+	{
+		var window:Window = this.getWindowByDeployId( 3002 );
+		switch( type )
+		{
+			case "timer": window.get( "graphics" ).setText( text, "second" );
+			default: throw 'Error in UserInterface._setTextToRecruitWindow. Can not set text to "$type"';
+		}
+	}
+
+	private function _setTextToInnWindow( text:String, type:String ):Void
+	{
+		var window:Window = this.getWindowByDeployId( 3006 );
+		switch( type )
+		{
+			case "counter": window.get( "graphics" ).setText( text, "first" );
+			default: throw 'Error in UserInterface._setTextToInnWidnow. Can not set text to "$type"';
+		}
+	}
 
 	private function _checkWidnowInObjects( deployId:WindowDeployID ):Int
 	{

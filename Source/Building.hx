@@ -138,15 +138,7 @@ class Building
 	public function removeHero( hero:Hero ):Hero
 	{
 		var id:Hero.HeroID = hero.get( "id" );
-		for( i in 0...this._heroStorage.length )
-		{
-			var currentHero:Hero = this._heroStorage[ i ];
-			if( haxe.EnumTools.EnumValueTools.equals( currentHero.get( "id" ), id ))
-			{
-				this._heroStorage.splice( i, 1 ); // при нахождении совпадения, удаляем его из хранилища.
-				break;
-			}
-		}
+		this._heroStorage.remove( hero );
 		return hero;
 	}
 
@@ -160,16 +152,7 @@ class Building
 
 	public function removeItem( item:Item ):Item
 	{
-		var id:Item.ItemID = item.get( "id" );
-		for( i in 0...this._itemStorage.length )
-		{
-			var currentItem:Item = this._itemStorage[ i ];
-			if( haxe.EnumTools.EnumValueTools.equals( currentItem.get( "id" ), id ))
-			{
-				this._itemStorage.splice( i, 1 );
-				break;
-			}
-		}
+		this._itemStorage.remove( item );
 		return item;
 	}
 

@@ -122,7 +122,7 @@ class EventHandler
 			case "hospital": state.openWindow( 3001 );
 			case "tavern": state.openWindow( 3001 );
 			case "blacksmith": state.openWindow( 3001 );
-			case "merchant": state.openWindow( 3001 );
+			case "merchant": state.openWindow( 3011 );
 			case "graveyard": state.openWindow( 3001 );
 			case "academy": state.openWindow( 3001 );
 			case "hermit": state.openWindow( 3001 );

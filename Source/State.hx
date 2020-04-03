@@ -74,12 +74,12 @@ class State
 	public function openWindow( deployId:Int ):Void
 	{
 		var ui:UserInterface = this._parent.getSystem( "ui" );
+		var activeWindow:Window = ui.findChildCitySceneMainWindow();
 		switch( deployId )
 		{
 			case 3001: {}; // empty;
-			case 3002: 
+			case 3002, 3011: 
 			{
-				var activeWindow:Window = ui.findChildCitySceneMainWindow();
 				if( activeWindow == null )// значит на экране нет октрытых окон;
 				{
 					ui.showUiObject( WindowDeployID( 3001 )); // открываем главное окно сцены.
@@ -150,12 +150,16 @@ class State
 
 	public function innHeroListUp():Void
 	{
-
+		// find first who first have visible = true -> change to false;
+		// then find who first have visible = false -> cnahne go true;
+		// run refreshInnHeroList();
 	}
 
 	public function innHeroListDown():Void
 	{
-
+		//find button who first have visible = true -> change last child visible to true;
+		// then find who first have visible = false, check next ;
+		// run refreshInnHeroList();
 	}
 
 	public function chooseButton( name:String, id:Button.ButtonID):Void
@@ -241,32 +245,19 @@ class State
 		panelCityWindow.get( "graphics" ).setText( '$currentMoney', "first" );
 	}
 
-	public function generateHeroesForBuilding( building:Building ):Void
+	public function generateHeroesForRecruitBuilding():Void
 	{
-		// убираем всех героев из инвентаря здания.
-		building.clearHeroStorage();
-		// убираем все кнопки, связанные с героями по имени ( так проще );
+		var scene:Scene = this._parent.getSystem( "scene" ).getSceneByName( "cityScene" );
+		var building:Building = scene.getBuildingByDeployId( 2002 );
 		var recruitWindow:Window = this._parent.getSystem( "ui" ).getWindowByDeployId( 3002 );
-		var recruitWindowButtons:Array<Button> = recruitWindow.get( "buttons" );
-		var index:Int = 0;
-		for( j in 0...recruitWindowButtons.length )
-		{
-			var button:Button = recruitWindowButtons[ index ];
-			var buttonName:String = button.get( "name" );
-			if( buttonName == "recruitHeroButtonWhite" || buttonName == "recruitHeroButtonBlue" || buttonName == "recruitHeroButtonOrange" || buttonName == "recruitHeroButtonGreen" )
-			{
-				recruitWindow.removeButton( button );
-				continue;
-			}
-			index++;
-		}	
+		// очищаем кнопки с окна и героев внутри здания
+		this._clearHeroFromRecruitBuilding( building, recruitWindow );
 
 		var heroSystem:HeroSystem = this._parent.getSystem( "hero" );
-		var ui:UserInterface = this._parent.getSystem( "ui" );
 		var heroSlots:Int = building.get( "heroStorageSlotsMax" );
 		var buildingLevel:Int = building.get( "upgradeLevel" );
 		var rarityArray:Array<String> = this._parent.getSystem( "hero" ).get( "rarity" );
-		var inverseLevel:Int = rarityArray.length - buildingLevel;
+		var inverseLevel:Int = rarityArray.length - buildingLevel; // Высокий уровень здания добавит возможность добалять легендарных героев и ниже.
 		// 1 lvl - only common; 2 lvl - common + uncommon; 3 lvl common + uncommon + rare; 4 lvl common + uncommon + rare + legendary;
 		for( i in 0...heroSlots )
 		{
@@ -275,38 +266,17 @@ class State
 			var hero:Hero = heroSystem.generateHero( "random", rarity );
 			building.addHero( hero );
 
-			//create hero weapon and armor;
-			var itemSystem:ItemSystem = this._parent.getSystem( "item" );
-			var heroDeployId:Hero.HeroDeployID = hero.get( "deployId" );
-			var config:Dynamic = this._parent.getSystem( "deploy" ).getHero( heroDeployId );
-			var armor:Item = itemSystem.createItem( config.baseArmor );
-			var weapon:Item = itemSystem.createItem( config.baseWeapon );
-			var heroInventory:InventorySystem = hero.get( "inventory" );
-			heroInventory.addItem( armor );
-			heroInventory.addItem( weapon );
-
-			var heroButton:Button = null;
-			// создаем кнопку на основе легендарности героя ( отличие оконтовка )
-			switch( rarity )
-			{
-				case "common": heroButton = ui.createButton( 4015 );
-				case "uncommon": heroButton = ui.createButton( 4016 );
-				case "rare": heroButton = ui.createButton( 4017 );
-				case "legendary": heroButton = ui.createButton( 4018 );
-				default: throw 'Error in State.generateHeroesForBuilding. Can not create button with rarity: "$rarity"';
-			}
-
-			var buttonSprite:Sprite = heroButton.get( "sprite" );
-			var buttonNewY:Float = buttonSprite.height * i;
-			buttonSprite.y += buttonNewY;
+			var heroButton:Button = this._createHeroButtonForRecruitBuilding( rarity );
 			this._bindHeroAndButton( hero, heroButton );
 			recruitWindow.addButton( heroButton );
 		}
-
-		//TODO: запустить внутренний таймер для отсчета смены новых героев.
+		// запускаем таймер на следюущую смену героев.
+		this._redrawListOfHeroesInRecruitBuilding();
+		var time:Float = this._parent.getSystem( "deploy" ).getBuilding( building.get( "deployId" )).generateHeroEventTime;
+		this._parent.getSystem( "scene" ).createBuildingEvent( scene.get( "id" ), building.get( "id" ), "updateListOfRecruits", time );
 	}
 
-	public function generateItemsForBuilding( building:Building ):Void
+	public function generateItemsForMerchantBuilding():Void
 	{
 
 	}
@@ -382,17 +352,6 @@ class State
 				this.unchooseHeroToDungeon( button.get( "id" ));
 		}
 	}
-
-	public function onSceneEventDing( event:SceneSystem.SceneEvent ):Void
-	{
-		var eventName:String = event.SceneEventName;
-		var scene:Scene = this._parent.getSystem( "scene" ).getSceneById( event.SceneID );
-		switch( eventName )
-		{
-			case "generateHeroesForRecruitBuilding": this.generateHeroesForBuilding( scene.getBuildingByDeployId( 2002 ) );
-		}
-	}
-
 
 
 
@@ -508,7 +467,11 @@ class State
 		this._bindHeroAndButton( hero, heroButton );
 		innWindow.addButton( heroButton );
 		this._parent.getSystem( "event" ).addEvents( heroButton );
-		this._updateInnText();
+		
+		var currentNumberOfHeroes:Int = innBuilding.get( "heroStorage" ).length;
+		var maximumRoomForHeroes:Int = innBuilding.get( "heroStorageSlotsMax" );
+		var textToInn:String = 'Inn | $currentNumberOfHeroes of $maximumRoomForHeroes';
+		this._parent.getSystem( "ui" ).setTextToWindow( 3006, textToInn , "counter" ); // Inn Window deploy id 3006;
 	}
 
 	private function _checkBoxInStorageInventoryForItem():Bool
@@ -519,13 +482,11 @@ class State
 
 	private function _removeHeroFromRecruitBuilding( hero:Hero, button:Button ):Hero
 	{
-		if( button == null )
-			button = this._findActiveRecruitButton();
-		
+		this._parent.getSystem( "event" ).removeEvents( button );
 		var recruitWindow:Window = this._parent.getSystem( "ui" ).getWindowByDeployId( 3002 ); // recruit window have 3002 deploy id;
 		recruitWindow.removeButton( button );
-		var newHero:Hero = this._parent.getSystem( "scene" ).getActiveScene().getBuildingByDeployId( 2002 ).removeHero( hero );
-		return newHero;
+		this._parent.getSystem( "scene" ).getActiveScene().getBuildingByDeployId( 2002 ).removeHero( hero );
+		return hero;
 	}
 
 	private function _findActiveRecruitButton():Button
@@ -603,15 +564,6 @@ class State
 				}
 			}
 		}
-	}
-
-	private function _updateInnText():Void
-	{
-		var innBuilding:Building = this._parent.getSystem( "scene" ).getActiveScene().getBuildingByDeployId( 2010 ); //Inn building with 2010 deploy ID;
-		var currentNumberOfHeroes:Int = innBuilding.get( "heroStorage" ).length;
-		var maximumRoomForHeroes:Int = innBuilding.get( "heroStorageSlotsMax" );
-		var textToInn:String = 'Inn | $currentNumberOfHeroes of $maximumRoomForHeroes';
-		this._parent.getSystem( "ui" ).getWindowByDeployId( 3006 ).get( "graphics" ).setText( textToInn , "first" ); // Inn Window deploy id 3006;
 	}
 
 	private function _findHeroFromInnBuildingById( heroId:Hero.HeroID ):Hero
@@ -795,6 +747,23 @@ class State
 			buttonGraphics.setText( '$heroBuyPrice', "third" );
 	}
 
+	private function _createHeroButtonForRecruitBuilding( rarity:String ):Button
+	{
+		var ui:UserInterface = this._parent.getSystem( "ui" );
+		var button:Button = null;
+		// создаем кнопку на основе легендарности героя ( отличие оконтовка )
+		switch( rarity )
+		{
+			case "common": button = ui.createButton( 4015 );
+			case "uncommon": button = ui.createButton( 4016 );
+			case "rare": button = ui.createButton( 4017 );
+			case "legendary": button = ui.createButton( 4018 );
+			default: throw 'Error in State.generateHeroesForBuilding. Can not create button with rarity: "$rarity"';
+		}
+		this._parent.getSystem( "event" ).addEvents( button );
+		return button;
+	}
+
 	private function _closeWarningWindow():Void
 	{
 		var ui:UserInterface = this._parent.getSystem( "ui" );
@@ -813,6 +782,24 @@ class State
 		// создать окно, доабвить на ui ( что бы у него был приоритет по z-index ), показать. Кнопка получит ивент на закрытие.
 		
 	}
+
+	private function _clearHeroFromRecruitBuilding( building:Building, window:Window ):Void
+	{
+		var recruitWindowButtons:Array<Button> = window.get( "buttons" );
+		var index:Int = 0;
+		for( j in 0...recruitWindowButtons.length )
+		{
+			var button:Button = recruitWindowButtons[ index ];
+			var buttonName:String = button.get( "name" );
+			if( buttonName == "recruitHeroButtonWhite" || buttonName == "recruitHeroButtonBlue" || buttonName == "recruitHeroButtonOrange" || buttonName == "recruitHeroButtonGreen" )
+			{
+				var hero:Hero = building.getHeroById( button.get( "heroId" ));
+				this._removeHeroFromRecruitBuilding( hero, button );
+				continue;
+			}
+			index++;
+		}
 	
+	}
 
 }

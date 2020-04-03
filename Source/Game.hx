@@ -159,6 +159,11 @@ class Game
 
 	}
 
+	public function getDoubleDelta():Float
+	{
+		return this._doubleDelta;
+	}
+
 	public function createPlayer( deployId:Int, name:String ):Player
 	{
 		var playerDeployId:PlayerDeployID = PlayerDeployID( deployId );
