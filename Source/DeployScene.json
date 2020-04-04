@@ -14,7 +14,7 @@
 		"imageNormalURL": "assets/images/scenes/citySceneBackround.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
-		"window": [ 3003, 3001, 3002, 3006 ],
+		"window": [ 3003, 3001, 3002, 3006, 3011 ],
 		"building": [ 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010 ]
 	},
 
@@ -28,14 +28,17 @@
 	},
 
 	"1003":{
-		"name": "loader",
+		"name": "loaderScene",
 		"deployId": 1003,
 		"imageNormalURL": "assets/images/scenes/loader.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
 		"imageSecondURL": "assets/images/scenes/loader_line.png",
-		"imageSecondX": 100.0,
-		"imageSecondY": 800.0
+		"imageSecondX": 128.0,
+		"imageSecondY": 952.0,
+		"imageThirdURL": "assets/images/scenes/loader_main.png",
+		"imageThirdX": 80.0,
+		"imageThirdY": 900.0
 	},
 
 

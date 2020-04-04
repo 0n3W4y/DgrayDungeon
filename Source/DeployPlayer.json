@@ -1,7 +1,7 @@
 {
 	"100":{
 		"deployId": 100,
-		"moneyAmount": 500,
+		"moneyAmount": 5000,
 		"itemInventoryMaxSlots": 10
 	}
 }

@@ -33,7 +33,6 @@ class Scene
 	private var _isDrawed:Bool;
 
 	private var _graphics:GraphicsSystem;
-	private var _sprite:Sprite;
 
 	private var _building:Array<Building>;
 	private var _hero:Array<Hero>;
@@ -45,28 +44,27 @@ class Scene
 		this._id = config.ID;
 		this._name = config.Name;
 		this._deployId = config.DeployID;
-		this._sprite = config.GraphicsSprite;
-		this._graphics = new GraphicsSystem({ Parent:this, GraphicsSprite:this._sprite });
+		this._graphics = new GraphicsSystem({ Parent:this, GraphicsSprite:config.GraphicsSprite });
 	}
 
 	public function init( error:String ):Void
 	{
-		var err:String = 'Name "$_name" id "$_id" deploy id "$_deployId"';
+		var err:String = '$error. Name "$_name" id "$_id" deploy id "$_deployId"';
 		this._isPrepared = "unprepared"; // По умолчанию, сцена не готова.
 		this._isDrawed = false;
 		this._building = new Array<Building>();
 		this._hero = new Array<Hero>();
 
 		if( this._name == null || this._name == "" )
-			throw '$error. Wrong name. $err';
+			throw '$err. Wrong name';
 
 		if( this._id == null )
-			throw '$error Wrong ID. $err';
+			throw '$err Wrong ID';
 
 		if( this._deployId == null  )
-			throw '$error Wrong Deploy ID. $err';
+			throw '$err Wrong Deploy ID';
 
-		this._graphics.init( (error + err) );
+		this._graphics.init( err );
 	}
 
 	public function postInit():Void
@@ -83,7 +81,7 @@ class Scene
 			case "deployId": return this._deployId;
 			case "type": return this._type;
 			case "graphics": return this._graphics;
-			case "sprite": return this._sprite;
+			case "sprite": return this._graphics.getSprite();
 			case "prepared": return this._isPrepared;
 			case "isDrawed": return this._isDrawed;
 			default: throw 'Error in Scene.get. No getter for "$value"';

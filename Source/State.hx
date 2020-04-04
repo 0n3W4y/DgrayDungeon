@@ -45,13 +45,11 @@ class State
 	public function startGame():Void
 	{
 		var sceneSystem:SceneSystem = this._parent.getSystem( "scene" );
-		var player:Player = this._parent.createPlayer( 100 , "test player" );
+		this._parent.createPlayer( 100 , "test player" );
 
 		// start new game - create both scenes;
 		var scene:Scene = sceneSystem.createScene( 1001 );
-		var sceneId:Scene.SceneID = scene.get( "id" );
-		var dungeonScene:Scene = sceneSystem.createScene( 1002 ); 
-		var dungeonSceneId:Scene.SceneID = dungeonScene.get( "id" );
+		sceneSystem.createScene( 1002 ); 
 
 		sceneSystem.changeSceneTo( scene );
 	}
@@ -150,16 +148,72 @@ class State
 
 	public function innHeroListUp():Void
 	{
-		// find first who first have visible = true -> change to false;
-		// then find who first have visible = false -> cnahne go true;
-		// run refreshInnHeroList();
+		var buttonsArray:Array<Button> = this._parent.getSystem( "ui" ).getWindowByDeployId( 3006 ).get( "buttons" );
+		var firstVisible:Button = null;
+		var firstInvivisble:Button = null;
+		for( i in 0...buttonsArray.length )
+		{
+			var button:Button = buttonsArray[ i ];
+			var buttonName:String = button.get( "name" );
+			if( buttonName == "innWindowHeroButtonOrange" || buttonName == "innWindowHeroButtonGreen" || buttonName == "innWindowHeroButtonBlue" || buttonName == "innWindowHeroButtonWhite" )
+			{
+				var sprite:Sprite = button.get( "sprite" );
+				if( sprite.visible && firstVisible == null ) // сначала ищем первого не скрытого.
+					firstVisible = button;
+
+				if( !sprite.visible && firstInvivisble == null && firstVisible != null ) // после ищем первого скрытого. По нему и ориентируемся.
+				{
+					firstInvivisble = button;
+					break;
+					// делаем брик, так как в списке последние будут скрытые - всегда. В аррее все стоит на своих местах и по аррэю отрисовываю
+				}					
+			}
+			else
+				continue;
+		}
+
+		if( firstInvivisble == null ) // мы дошли до конца списка и не обнаружили скрытых - значит мы у конца списка - ничего не делаем.
+			return;
+
+		var firstVisibleSprite:Sprite = firstVisible.get( "sprite" );
+		firstVisibleSprite.visible = false;
+		var firstInvivisbleSprite:Sprite = firstInvivisble.get( "sprite" );
+		firstInvivisbleSprite.visible = true;
+		this._redrawListOfHeroesInInnBuilding();
 	}
 
 	public function innHeroListDown():Void
 	{
-		//find button who first have visible = true -> change last child visible to true;
-		// then find who first have visible = false, check next ;
-		// run refreshInnHeroList();
+		var buttonsArray:Array<Button> = this._parent.getSystem( "ui" ).getWindowByDeployId( 3006 ).get( "buttons" );
+		var firstVisible:Button = null;
+		var lastInvivisble:Button = null;
+		for( i in 0...buttonsArray.length )
+		{
+			var button:Button = buttonsArray[ i ];
+			var buttonName:String = button.get( "name" );
+			if( buttonName == "innWindowHeroButtonOrange" || buttonName == "innWindowHeroButtonGreen" || buttonName == "innWindowHeroButtonBlue" || buttonName == "innWindowHeroButtonWhite" )
+			{
+				var sprite:Sprite = button.get( "sprite" );
+				if( !sprite.visible )
+					lastInvivisble = button;
+				else
+				{
+					firstVisible = button;
+					break; // тормозим, так как мы нашли первого видимого, теперь проверяем, есть ли перед ним невидимый. если нет - возвращаемся.
+				}
+					
+			}
+		}
+
+		if( lastInvivisble == null )
+			return; // список вниз больше не должен идти, так как мы достигли 1-й кнопки.
+		else
+		{
+			var sprite:Sprite = lastInvivisble.get( "sprite" );
+			sprite.visible = true;
+		}			
+
+		this._redrawListOfHeroesInInnBuilding();
 	}
 
 	public function chooseButton( name:String, id:Button.ButtonID):Void
@@ -455,23 +509,15 @@ class State
 		var ui:UserInterface = this._parent.getSystem( "ui" );
 		var innWindow:Window = ui.getWindowByDeployId( 3006 ); // inn window with deploy id 3006;
 		var rarity:String = hero.get( "rarity" );
-		var heroButton:Button = null;
-		switch( rarity )
-		{
-			case "common": heroButton = ui.createButton( 4019 );
-			case "uncommon": heroButton = ui.createButton( 4020 );
-			case "rare": heroButton = ui.createButton( 4021 );
-			case "legendary": heroButton = ui.createButton( 4022 );
-			default: throw 'Error in State.generateHeroesForBuilding. Can not create button with rarity: "$rarity"';
-		}
+		var heroButton:Button = this._createHeroButtonForInnBuilding( rarity );		
 		this._bindHeroAndButton( hero, heroButton );
 		innWindow.addButton( heroButton );
-		this._parent.getSystem( "event" ).addEvents( heroButton );
 		
+		// получаем знанчение со здания и записываем их в окно.
 		var currentNumberOfHeroes:Int = innBuilding.get( "heroStorage" ).length;
 		var maximumRoomForHeroes:Int = innBuilding.get( "heroStorageSlotsMax" );
 		var textToInn:String = 'Inn | $currentNumberOfHeroes of $maximumRoomForHeroes';
-		this._parent.getSystem( "ui" ).setTextToWindow( 3006, textToInn , "counter" ); // Inn Window deploy id 3006;
+		ui.setTextToWindow( 3006, textToInn , "counter" ); // Inn Window deploy id 3006;
 	}
 
 	private function _checkBoxInStorageInventoryForItem():Bool
@@ -528,34 +574,38 @@ class State
 		var innWindow:Window = this._parent.getSystem( "ui" ).getWindowByDeployId( 3006 ); //inn window deploy id 3006;
 		var buttonsArray:Array<Button> = innWindow.get( "buttons" );
 		var counter:Int = 0;
-		var maxSize:Int = innWindow.get( "sprite" ).height;
+		var innWindowSprite:Sprite = innWindow.get( "sprite" );
+		var maxSize:Float = innWindowSprite.height;
 		var lastTotalY:Float = 0.0;
 		var innWindowFull:Bool = false;
 		for( i in 0...buttonsArray.length )
 		{
 			var button:Button = buttonsArray[ i ];
 			var name:String = button.get( "name" );
-			if( name == "innWindowHeroButtonOrange" || name == "innWindowHeroButtonBlue" || name == "innWindowHeroButtonWhite" || name == "innWindowHeroButtonGreen" )
+			var buttonSprite:Sprite = button.get( "sprite" );
+			if(( name == "innWindowHeroButtonOrange" || name == "innWindowHeroButtonBlue" || name == "innWindowHeroButtonWhite" || name == "innWindowHeroButtonGreen" ) && buttonSprite.visible )
 			{
-				var buttonSprite:Sprite = button.get( "sprite" );
 				// we can get Deploy ID from button, get sprite.y and add it;
 				var deployId:Button.ButtonDeployID = button.get( "deployId" );
 				var newY:Int = this._parent.getSystem( "deploy" ).getButton( deployId ).y;
-
+				
 				if( !innWindowFull )
 				{
 					var totalY:Float = counter * buttonSprite.height + newY;
-					if( totalY >= maxSize )
+					var nextTotalY:Float = ( counter + 1 ) * buttonSprite.height + newY;
+					if( nextTotalY >= maxSize )
 					{
 						innWindowFull = true;
 						buttonSprite.y = lastTotalY;
 						buttonSprite.visible = false;
 						continue;
 					}
-
-					buttonSprite.y = totalY;
-					lastTotalY = totalY;
-					counter++;
+					else
+					{
+						buttonSprite.y = totalY;
+						lastTotalY = totalY;
+						counter++;
+					}
 				}
 				else
 				{
@@ -758,6 +808,22 @@ class State
 			case "uncommon": button = ui.createButton( 4016 );
 			case "rare": button = ui.createButton( 4017 );
 			case "legendary": button = ui.createButton( 4018 );
+			default: throw 'Error in State.generateHeroesForBuilding. Can not create button with rarity: "$rarity"';
+		}
+		this._parent.getSystem( "event" ).addEvents( button );
+		return button;
+	}
+
+	private function _createHeroButtonForInnBuilding( rarity:String ):Button
+	{
+		var ui:UserInterface = this._parent.getSystem( "ui" );
+		var button:Button = null;
+		switch( rarity )
+		{
+			case "common": button = ui.createButton( 4019 );
+			case "uncommon": button = ui.createButton( 4020 );
+			case "rare": button = ui.createButton( 4021 );
+			case "legendary": button = ui.createButton( 4022 );
 			default: throw 'Error in State.generateHeroesForBuilding. Can not create button with rarity: "$rarity"';
 		}
 		this._parent.getSystem( "event" ).addEvents( button );

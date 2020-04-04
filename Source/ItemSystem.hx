@@ -53,7 +53,6 @@ class ItemSystem
 		var config:Dynamic = this._parent.getSystem( "deploy" ).getItem( ItemDeployID( deployId ) );
 		var id:Int = this._parent.createId();
 		var secondConfig:Dynamic = this.generatePriceAndStats( config );
-		trace ( secondConfig );
 
 		var itemConfig:ItemConfig =
 		{

@@ -243,7 +243,7 @@ class EventHandler
 				case "out": sprite.removeEventListener( MouseEvent.MOUSE_OUT, this._unhoverButton );
 				case "over": sprite.removeEventListener( MouseEvent.MOUSE_OVER, this._hoverButton );
 				case "click": sprite.removeEventListener( MouseEvent.CLICK, this._clickButton );
-				default: throw 'Error in EventHandler._addButtonEvents. No Event found for "$event"';
+				default: throw 'Error in EventHandler._removeButtonEvents. No Event found for "$event"';
 			}
 		}
 	}

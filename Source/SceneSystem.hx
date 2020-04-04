@@ -42,7 +42,7 @@ class SceneSystem
 	private var _scenesArray:Array<Scene>;
 	private var _scenesSprite:Sprite;
 	private var _activeScene:Scene;
-	private var _sceneAfterLoader:Scene;
+	private var _sceneAfterLoaderScene:Scene;
 
 	private var _sceneEvents:Array<SceneEvent>;
 	private var _buildingEvents:Array<BuildingEvent>;
@@ -132,7 +132,7 @@ class SceneSystem
 
 	public function createSceneEvent( sceneId:SceneID, eventType:String, time:Float ):Void
 	{
-		if( eventType == "reviewScene" || eventType == "showScene" || eventType == "hideScene" || eventType == "checkShowLoader" || eventType == "undrawSceneWithHide" )
+		if( eventType == "reviewScene" || eventType == "showScene" || eventType == "hideScene" || eventType == "showLoaderScene" || eventType == "undrawSceneWithHide" )
 			this._sceneEvents.push({ SceneID: sceneId, SceneEventName: eventType, SceneEventTime: time, SceneEventCurrentTime: time });
 		else
 			throw 'Error in SceneSystem.createSceneEvent. Can not create "$eventType"';		
@@ -334,6 +334,12 @@ class SceneSystem
 		if( !isDrawed )
 			throw 'Error in SceneSystem._undrawScene. Scene "$name" not drawed yet';
 
+		if( name == "loaderScene" )
+		{
+			this._undrawLoaderScene( scene );
+			return;
+		}
+
 		var sceneSprite:Sprite = scene.get( "sprite" );
 		this._scenesSprite.removeChild( sceneSprite );
 		this._undrawUiForScene( scene );
@@ -354,7 +360,7 @@ class SceneSystem
 				case "reviewScene":	this._reviewScene( event );
 				case "showScene": this._showScene( event );
 				case "hideScene": this._hideScene( event );
-				case "checkShowLoader": this._checkShowLoader( event );
+				case "showLoaderScene": this._showLoaderScene( event );
 				case "undrawSceneWithHide": this._undrawSceneWithHide( event );
 				default: throw 'Error in SceneSystem._updateSceneEvents. No event found for "$event"';
 			}
@@ -419,33 +425,40 @@ class SceneSystem
 		//TODO:
 	}
 
-	private function _prepareSceneLoader( scene:Scene ):Void
+	private function _prepareLoaderScene( scene:Scene ):Void
 	{
 		scene.changePrepareStatus( "prepared" );
 	}
 
 	
 
-	private function _drawLoader( scene:Scene ):Void
+	private function _drawLoaderScene( scene:Scene ):Void
 	{
 		var bitmap:Bitmap = scene.get( "graphics" ).getGraphicsAt( 1 );
-		bitmap.width = 0;
+		bitmap.width = 1.0;
 
-		this._scenesSprite.addChild( scene.get( "sprite" ));
+		var sprite:Sprite = scene.get( "sprite" );
+		sprite.alpha = 0.0; // запускаем его невидимым.
+		this._scenesSprite.addChild( sprite );
 		scene.setDrawed( true );
 	}
 
-	private function _undrawLoader( scene:Scene ):Void
+	private function _undrawLoaderScene( scene:Scene ):Void
 	{
 		this._scenesSprite.removeChild( scene.get( "sprite" ));
 		scene.setDrawed( false );
 	}
 
-	private function _doLoader():Void
+	private function _doLoaderScene():Void
 	{
-		var nextScene:Scene = this._sceneAfterLoader;
+		var nextScene:Scene = this._sceneAfterLoaderScene;
 		if( nextScene == null )
-			throw 'Error in SceneSystem._doLoader. Next Scene is null';
+			throw 'Error in SceneSystem._doLoaderScene. Next Scene is null';
+
+		var loader:Scene = this.getActiveScene();
+		var bitmap:Bitmap = loader.get( "graphics" ).getGraphicsAt( 1 );
+		var hundredPercentBitmap:Bitmap = loader.get( "graphics" ).getGraphicsAt( 2 );
+		var hundredPercentWidth:Float = hundredPercentBitmap.width - 10;
 
 		var sceneName:String = nextScene.get( "name" );
 		switch( sceneName )
@@ -453,22 +466,28 @@ class SceneSystem
 			case "cityScene":
 			{
 				var scenePrepared:String = nextScene.get( "prepared" );
-				// change loader sprite (1) to %;
+				// change loader sprite (1) to 15%;
+				bitmap.width = hundredPercentWidth * 0.15; 
 				if( scenePrepared == "unprepared" )
 					this._prepareCityScene( nextScene );
 
-				//change loader sprite (1) to %;
+				//change loader sprite (1) to 30%;
+				bitmap.width = hundredPercentWidth * 0.30; 
 				this._drawScene( nextScene );
-				//change loader sprite (1) to 100%;
-				this.createSceneEvent( this._activeScene.get( "id" ), "hideScene", 500 );
+				//change loader sprite (1) to 45%;
+				bitmap.width = hundredPercentWidth * 0.45; 
+				this.createSceneEvent( this._activeScene.get( "id" ), "undrawSceneWithHide", 200 );
+				//change loader to 60%
+				bitmap.width = hundredPercentWidth * 0.60; 
 				this._activeScene = nextScene;
-				//this._parent.getSystem( "ui" ).show();
-
+				//change loader to 75%
+				bitmap.width = hundredPercentWidth * 0.75; 
+				this.createSceneEvent( this._activeScene.get( "id" ), "showScene", 1000 );
+				//change loader to 100%
+				bitmap.width = hundredPercentWidth * 1;
 			}
-			default: throw 'Error in SceneSystem._doLoader. Can not load scene "$sceneName" from loader ';
-		}
-				
-		
+			default: throw 'Error in SceneSystem._doLoaderScene. Can not load scene "$sceneName" from loaderScene ';
+		}		
 	}
 
 	
@@ -483,7 +502,7 @@ class SceneSystem
 		{
 
 			sceneLoader = this.createScene( 1003 ); // create loader;
-			this._prepareSceneLoader( sceneLoader );
+			this._prepareLoaderScene( sceneLoader );
 
 			this._prepareStartScene( scene );
 			this._drawScene( scene );
@@ -494,7 +513,7 @@ class SceneSystem
 		{
 			//TODO: draw loader, save game - do progress in loader, undraw old scene - do progress in loader, - draw new scene - do progress, remove loader, show scene;
 			sceneLoader = this.getSceneByName( "loader" );
-			this._sceneAfterLoader = scene;
+			this._sceneAfterLoaderScene = scene;
 		
 		}
 	}
@@ -503,7 +522,7 @@ class SceneSystem
 	{
 		var currentScene:Scene = this._activeScene;
 		var sceneName:String = currentScene.get( "name" );
-		var sceneLoader:Scene = this.getSceneByName( "loader" );
+		var sceneLoader:Scene = this.getSceneByName( "loaderScene" );
 		switch( sceneName )
 		{
 			case "chooseDungeonScene":
@@ -516,11 +535,11 @@ class SceneSystem
 			case "startScene":
 			{
 				this._parent.getSystem( "ui" ).hide();
-				this._sceneAfterLoader = scene;
+				this._sceneAfterLoaderScene = scene;
 				this.undrawSceneWithHide( this._activeScene );
 				this._activeScene = sceneLoader;
-				this._drawLoader( sceneLoader );
-				this.createSceneEvent( sceneLoader.get( "id" ), "checkShowLoader", 4000 );	
+				this._drawLoaderScene( sceneLoader );
+				this.createSceneEvent( sceneLoader.get( "id" ), "showLoaderScene", 550 );
 			}
 			default: throw 'Error in SceneSystem._changeSceneToCityScene. Can not change to City scene from "$sceneName"';
 		}
@@ -638,6 +657,14 @@ class SceneSystem
 			bitmap.y = config.imageSecondY;
 			sprite.addChild( bitmap );
 		}
+
+		if( config.imageThirdURL != null )
+		{
+			bitmap = this._createBitmap( config.imageThirdURL );
+			bitmap.x = config.imageThirdX;
+			bitmap.y = config.imageThirdY;
+			sprite.addChild( bitmap );
+		}	
 
 		return sprite;
 	}
@@ -784,14 +811,17 @@ class SceneSystem
 		sprite.alpha = newAlpha;
 	}
 
-	private function _checkShowLoader( event:SceneEvent ):Void
+	private function _showLoaderScene( event:SceneEvent ):Void
 	{
 		var scene:Scene = this.getSceneById( event.SceneID );
 		var sprite:Sprite = scene.get( "sprite" );
-		if( sprite.alpha >= 1.0 )
+		var newAlpha:Float = -1*( 1/event.SceneEventTime )*event.SceneEventCurrentTime + 1;
+		sprite.alpha = newAlpha;
+
+		if( event.SceneEventCurrentTime <= 0 )
 		{
 			this.removeSceneEvent( event );
-			this._doLoader();
+			this._doLoaderScene();
 		}
 	}
 
