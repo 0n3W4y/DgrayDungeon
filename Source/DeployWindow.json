@@ -254,7 +254,7 @@
 		"secondTextY": 100.0,
 		"secondTextX": 0.0,
 		"secondTextAlign": "left",
-		"button": [ 4025 ]
+		"button": [ 4025, 4027, 4028 ]
 	},
 
 	"3100":{
