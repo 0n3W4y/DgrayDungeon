@@ -758,7 +758,7 @@
 		"name": "showItemsFromStorage",
 		"deployId": 4028,
 		"x": 1300.0,
-		"y": 200.0,
+		"y": 20.0,
 		"imageNormalURL": "assets/images/buttons/button_a.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
@@ -776,6 +776,164 @@
 		"firstTextX": 0.0,
 		"firstTextY": 0.0,
 		"firstTextAlign": "center",
+		"events":[ "up", "down", "out", "over", "click" ]
+	},
+
+	"4029":{
+		"name": "storageListUp",
+		"deployId": 4029,
+		"x": 1300.0,
+		"y": 500.0,
+		"imageNormalURL": "assets/images/buttons/button_c.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"imageHoverURL": "assets/images/buttons/button_c_hover.png",
+		"imageHoverX": 0.0,
+		"imageHoverY": 0.0,
+		"imagePushURL": "assets/images/buttons/button_c_push.png",
+		"imagePushX": 0.0,
+		"imagePushY": 0.0,
+		"events":[ "up", "down", "out", "over", "click" ]
+	},
+
+	"4030":{
+		"name": "storageListDown",
+		"deployId": 4030,
+		"x": 1350.0,
+		"y": 500.0,
+		"imageNormalURL": "assets/images/buttons/button_c.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"imageHoverURL": "assets/images/buttons/button_c_hover.png",
+		"imageHoverX": 0.0,
+		"imageHoverY": 0.0,
+		"imagePushURL": "assets/images/buttons/button_c_push.png",
+		"imagePushX": 0.0,
+		"imagePushY": 0.0,
+		"events":[ "up", "down", "out", "over", "click" ]
+	},
+
+	"4031":{
+		"name": "storageWindowWeaponButton",
+		"deployId": 4031,
+		"x": 50.0,
+		"y": 400.0,
+		"events":[ "up", "down", "out", "over", "click" ]
+	},
+
+	"4032":{
+		"name": "storageWindowArmorButton",
+		"deployId": 4032,
+		"x": 120.0,
+		"y": 400.0,
+		"events":[ "up", "down", "out", "over", "click" ]
+	},
+
+	"4033":{
+		"name": "storageWindowAcessory1Button",
+		"deployId": 4033,
+		"x": 190.0,
+		"y": 400.0,
+		"events":[ "up", "down", "out", "over", "click" ]
+	},
+
+	"4034":{
+		"name": "storageWindowAcessory2Button",
+		"deployId": 4034,
+		"x": 260.0,
+		"y": 400.0,
+		"events":[ "up", "down", "out", "over", "click" ]
+	},
+
+	"4035":{
+		"name": "blackSmithWindowUpgradeBuildingButton",
+		"deployId": 4035,
+		"x": 20.0,
+		"y": 200.0,
+		"imageNormalURL": "assets/images/buttons/button_a.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"imageHoverURL": "assets/images/buttons/button_a_hover.png",
+		"imageHoverX": 0.0,
+		"imageHoverY": 0.0,
+		"imagePushURL": "assets/images/buttons/button_a_push.png",
+		"imagePushX": 0.0,
+		"imagePushY": 0.0,
+		"firstText": "Upgrade",
+		"firstTextSize": 34,
+		"firstTextColor": "0xffffff",
+		"firstTextHeight": 36,
+		"firstTextWidth": 220,
+		"firstTextX": 0.0,
+		"firstTextY": 0.0,
+		"firstTextAlign": "center",
+		"events":[ "up", "down", "out", "over", "click" ]
+	},
+
+	"4036":{
+		"name": "blackSmithWindowUpgradeItemButton",
+		"deployId": 4036,
+		"x": 200.0,
+		"y": 300.0,
+		"imageNormalURL": "assets/images/buttons/button_a.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"imageHoverURL": "assets/images/buttons/button_a_hover.png",
+		"imageHoverX": 0.0,
+		"imageHoverY": 0.0,
+		"imagePushURL": "assets/images/buttons/button_a_push.png",
+		"imagePushX": 0.0,
+		"imagePushY": 0.0,
+		"firstText": "Adapt",
+		"firstTextSize": 34,
+		"firstTextColor": "0xffffff",
+		"firstTextHeight": 36,
+		"firstTextWidth": 220,
+		"firstTextX": 0.0,
+		"firstTextY": 0.0,
+		"firstTextAlign": "center",
+		"events":[ "up", "down", "out", "over", "click" ]
+	},
+
+	"4037":{
+		"name": "blackSmithWindowUpgradeItemButton",
+		"deployId": 4037,
+		"x": 20.0,
+		"y": 200.0,
+		"imageNormalURL": "assets/images/buttons/button_a.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"imageHoverURL": "assets/images/buttons/button_a_hover.png",
+		"imageHoverX": 0.0,
+		"imageHoverY": 0.0,
+		"imagePushURL": "assets/images/buttons/button_a_push.png",
+		"imagePushX": 0.0,
+		"imagePushY": 0.0,
+		"firstText": "Upgrade",
+		"firstTextSize": 34,
+		"firstTextColor": "0xffffff",
+		"firstTextHeight": 36,
+		"firstTextWidth": 220,
+		"firstTextX": 0.0,
+		"firstTextY": 0.0,
+		"firstTextAlign": "center",
+		"events":[ "up", "down", "out", "over", "click" ]
+	},
+
+	"4038":{
+		"name": "blackSmithWindowUpgradeItemButton",
+		"deployId": 4038,
+		"x": 1700.0,
+		"y": 10.0,
+		"imageNormalURL": "assets/images/buttons/storageButton.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"imageHoverURL": "assets/images/buttons/storageButton_hover.png",
+		"imageHoverX": 0.0,
+		"imageHoverY": 0.0,
+		"imagePushURL": "assets/images/buttons/storageButton_hover.png",
+		"imagePushX": 0.0,
+		"imagePushY": 0.0,
 		"events":[ "up", "down", "out", "over", "click" ]
 	}
 }
