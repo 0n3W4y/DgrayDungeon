@@ -75,8 +75,7 @@ class State
 		var activeWindow:Window = ui.findChildCitySceneMainWindow();
 		switch( deployId )
 		{
-			case 3001: {}; // empty;
-			case 3002, 3011: 
+			case 3002, 3011, 3012, 3014, 3016, 3017, 3018, 3019: 
 			{
 				if( activeWindow == null )// значит на экране нет октрытых окон;
 				{

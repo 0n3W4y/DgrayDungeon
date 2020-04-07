@@ -131,17 +131,17 @@ class EventHandler
 		{
 			//TODO: Доделать default  и другие case;
 			case "recruits": state.openWindow( 3002 );
-			case "hospital": state.openWindow( 3001 );
-			case "tavern": state.openWindow( 3001 );
+			case "hospital": state.openWindow( 3016 );
+			case "tavern": state.openWindow( 3014 );
 			case "blacksmith": state.openWindow( 3012 );
 			case "merchant": state.openWindow( 3011 );
-			case "graveyard": state.openWindow( 3001 );
-			case "academy": state.openWindow( 3001 );
-			case "hermit": state.openWindow( 3001 );
-			case "questman": state.openWindow( 3001 );
-			case "fontain": state.openWindow( 3001 );
+			case "graveyard": state.openWindow( 3017 );
+			case "academy": state.openWindow( 3018 );
+			case "hermit": state.openWindow( 3019 );
+			case "questman": {};
+			case "fontain": {};
 			case "inn":{};
-			case "storage": {};
+			case "storage": state.openWindow( 3013 );
 			default: throw 'Error in EventHandler._addEventsToBuilding. No events for $name';
 		}
 	}
