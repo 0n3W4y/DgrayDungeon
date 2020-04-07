@@ -278,7 +278,7 @@
 	},
 
 	"3013":{
-		"name": "citySceneStoragehWindow",
+		"name": "citySceneStorageWindow",
 		"deployId": 3013,
 		"alwaysActive": false,
 		"x": 166.0,

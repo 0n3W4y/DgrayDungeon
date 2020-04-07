@@ -43,7 +43,7 @@ class EventHandler
 		var check:Int = this._checkListenerIfExist( object );
 		if( check != null )
 			throw 'Error in EventHandler.addEvents. Object with name: "$name" already in listeners';
-		
+
 		switch ( type )
 		{
 			case "button": this._addButtonEvents( object );
@@ -105,6 +105,18 @@ class EventHandler
 				"innWindowHeroButtonWhite",
 				"innWindowHeroButtonGreen": this._chooseUnchooseButton( e );
 			case "warningWindowOk": state.closeWindow( 3100 );
+			case "storageButton": state.openWindow( 3013 );
+			case "blackSmithWindowUpgradeItemButton":
+			case "blackSmithWindowUpgradeBuildingButton":
+			case "merchantWindowUpgradeBuildingButton":
+			case "storageWindowWeaponButton":
+			case "storageWindowArmorButton":
+			case "storageWindowAcessory1Button":
+			case "storageWindowAcessory2Button":
+			case "showItemsMerchantWindowFromMerchant":
+			case "showItemsMerchantWindowFromStorage":
+			case "storageListUp":
+			case "storageListDown":
 			default: throw 'Error in EventHandler._addEventsToButton. No event for button with name "$name"';
 		}
 	}
@@ -121,15 +133,15 @@ class EventHandler
 			case "recruits": state.openWindow( 3002 );
 			case "hospital": state.openWindow( 3001 );
 			case "tavern": state.openWindow( 3001 );
-			case "blacksmith": state.openWindow( 3001 );
+			case "blacksmith": state.openWindow( 3012 );
 			case "merchant": state.openWindow( 3011 );
 			case "graveyard": state.openWindow( 3001 );
 			case "academy": state.openWindow( 3001 );
 			case "hermit": state.openWindow( 3001 );
 			case "questman": state.openWindow( 3001 );
 			case "fontain": state.openWindow( 3001 );
-			case "inn": state.openWindow( 3001 );
-			case "storage": state.openWindow( 3001 );
+			case "inn":{};
+			case "storage": {};
 			default: throw 'Error in EventHandler._addEventsToBuilding. No events for $name';
 		}
 	}
@@ -152,10 +164,10 @@ class EventHandler
 		var name:String = sprite.sName;
 		var graphicsSprite:Sprite = sprite.getChildAt( 0 );
 		graphicsSprite.getChildAt( 1 ).visible = false;
-		if( name == "recruitHeroButtonWhite" || name == "recruitHeroButtonGreen" || name == "recruitHeroButtonBlue" || name == "recruitHeroButtonOrange" 
+		if( name == "recruitHeroButtonWhite" || name == "recruitHeroButtonGreen" || name == "recruitHeroButtonBlue" || name == "recruitHeroButtonOrange"
 			|| name == "innWindowHeroButtonOrange" || name == "innWindowHeroButtonBlue" || name == "innWindowHeroButtonGreen" || name == "innWindowHeroButtonWhite" )
 			return;
-		
+
 		graphicsSprite.getChildAt( 2 ).visible = false;
 	}
 
@@ -187,7 +199,7 @@ class EventHandler
 		{
 			graphicsSprite.getChildAt( 2 ).visible = true;
 			state.chooseButton( sprite.sName, sprite.sId );
-		}			
+		}
 	}
 
 	private function _hoverBuilding( e:MouseEvent ):Void
@@ -225,7 +237,7 @@ class EventHandler
 				case "click": sprite.addEventListener( MouseEvent.CLICK, this._clickButton );
 				default: throw 'Error in EventHandler._addButtonEvents. No Event found for "$event"';
 			}
-		}		
+		}
 	}
 
 	private function _removeButtonEvents( object:Button ):Void
@@ -295,7 +307,7 @@ class EventHandler
 			{
 				if( this._listeners[ i ].get( "type" ) != type )
 					continue;
-	
+
 				if( haxe.EnumTools.EnumValueTools.equals( this._listeners[ i ].get( "id" ), object.get( "id" )))
 					return i;
 			}

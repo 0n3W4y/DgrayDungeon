@@ -730,7 +730,7 @@
 	},
 
 	"4027":{
-		"name": "showItemsFromMerchant",
+		"name": "showItemsMerchantWindowFromMerchant",
 		"deployId": 4027,
 		"x": 1000.0,
 		"y": 20.0,
@@ -755,7 +755,7 @@
 	},
 
 	"4028":{
-		"name": "showItemsFromStorage",
+		"name": "showItemsMerchantWindowFromStorage",
 		"deployId": 4028,
 		"x": 1300.0,
 		"y": 20.0,
@@ -896,7 +896,7 @@
 	},
 
 	"4037":{
-		"name": "blackSmithWindowUpgradeItemButton",
+		"name": "merchantWindowUpgradeBuildingButton",
 		"deployId": 4037,
 		"x": 20.0,
 		"y": 200.0,
@@ -921,7 +921,7 @@
 	},
 
 	"4038":{
-		"name": "blackSmithWindowUpgradeItemButton",
+		"name": "storageButton",
 		"deployId": 4038,
 		"x": 1700.0,
 		"y": 10.0,
