@@ -298,6 +298,29 @@ class State
 		panelCityWindow.get( "graphics" ).setText( '$currentMoney', "first" );
 	}
 
+	public function generateItemsForMetchantBuilding():Void
+	{
+		var scene:Scene = this._parent.getSystem( "scene" ).getSceneByName( "cityScene" );
+		var building:Building = scene.getBuildingByDeployId( 2004 );
+		var merchantWindow:Window = this._parent.getSystem( "ui" ).getWindowByDeployId( 3011 );
+		// очищаем кнопки из окна мерчанта
+		this._clearItemsfromMerchantBuilding( building, merchantWindow );
+
+		var itemSlots:Int = building.get( "itemStorageSlotsMax" );
+
+		for( i in 0...itemSlots )
+		{
+			var rarity:String = this._generateItemRarityForMerchantBuilding( building );
+			var type:String = this._generateItemTypeForMerchantBuilding( building );
+		}
+		
+
+
+		this._redrawListOfItemsInMerchantBuilding();
+		var time:Float = this._parent.getSystem( "deploy" ).getBuilding( building.get( "deployId" )).generateItemEventTime;
+		this._parent.getSystem( "scene" ).createBuildingEvent( scene.get( "id" ), building.get( "id" ), "updateListOfItems", time );
+	}
+
 	public function generateHeroesForRecruitBuilding():Void
 	{
 		var scene:Scene = this._parent.getSystem( "scene" ).getSceneByName( "cityScene" );
@@ -341,7 +364,7 @@ class State
 		if( heroId != null )
 		{
 			var heroId:Hero.HeroID = button.get( "heroId" );
-			button.removeHeroId();
+			button.setHeroId( null );
 			var graphics:GraphicsSystem = button.get( "graphics" ).removeGraphicsAt( 2 ); // 2 index is portrait;
 			this._parent.getSystem( "event" ).removeEvents( button ); // убираем ивенты с кнопки, что бы лишний раз не вызывать функции.
 
@@ -530,8 +553,17 @@ class State
 		this._parent.getSystem( "event" ).removeEvents( button );
 		var recruitWindow:Window = this._parent.getSystem( "ui" ).getWindowByDeployId( 3002 ); // recruit window have 3002 deploy id;
 		recruitWindow.removeButton( button );
-		this._parent.getSystem( "scene" ).getActiveScene().getBuildingByDeployId( 2002 ).removeHero( hero );
+		this._parent.getSystem( "scene" ).getSceneByName( "cityScene" ).getBuildingByDeployId( 2002 ).removeHero( hero );
 		return hero;
+	}
+
+	private function _removeItemFromMerchantBuilding( item:Item, button:Button ):Item
+	{
+		this._parent.getSystem( "event" ).removeEvents( button );
+		var merchantWindow:Window = this._parent.getSystem( "ui" ).getWindowByDeployId( 3011); // merchant
+		merchantWindow.removeButton( button );
+		this._parent.getSystem( "scene" ).getSceneByName( "cityScene" ).getBuildingByDeployId( 2004 ).removeItem( item );
+		return item;
 	}
 
 	private function _findActiveRecruitButton():Button
@@ -545,6 +577,39 @@ class State
 				return button;
 		}
 		return null;
+	}
+
+	private function _redrawListOfItemsInMerchantBuilding():Void
+	{
+		var merchantWindow:Window = this._parent.getSystem( "ui" ).getWindowByDeployId( 3011 );
+		var merchantWindowSprite:Sprite = merchantWindow.get( "sprite" );
+		var windowWidth:Float = merchantWindowSprite.width;
+		var buttonsArray:Array<Button> = merchantWindow.get( "buttons" );
+		var counetrX:Int = 0;
+		var counterY:Int = 0;
+		for( i in 0...buttonsArray.length )
+		{
+			var button:Button = buttonsArray[ i ];
+			var name:String = button.get( "name" );
+			if( name == "itemButton" )
+			{
+				var buttonSprite:Sprite = button.get( "sprite" );
+				var deployId:Button.ButtonDeployID = button.get( "deployId" );
+				var x:Float = this._parent.getSystem( "deploy" ).getButton( deployId ).x;
+				var y:Float = this._parent.getSystem( "deploy" ).getButton( deployId ).y;
+				var newX:Float = x + counetrX * buttonSprite.width;
+				if( newX + buttonSprite.width >= windowWidth )
+				{
+					counterY++;
+					counetrX = 0;
+					newX = x;
+					
+				}
+				var newY:Float = y + counterY * buttonSprite.height;
+				buttonSprite.x = newX;
+				buttonSprite.y = newY;
+			}
+		}
 	}
 
 	private function _redrawListOfHeroesInRecruitBuilding():Void
@@ -863,8 +928,76 @@ class State
 				continue;
 			}
 			index++;
+		}	
+	}
+
+	private function _clearItemsfromMerchantBuilding( building:Building, window:Window ):Void
+	{
+		var merchantWindowButtons:Array<Button> = window.get( "buttons" );
+		var index:Int = 0;
+		for( i in 0...merchantWindowButtons.length )
+		{
+			var button:Button = merchantWindowButtons[ index ];
+			var buttonName:String = button.get( "name" );
+			if( buttonName == "itemButton" )
+				{
+					var item:Item = building.getItemById( button.get( "itemId" ));
+					this._removeItemFromMerchantBuilding( item, button );
+				}
+			continue;
 		}
-	
+		index++;
+	}
+
+	private function _generateItemRarityForMerchantBuilding( building:Building ):String
+	{
+		//var itemSystem:ItemSystem = this._parent.getSystem( "item" );
+		var buildingLevel:Int = building.get( "upgradeLevel" );
+		//var rarityArray:Array<String> = itemSystem.get( "rarity" ); // я точно знаю, что всего 4 степени.
+		// lvl 1 75% common, 25% uncommon;
+		// lvl 2 50% common, 50% uncommon;
+		// lvl 3 34% common, 33% uncommon, 33% rare;
+		// lvl 4 25% common, 25% uncommon, 25% rare, 25% legendary;
+		var rarity:String = "common";
+		var randomNumber:Int = Math.floor( Math.random() * 100 ); // [ 0 - 99 ];
+		switch( buildingLevel )
+		{
+			case 1: 
+			{
+				if ( randomNumber >= 75 )
+					rarity = "uncommon";
+			}
+			case 2:
+			{
+				if( randomNumber >= 50 )
+					rarity = "uncommon";
+			}				
+			case 3:
+			{
+				if( randomNumber < 33 )
+					rarity = "uncommon";
+				else if( randomNumber >= 67 )
+					rarity = "rare";
+			}
+			case 4:
+			{
+				if( randomNumber < 25 )
+					rarity = "uncommon";
+				else if( randomNumber >= 50 && randomNumber < 75 )
+					rarity = "rare";
+				else if( randomNumber >= 75 )
+					rarity = "legendary";
+			}
+		}
+		return rarity;
+		
+	}
+
+	private function _generateItemTypeForMerchantBuilding( building:Building ):String
+	{
+		var typesArray:Array<String> = [ "weapon", "armor", "acessory1", "acessory2" ];
+		var randomType:String = typesArray[ Math.floor( Math.random() * typesArray.length )];
+		return randomType;
 	}
 
 }

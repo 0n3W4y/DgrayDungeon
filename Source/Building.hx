@@ -1,5 +1,6 @@
 package;
 
+import haxe.EnumTools;
 import openfl.display.Sprite;
 
 
@@ -166,6 +167,19 @@ class Building
 				return hero;
 		}
 		throw 'Error in Building.getHeroById.There is no hero "$id" in "$_name"';
+		return null;
+	}
+
+	public function getItemById( id:Item.ItemID ):Item
+	{
+		for( i in 0...this._itemStorage.length )
+		{
+			var item:Item = this._itemStorage[ i ];
+			var itemId:Item.ItemID = item.get( "id" );
+			if( haxe.EnumTools.EnumValueTools.equals( id, itemId ))
+				return item;
+		}
+		throw 'Error in Building.getItemById. There is no item "$id" in "$_name"';
 		return null;
 	}
 

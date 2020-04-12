@@ -246,15 +246,23 @@
 		"firstTextX": 0.0,
 		"firstTextY": 0.0,
 		"firstTextAlign": "left",
-		"secondText": "Time remaning: 00:00",
+		"secondText": "Upgrade price: 0",
 		"secondTextSize": 24,
 		"secondTextColor": "0xffffff",
 		"secondTextHeight": 26,
 		"secondTextWidth": 450,
-		"secondTextY": 500.0,
-		"secondTextX": 0.0,
+		"secondTextY": 100.0,
+		"secondTextX": 10.0,
 		"secondTextAlign": "left",
-		"button": [ 4025, 4027, 4028, 4029, 4030, 4037 ]
+		"thirdText": "Time remaning: 00:00",
+		"thirdTextSize": 24,
+		"thirdTextColor": "0xffffff",
+		"thirdTextHeight": 26,
+		"thirdTextWidth": 450,
+		"thirdTextY": 500.0,
+		"thirdTextX": 0.0,
+		"thirdTextAlign": "left",
+		"button": [  4027, 4028, 4029, 4030, 4037 ]
 	},
 
 	"3012":{

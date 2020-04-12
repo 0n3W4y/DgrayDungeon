@@ -680,7 +680,7 @@
 	},
 
 	"4025":{
-		"name": "buySellItemMerchantWindow",
+		"name": "null",
 		"deployId": 4025,
 		"x": 1000.0,
 		"y": 770.0,
@@ -693,7 +693,7 @@
 		"imagePushURL": "assets/images/buttons/button_a_push.png",
 		"imagePushX": 0.0,
 		"imagePushY": 0.0,
-		"firstText": "Buy/Sell",
+		"firstText": "null",
 		"firstTextSize": 34,
 		"firstTextColor": "0xffffff",
 		"firstTextHeight": 36,
@@ -730,10 +730,10 @@
 	},
 
 	"4027":{
-		"name": "showItemsMerchantWindowFromMerchant",
+		"name": "sellToMerchant",
 		"deployId": 4027,
 		"x": 800.0,
-		"y": 20.0,
+		"y": 500.0,
 		"imageNormalURL": "assets/images/buttons/button_a.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
@@ -743,7 +743,7 @@
 		"imagePushURL": "assets/images/buttons/button_a_push.png",
 		"imagePushX": 0.0,
 		"imagePushY": 0.0,
-		"firstText": "Buy items",
+		"firstText": "Sell",
 		"firstTextSize": 34,
 		"firstTextColor": "0xffffff",
 		"firstTextHeight": 36,
@@ -755,10 +755,10 @@
 	},
 
 	"4028":{
-		"name": "showItemsMerchantWindowFromStorage",
+		"name": "BuyFromMerchant",
 		"deployId": 4028,
-		"x": 1050.0,
-		"y": 20.0,
+		"x": 300.0,
+		"y": 500.0,
 		"imageNormalURL": "assets/images/buttons/button_a.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
@@ -768,7 +768,7 @@
 		"imagePushURL": "assets/images/buttons/button_a_push.png",
 		"imagePushX": 0.0,
 		"imagePushY": 0.0,
-		"firstText": "Sell items",
+		"firstText": "Buy",
 		"firstTextSize": 34,
 		"firstTextColor": "0xffffff",
 		"firstTextHeight": 36,
@@ -935,5 +935,29 @@
 		"imagePushX": 0.0,
 		"imagePushY": 0.0,
 		"events":[ "up", "down", "out", "over", "click" ]
+	},
+
+	"4039":{
+		"name": "itemButton",
+		"deployId": 4039,
+		"x": 0.0,
+		"y": 0.0,
+		"firstText": "n/a",
+		"firstTextSize": 12,
+		"firstTextColor": "0xffffff",
+		"firstTextHeight": 14,
+		"firstTextWidth": 14,
+		"firstTextX": 10.0,
+		"firstTextY": 10.0,
+		"firstTextAlign": "right",
+		"secondText": "00000",
+		"secondTextSize": 18,
+		"secondTextColor": "0xffd700",
+		"secondTextHeight": 20,
+		"secondTextWidth": 100,
+		"secondTextX": 5.0,
+		"secondTextY": 50.0,
+		"secondTextAlign": "center",
+		"events":[ "out", "over", "click" ]
 	}
 }

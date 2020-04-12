@@ -1,5 +1,6 @@
 package;
 
+import haxe.display.Display.Package;
 import Item;
 
 typedef ItemSystemConfig =
@@ -7,9 +8,19 @@ typedef ItemSystemConfig =
 	var Parent:Game;
 }
 
+typedef ItemParameters =
+{
+	var Name:String;
+	var DeployID:Int;
+}
+
 class ItemSystem
 {
 	var _parent:Game;
+	var _types:Array<String>;
+	var _names:Map<String, Array<String>>;
+	var _rarities:Array<String>;
+	var _itemParametersStorage:Map<String, Array<ItemParameters>>;
 
 	public function new( config:ItemSystemConfig ):Void
 	{
@@ -21,11 +32,24 @@ class ItemSystem
 		var err:String = '$error. Error in ItemSystem.init';
 		if( this._parent == null )
 			throw '$err. Parent is null';
+
+		this._types = new Array<String>();
+		this._names = new Map<String, Array<String>>();
+		this._rarities = new Array<String>();
+		this._itemParametersStorage = new Map<String, Array<ItemParameters>>();
+
+		this._fillDataArrays();
+
+		if( this._rarities.length == 0 )
+			throw '$err. Rarities array is empty';
+
+		if( this._types.length == 0 )
+			throw '$err. Item Types array is empty';
+
 	}
 
 	public function generateItem( name:String, itemType:String, rarity:String ):Item // name: LongSword, itemType: Weapon, rarity: "common";
 	{
-		var deployItem:Map<ItemDeployID, Dynamic> = this._parent.getSystem( "deploy" ).getDeploy( "item" ); // full config of items;
 		var generatedName = name;
 		var generatedItemType = itemType;
 		var generatedRarity = rarity;
@@ -35,9 +59,6 @@ class ItemSystem
 
 		if( rarity == "generate" )
 			generatedRarity = this._generateRarity();
-
-		if( name == "generate" )
-			generatedName = this._generateName( generatedItemType );
 
 		var deployId:Int = this._foundDeployIdForItem( generatedName, generatedItemType, generatedRarity );
 
@@ -189,71 +210,116 @@ class ItemSystem
 		return configToReturn;
 	}
 
+	public function get( value:String ):Dynamic
+	{
+		switch( value )
+		{
+			case "rarity": return this._rarities;
+			case "type": return this._types;
+			case "name": return this._names;
+			default: throw 'Error in ItemSystem.get. can not get "$value"';
+		}
+		return null;
+	}
+
 
 	// PRIVATE
 
 
-	private function _generateName( itemType:String ):String
-	{
-		var array:Array<String> = null;
-		switch( itemType )
-		{
-			case "weapon": array = [ "longSword", "swordAndShield", "hummerAndShield", "crossbow", "oilAndCandle" ];
-			case "armor": array = [ "breastArmor", "chainMail", "robe" ];
-			default: throw 'Error in ItemSystem._generateName. can not generate name with "$itemType"';
-		}
-		return array[ Math.floor( Math.random() * array.length )];
-	}
 
 	private function _generateRarity():String
 	{
-		var array:Array<String> = [ "common", "uncommon", "rare", "legendary" ];
+		var array:Array<String> = this._rarities;
 		return array[ Math.floor( Math.random() * array.length )];
 	}
 
 	private function _generateItemType():String
 	{
-		var array:Array<String> = [ "weapon", "armor" ]; // "acessory1", "acessory2";
+		var array:Array<String> = this._types;
 		return array[ Math.floor( Math.random() * array.length )];
 	}
 
 	private function _foundDeployIdForItem( name:String, type:String, rarity:String ):Int
 	{
-		var rarityNumber:Int = 0;
+		var array:Array<ItemParameters> = this._itemParametersStorage[ type ];
+		if( array == null )
+			throw 'Error in ItemSystem._generateName. No "$type" in Item Parameters Storage';
+
+		// в конфиге каждая item  типа armor, weapon, acessory1-2 имеет rarity. в конце мы его и добавялем. Соответственно другие item имеют common = 0;
+		var rarityNumber:Int = null;
 		switch ( rarity )
 		{
+			case "common": rarityNumber = 0;
 			case "uncommon": rarityNumber = 1;
 			case "rare": rarityNumber = 2;
 			case "legendary": rarityNumber = 3;
 			default: throw 'Error in ItemSystem._foundDeployIdForItem. Bad rarity "$rarity"';
 		}
-		switch( type )
+
+		if( name == "generate" )
 		{
-			case "weapon":
-			{
-					switch( name )
-					{
-						case "longSword": return ( 20000 + rarityNumber );
-						case "swordAndShield":  return ( 20004 + rarityNumber );
-						case "hummerAndShield":  return ( 20008 + rarityNumber );
-						case "crossbow":  return ( 20012 + rarityNumber );
-						case "oilAndCandle":  return ( 20016 + rarityNumber );
-						default: throw 'Error in ItemSystem._foundDeployIdForItem. Can not find item with type "$type" and name "$name"';
-					}
-			}
-			case "armor":
-			{
-				switch( name )
-				{
-					case "breastArmor":  return ( 25000 + rarityNumber );
-					case "chainMail":  return ( 25004 + rarityNumber );
-					case "robe":  return ( 25008 + rarityNumber );
-					default: throw 'Error in ItemSystem._foundDeployIdForItem. Can not find item with type "$type" and name "$name"';
-				}
-			}
-			default: throw 'Error in ItemSystem._foundDeployIdForItem. Can not find item with type "$type"';
+			var itemParameters:ItemParameters = array[ Math.floor( Math.random() * array.length )];
+			return ( itemParameters.DeployID + rarityNumber );
 		}
-		return null;
+		else 
+		{
+			for( i in 0...array.length )
+			{
+				var parameters:ItemParameters = array[ i ];
+				if( parameters.Name == name )
+					return ( parameters.DeployID + rarityNumber );					
+			}
+		}
+		return null;		
+	}
+
+	private function _fillDataArrays():Void
+	{
+		var deployItem:Map<ItemDeployID, Dynamic> = this._parent.getSystem( "deploy" ).getDeploy( "item" ); // full config of items;
+		for( key in deployItem.keys() )
+		{
+			var value:Dynamic = deployItem[ key ];
+			this._addTypeInTypesArray( value.itemType );
+			this._addRarityInRarityArray( value.rarity );
+			if( value.rarity == "common" )
+				this._addToParametersStorage( value.itemType, value.name, value.deployId );
+		}
+	}
+
+	private function _addToParametersStorage( type:String, name:String, deployId:Int ):Void
+	{
+		var typeValue:Array<ItemParameters> = this._itemParametersStorage[ type ];
+		if( typeValue == null )
+			this._itemParametersStorage[ type ] = new Array<ItemParameters>();
+
+		typeValue.push({ Name:name, DeployID: deployId });
+		// "armor" ->[ {Name: "longSword", DeployID: 10000 } ]; 
+	}
+
+	private function _addTypeInTypesArray( type:String ):Void
+	{
+		if( type == null )
+			throw 'Error in itemSystem._addTypeInTypesArray. Type is null!';
+
+		for( i in 0...this._types.length )
+		{
+			if( type == this._types[ i ] )
+				return;
+		}
+		this._types.push( type );
+	}
+
+	private function _addRarityInRarityArray( rarity:String ):Void
+	{
+		if( rarity == null )
+			throw 'Error in itemSystem._addTypeInTypesArray. Name is null!';
+		
+		for( i in 0...this._rarities.length )
+		{
+			if( rarity == this._rarities[ i ] )
+				return;
+		}
+		this._rarities.push( rarity );
 	}
 
 }

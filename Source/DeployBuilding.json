@@ -136,8 +136,8 @@
 		"canUpgradeLevel": true,
 		"upgradePrice": 10000,
 		"heroStorageSlotsMax": 0,
-		"itemStorageSlotsMax": 0,
-		"generateHeroEventTime": 60000,
+		"itemStorageSlotsMax": 10,
+		"generateItemEventTime": 60000,
 		"events":[ "out", "over", "click" ]
 	},
 

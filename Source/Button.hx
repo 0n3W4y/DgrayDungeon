@@ -29,6 +29,7 @@ class Button
 	private var _activeStatus:Bool;
 
 	private var _heroId:Hero.HeroID;
+	private var _itemId:Item.ItemID;
 
 	private var _graphics:GraphicsSystem;
 
@@ -47,6 +48,7 @@ class Button
 		var err:String = 'Name "$_name" id "$_id" deploy id "$_deployId"';
 		this._activeStatus = false;
 		this._heroId = null;
+		this._itemId = null;
 
 		if( this._name == null || this._name == "" )
 			throw '$error. Wrong name. $err';
@@ -85,6 +87,7 @@ class Button
 			case "sprite": return this._graphics.getSprite();
 			case "activeStatus": return this._activeStatus;
 			case "heroId": return this._heroId;
+			case "itemId": return this._itemId;
 			default: { throw( "Error in Button.get. Can't get " + value ); return null; };
 		}
 	}
@@ -94,8 +97,8 @@ class Button
 		this._heroId = id;
 	}
 
-	public function removeHeroId():Void
+	public function setItemId( id:Item.ItemID ):Void
 	{
-		this._heroId = null;
+		this._itemId = id;
 	}
 }
