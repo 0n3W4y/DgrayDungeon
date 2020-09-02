@@ -288,10 +288,10 @@ class ItemSystem
 
 	private function _addToParametersStorage( type:String, name:String, deployId:Int ):Void
 	{
-		var typeValue:Array<ItemParameters> = this._itemParametersStorage[ type ];
-		if( typeValue == null )
+		if( this._itemParametersStorage[ type ] == null )
 			this._itemParametersStorage[ type ] = new Array<ItemParameters>();
 
+		var typeValue:Array<ItemParameters> = this._itemParametersStorage[ type ];
 		typeValue.push({ Name:name, DeployID: deployId });
 		// "armor" ->[ {Name: "longSword", DeployID: 10000 } ]; 
 	}
