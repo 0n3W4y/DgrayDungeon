@@ -42,7 +42,8 @@ class SceneSystem
 	private var _scenesArray:Array<Scene>;
 	private var _scenesSprite:Sprite;
 	private var _activeScene:Scene;
-	private var _sceneAfterLoaderScene:Scene;
+	//private var _sceneAfterLoaderScene:Scene;
+	private var _nextDrawScene:Scene;
 
 	private var _sceneEvents:Array<SceneEvent>;
 	private var _buildingEvents:Array<BuildingEvent>;
@@ -65,6 +66,7 @@ class SceneSystem
 			throw '$error. $err. Sprite is null';
 
 		this._activeScene = null;
+		this._nextDrawScene = null;
 		this._scenesArray = new Array<Scene>();
 		this._sceneEvents = new Array<SceneEvent>();
 		this._buildingEvents = new Array<BuildingEvent>();
@@ -318,6 +320,11 @@ class SceneSystem
 		if( isDrawed )
 			throw 'Error in SceneSystem._drawScene. Scene "$name" already drawed';
 
+		if( name == "loaderScene" )
+		{
+			this._drawLoaderScene( scene );
+			return;
+		}
 		var sceneSprite:Sprite = scene.get( "sprite" );
 		sceneSprite.alpha = 0.0;
 		//this.createSceneEvent( scene.get( "id" ), "reviewScene", 1000 );
@@ -325,6 +332,7 @@ class SceneSystem
 		this._drawUiForScene( scene );
 		scene.setDrawed( true );
 		this._afterDrawScene( scene );
+		this._activeScene = scene;
 	}
 
 	private function _undrawScene( scene:Scene ):Void
@@ -344,6 +352,7 @@ class SceneSystem
 		this._scenesSprite.removeChild( sceneSprite );
 		this._undrawUiForScene( scene );
 		scene.setDrawed( false );
+		this._activeScene = null;
 	}
 
 	private function _updateSceneEvents( time:Float ):Void
@@ -438,7 +447,7 @@ class SceneSystem
 		bitmap.width = 1.0;
 
 		var sprite:Sprite = scene.get( "sprite" );
-		sprite.alpha = 0.0; // запускаем его невидимым.
+		//sprite.alpha = 1.0; // запускаем его видимым.
 		this._scenesSprite.addChild( sprite );
 		scene.setDrawed( true );
 	}
@@ -451,14 +460,19 @@ class SceneSystem
 
 	private function _doLoaderScene():Void
 	{
-		var nextScene:Scene = this._sceneAfterLoaderScene;
+		trace( "ping!" );
+		if( this._activeScene != null )
+			throw 'Error in SceneSystem._doLoader. Active scene not null';
+
+		var nextScene:Scene = this._nextDrawScene;
 		if( nextScene == null )
 			throw 'Error in SceneSystem._doLoaderScene. Next Scene is null';
 
-		var loader:Scene = this.getActiveScene();
-		var bitmap:Bitmap = loader.get( "graphics" ).getGraphicsAt( 1 );
-		var hundredPercentBitmap:Bitmap = loader.get( "graphics" ).getGraphicsAt( 2 );
-		var hundredPercentWidth:Float = hundredPercentBitmap.width - 10;
+		var loader:Scene = this.getSceneByName( "loaderScene" );
+		this._drawScene( loader );
+		var bitmap:Bitmap = loader.get( "graphics" ).getGraphicsAt( 1 ); // полоска "прогрессбара".
+		var hundredPercentBitmap:Bitmap = loader.get( "graphics" ).getGraphicsAt( 2 ); // рамка прогрессбара ( длинна ).
+		var hundredPercentWidth:Float = hundredPercentBitmap.width - 10; // запоминае длинну рамки прогрессбара. что бы сам прогрессбар довести до него.
 
 		var sceneName:String = nextScene.get( "name" );
 		switch( sceneName )
@@ -476,10 +490,10 @@ class SceneSystem
 				this._drawScene( nextScene );
 				//change loader sprite (1) to 45%;
 				bitmap.width = hundredPercentWidth * 0.45; 
-				this.createSceneEvent( this._activeScene.get( "id" ), "undrawSceneWithHide", 200 );
+				//this.createSceneEvent( this._activeScene.get( "id" ), "undrawSceneWithHide", 200 );
 				//change loader to 60%
 				bitmap.width = hundredPercentWidth * 0.60; 
-				this._activeScene = nextScene;
+				//this._activeScene = nextScene;
 				//change loader to 75%
 				bitmap.width = hundredPercentWidth * 0.75; 
 				this.createSceneEvent( this._activeScene.get( "id" ), "showScene", 1000 );
@@ -487,12 +501,10 @@ class SceneSystem
 				bitmap.width = hundredPercentWidth * 1;
 			}
 			default: throw 'Error in SceneSystem._doLoaderScene. Can not load scene "$sceneName" from loaderScene ';
-		}		
+		}
+		trace( "ping2!" );
+		this._undrawScene( loader );
 	}
-
-	
-
-	
 
 	private function _changeSceneToStartScene( scene:Scene ):Void
 	{
@@ -507,13 +519,14 @@ class SceneSystem
 			this._prepareStartScene( scene );
 			this._drawScene( scene );
 			this.createSceneEvent( scene.get( "id" ), "showScene", 1000 );
-			this._activeScene = scene;
+			//this._activeScene = scene;
 		}
 		else
 		{
 			//TODO: draw loader, save game - do progress in loader, undraw old scene - do progress in loader, - draw new scene - do progress, remove loader, show scene;
 			sceneLoader = this.getSceneByName( "loader" );
-			this._sceneAfterLoaderScene = scene;
+			//this._sceneAfterLoaderScene = scene;
+			this._nextDrawScene = scene;
 		
 		}
 	}
@@ -522,7 +535,7 @@ class SceneSystem
 	{
 		var currentScene:Scene = this._activeScene;
 		var sceneName:String = currentScene.get( "name" );
-		var sceneLoader:Scene = this.getSceneByName( "loaderScene" );
+		//var sceneLoader:Scene = this.getSceneByName( "loaderScene" );
 		switch( sceneName )
 		{
 			case "chooseDungeonScene":
@@ -535,11 +548,13 @@ class SceneSystem
 			case "startScene":
 			{
 				this._parent.getSystem( "ui" ).hide();
-				this._sceneAfterLoaderScene = scene;
-				this.undrawSceneWithHide( this._activeScene );
-				this._activeScene = sceneLoader;
-				this._drawLoaderScene( sceneLoader );
-				this.createSceneEvent( sceneLoader.get( "id" ), "showLoaderScene", 550 );
+				//this._sceneAfterLoaderScene = scene;
+				this._nextDrawScene = scene;
+
+				this.undrawSceneWithHide( currentScene );
+				//this._activeScene = sceneLoader;
+				//this._drawLoaderScene( sceneLoader );
+				//this.createSceneEvent( sceneLoader.get( "id" ), "showLoaderScene", 550 );
 			}
 			default: throw 'Error in SceneSystem._changeSceneToCityScene. Can not change to City scene from "$sceneName"';
 		}
@@ -784,6 +799,7 @@ class SceneSystem
 			sprite.alpha = 1.0;
 			this._parent.getSystem( "ui" ).show();
 			this.removeSceneEvent( event );
+			//TODO: do click scene objects;
 			return;
 		}
 		if( !sprite.visible )
@@ -835,6 +851,7 @@ class SceneSystem
 			sprite.visible = false;
 			this.removeSceneEvent( event );
 			this._undrawScene( scene );
+			this._doLoaderScene();
 			return;
 		}
 		var newAlpha:Float = ( 1/event.SceneEventTime )*event.SceneEventCurrentTime;
