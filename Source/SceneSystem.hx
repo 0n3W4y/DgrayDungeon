@@ -460,7 +460,6 @@ class SceneSystem
 
 	private function _doLoaderScene():Void
 	{
-		trace( "ping!" );
 		if( this._activeScene != null )
 			throw 'Error in SceneSystem._doLoader. Active scene not null';
 
@@ -502,7 +501,6 @@ class SceneSystem
 			}
 			default: throw 'Error in SceneSystem._doLoaderScene. Can not load scene "$sceneName" from loaderScene ';
 		}
-		trace( "ping2!" );
 		this._undrawScene( loader );
 	}
 

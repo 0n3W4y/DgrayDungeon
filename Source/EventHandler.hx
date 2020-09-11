@@ -103,7 +103,7 @@ class EventHandler
 			case "innWindowHeroButtonOrange",
 				"innWindowHeroButtonBlue",
 				"innWindowHeroButtonWhite",
-				"innWindowHeroButtonGreen": this._chooseUnchooseButton( e );
+				"innWindowHeroButtonGreen": state.chooseUnchooseInnHeroButton( id );
 			case "warningWindowOk": state.closeWindow( 3100 );
 			case "storageButton": state.openWindow( 3013 );
 			case "blackSmithWindowUpgradeItemButton":
