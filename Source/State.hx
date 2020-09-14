@@ -215,22 +215,6 @@ class State
 		this._redrawListOfHeroesInInnBuilding();
 	}
 
-	public function chooseUnchooseInnHeroButton( id:Button.ButtonID ):Void
-	{
-		var graphicsSprite:Sprite = sprite.getChildAt( 0 );
-		var state:State = this._parent.getSystem( "state" );
-		if( graphicsSprite.getChildAt( 2 ).visible )
-		{
-			graphicsSprite.getChildAt( 2 ).visible = false;
-			state.unchooseButton( sprite.sName, sprite.sId );
-		}
-		else
-		{
-			graphicsSprite.getChildAt( 2 ).visible = true;
-			state.chooseButton( sprite.sName, sprite.sId );
-		}
-	}
-
 	public function chooseButton( name:String, id:Button.ButtonID):Void
 	{
 		switch( name )
@@ -825,7 +809,6 @@ class State
 		var sceneName:String = this._parent.getSystem( "scene" ).getActiveScene();
 		if( sceneName == "cityScene" )
 		{
-			//TODO: ui.findActiveWindow(); retrun window.get( "name" ) -> switch ;
 			var activeWindow:Window = this._parent.getSystem( "ui" ).findChildCitySceneMainWindow();
 			var activeWindowName:String = activeWindow.get( "name" );
 			switch( activeWindowName )
