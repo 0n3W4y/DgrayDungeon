@@ -387,7 +387,7 @@
 
 	"3019":{
 		"name": "citySceneHermitWindow",
-		"deployId": 3019,
+		"deployId": 3020,
 		"alwaysActive": false,
 		"x": 166.0,
 		"y": 140.0,
@@ -395,6 +395,26 @@
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
 		"firstText": "Hermit",
+		"firstTextSize": 48,
+		"firstTextColor": "0xffffff",
+		"firstTextHeight": 50,
+		"firstTextWidth": 350,
+		"firstTextX": 0.0,
+		"firstTextY": 0.0,
+		"firstTextAlign": "left",
+		"button": [  ]
+	},
+
+	"3020":{
+		"name": "citySceneHeroPropertiesWindow",
+		"deployId": 3019,
+		"alwaysActive": false,
+		"x": 166.0,
+		"y": 140.0,
+		"imageNormalURL": "assets/images/windows/recruitWindow.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"firstText": "Hero Properties",
 		"firstTextSize": 48,
 		"firstTextColor": "0xffffff",
 		"firstTextHeight": 50,

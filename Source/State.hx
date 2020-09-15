@@ -75,7 +75,7 @@ class State
 		var activeWindow:Window = ui.findChildCitySceneMainWindow();
 		switch( deployId )
 		{
-			case 3002, 3011, 3012, 3014, 3016, 3017, 3018, 3019: 
+			case 3002, 3011, 3012, 3014, 3016, 3017, 3018, 3019, 3020: 
 			{
 				if( activeWindow == null )// значит на экране нет октрытых окон;
 				{
@@ -298,7 +298,7 @@ class State
 		panelCityWindow.get( "graphics" ).setText( '$currentMoney', "first" );
 	}
 
-	public function generateItemsForMetchantBuilding():Void
+	public function generateItemsForMerchantBuilding():Void
 	{
 		var scene:Scene = this._parent.getSystem( "scene" ).getSceneByName( "cityScene" );
 		var building:Building = scene.getBuildingByDeployId( 2004 );
@@ -306,7 +306,7 @@ class State
 		// очищаем кнопки из окна мерчанта
 		this._clearItemsfromMerchantBuilding( building, merchantWindow );
 
-		var itemSlots:Int = building.get( "itemStorageSlotsMax" );
+		var itemSlots:Int = building.get( "itemStorageMaxSlots" );
 
 		for( i in 0...itemSlots )
 		{
@@ -318,7 +318,7 @@ class State
 
 		this._redrawListOfItemsInMerchantBuilding();
 		var time:Float = this._parent.getSystem( "deploy" ).getBuilding( building.get( "deployId" )).generateItemEventTime;
-		this._parent.getSystem( "scene" ).createBuildingEvent( scene.get( "id" ), building.get( "id" ), "updateListOfItems", time );
+		//this._parent.getSystem( "scene" ).createBuildingEvent( scene.get( "id" ), building.get( "id" ), "updateListOfItems", time );
 	}
 
 	public function generateHeroesForRecruitBuilding():Void
@@ -352,10 +352,6 @@ class State
 		this._parent.getSystem( "scene" ).createBuildingEvent( scene.get( "id" ), building.get( "id" ), "updateListOfRecruits", time );
 	}
 
-	public function generateItemsForMerchantBuilding():Void
-	{
-
-	}
 
 	public function unchooseHeroToDungeon( id:Button.ButtonID ):Void
 	{
@@ -806,16 +802,38 @@ class State
 
 	private function _chooseInnHeroButton( id:Button.ButtonID ):Void
 	{
-		var sceneName:String = this._parent.getSystem( "scene" ).getActiveScene();
+		var activeScene:Scene = this._parent.getSystem( "scene" ).getActiveScene();
+		var sceneName:String = activeScene.get( "name" );
+		var ui:UserInterface = this._parent.getSystem( "ui" );
+		var button:Button = this._findInnButtonById( id ); // кнопка, на которую нажали.
 		if( sceneName == "cityScene" )
 		{
-			var activeWindow:Window = this._parent.getSystem( "ui" ).findChildCitySceneMainWindow();
-			var activeWindowName:String = activeWindow.get( "name" );
-			switch( activeWindowName )
+			var alreadyChoosenButton:Button = this._findChoosenInnHeroButtonInCityScene();
+			if( alreadyChoosenButton != null )
 			{
-				case "":
-				default: throw 'Error in State._chooseInnHeroButton. Can not choose button "$id" because active window is "$activeWindowName"';
+				this._unchooseInnHeroButton( alreadyChoosenButton.get( "id" ));
 			}
+
+			button.changeActiveStatus();
+			var buttonSprite:Sprite = button.get( "sprite" );
+			buttonSprite.x = buttonSprite.x - 20.0; // выдвигаем кнопку влево на 20px;
+
+			var activeWindow:Window = this._parent.getSystem( "ui" ).findChildCitySceneMainWindow();
+			if( activeWindow == null )
+			{
+				// ни одного окна не открыто. Открываем стандартное окно для персонажа ( статистика. характеристики );
+				this.openWindow( 3020 );
+			}
+			else
+			{
+				var activeWindowName:String = activeWindow.get( "name" );
+				switch( activeWindowName )
+				{
+					case "": trace( "ping!" );
+					//default: throw 'Error in State._chooseInnHeroButton. Can not choose button "$id" because active window is "$activeWindowName"';
+				}
+			}
+			
 		}
 		else // chooseDungeonScene;
 		{
@@ -825,14 +843,30 @@ class State
 
 	private function _unchooseInnHeroButton( id:Button.ButtonID ):Void
 	{
-		var sceneName:String = this._parent.getSystem( "scene" ).getActiveScene();
+		var activeScene:Scene = this._parent.getSystem( "scene" ).getActiveScene();
+		var sceneName:String = activeScene.get( "name" );
+		
 		if( sceneName == "cityScene" )
 		{
 			var button:Button = this._findInnButtonById( id );	
 			button.changeActiveStatus();
-			var sprite:Sprite = button.get( "sprite" );
-			sprite.x = 0;
+			var buttonSprite:Sprite = button.get( "sprite" );
+			buttonSprite.x = buttonSprite.x + 20.0; // задвигаем кнопку обратно
 		}
+	}
+
+	private function _findChoosenInnHeroButtonInCityScene():Button
+	{
+		var innWindow:Window = this._parent.getSystem( "ui" ).getWindowByDeployId( 3006 );
+		var buttonArray:Array<Button> = innWindow.get( "buttons" );
+		for( i in 0...buttonArray.length )
+		{
+			var button:Button = buttonArray[ i ];
+			var activeStatus:Bool = button.get( "activeStatus" );
+			if( activeStatus )
+				return button;
+		}
+		return null;
 	}
 
 
