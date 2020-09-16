@@ -75,7 +75,7 @@ class State
 		var activeWindow:Window = ui.findChildCitySceneMainWindow();
 		switch( deployId )
 		{
-			case 3002, 3011, 3012, 3014, 3016, 3017, 3018, 3019, 3020: 
+			case 3002, 3011, 3012, 3013, 3014, 3016, 3017, 3018, 3019, 3020: 
 			{
 				if( activeWindow == null )// значит на экране нет октрытых окон;
 				{
@@ -114,6 +114,7 @@ class State
 		{
 			var dungeonScene:Scene = sceneSystem.getSceneByName( "chooseDungeonScene" );
 			sceneSystem.changeSceneTo( dungeonScene );
+			trace( "ping" );
 		}
 		else
 		{
@@ -396,23 +397,6 @@ class State
 		}
 	}
 
-	private function uchooseActiveInnHeroButton():Void
-	{
-		var innWindow:Window = this._parent.getSystem( "ui" ).getWindowByDeployId( 3006 ); //inn window deploy id 3009;
-		var array:Array<Button> = innWindow.get( "buttons" );
-		for( i in 0...array.length )
-		{
-			var button:Button = array[ i ];
-			if( button.get( "activeStatus") )
-			{
-				button.changeActiveStatus();
-				var sprite:Sprite = button.get( "sprite" );
-				sprite.x = 0;
-				break; //выбрана может быть только одна кнопка.
-			}
-		}
-	}
-
 	public function clearAllChooseHeroToDungeonButton():Void
 	{
 		var buttons:Array<Button> = this._parent.getSystem( "ui" ).getWindowByDeployId( 3004 ).get( "buttons" ); // chooseHeroToDungeon Window deploy id is 3004;
@@ -422,6 +406,16 @@ class State
 			var heroId:Hero.HeroID = button.get( "heroId" );
 			if( heroId != null )
 				this.unchooseHeroToDungeon( button.get( "id" ));
+		}
+	}
+
+
+	public function unchooseActiveInnHeroButtonInCityScene():Void
+	{
+		var alreadyChoosenButton:Button = this._findChoosenInnHeroButtonInCityScene();
+		if( alreadyChoosenButton != null )
+		{
+			this._unchooseInnHeroButton( alreadyChoosenButton.get( "id" ));
 		}
 	}
 
@@ -792,7 +786,7 @@ class State
 
 	}
 
-	public function _unchooseRecruitHeroButton( id:Button.ButtonID ):Void
+	private function _unchooseRecruitHeroButton( id:Button.ButtonID ):Void
 	{
 		var button:Button = this._findRecruitButtonById( id );
 		button.changeActiveStatus();
@@ -804,15 +798,11 @@ class State
 	{
 		var activeScene:Scene = this._parent.getSystem( "scene" ).getActiveScene();
 		var sceneName:String = activeScene.get( "name" );
-		var ui:UserInterface = this._parent.getSystem( "ui" );
+		//var ui:UserInterface = this._parent.getSystem( "ui" );
 		var button:Button = this._findInnButtonById( id ); // кнопка, на которую нажали.
 		if( sceneName == "cityScene" )
 		{
-			var alreadyChoosenButton:Button = this._findChoosenInnHeroButtonInCityScene();
-			if( alreadyChoosenButton != null )
-			{
-				this._unchooseInnHeroButton( alreadyChoosenButton.get( "id" ));
-			}
+			this.unchooseActiveInnHeroButtonInCityScene();
 
 			button.changeActiveStatus();
 			var buttonSprite:Sprite = button.get( "sprite" );
@@ -829,7 +819,8 @@ class State
 				var activeWindowName:String = activeWindow.get( "name" );
 				switch( activeWindowName )
 				{
-					case "": trace( "ping!" );
+					case "": trace( "ping" );
+					default: trace( '$activeWindowName' );
 					//default: throw 'Error in State._chooseInnHeroButton. Can not choose button "$id" because active window is "$activeWindowName"';
 				}
 			}
@@ -852,6 +843,10 @@ class State
 			button.changeActiveStatus();
 			var buttonSprite:Sprite = button.get( "sprite" );
 			buttonSprite.x = buttonSprite.x + 20.0; // задвигаем кнопку обратно
+
+			// приходится обманывать так haxe. так как он нихуя не понимает вызов getChildAt(0).getChildAt(1);
+			var buttonGraphicsSprite:Sprite = button.get( "sprite" ).getChildAt( 0 );
+			buttonGraphicsSprite.getChildAt( 2 ).visible = false; // убираем подсветку о выбранной кнопке.
 		}
 	}
 

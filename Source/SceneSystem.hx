@@ -82,6 +82,8 @@ class SceneSystem
 		//we can add scenes to array , who need to update, and remove them if don't need to update;
 		this._updateSceneEvents( time );
 		this._updateBuildingEvents( time );
+		//this._updateObjectEvents( time );
+		//this._updateCharacterEvents( time );
 	}
 
 	public function addScene( scene:Scene ):Void
@@ -560,7 +562,12 @@ class SceneSystem
 
 	private function _changeSceneToChooseDungeonScene( scene:Scene ):Void
 	{
-
+		var currentScene:Scene = this._activeScene;
+		this.hideScene( currentScene );
+		this._parent.getSystem( "ui" ).closeAllActiveWindows();
+		this._parent.getSystem( "state" ).unchooseActiveInnHeroButtonInCityScene();
+		this._activeScene = scene;
+		this.showScene( scene );
 	}
 
 	private function _afterDrawScene( scene:Scene ):Void

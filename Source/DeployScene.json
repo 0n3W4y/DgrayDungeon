@@ -24,7 +24,8 @@
 		"imageNormalURL": "assets/images/scenes/chooseDungeonSceneOne.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
-		"window": [ 3004, 3008 ]
+		"window": [ 3004, 3008 ],
+		"battle": []
 	},
 
 	"1003":{
@@ -42,8 +43,14 @@
 	},
 
 
-	"1100":{
-		"name": "dungeonCaveOne",
+
+
+
+
+
+	"1100":
+    {
+        "name": "dungeonCaveOne",
 		"deployId": 1100,
 		"imageNormalUrl": "assets/images/scenes/dungeonCave_1.png",
 		"imageNormalX": 0.0,
@@ -51,7 +58,8 @@
 		"imageSecondUrl": "assets/images/scenes/dungeonCave_1.png",
 		"imageSecondX": 1920.0,
 		"imageSecondY": 0,
-		"window": [ 3010 ],
+        "window": [ 3010 ],
+        "difficulty": "easy",
 		"dungeonLength": 40,
 		"enemyEventsMin": 2,
 		"enemyEventsMax": 8,
@@ -61,5 +69,5 @@
 		"maxSceneObjects": 10,
 		"minSceneObjects": 4,
 		"sceneObjects": [ "fontain", "trap1", "trap2" ]
-	}
+    }
 }
