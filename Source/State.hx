@@ -48,8 +48,8 @@ class State
 		this._parent.createPlayer( 100 , "test player" );
 
 		// start new game - create both scenes;
-		var scene:Scene = sceneSystem.createScene( 1001 );
-		sceneSystem.createScene( 1002 ); 
+		var scene:Scene = sceneSystem.createScene( 1001 ); // main city scene;
+		sceneSystem.createScene( 1002 );  // choose dungeon scene;
 
 		sceneSystem.changeSceneTo( scene );
 	}
@@ -114,7 +114,6 @@ class State
 		{
 			var dungeonScene:Scene = sceneSystem.getSceneByName( "chooseDungeonScene" );
 			sceneSystem.changeSceneTo( dungeonScene );
-			trace( "ping" );
 		}
 		else
 		{

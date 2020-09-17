@@ -1,5 +1,6 @@
 package;
 
+import ItemSystem.ItemSystemConfig;
 import openfl.display.Graphics;
 import haxe.EnumTools;
 import openfl.display.Sprite;
@@ -567,6 +568,15 @@ class SceneSystem
 		this._parent.getSystem( "ui" ).closeAllActiveWindows();
 		this._parent.getSystem( "state" ).unchooseActiveInnHeroButtonInCityScene();
 		this._activeScene = scene;
+		
+		var isScenePrepared:String = scene.get( "prepared" );
+		if( isScenePrepared == "unprepared" )
+			this._prepareChooseDungeonScene( scene );
+
+		var isSceneDrawed:Bool = scene.get( "isDrawed" );
+		if( !isSceneDrawed )
+			this._drawScene( scene );
+
 		this.showScene( scene );
 	}
 
