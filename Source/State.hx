@@ -6,7 +6,6 @@ import Window;
 import openfl.display.Sprite;
 import openfl.display.Bitmap;
 import openfl.Assets;
-import openfl.display.BlendMode;
 
 typedef StateConfig =
 {
@@ -450,14 +449,14 @@ class State
 		var isOk:Bool = false;
 		for( i in 0...buttonsArray.length )
 		{
-			var dungeonbutton:Button = buttonsArray[ i ];
+			var dungeonButton:Button = buttonsArray[ i ];
 			var heroId:Hero.HeroID = button.get( "heroId" );
 			if( heroId == null )
 			{
-				dungeonbutton.setHeroId( id );
+				dungeonButton.setHeroId( id );
 				var hero:Hero = this._findHeroFromInnBuildingById( id );
-				this._bindHeroAndButton( hero, dungeonbutton );
-				this._parent.getSystem( "event" ).addEvents( dungeonbutton );
+				this._bindHeroAndButton( hero, dungeonButton );
+				this._parent.getSystem( "event" ).addEvents( dungeonButton );
 				isOk = true;
 				break;
 			}

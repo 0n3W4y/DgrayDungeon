@@ -113,8 +113,8 @@ class UserInterface
 		{
 			var button:Button = windowChilds[ j ];
 			var sprite:Sprite = button.get( "sprite" );
-			if( sprite.hasEventListener( "CLICK" ))
-				eventHandler.removeEvents( button );
+			if( sprite.hasEventListener( "click" ))
+					eventHandler.removeEvents( button );				
 			
 		}
 		this._objectsOnUi.splice( exist, 1 ); // убираем окно по индексу check, одно.

@@ -481,15 +481,22 @@ class SceneSystem
 		{
 			case "cityScene":
 			{
-				var scenePrepared:String = nextScene.get( "prepared" );
+				var chooseDungeonScene:Scene = this.getSceneByName( 'chooseDungeonScene' );
+				var cityScenePrepared:String = nextScene.get( "prepared" );
+				var chooseDungeonScenePrepared:String = chooseDungeonScene.get( 'prepared' );
 				// change loader sprite (1) to 15%;
 				bitmap.width = hundredPercentWidth * 0.15; 
-				if( scenePrepared == "unprepared" )
+				if( cityScenePrepared == "unprepared" )
 					this._prepareCityScene( nextScene );
+
+				if( chooseDungeonScenePrepared == 'unprepared' )
+					this._prepareChooseDungeonScene( chooseDungeonScene );
 
 				//change loader sprite (1) to 30%;
 				bitmap.width = hundredPercentWidth * 0.30; 
 				this._drawScene( nextScene );
+				//this._drawScene( chooseDungeonScene );
+				
 				//change loader sprite (1) to 45%;
 				bitmap.width = hundredPercentWidth * 0.45; 
 				//this.createSceneEvent( this._activeScene.get( "id" ), "undrawSceneWithHide", 200 );
@@ -536,6 +543,7 @@ class SceneSystem
 	{
 		var currentScene:Scene = this._activeScene;
 		var sceneName:String = currentScene.get( "name" );
+		this._parent.getSystem( "ui" ).hide();
 		//var sceneLoader:Scene = this.getSceneByName( "loaderScene" );
 		switch( sceneName )
 		{
@@ -545,6 +553,7 @@ class SceneSystem
 				this._parent.getSystem( "ui" ).closeAllActiveWindows();
 				this._parent.getSystem( "state" ).clearAllChooseHeroToDungeonButton();
 				this._activeScene = scene;
+				this._undrawUiForScene( currentScene );
 			}
 			case "startScene":
 			{
@@ -563,8 +572,8 @@ class SceneSystem
 
 	private function _changeSceneToChooseDungeonScene( scene:Scene ):Void
 	{
+		this._parent.getSystem( "ui" ).hide();
 		var currentScene:Scene = this._activeScene;
-		this.hideScene( currentScene );
 		this._parent.getSystem( "ui" ).closeAllActiveWindows();
 		this._parent.getSystem( "state" ).unchooseActiveInnHeroButtonInCityScene();
 		this._activeScene = scene;
@@ -573,11 +582,15 @@ class SceneSystem
 		if( isScenePrepared == "unprepared" )
 			this._prepareChooseDungeonScene( scene );
 
+		this.hideScene( currentScene );
 		var isSceneDrawed:Bool = scene.get( "isDrawed" );
 		if( !isSceneDrawed )
+		{
 			this._drawScene( scene );
-
-		this.showScene( scene );
+			return;
+		}
+		
+		this._drawUiForScene( scene );
 	}
 
 	private function _afterDrawScene( scene:Scene ):Void
@@ -821,6 +834,7 @@ class SceneSystem
 		{
 			sprite.alpha = 0.0;
 			sprite.visible = true;
+			this._parent.getSystem( "ui" ).show();
 		}
 		var newAlpha:Float = -1*( 1/event.SceneEventTime )*event.SceneEventCurrentTime + 1;
 		sprite.alpha = newAlpha;
