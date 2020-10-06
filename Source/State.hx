@@ -352,32 +352,6 @@ class State
 	}
 
 
-	public function unchooseHeroToDungeon( id:Button.ButtonID ):Void
-	{
-		var button:Button = this._parent.getSystem( "ui" ).getWindowByDeployId( 3004 ).getButtonById( id ); // chooseHeroToDungeon Window deploy id is 3004;
-		var heroId:Hero.HeroID = button.get( "heroId" );
-		if( heroId != null )
-		{
-			var heroId:Hero.HeroID = button.get( "heroId" );
-			button.setHeroId( null );
-			var graphics:GraphicsSystem = button.get( "graphics" ).removeGraphicsAt( 2 ); // 2 index is portrait;
-			this._parent.getSystem( "event" ).removeEvents( button ); // убираем ивенты с кнопки, что бы лишний раз не вызывать функции.
-
-			// меняем статус кнопки героя в Inn Building. Для того, что бы его можно было перевыбрать.
-			var newButtonsArray:Array<Button> = this._parent.getSystem( "ui" ).getWindowByDeployId( 3006 ).get( "buttons" ); // Inn window deploy id 3006;
-			for( j in 0...newButtonsArray.length )
-			{
-				var innButton:Button = newButtonsArray[ j ];
-				var buttonHeroId:Hero.HeroID = innButton.get( "heroId" );
-				if( haxe.EnumTools.EnumValueTools.equals( buttonHeroId, heroId ))
-				{
-					this._unchooseInnHeroButton( innButton.get( "id" ));
-				}
-			}
-		}
-		throw 'Error in State.unchooseHeroToDungeon. Button "$id", without HeroId!';
-	}
-
 	public function unchooseActiveRecruitHeroButton():Void
 	{
 		var array:Array<Button> = this._parent.getSystem( "ui" ).getWindowByDeployId( 3002 ).get( "buttons");//recruit window
@@ -403,7 +377,7 @@ class State
 			var button:Button = buttons[ i ];
 			var heroId:Hero.HeroID = button.get( "heroId" );
 			if( heroId != null )
-				this.unchooseHeroToDungeon( button.get( "id" ));
+				this._unchooseInnHeroButton( button.get( "id" ));
 		}
 	}
 
@@ -415,6 +389,11 @@ class State
 		{
 			this._unchooseInnHeroButton( alreadyChoosenButton.get( "id" ));
 		}
+	}
+
+	public function unchooseHeroToDungeon( id:Button.ButtonID ):Void
+	{
+		//TODO: найти кнопку с id  героем, как у той, что кликнули и запустить функцию "убрать heroInnButton". Она запустит дальше цепочку функций.
 	}
 
 
@@ -441,16 +420,19 @@ class State
 		var ui:UserInterface = this._parent.getSystem( "ui" );
 		var button:Button = this._findInnButtonById( buttonId );
 
-		if( button.get( "activeStatus") )
-			return; // вовзаращем, так как кнопка уже активна - значит герой уже используется.
+		if( button.get( "activeStatus" ) )
+		{
+			this._unchooseHeroToDungeon( buttonId );
+			return;
+		}
 
 		var id:Hero.HeroID = button.get( "heroId" );
-		var buttonsArray:Array<Button> = ui.getWindowByDeployId( 3004 ).get( "buttons" ); // chooseheroToDungeon Window deploy id 3004
+		var buttonsArray:Array<Button> = ui.getWindowByDeployId( 3004 ).get( "buttons" ); // chooseheroToDungeon Window deploy id 3004; 
 		var isOk:Bool = false;
-		for( i in 0...buttonsArray.length )
+		for( i in 0...buttonsArray.length ) //  у  данного окна всего 4 кнопки.
 		{
 			var dungeonButton:Button = buttonsArray[ i ];
-			var heroId:Hero.HeroID = button.get( "heroId" );
+			var heroId:Hero.HeroID = dungeonButton.get( "heroId" );
 			if( heroId == null )
 			{
 				dungeonButton.setHeroId( id );
@@ -468,8 +450,34 @@ class State
 		// меняем статус кнопки героя в Inn Building. Для того, что бы он не был добавлен дважды.
 		button.changeActiveStatus();
 		var sprite:Sprite = button.get( "sprite" );
-		sprite.x = -40;
+		sprite.x -= 40.0;
 	}
+
+	private function _unchooseHeroToDungeon( id:Button.ButtonID ):Void
+		{
+			var button:Button = this._findInnButtonById( id ); // chooseHeroToDungeon Window deploy id is 3004;
+			var heroId:Hero.HeroID = button.get( "heroId" );
+			if( heroId != null )
+			{
+				var heroId:Hero.HeroID = button.get( "heroId" );
+				button.setHeroId( null );
+				var graphics:GraphicsSystem = button.get( "graphics" ).removeGraphicsAt( 2 ); // 2 index is portrait;
+				this._parent.getSystem( "event" ).removeEvents( button ); // убираем ивенты с кнопки, что бы лишний раз не вызывать функции.
+	
+				// меняем статус кнопки героя в Inn Building. Для того, что бы его можно было перевыбрать.
+				var newButtonsArray:Array<Button> = this._parent.getSystem( "ui" ).getWindowByDeployId( 3006 ).get( "buttons" ); // Inn window deploy id 3006;
+				for( j in 0...newButtonsArray.length )
+				{
+					var innButton:Button = newButtonsArray[ j ];
+					var buttonHeroId:Hero.HeroID = innButton.get( "heroId" );
+					if( haxe.EnumTools.EnumValueTools.equals( buttonHeroId, heroId ))
+					{
+						this._unchooseInnHeroButton( innButton.get( "id" ));
+					}
+				}
+			}
+			throw 'Error in State.unchooseHeroToDungeon. Button "$id", without HeroId!';
+		}
 
 	private function _bindHeroAndButton( hero:Hero, button:Button ):Void
 	{
@@ -804,7 +812,7 @@ class State
 
 			button.changeActiveStatus();
 			var buttonSprite:Sprite = button.get( "sprite" );
-			buttonSprite.x = buttonSprite.x - 20.0; // выдвигаем кнопку влево на 20px;
+			buttonSprite.x -= 40.0; // выдвигаем кнопку влево на 40px;
 
 			var activeWindow:Window = this._parent.getSystem( "ui" ).findChildCitySceneMainWindow();
 			if( activeWindow == null )
@@ -815,13 +823,18 @@ class State
 			else
 			{
 				var activeWindowName:String = activeWindow.get( "name" );
+				var activeWindowDeployId:Int = activeWindow.get( "deployId" );
 				switch( activeWindowName )
 				{
-					case "": trace( "ping" );
-					default: trace( '$activeWindowName' );
-					//default: throw 'Error in State._chooseInnHeroButton. Can not choose button "$id" because active window is "$activeWindowName"';
+					case "citySceneHeroPropertiesWindow": trace( "ping" ); // TODO:
+					default:
+					{
+						this.closeWindow( activeWindowDeployId ); // close activewindow neither citySceneheroProp
+						this.openWindow( 3020 ); // citySceneHeroProp
+					}
 				}
 			}
+			//TODO: fill window new hero; Here;
 			
 		}
 		else // chooseDungeonScene;
@@ -835,17 +848,18 @@ class State
 		var activeScene:Scene = this._parent.getSystem( "scene" ).getActiveScene();
 		var sceneName:String = activeScene.get( "name" );
 		
-		if( sceneName == "cityScene" )
-		{
-			var button:Button = this._findInnButtonById( id );	
-			button.changeActiveStatus();
-			var buttonSprite:Sprite = button.get( "sprite" );
-			buttonSprite.x = buttonSprite.x + 20.0; // задвигаем кнопку обратно
+		var button:Button = this._findInnButtonById( id );	
+		button.changeActiveStatus();
+		var buttonSprite:Sprite = button.get( "sprite" );
+		buttonSprite.x = buttonSprite.x + 20.0; // задвигаем кнопку обратно
 
-			// приходится обманывать так haxe. так как он нихуя не понимает вызов getChildAt(0).getChildAt(1);
-			var buttonGraphicsSprite:Sprite = button.get( "sprite" ).getChildAt( 0 );
-			buttonGraphicsSprite.getChildAt( 2 ).visible = false; // убираем подсветку о выбранной кнопке.
-		}
+		// приходится обманывать так haxe. так как он нихуя не понимает вызов getChildAt(0).getChildAt(1);
+		var buttonGraphicsSprite:Sprite = button.get( "sprite" ).getChildAt( 0 );
+		buttonGraphicsSprite.getChildAt( 2 ).visible = false; // убираем подсветку о выбранной кнопке.
+
+		if( sceneName == "chooseDungeonScene" )
+			this._unchooseHeroToDungeon( id );
+
 	}
 
 	private function _findChoosenInnHeroButtonInCityScene():Button
