@@ -165,9 +165,10 @@ class EventHandler
 		var graphicsSprite:Sprite = sprite.getChildAt( 0 );
 		graphicsSprite.getChildAt( 1 ).visible = false;
 		if( name == "recruitHeroButtonWhite" || name == "recruitHeroButtonGreen" || name == "recruitHeroButtonBlue" || name == "recruitHeroButtonOrange"
-			|| name == "innWindowHeroButtonOrange" || name == "innWindowHeroButtonBlue" || name == "innWindowHeroButtonGreen" || name == "innWindowHeroButtonWhite" )
+			|| name == "innWindowHeroButtonOrange" || name == "innWindowHeroButtonBlue" || name == "innWindowHeroButtonGreen" || name == "innWindowHeroButtonWhite"
+			|| name == "choosenHeroToDungeon" )
 			return;
-
+		// возвращаем - так как ниже функция, которая срабатывает - если кто-то захочет на кнопку нажать, а потом увести курсор мышки с нее. Данные кнопки могут быть выбраны
 		graphicsSprite.getChildAt( 2 ).visible = false;
 	}
 

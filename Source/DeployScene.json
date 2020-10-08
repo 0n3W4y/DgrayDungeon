@@ -50,7 +50,7 @@
 
 	"1100":
     {
-        "name": "dungeonCaveOne",
+        "name": "dungeonCaveOneEasy",
 		"deployId": 1100,
 		"imageNormalUrl": "assets/images/scenes/dungeonCave_1.png",
 		"imageNormalX": 0.0,

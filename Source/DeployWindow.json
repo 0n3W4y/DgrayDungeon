@@ -425,6 +425,27 @@
 		"button": [  ]
 	},
 
+	"3021":
+	{
+		"name": "dungeonCaveOneWindow",
+		"deployId": 3020,
+		"alwaysActive": true,
+		"x": 400.0,
+		"y": 500.0,
+		"imageNormalURL": "assets/images/windows/dungeonWindow.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"firstText": "Caves",
+		"firstTextSize": 48,
+		"firstTextColor": "0xffffff",
+		"firstTextHeight": 50,
+		"firstTextWidth": 350,
+		"firstTextX": 0.0,
+		"firstTextY": -45.0,
+		"firstTextAlign": "center",
+		"button": [ 4000 ]
+	},
+
 	"3100":{
 		"name": "warnmingWindow",
 		"deployId": 3100,

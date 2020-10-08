@@ -88,9 +88,6 @@ class GraphicsSystem
 	{
 		var mainGraphicsSprite:Dynamic = this._sprite.getChildAt( 0 ); // graphics displayObjectContainer;
 		var bitmap:Bitmap = mainGraphicsSprite.getChildAt( num );
-		if( bitmap == null )
-			throw 'Error in GraphicsSystem.getGraphicsAt. No bitmap at "$num"';
-		
 		return bitmap;
 	}
 
