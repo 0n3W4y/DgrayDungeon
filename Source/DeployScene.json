@@ -24,7 +24,7 @@
 		"imageNormalURL": "assets/images/scenes/chooseDungeonSceneOne.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
-		"window": [ 3004, 3008 ],
+		"window": [ 3004, 3008, 3021 ],
 		"battle": []
 	},
 
@@ -52,12 +52,7 @@
     {
         "name": "dungeonCaveOneEasy",
 		"deployId": 1100,
-		"imageNormalUrl": "assets/images/scenes/dungeonCave_1.png",
-		"imageNormalX": 0.0,
-		"imageNormalY": 0.0,
-		"imageSecondUrl": "assets/images/scenes/dungeonCave_1.png",
-		"imageSecondX": 1920.0,
-		"imageSecondY": 0,
+		"images": [ "assets/images/scenes/dungeonCave_1.png" ],
         "window": [ 3010 ],
         "difficulty": "easy",
 		"dungeonLength": 40,
@@ -69,5 +64,59 @@
 		"maxSceneObjects": 10,
 		"minSceneObjects": 4,
 		"sceneObjects": [ "fontain", "trap1", "trap2" ]
-    }
+	},
+	
+	"1101":
+    {
+        "name": "dungeonCaveOneNormal",
+		"deployId": 1101,
+		"images": [ "assets/images/scenes/dungeonCave_1.png" ],
+        "window": [ 3010 ],
+        "difficulty": "normal",
+		"dungeonLength": 63,
+		"enemyEventsMin": 3,
+		"enemyEventsMax": 11,
+		"population": [ "skeletonArcher", "skeletonSwrodsman", "superSlime" ],
+		"bosses": [ "superSkeleton" ],
+		"quest": [ "quest1", "quest2" ],
+		"maxSceneObjects": 10,
+		"minSceneObjects": 4,
+		"sceneObjects": [ "fontain", "trap1", "trap2" ]
+	},
+
+	"1102":
+    {
+        "name": "dungeonCaveOneHard",
+		"deployId": 1102,
+		"images": [ "assets/images/scenes/dungeonCave_1.png" ],
+        "window": [ 3010 ],
+        "difficulty": "hard",
+		"dungeonLength": 79,
+		"enemyEventsMin": 4,
+		"enemyEventsMax": 15,
+		"population": [ "skeletonArcher", "skeletonSwrodsman", "superSlime" ],
+		"bosses": [ "superSkeleton" ],
+		"quest": [ "quest1", "quest2" ],
+		"maxSceneObjects": 10,
+		"minSceneObjects": 4,
+		"sceneObjects": [ "fontain", "trap1", "trap2" ]
+	},
+
+	"1103":
+    {
+        "name": "dungeonCaveOneExtreme",
+		"deployId": 1103,
+		"images": [ "assets/images/scenes/dungeonCave_1.png" ],
+        "window": [ 3010 ],
+        "difficulty": "extreme",
+		"dungeonLength": 92,
+		"enemyEventsMin": 5,
+		"enemyEventsMax": 20,
+		"population": [ "skeletonArcher", "skeletonSwrodsman", "superSlime" ],
+		"bosses": [ "superSkeleton" ],
+		"quest": [ "quest1", "quest2" ],
+		"maxSceneObjects": 10,
+		"minSceneObjects": 4,
+		"sceneObjects": [ "fontain", "trap1", "trap2" ]
+	}
 }

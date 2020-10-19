@@ -707,11 +707,12 @@ class State
 		//TODO: Find active button, then find window where this button placed;
 		// switch founded optiouns
 		var difficulty:String = "easy";
-		var dungeon:String = "cave";
+		var dungeon:String = "caveOne";
 
-		var difficultyNumber:Int = 0;
+		var difficultyNumber:Int = null;
 		switch( difficulty )
 		{
+			case "easy": difficultyNumber = 0;
 			case "normal": difficultyNumber = 1;
 			case "hard": difficultyNumber = 2;
 			case "extreme": difficultyNumber = 3;
@@ -720,8 +721,9 @@ class State
 
 		switch( dungeon )
 		{
-			case "cave": return ( 1100 + difficultyNumber ); // in deployScene все сцены пронумерованы по возрастанию сложности.
-			default: throw 'Error in State._findChoosenDungeon';
+			case "caveOne": return ( 1100 + difficultyNumber ); // in deployScene все сцены пронумерованы по возрастанию сложности.
+			case "caveTwo": return null;
+			default: throw 'Error in State._findChoosenDungeon. No dungeon found with name "$dungeon"';
 		}
 
 		return null;
