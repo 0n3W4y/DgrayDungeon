@@ -117,6 +117,10 @@ class EventHandler
 			case "showItemsMerchantWindowFromStorage":
 			case "storageListUp":
 			case "storageListDown":
+			case "dungeonButtonEasy",
+				 "dungeonButtonNormal",
+				 "dungeonButtonHard",
+				 "dungeonButtonExtreme" : this._chooseUnchooseButton( e );
 			default: throw 'Error in EventHandler._addEventsToButton. No event for button with name "$name"';
 		}
 	}

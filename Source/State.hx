@@ -12,9 +12,16 @@ typedef StateConfig =
 	var Parent:Game;
 }
 
+typedef SelectedDungeon =
+{
+	var DungeonType:String;
+	var DungeonDifficulty:String;
+}
+
 class State
 {
 	private var _parent:Game;
+	private var _selectedDungeon:SelectedDungeon;
 
 
 	public inline function new( config:StateConfig ):Void
@@ -226,6 +233,10 @@ class State
 			"innWindowHeroButtonBlue",
 			"innWindowHeroButtonWhite",
 			"innWindowHeroButtonGreen": this._chooseInnHeroButton( id );
+			case "dungeonButtonEasy",
+				 "dungeonButtonNormal",
+				 "dungeonButtonHard",
+				 "dungeonButtonExtreme": this._chooseDungeonButton( id );
 			default: throw 'Error in State.chooseButton. Can not choose "$name"';
 		}	
 	}
@@ -242,6 +253,10 @@ class State
 			"innWindowHeroButtonBlue",
 			"innWindowHeroButtonWhite",
 			"innWindowHeroButtonGreen": this._unchooseInnHeroButton( id );
+			case "dungeonButtonEasy",
+				 "dungeonButtonNormal",
+				 "dungeonButtonHard",
+				 "dungeonButtonExtreme": this._unchooseDungeonButton( id );
 			default: throw 'Error in State.unchooseButton. Can not unchoose "$name"';
 		}	
 	}
@@ -785,9 +800,7 @@ class State
 	{
 		var button:Button = this._findRecruitButtonById( id );
 		button.changeActiveStatus();
-	}
-
-	
+	}	
 
 	private function _chooseInnHeroButton( id:Button.ButtonID ):Void
 	{
@@ -860,6 +873,33 @@ class State
 			}
 			this._unchooseHeroToDungeon( dungeonButton );		
 		}
+	}
+
+	private function _chooseDungeonButton( id:Button.ButtonID ):Void
+	{
+		var choosenDungeon:SelectedDungeon = { DungeonType: null, DungeonDifficulty: null };
+
+		var buttonName:String = null; // TODO: Find name of button;
+		switch( buttonName )
+		{
+			case "dungeonButtonEasy": choosenDungeon.DungeonDifficulty = "easy";
+			case "dungeonButtonNormal": choosenDungeon.DungeonDifficulty = "normal";
+			case "dungeonButtonHard": choosenDungeon.DungeonDifficulty = "hard";
+			case "dungeonButtonExtreme": choosenDungeon.DungeonDifficulty = "extreme";
+			default: throw 'Error in State._chooseDungeonButton. Can not find difficulty for button with name: "$buttonName".';
+		}
+
+		var windowName:String = null; //TODO: Find name of window with this button;
+		switch( windowName )
+		{
+			case "": choosenDungeon.DungeonType = "cave";
+			default: throw 'Error in State._chooseDungeonButton. Can not find type of dungeon with window: "$windowName".';
+		}
+	}
+
+	private function _unchooseDungeonButton( id:Button.ButtonID ):Void
+	{
+		//TODO;
 	}
 
 	private function _findChoosenInnHeroButtonInCityScene():Button
