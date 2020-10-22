@@ -31,7 +31,10 @@ class State
 
 	public function init( error:String ):Void
 	{
+		this._selectedDungeon = { DungeonType: null, DungeonDifficulty: null };
 
+		if( this._parent == null )
+			throw error + 'parent is null!';
 	}
 
 	public function postInit():Void
@@ -75,6 +78,7 @@ class State
 
 	}
 
+	// transfer this function into UI;
 	public function openWindow( deployId:Int ):Void
 	{
 		var ui:UserInterface = this._parent.getSystem( "ui" );
@@ -100,7 +104,7 @@ class State
 			default: throw 'Error in State.openWindow. Can not open window "$deployId"';
 		}
 	}
-
+	// transfer this function into UI;
 	public function closeWindow( deployId:Int ):Void
 	{
 		var ui:UserInterface = this._parent.getSystem( "ui" );
@@ -131,6 +135,9 @@ class State
 				// или выбать первую кнопку, которая будет в списке :)
 				return;
 			}
+
+			trace( choosenDungeon );
+
 
 			var check:Bool = this._checkFullPartyHeroes();
 			if( !check )
@@ -221,7 +228,7 @@ class State
 		this._redrawListOfHeroesInInnBuilding();
 	}
 
-	public function chooseButton( name:String, id:Button.ButtonID):Void
+	public function chooseButton( name:String, id:Button.ButtonID ):Void
 	{
 		switch( name )
 		{
@@ -425,6 +432,8 @@ class State
 			//2. Create dungeon by config,
 			//3. Copy heroes to dungeon scene ( do shadow copy of each hero )
 			//	this._setPositionHeroesToDungeonFromArray( array );
+			return;
+			trace( "go" );
 			var sceneSystem:SceneSystem = this._parent.getSystem( "scene" );
 			var scene:Scene = sceneSystem.createScene( dungeon );
 			sceneSystem.changeSceneTo( scene );
@@ -721,8 +730,8 @@ class State
 	{
 		//TODO: Find active button, then find window where this button placed;
 		// switch founded optiouns
-		var difficulty:String = "easy";
-		var dungeon:String = "caveOne";
+		var difficulty:String = this._selectedDungeon.DungeonDifficulty;
+		var dungeon:String = this._selectedDungeon.DungeonType;
 
 		var difficultyNumber:Int = null;
 		switch( difficulty )
@@ -878,8 +887,11 @@ class State
 	private function _chooseDungeonButton( id:Button.ButtonID ):Void
 	{
 		var choosenDungeon:SelectedDungeon = { DungeonType: null, DungeonDifficulty: null };
+		var windowAndButton:Dynamic = this._findWindowAndButtonOnChooseDungeonScene( id );
+		if( windowAndButton == null )
+			throw 'Error in State._chooseDungeonButton. Can not find button with id: "$id" on Choose Dungeon Scene';
 
-		var buttonName:String = null; // TODO: Find name of button;
+		var buttonName:String = windowAndButton.button.get( "name" );
 		switch( buttonName )
 		{
 			case "dungeonButtonEasy": choosenDungeon.DungeonDifficulty = "easy";
@@ -889,17 +901,20 @@ class State
 			default: throw 'Error in State._chooseDungeonButton. Can not find difficulty for button with name: "$buttonName".';
 		}
 
-		var windowName:String = null; //TODO: Find name of window with this button;
+		var windowName:String = windowAndButton.window.get( "name" );
 		switch( windowName )
 		{
-			case "": choosenDungeon.DungeonType = "cave";
+			case "dungeonCaveOneWindow": choosenDungeon.DungeonType = "caveOne";
 			default: throw 'Error in State._chooseDungeonButton. Can not find type of dungeon with window: "$windowName".';
 		}
+
+		//TODO: add text quest into quest window, add reward into quest window, add reward into state "reward" and add end poin of quest into state;
 	}
 
 	private function _unchooseDungeonButton( id:Button.ButtonID ):Void
 	{
-		//TODO;
+		this._selectedDungeon = { DungeonType: null, DungeonDifficulty: null };
+		//TDOD: remove text quest from window ( clear ), remove reward from quest window ( clear ), remove end poind and reward from state;
 	}
 
 	private function _findChoosenInnHeroButtonInCityScene():Button
@@ -1027,6 +1042,8 @@ class State
 			continue;
 		}
 		index++;
+
+		//TODO;
 	}
 
 	private function _generateItemRarityForMerchantBuilding( building:Building ):String
@@ -1078,6 +1095,21 @@ class State
 		var typesArray:Array<String> = [ "weapon", "armor", "acessory1", "acessory2" ];
 		var randomType:String = typesArray[ Math.floor( Math.random() * typesArray.length )];
 		return randomType;
+	}
+
+	private function _findWindowAndButtonOnChooseDungeonScene( id:Button.ButtonID ):Dynamic
+	{
+		var ui:UserInterface = this._parent.getSystem( "ui" );
+		var windowsOnUi:Array<Window> = ui.get( "objectsOnUi" ); // all windows on scene;
+		for( i in 0...windowsOnUi.length )
+		{
+			var window:Window = windowsOnUi[ i ];
+			var button:Button = window.getButtonById( id );
+			if( button != null )
+				return { "window": window, "button": button };
+		}
+
+		return null;
 	}
 
 }

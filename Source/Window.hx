@@ -134,8 +134,6 @@ class Window
 			if( EnumValueTools.equals( id, button.get( "id" )))
 				return button;
 		}
-
-		throw 'Error in Window.getButtonById. No button with id: "$id" in window "$_name"';
 		return null;
 	}
 
