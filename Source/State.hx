@@ -1,5 +1,6 @@
 package;
 
+import openfl.display.Stage;
 import Button.ButtonID;
 import Window;
 
@@ -131,12 +132,10 @@ class State
 			var choosenDungeon:Int = this._findChoosenDungeon(); // find active button in all windows on scene; { "dungeon": "cave", "difficulty": "easy" };
 			if( choosenDungeon == null )
 			{
-				this._openWarninWindow( 'Please choose a dungeon');
+				this._openWarninWindow( 'Please choose a dungeon!');
 				// или выбать первую кнопку, которая будет в списке :)
 				return;
 			}
-
-			trace( choosenDungeon );
 
 
 			var check:Bool = this._checkFullPartyHeroes();
@@ -729,7 +728,7 @@ class State
 	private function _findChoosenDungeon():Int
 	{
 		//TODO: Find active button, then find window where this button placed;
-		// switch founded optiouns
+		// switch founded options
 		var difficulty:String = this._selectedDungeon.DungeonDifficulty;
 		var dungeon:String = this._selectedDungeon.DungeonType;
 
@@ -740,14 +739,14 @@ class State
 			case "normal": difficultyNumber = 1;
 			case "hard": difficultyNumber = 2;
 			case "extreme": difficultyNumber = 3;
-			default: throw 'Error in State._findChoosenDungeon. There is no difficulty "$difficulty" in this dungeon';
+			default: trace ( 'Error in State._findChoosenDungeon. There is no difficulty "$difficulty" in this dungeon' );
 		}
 
 		switch( dungeon )
 		{
 			case "caveOne": return ( 1100 + difficultyNumber ); // in deployScene все сцены пронумерованы по возрастанию сложности.
-			case "caveTwo": return null;
-			default: throw 'Error in State._findChoosenDungeon. No dungeon found with name "$dungeon"';
+			//case "caveTwo": return null;
+			default: trace ( 'Error in State._findChoosenDungeon. No dungeon found with name "$dungeon"' );
 		}
 
 		return null;
@@ -908,6 +907,7 @@ class State
 			default: throw 'Error in State._chooseDungeonButton. Can not find type of dungeon with window: "$windowName".';
 		}
 
+		this._selectedDungeon = choosenDungeon;
 		//TODO: add text quest into quest window, add reward into quest window, add reward into state "reward" and add end poin of quest into state;
 	}
 
@@ -1002,6 +1002,22 @@ class State
 		var ui:UserInterface = this._parent.getSystem( "ui" );
 		var warningWindow:Window = ui.createWindow( 3100 ); // warningWindow Deploy ID;
 		warningWindow.get( "graphics" ).setText( error, "first" );
+
+		var warningWindowSprite:Sprite = warningWindow.get( "sprite" );
+		var uiHeight:Float = this._parent.getMainSprite().height;
+		var uiWidth:Float = this._parent.getMainSprite().width;
+		var wanringWindowHeight:Float = warningWindowSprite.height;
+		var wanringWindowWidth:Float = warningWindowSprite.width;
+
+		var x:Float = uiWidth/2 - wanringWindowWidth/2;
+		var y:Float = uiHeight/2 - wanringWindowHeight/2;
+
+		warningWindowSprite.x = x;
+		warningWindowSprite.y = y;
+		trace( '$uiHeight , $uiWidth' );
+		trace( '$wanringWindowWidth , $wanringWindowHeight ');
+		trace( '$x , $y');
+
 		ui.addWindowOnUi( warningWindow.get( "deployId" ));
 		this.openWindow( 3100 );
 		// создать окно, доабвить на ui ( что бы у него был приоритет по z-index ), показать. Кнопка получит ивент на закрытие.

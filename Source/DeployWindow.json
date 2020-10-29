@@ -447,7 +447,7 @@
 	},
 
 	"3100":{
-		"name": "warnmingWindow",
+		"name": "warningWindow",
 		"deployId": 3100,
 		"alwaysActive": false,
 		"x": 0.0,
@@ -456,10 +456,10 @@
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
 		"firstText": "n/a",
-		"firstTextSize": 48,
-		"firstTextColor": "0xffffff",
-		"firstTextHeight": 150,
-		"firstTextWidth": 350,
+		"firstTextSize": 28,
+		"firstTextColor": "0x000000",
+		"firstTextHeight": 250,
+		"firstTextWidth": 500,
 		"firstTextX": 25.0,
 		"firstTextY": 25.0,
 		"firstTextAlign": "center",

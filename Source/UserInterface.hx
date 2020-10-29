@@ -1,10 +1,12 @@
 package;
 
+import openfl.text.TextFieldAutoSize;
 import openfl.display.Sprite;
 import openfl.display.Bitmap;
 import openfl.text.TextField;
 import openfl.text.TextFormat;
 import openfl.text.TextFormatAlign;
+import openfl.text.TextFieldAutoSize;
 import openfl.Assets;
 
 import Window;
@@ -491,12 +493,13 @@ class UserInterface
 	{
         var txt:TextField = new TextField();
 
-        var align:Dynamic = null;
+		var align:Dynamic = null;
+		var autoSize:Dynamic = null;
         switch( text.align )
         {
-        	case "left": align = TextFormatAlign.LEFT;
-        	case "right": align = TextFormatAlign.RIGHT;
-        	case "center": align = TextFormatAlign.CENTER;
+        	case "left": { align = TextFormatAlign.LEFT; autoSize = TextFieldAutoSize.LEFT; }
+        	case "right": { align = TextFormatAlign.RIGHT; autoSize = TextFieldAutoSize.RIGHT; }
+        	case "center": { align = TextFormatAlign.CENTER; autoSize = TextFieldAutoSize.CENTER; }
         	default: throw( "Error in GeneratorSystem._createText. Wrong align: " + text.align + "; text: " + text.text );
         }
 
@@ -513,7 +516,8 @@ class UserInterface
         txt.width = text.width;
         txt.height = text.height;
         txt.x = text.x;
-        txt.y = text.y;
+		txt.y = text.y;
+		txt.autoSize = autoSize;
 
         if( text.text == null || text.width == null || text.height == null || text.x == null || text.y == null || text.size == null || text.color == null )
         	throw( "Some errors in GeneratorSystem._createText. In config some values is NULL. Text: " + text.text );
