@@ -1,7 +1,5 @@
 package;
 
-import openfl.display.Stage;
-import Button.ButtonID;
 import Window;
 
 import openfl.display.Sprite;
@@ -23,7 +21,6 @@ class State
 {
 	private var _parent:Game;
 	private var _selectedDungeon:SelectedDungeon;
-
 
 	public inline function new( config:StateConfig ):Void
 	{
@@ -101,7 +98,7 @@ class State
 				}
 				
 			}
-			case 3100: ui.showUiObject( WindowDeployID( deployId ));
+			case 3100, 3101: ui.showUiObject( WindowDeployID( deployId ));
 			default: throw 'Error in State.openWindow. Can not open window "$deployId"';
 		}
 	}
@@ -113,6 +110,7 @@ class State
 		{
 			case 3001: ui.closeAllActiveWindows();
 			case 3100: this._closeWarningWindow();
+			case 3101: this._closeOkCancelWindow();
 			default: throw 'Error in State.closeWindow. Can not close window "$deployId"';
 		}
 	}
@@ -141,6 +139,7 @@ class State
 			var check:Bool = this._checkFullPartyHeroes();
 			if( !check )
 			{
+				//this._showOkCancelWindow();
 				//TODO: сделать окно, которое спросит у игрока, хочет ли он продолжать в неполном составе.
 				// показать окно, забиндить клавиши как ( cancel - closeWindow; "ok" - this._prepareToJourney; );
 			}
@@ -225,6 +224,12 @@ class State
 		}			
 
 		this._redrawListOfHeroesInInnBuilding();
+	}
+
+	public function okCancelWindowOkButton():Void
+	{
+		//TODO: do reaction for button for any window;
+		//this._closeOkCancelWindow();
 	}
 
 	public function chooseButton( name:String, id:Button.ButtonID ):Void
@@ -1000,6 +1005,11 @@ class State
 	private function _openWarninWindow( error:String ):Void
 	{
 		var ui:UserInterface = this._parent.getSystem( "ui" );
+		//TODO: посмотреть, есть ли это окно уже ( созджано ли оно ). Если да - убираем его, и создаем новое.
+		var oldWarningWindow:Window = ui.getWindowByDeployId( 3100 );
+		if( oldWarningWindow != null )
+			this._closeWarningWindow();
+
 		var warningWindow:Window = ui.createWindow( 3100 ); // warningWindow Deploy ID;
 		warningWindow.get( "graphics" ).setText( error, "first" );
 
@@ -1014,14 +1024,43 @@ class State
 
 		warningWindowSprite.x = x;
 		warningWindowSprite.y = y;
-		trace( '$uiHeight , $uiWidth' );
-		trace( '$wanringWindowWidth , $wanringWindowHeight ');
-		trace( '$x , $y');
 
 		ui.addWindowOnUi( warningWindow.get( "deployId" ));
 		this.openWindow( 3100 );
 		// создать окно, доабвить на ui ( что бы у него был приоритет по z-index ), показать. Кнопка получит ивент на закрытие.
 		
+	}
+
+	private function _openOkCancelWindow( text:String ):Void
+	{
+		var ui:UserInterface = this._parent.getSystem( "ui" );
+		var oldOkCancelWindow:Window = ui.getWindowByDeployId( 3100 );
+		if( oldOkCancelWindow != null )
+			this._closeWarningWindow();
+		//TODO:
+
+		var okCancelWindow:Window = ui.createWindow( 3101 );
+		okCancelWindow.get( "graphics" ).setText( text, "first" );
+
+		var okCancelWindowSprite:Sprite = okCancelWindow.get( "sprite" );
+		var uiHeight:Float = this._parent.getMainSprite().height;
+		var uiWidth:Float = this._parent.getMainSprite().width;
+		var okCancelWindowHeight:Float = okCancelWindowSprite.height;
+		var okCancelWindowWidth:Float = okCancelWindowSprite.width;
+
+		var x:Float = uiWidth/2 - okCancelWindowWidth/2;
+		var y:Float = uiHeight/2 - okCancelWindowHeight/2;
+
+		ui.addWindowOnUi( okCancelWindow.get( "deployId" ));
+		this.openWindow( 3101 );
+	}
+
+	private function _closeOkCancelWindow():Void
+	{
+		var ui:UserInterface = this._parent.getSystem( "ui" );
+		var okCancelWindow:Window = ui.getWindowByDeployId( 3101 ); // warningWindow Deploy ID;
+		ui.removeWindowFromUi( okCancelWindow.get( "deployId" ));
+		ui.destroyWindow( okCancelWindow.get( "deployId" ));
 	}
 
 	private function _clearHeroFromRecruitBuilding( building:Building, window:Window ):Void

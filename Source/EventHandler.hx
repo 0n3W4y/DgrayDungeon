@@ -121,6 +121,8 @@ class EventHandler
 				 "dungeonButtonNormal",
 				 "dungeonButtonHard",
 				 "dungeonButtonExtreme" : this._chooseUnchooseButton( e );
+			case "okCancelWindowOk": state.okCancelWindowOkButton();
+			case "okCancelWindowCancel": state.closeWindow( 3101 );
 			default: throw 'Error in EventHandler._addEventsToButton. No event for button with name "$name"';
 		}
 	}

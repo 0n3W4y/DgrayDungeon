@@ -464,6 +464,26 @@
 		"firstTextY": 25.0,
 		"firstTextAlign": "center",
 		"button": [ 4026 ]
+	},
+
+	"3101":{
+		"name": "okCancelWindow",
+		"deployId": 3101,
+		"alwaysActive": false,
+		"x": 0.0,
+		"y": 0.0,
+		"imageNormalURL": "assets/images/windows/warningWindow.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"firstText": "n/a",
+		"firstTextSize": 28,
+		"firstTextColor": "0x000000",
+		"firstTextHeight": 250,
+		"firstTextWidth": 500,
+		"firstTextX": 25.0,
+		"firstTextY": 25.0,
+		"firstTextAlign": "center",
+		"button": [ 4026 ]
 	}
 
 

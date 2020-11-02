@@ -204,7 +204,7 @@ class UserInterface
 			return this._objects[ secondCheck ]; // возвращаем окно, котрое вообще существует.
 
 		if( check == null && secondCheck == null )
-			throw 'Error in Window.GetWindowByDeployId. Can not find window with deploy id $deployId';
+			trace( 'Error in Window.GetWindowByDeployId. Can not find window with deploy id $deployId' );
 
 		return null;
 	}
