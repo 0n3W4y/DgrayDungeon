@@ -494,12 +494,11 @@ class UserInterface
         var txt:TextField = new TextField();
 
 		var align:Dynamic = null;
-		var autoSize:Dynamic = null;
         switch( text.align )
         {
-        	case "left": { align = TextFormatAlign.LEFT; autoSize = TextFieldAutoSize.LEFT; }
-        	case "right": { align = TextFormatAlign.RIGHT; autoSize = TextFieldAutoSize.RIGHT; }
-        	case "center": { align = TextFormatAlign.CENTER; autoSize = TextFieldAutoSize.CENTER; }
+        	case "left": align = TextFormatAlign.LEFT;
+        	case "right": align = TextFormatAlign.RIGHT;
+        	case "center": align = TextFormatAlign.CENTER;
         	default: throw( "Error in GeneratorSystem._createText. Wrong align: " + text.align + "; text: " + text.text );
         }
 
@@ -517,7 +516,6 @@ class UserInterface
         txt.height = text.height;
         txt.x = text.x;
 		txt.y = text.y;
-		txt.autoSize = autoSize;
 
         if( text.text == null || text.width == null || text.height == null || text.x == null || text.y == null || text.size == null || text.color == null )
         	throw( "Some errors in GeneratorSystem._createText. In config some values is NULL. Text: " + text.text );

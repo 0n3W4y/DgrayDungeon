@@ -197,6 +197,7 @@ class EventHandler
 		var sprite:Dynamic = e.currentTarget;
 		var graphicsSprite:Sprite = sprite.getChildAt( 0 );
 		var state:State = this._parent.getSystem( "state" );
+
 		if( graphicsSprite.getChildAt( 2 ).visible )
 		{
 			graphicsSprite.getChildAt( 2 ).visible = false;

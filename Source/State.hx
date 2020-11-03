@@ -445,7 +445,7 @@ class State
 
 		if( buttonHeroId == null )
 			trace( 'Error in State.unchooseHeroToDungeon. Button hero Id is NULL!!' );
-		
+
 		var innHeroButtons:Array<Button> = this._parent.getSystem( "ui" ).getWindowByDeployId( 3006 ).get( "buttons" ); // Inn hero Window;
 		for( j in 0...innHeroButtons.length )
 		{
@@ -935,12 +935,16 @@ class State
 		}
 
 		this._selectedDungeon = choosenDungeon;
+
+		windowAndButton.button.changeActiveStatus();
 		//TODO: add text quest into quest window, add reward into quest window, add reward into state "reward" and add end poin of quest into state;
 	}
 
 	private function _unchooseDungeonButton( id:Button.ButtonID ):Void
 	{
 		this._selectedDungeon = { DungeonType: null, DungeonDifficulty: null };
+		var windowAndButton:Dynamic = this._findWindowAndButtonOnChooseDungeonScene( id );
+		windowAndButton.button.changeActiveStatus();
 		//TDOD: remove text quest from window ( clear ), remove reward from quest window ( clear ), remove end poind and reward from state;
 	}
 

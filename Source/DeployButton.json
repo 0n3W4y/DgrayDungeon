@@ -10,11 +10,11 @@
 		"imageHoverURL": "assets/images/buttons/button_dungeon_a.png",
 		"imageHoverX": 0.0,
 		"imageHoverY": 0.0,
-		"imagePushURL": "assets/images/buttons/button_dungeon_a_choose.png",
-		"imagePushX": 0.0,
-		"imagePushY": 0.0,
+		"imageChooseURL": "assets/images/buttons/button_dungeon_a_choose.png",
+		"imageChooseX": 0.0,
+		"imageChooseY": 0.0,
 		"firstText": null,
-		"events":[ "up", "down", "out", "over", "click" ]
+		"events":[ "out", "over", "click" ]
 	},
 
 	"4001":{
@@ -28,11 +28,11 @@
 		"imageHoverURL": "assets/images/buttons/button_dungeon_b.png",
 		"imageHoverX": 0.0,
 		"imageHoverY": 0.0,
-		"imagePushURL": "assets/images/buttons/button_dungeon_b_choose.png",
-		"imagePushX": 0.0,
-		"imagePushY": 0.0,
+		"imageChooseURL": "assets/images/buttons/button_dungeon_b_choose.png",
+		"imageChooseX": 0.0,
+		"imageChooseY": 0.0,
 		"firstText": null,
-		"events":[ "up", "down", "out", "over", "click" ]
+		"events":[ "out", "over", "click" ]
 	},
 
 	"4002":{
@@ -46,11 +46,11 @@
 		"imageHoverURL": "assets/images/buttons/button_dungeon_c.png",
 		"imageHoverX": 0.0,
 		"imageHoverY": 0.0,
-		"imagePushURL": "assets/images/buttons/button_dungeon_c_choose.png",
-		"imagePushX": 0.0,
-		"imagePushY": 0.0,
+		"imageChooseURL": "assets/images/buttons/button_dungeon_c_choose.png",
+		"imageChooseX": 0.0,
+		"imageChooseY": 0.0,
 		"firstText": null,
-		"events":[ "up", "down", "out", "over", "click" ]
+		"events":[ "out", "over", "click" ]
 	},
 
 	"4003":{
@@ -64,15 +64,15 @@
 		"imageHoverURL": "assets/images/buttons/button_dungeon_d.png",
 		"imageHoverX": 0.0,
 		"imageHoverY": 0.0,
-		"imagePushURL": "assets/images/buttons/button_dungeon_d_choose.png",
-		"imagePushX": 0.0,
-		"imagePushY": 0.0,
+		"imageChooseURL": "assets/images/buttons/button_dungeon_d_choose.png",
+		"imageChooseX": 0.0,
+		"imageChooseY": 0.0,
 		"firstText": null,
-		"events":[ "up", "down", "out", "over", "click" ]
+		"events":[ "out", "over", "click" ]
 	},
 
 	"4004":{
-		"name": "noname",
+		"name": "dungeonButtonSpecial",
 		"deployId": 4004,
 		"x": 0.0,
 		"y": 0.0,
@@ -82,11 +82,11 @@
 		"imageHoverURL": "assets/images/buttons/button_dungeon_d.png",
 		"imageHoverX": 0.0,
 		"imageHoverY": 0.0,
-		"imagePushURL": "assets/images/buttons/button_dungeon_d_choose.png",
-		"imagePushX": 0.0,
-		"imagePushY": 0.0,
+		"imageChooseURL": "assets/images/buttons/button_dungeon_d_choose.png",
+		"imageChooseX": 0.0,
+		"imageChooseY": 0.0,
 		"firstText": null,
-		"events":[ "up", "down", "out", "over", "click" ]
+		"events":[ "out", "over", "click" ]
 	},
 
 	"4005":{
