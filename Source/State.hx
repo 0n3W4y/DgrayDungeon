@@ -1,5 +1,6 @@
 package;
 
+import haxe.EnumTools;
 import Window;
 
 import openfl.display.Sprite;
@@ -135,16 +136,18 @@ class State
 				return;
 			}
 
-
-			var check:Bool = this._checkFullPartyHeroes();
-			if( !check )
+			var heroes:Array<Hero> = this._findHeroToDungeon();
+			if( heroes.length == 0 )
 			{
-				//this._showOkCancelWindow();
-				//TODO: сделать окно, которое спросит у игрока, хочет ли он продолжать в неполном составе.
-				// показать окно, забиндить клавиши как ( cancel - closeWindow; "ok" - this._prepareToJourney; );
+				this._openWarninWindow( 'Please, choose heroes!');
+				return;
+			}
+			else if( heroes.length < 3 )
+			{
+				this._openOkCancelWindow( 'Do u wish to continue\n without full party?');
+				return;
 			}
 
-			var heroes:Array<Hero> = this._findHeroToDungeon();
 			this._prepareJourneyToDungeon( heroes, choosenDungeon );
 		}
 	}
@@ -229,7 +232,10 @@ class State
 	public function okCancelWindowOkButton():Void
 	{
 		//TODO: do reaction for button for any window;
-		//this._closeOkCancelWindow();
+		this._closeOkCancelWindow();
+		var heroes:Array<Hero> = this._findHeroToDungeon();
+		var choosenDungeon:Int = this._findChoosenDungeon();
+		this._prepareJourneyToDungeon( heroes, choosenDungeon );
 	}
 
 	public function chooseButton( name:String, id:Button.ButtonID ):Void
@@ -403,7 +409,7 @@ class State
 			var button:Button = buttons[ i ];
 			var heroId:Hero.HeroID = button.get( "heroId" );
 			if( heroId != null )
-				this._unchooseInnHeroButton( button.get( "id" ));
+				this.unchooseHeroToDungeon( button.get( "id" ));
 		}
 	}
 
@@ -420,7 +426,37 @@ class State
 	public function unchooseHeroToDungeon( id:Button.ButtonID ):Void
 	{
 		//TODO: найти кнопку с id  героем, как у той, что кликнули и запустить функцию "убрать heroInnButton". Она запустит дальше цепочку функций.
-		trace( 'ping' );
+		var buttonHeroId:Hero.HeroID = null;
+		var choosenHeroButton:Array<Button> =  this._parent.getSystem( "ui" ).getWindowByDeployId( 3004 ).get( "buttons" ); // chooseHeroToDungeon Window deploy id is 3004;
+		for( i in 0...choosenHeroButton.length )
+		{
+			var button:Button = choosenHeroButton[ i ];
+			var buttonId:Button.ButtonID = button.get( "id" );
+			if( haxe.EnumTools.EnumValueTools.equals( id, buttonId ))
+			{
+				var heroId:Hero.HeroID = button.get( "heroId" );
+				if( heroId == null )
+					return; // if button haven't heroID - button is empty ( missclick? ) Ignore it and return;
+
+				buttonHeroId = heroId;
+				break;
+			}			
+		}
+
+		if( buttonHeroId == null )
+			trace( 'Error in State.unchooseHeroToDungeon. Button hero Id is NULL!!' );
+		
+		var innHeroButtons:Array<Button> = this._parent.getSystem( "ui" ).getWindowByDeployId( 3006 ).get( "buttons" ); // Inn hero Window;
+		for( j in 0...innHeroButtons.length )
+		{
+			var innButton:Button = innHeroButtons[ j ];
+			var innButtonHeroId:Hero.HeroID = innButton.get( "heroId" );
+			if( haxe.EnumTools.EnumValueTools.equals( buttonHeroId, innButtonHeroId ))
+			{
+				this._unchooseInnHeroButton( innButton.get( "id" ));
+				return;
+			}
+		}
 	}
 
 
@@ -436,11 +472,9 @@ class State
 			//2. Create dungeon by config,
 			//3. Copy heroes to dungeon scene ( do shadow copy of each hero )
 			//	this._setPositionHeroesToDungeonFromArray( array );
-			return;
-			trace( "go" );
 			var sceneSystem:SceneSystem = this._parent.getSystem( "scene" );
 			var scene:Scene = sceneSystem.createScene( dungeon );
-			sceneSystem.changeSceneTo( scene );
+			//sceneSystem.changeSceneTo( scene );
 	}
 
 
@@ -716,18 +750,6 @@ class State
 		}
 
 		return null;
-	}
-
-	private function _checkFullPartyHeroes():Bool
-	{
-		var buttonsArray:Array<Button> = this._parent.getSystem( "ui" ).getWindowByDeployId( 3004 ).get( "buttons" ); //chooseHeroToDungeonWindow deploy id 3004;
-		for( i in 0...buttonsArray.length )
-		{
-			var button:Button = buttonsArray[ i ];
-			if( button.get( "heroId" ) != null )
-				return false;
-		}
-		return true;
 	}
 
 	private function _findChoosenDungeon():Int
@@ -1010,6 +1032,10 @@ class State
 		if( oldWarningWindow != null )
 			this._closeWarningWindow();
 
+		var okCancelWindow:Window = ui.getWindowByDeployId( 3101 );
+		if( okCancelWindow != null )
+			this._closeOkCancelWindow();
+
 		var warningWindow:Window = ui.createWindow( 3100 ); // warningWindow Deploy ID;
 		warningWindow.get( "graphics" ).setText( error, "first" );
 
@@ -1034,10 +1060,13 @@ class State
 	private function _openOkCancelWindow( text:String ):Void
 	{
 		var ui:UserInterface = this._parent.getSystem( "ui" );
-		var oldOkCancelWindow:Window = ui.getWindowByDeployId( 3100 );
-		if( oldOkCancelWindow != null )
+		var warningWindow:Window = ui.getWindowByDeployId( 3100 );
+		if( warningWindow != null )
 			this._closeWarningWindow();
-		//TODO:
+		
+		var oldOkCancelWindow:Window = ui.getWindowByDeployId( 3101 );
+		if( oldOkCancelWindow != null )
+			this._closeOkCancelWindow();
 
 		var okCancelWindow:Window = ui.createWindow( 3101 );
 		okCancelWindow.get( "graphics" ).setText( text, "first" );
@@ -1050,6 +1079,9 @@ class State
 
 		var x:Float = uiWidth/2 - okCancelWindowWidth/2;
 		var y:Float = uiHeight/2 - okCancelWindowHeight/2;
+
+		okCancelWindowSprite.x = x;
+		okCancelWindowSprite.y = y;
 
 		ui.addWindowOnUi( okCancelWindow.get( "deployId" ));
 		this.openWindow( 3101 );

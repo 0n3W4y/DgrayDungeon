@@ -543,21 +543,25 @@ class SceneSystem
 	{
 		var currentScene:Scene = this._activeScene;
 		var sceneName:String = currentScene.get( "name" );
-		this._parent.getSystem( "ui" ).hide();
+		var ui:UserInterface = this._parent.getSystem( "ui" );
+		var state:State = this._parent.getSystem( "state" );
+
+		ui.hide();
 		//var sceneLoader:Scene = this.getSceneByName( "loaderScene" );
 		switch( sceneName )
 		{
 			case "chooseDungeonScene":
 			{
 				this.hideScene( currentScene );
-				this._parent.getSystem( "ui" ).closeAllActiveWindows();
-				this._parent.getSystem( "state" ).clearAllChooseHeroToDungeonButton();
+				ui.closeAllActiveWindows();
+				state.clearAllChooseHeroToDungeonButton();
+				//state.clearChoosenDungeon();
 				this._activeScene = scene;
 				this._undrawUiForScene( currentScene );
 			}
 			case "startScene":
 			{
-				this._parent.getSystem( "ui" ).hide();
+				ui.hide();
 				//this._sceneAfterLoaderScene = scene;
 				this._nextDrawScene = scene;
 
