@@ -9,6 +9,7 @@ typedef BattleSceneConfig =
     var DeployID:SceneDeployID;
     var Name:String;
     var GraphicsSprite:Sprite;
+    var ImagesNum:Int;
     var Difficulty:String;
     var DungeonLength:Int;
     var EnemyEvents:Int;
@@ -20,7 +21,9 @@ class BattleScene extends Scene
     private var _difficulty:String;
     private var _dungeonLength:Int;
     private var _enemyEvents:Int;
+    private var _enemyEventsRemaning:Int;
     private var _quest:Dynamic;
+    private var _numOfBackgroundImages:Int;
 
 
     public inline function new( config:BattleSceneConfig ):Void
@@ -37,9 +40,26 @@ class BattleScene extends Scene
         this._dungeonLength = config.DungeonLength;
         this._enemyEvents = config.EnemyEvents;
         this._quest = config.CurrentQuest;
+        this._numOfBackgroundImages = config.ImagesNum;
+        this._enemyEventsRemaning = config.EnemyEvents;
 
         this._init();
         super( sceneConfig );
+    }
+
+    public function getFromBattleScene( value:String ):Dynamic
+    {
+        switch( value )
+        {
+            case "difficulty": return this._difficulty;
+            case "dungeonLength": return this._dungeonLength;
+            case "enemyEvents": return this._enemyEvents;
+            case "enemyEventsRemaning": return this._enemyEventsRemaning;
+            case "quest": return this._quest;
+            case "numOfBackgroundImages": return this._numOfBackgroundImages;
+            default: throw 'Error in BattleScene.getFromBattleScene. can not get "$value".';
+        }
+        return null;
     }
 
     private function _init():Void
@@ -56,7 +76,9 @@ class BattleScene extends Scene
 
         if( this._quest == null )
             throw '$error Quest is NULL!!';
-        
+
+        if( this._numOfBackgroundImages <= 1 || this._numOfBackgroundImages == null )
+            throw '$error Background images are not valid number';
         //TODO: check all fields;
     }
 

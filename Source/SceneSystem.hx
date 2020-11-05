@@ -688,15 +688,28 @@ class SceneSystem
 		//sprite.addChild( graphicsSprite );
 		//var textSprite:Sprite = this._createTextSprite( config );
 		//sprite.addChild( textSprite );
+		var enemyEvents:Int = null;
+		var quest:Dynamic = null;
 
-		var configForScene:SceneConfig =
+		var availableQuests:Array<String> = config.quest;
+		var minEnemyEvents:Int = config.enemyEventsMin;
+		var maxEnemyEvents:Int = config.enemyEventsMax;
+
+
+		var configForScene:BattleScene.BattleSceneConfig =
 		{
 			ID: id,
 			Name: config.name,
 			DeployID: sceneDeployId,
-			GraphicsSprite: sprite
+			GraphicsSprite: sprite,
+			ImagesNum: config.images.length,
+			Difficulty: config.difficulty,
+			DungeonLength: config.dungeonLength,
+			EnemyEvents: enemyEvents,
+			CurrentQuest: quest
 		};
-		var scene = new Scene( configForScene );
+
+		var scene = new BattleScene( configForScene );
 		scene.init( 'Error in SceneSystem.createScene. Error in Scene.init' );
 
 		var configWindow:Array<Int> = config.window;
