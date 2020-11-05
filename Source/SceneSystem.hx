@@ -1,8 +1,6 @@
 package;
 
 import ItemSystem.ItemSystemConfig;
-import openfl.display.Graphics;
-import haxe.EnumTools;
 import openfl.display.Sprite;
 import openfl.display.Bitmap;
 import openfl.Assets;
@@ -199,9 +197,15 @@ class SceneSystem
 	public function createScene( deployId:Int ):Scene
 	{
 		var sceneDeployId:SceneDeployID = SceneDeployID( deployId );
-		var config = this._parent.getSystem( "deploy" ).getScene( sceneDeployId );
+		var config:Dynamic = this._parent.getSystem( "deploy" ).getScene( sceneDeployId );
 		if( config == null )
 			throw 'Error in SceneSystem.createScene. Deploy ID: "$deployId + " does not exist in SceneDeploy data';
+
+		if( deployId >= 1100 )
+		{
+			var battleScene:Scene = this._createBattleScene( sceneDeployId, config );
+			return battleScene;
+		}
 
 		var id:SceneID = SceneID( this._parent.createId() );
 		var sprite:Sprite = new Sprite();
@@ -391,6 +395,7 @@ class SceneSystem
 			switch ( event.BuildingEventName )
 			{
 				case "updateListOfRecruits": this._updateListOfRecruits( event );
+				//case "updateListOfShopItems": this._updateListOfShopItems( event );
 				default: throw 'Error in SceneSystem._updateBuildingEvents. No event found for "$event"';
 			}
 		}
@@ -673,6 +678,37 @@ class SceneSystem
 				return i;
 		}
 		return null;
+	}
+
+	private function _createBattleScene( sceneDeployId:SceneDeployID, config:Dynamic ):Scene
+	{
+		var id:SceneID = SceneID( this._parent.createId() );
+		var sprite:Sprite = new Sprite();
+		//var graphicsSprite:Sprite = this._createGraphicsSprite( config );
+		//sprite.addChild( graphicsSprite );
+		//var textSprite:Sprite = this._createTextSprite( config );
+		//sprite.addChild( textSprite );
+
+		var configForScene:SceneConfig =
+		{
+			ID: id,
+			Name: config.name,
+			DeployID: sceneDeployId,
+			GraphicsSprite: sprite
+		};
+		var scene = new Scene( configForScene );
+		scene.init( 'Error in SceneSystem.createScene. Error in Scene.init' );
+
+		var configWindow:Array<Int> = config.window;
+		if( configWindow != null ) // Внутри Window есть чайлды в виде button. создаются в функции создании окна.
+		{
+			var ui:UserInterface = this._parent.getSystem( "ui" );
+			for( i in 0...configWindow.length )
+			{
+				ui.createWindow( configWindow[ i ] );
+			}
+		}
+		return scene;
 	}
 
 	private function _createGraphicsSprite( config:Dynamic ):Sprite
