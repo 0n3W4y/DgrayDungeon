@@ -206,7 +206,7 @@
 		"deployId": 3010,
 		"alwaysActive": true,
 		"x": 0.0,
-		"y": 10.0,
+		"y": 540.0,
 		"imageNormalURL": "assets/images/windows/dungeonSceneMainWindow.png",
 		"imageNormalX": 0.0,
 		"imageNormalY": 0.0,
@@ -387,7 +387,7 @@
 
 	"3019":{
 		"name": "citySceneHermitWindow",
-		"deployId": 3020,
+		"deployId": 3019,
 		"alwaysActive": false,
 		"x": 166.0,
 		"y": 140.0,
@@ -407,7 +407,7 @@
 
 	"3020":{
 		"name": "citySceneHeroPropertiesWindow",
-		"deployId": 3019,
+		"deployId": 3020,
 		"alwaysActive": false,
 		"x": 166.0,
 		"y": 140.0,
@@ -425,10 +425,10 @@
 		"button": [  ]
 	},
 
-	"3021":
+	"3050":
 	{
 		"name": "dungeonCaveOneWindow",
-		"deployId": 3020,
+		"deployId": 3050,
 		"alwaysActive": true,
 		"x": 600.0,
 		"y": 500.0,

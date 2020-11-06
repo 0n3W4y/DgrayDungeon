@@ -1009,5 +1009,157 @@
 		"firstTextY": 0.0,
 		"firstTextAlign": "center",
 		"events":[ "up", "down", "out", "over", "click" ]
+	},
+
+	"4042":{
+		"name": "dungeonSceneMainWindowFirstSkillButton",
+		"deployId": 4042,
+		"x": 300.0,
+		"y": 250.0,
+		"imageNormalURL": "assets/images/buttons/button_a.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"imageHoverURL": "assets/images/buttons/button_a_hover.png",
+		"imageHoverX": 0.0,
+		"imageHoverY": 0.0,
+		"imagePushURL": "assets/images/buttons/button_a_push.png",
+		"imagePushX": 0.0,
+		"imagePushY": 0.0,
+		"firstText": null,
+		"events":[ "up", "down", "out", "over", "click" ]
+	},
+
+	"4043":{
+		"name": "dungeonSceneMainWindowSecodSkillButton",
+		"deployId": 4043,
+		"x": 300.0,
+		"y": 250.0,
+		"imageNormalURL": "assets/images/buttons/button_a.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"imageHoverURL": "assets/images/buttons/button_a_hover.png",
+		"imageHoverX": 0.0,
+		"imageHoverY": 0.0,
+		"imagePushURL": "assets/images/buttons/button_a_push.png",
+		"imagePushX": 0.0,
+		"imagePushY": 0.0,
+		"firstText": null,
+		"events":[ "up", "down", "out", "over", "click" ]
+	},
+
+	"4044":{
+		"name": "dungeonSceneMainWindowThirdSkillButton",
+		"deployId": 4044,
+		"x": 300.0,
+		"y": 250.0,
+		"imageNormalURL": "assets/images/buttons/button_a.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"imageHoverURL": "assets/images/buttons/button_a_hover.png",
+		"imageHoverX": 0.0,
+		"imageHoverY": 0.0,
+		"imagePushURL": "assets/images/buttons/button_a_push.png",
+		"imagePushX": 0.0,
+		"imagePushY": 0.0,
+		"firstText": null,
+		"events":[ "up", "down", "out", "over", "click" ]
+	},
+
+	"4045":{
+		"name": "dungeonSceneMainWindowFourthSkillButton",
+		"deployId": 4045,
+		"x": 300.0,
+		"y": 250.0,
+		"imageNormalURL": "assets/images/buttons/button_a.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"imageHoverURL": "assets/images/buttons/button_a_hover.png",
+		"imageHoverX": 0.0,
+		"imageHoverY": 0.0,
+		"imagePushURL": "assets/images/buttons/button_a_push.png",
+		"imagePushX": 0.0,
+		"imagePushY": 0.0,
+		"firstText": null,
+		"events":[ "up", "down", "out", "over", "click" ]
+	},
+
+	"4046":{
+		"name": "dungeonSceneMainWindowFifthSkillButton",
+		"deployId": 4046,
+		"x": 300.0,
+		"y": 250.0,
+		"imageNormalURL": "assets/images/buttons/button_a.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"imageHoverURL": "assets/images/buttons/button_a_hover.png",
+		"imageHoverX": 0.0,
+		"imageHoverY": 0.0,
+		"imagePushURL": "assets/images/buttons/button_a_push.png",
+		"imagePushX": 0.0,
+		"imagePushY": 0.0,
+		"firstText": null,
+		"events":[ "up", "down", "out", "over", "click" ]
+	},
+
+	"4047":{
+		"name": "dungeonSceneMainWindowWeaponButton",
+		"deployId": 4047,
+		"x": 0.0,
+		"y": 0.0,
+		"imageNormalURL": "assets/images/buttons/button_a.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"imageHoverURL": "assets/images/buttons/button_a_hover.png",
+		"imageHoverX": 0.0,
+		"imageHoverY": 0.0,
+		"firstText": null,
+		"events":[ "out", "over" ]
+	},
+
+	"4048":{
+		"name": "dungeonSceneMainWindowArmorButton",
+		"deployId": 4048,
+		"x": 0.0,
+		"y": 0.0,
+		"imageNormalURL": "assets/images/buttons/button_a.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"imageHoverURL": "assets/images/buttons/button_a_hover.png",
+		"imageHoverX": 0.0,
+		"imageHoverY": 0.0,
+		"firstText": null,
+		"events":[ "out", "over" ]
+	},
+
+	"4049":{
+		"name": "dungeonSceneMainWindowAcessory1Button",
+		"deployId": 4049,
+		"x": 0.0,
+		"y": 0.0,
+		"imageNormalURL": "assets/images/buttons/button_a.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"imageHoverURL": "assets/images/buttons/button_a_hover.png",
+		"imageHoverX": 0.0,
+		"imageHoverY": 0.0,
+		"firstText": null,
+		"events":[ "out", "over" ]
+	},
+
+	"4050":{
+		"name": "dungeonSceneMainWindowAcessory2Button",
+		"deployId": 4050,
+		"x": 0.0,
+		"y": 0.0,
+		"imageNormalURL": "assets/images/buttons/button_a.png",
+		"imageNormalX": 0.0,
+		"imageNormalY": 0.0,
+		"imageHoverURL": "assets/images/buttons/button_a_hover.png",
+		"imageHoverX": 0.0,
+		"imageHoverY": 0.0,
+		"firstText": null,
+		"events":[ "out", "over" ]
 	}
+
+	
 }
