@@ -69,16 +69,16 @@ class BattleScene extends Scene
             throw '$error Difficluty is NULL!';
 
         if( this._dungeonLength <= 0 || this._dungeonLength == null )
-            throw '$error Dungeon length is not valid.';
+            throw '$error Dungeon length is not valid. $_dungeonLength';
 
         if( this._enemyEvents <= 0 || this._enemyEvents == null )
-            throw '$error Enemy events is not valid.';
+            throw '$error Enemy events is not valid. $_enemyEvents';
 
         if( this._quest == null )
             throw '$error Quest is NULL!!';
 
         if( this._numOfBackgroundImages <= 1 || this._numOfBackgroundImages == null )
-            throw '$error Background images are not valid number';
+            throw '$error Background images are not valid number. $_numOfBackgroundImages';
         //TODO: check all fields;
     }
 

@@ -684,16 +684,23 @@ class SceneSystem
 	{
 		var id:SceneID = SceneID( this._parent.createId() );
 		var sprite:Sprite = new Sprite();
+
+		
 		//var graphicsSprite:Sprite = this._createGraphicsSprite( config );
 		//sprite.addChild( graphicsSprite );
 		//var textSprite:Sprite = this._createTextSprite( config );
 		//sprite.addChild( textSprite );
-		var enemyEvents:Int = null;
-		var quest:Dynamic = null;
+		
+		var graphicsSprite:Sprite = this._createGraphicsSpriteForBattleScene( config.images );
 
 		var availableQuests:Array<String> = config.quest;
 		var minEnemyEvents:Int = config.enemyEventsMin;
 		var maxEnemyEvents:Int = config.enemyEventsMax;
+
+		var questIndex:Int = Math.floor( Math.random() * availableQuests.length );
+
+		var enemyEvents:Int = Math.floor( minEnemyEvents + Math.random()*( maxEnemyEvents - minEnemyEvents + 1 ));
+		var quest:Dynamic = config.quest[ questIndex ];
 
 
 		var configForScene:BattleScene.BattleSceneConfig =
@@ -761,6 +768,23 @@ class SceneSystem
 			bitmap.y = config.imageThirdY;
 			sprite.addChild( bitmap );
 		}	
+
+		return sprite;
+	}
+
+	private function _createGraphicsSpriteForBattleScene( images:Array<String> ):Sprite
+	{
+		var sprite:Sprite = new Sprite();
+
+		for( i in 0...images.length )
+		{
+			var imageURL:String = images[ i ];
+			var bitmap = this._createBitmap( imageURL );
+			bitmap.x = 0;
+			bitmap.y = 0;
+			sprite.addChild( bitmap );
+
+		}
 
 		return sprite;
 	}
