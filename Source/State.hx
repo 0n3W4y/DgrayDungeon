@@ -142,7 +142,7 @@ class State
 				this._openWarninWindow( 'Please, choose heroes!');
 				return;
 			}
-			else if( heroes.length < 3 )
+			else if( heroes.length <= 3 )
 			{
 				this._openOkCancelWindow( 'Do u wish to continue\n without full party?');
 				return;
@@ -459,6 +459,13 @@ class State
 		}
 	}
 
+	public function clearChoosenDungeon():Void
+	{
+		//TODO: clear choosen dungeon from dungeon scene;
+		var windows:Array<Window> = this._parent.getSystem( "ui" ).get( "active");
+
+	}
+
 
 
 
@@ -474,7 +481,7 @@ class State
 			//	this._setPositionHeroesToDungeonFromArray( array );
 			var sceneSystem:SceneSystem = this._parent.getSystem( "scene" );
 			var scene:Scene = sceneSystem.createScene( dungeon );
-			//sceneSystem.changeSceneTo( scene );
+			sceneSystem.changeSceneTo( scene );
 	}
 
 

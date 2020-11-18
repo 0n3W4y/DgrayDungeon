@@ -116,6 +116,7 @@ class SceneSystem
 			case "startScene": this._changeSceneToStartScene( scene );
 			case "cityScene": this._changeSceneToCityScene( scene );
 			case "chooseDungeonScene": this._changeSceneToChooseDungeonScene( scene );
+			case "dungeonCaveOneEasy", "dungeonCaveOneNormal", "dungeonCaveOneHard", "dungeonCaveOneExtreme": this._changeSceneToDungeonCave( scene );
 			default: throw 'Error in SceneSystem.changeSceneTo. Can not change scene to "$sceneName"';
 		}
 	}
@@ -514,6 +515,10 @@ class SceneSystem
 				//change loader to 100%
 				bitmap.width = hundredPercentWidth * 1;
 			}
+			case "dungeonCaveEasy":
+			{
+
+			}
 			default: throw 'Error in SceneSystem._doLoaderScene. Can not load scene "$sceneName" from loaderScene ';
 		}
 		this._undrawScene( loader );
@@ -560,7 +565,7 @@ class SceneSystem
 				this.hideScene( currentScene );
 				ui.closeAllActiveWindows();
 				state.clearAllChooseHeroToDungeonButton();
-				//state.clearChoosenDungeon();
+				state.clearChoosenDungeon();
 				this._activeScene = scene;
 				this._undrawUiForScene( currentScene );
 			}
@@ -600,6 +605,26 @@ class SceneSystem
 		}
 		
 		this._drawUiForScene( scene );
+	}
+
+	private function _changeSceneToDungeonCave( scene:Scene ):Void
+	{
+		var currentScene:Scene = this._activeScene;
+		var ui:UserInterface = this._parent.getSystem( "ui" );
+		var state:State = this._parent.getSystem( "state" );
+		
+		ui.hide();
+		ui.closeAllActiveWindows();
+
+		state.clearAllChooseHeroToDungeonButton();
+		state.clearChoosenDungeon();
+
+		var sceneLoader:Scene = this.getSceneByName( "loaderScene" ); // withoutchek. because loader already created when game started;
+		this._activeScene = sceneLoader;
+		this._nextDrawScene = scene;
+		this.hideScene( currentScene );
+		this._undrawUiForScene( currentScene );			
+		
 	}
 
 	private function _afterDrawScene( scene:Scene ):Void
@@ -692,6 +717,8 @@ class SceneSystem
 		//sprite.addChild( textSprite );
 		
 		var graphicsSprite:Sprite = this._createGraphicsSpriteForBattleScene( config.images );
+		sprite.addChild( graphicsSprite );
+		var textSprite:Sprite = null;
 
 		var availableQuests:Array<String> = config.quest;
 		var minEnemyEvents:Int = config.enemyEventsMin;

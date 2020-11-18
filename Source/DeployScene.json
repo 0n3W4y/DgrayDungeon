@@ -52,7 +52,7 @@
     {
         "name": "dungeonCaveOneEasy",
 		"deployId": 1100,
-		"images": [ "assets/images/scenes/dungeonCave_1.png" ],
+		"images": [ "assets/images/scenes/dungeonCave_1a.png", "assets/images/scenes/dungeonCave_1b.jpg", "assets/images/scenes/dungeonCave_1c.png" ],
         "window": [ 3010 ],
         "difficulty": "easy",
 		"dungeonLength": 40,
