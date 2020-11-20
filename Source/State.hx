@@ -273,7 +273,7 @@ class State
 			case "dungeonButtonEasy",
 				 "dungeonButtonNormal",
 				 "dungeonButtonHard",
-				 "dungeonButtonExtreme": this._unchooseDungeonButton( id );
+				 "dungeonButtonExtreme": this._unchooseDungeonButton( id, null );
 			default: throw 'Error in State.unchooseButton. Can not unchoose "$name"';
 		}	
 	}
@@ -462,8 +462,27 @@ class State
 	public function clearChoosenDungeon():Void
 	{
 		//TODO: clear choosen dungeon from dungeon scene;
-		var windows:Array<Window> = this._parent.getSystem( "ui" ).get( "active");
+		var windowsArray:Array<Window> = this._parent.getSystem( "ui" ).get( "objectsOnUi" );
+		for( i in 0...windowsArray.length )
+		{
+			var window:Window = windowsArray[ i ];
+			var windowName:String = window.get( "name" );
+			if( windowName == "chooseHeroToDungeonWindow" || windowName == "innWindow" ) // exclude main windows from search activebutton;
+				continue;
 
+			var buttonsArray:Array<Button> = window.get( "buttons" );
+			for( j in 0...buttonsArray.length )
+			{
+				var button:Button = buttonsArray[ j ];
+				var activeStatus:Bool = button.get( "activeStatus" );
+				if( activeStatus )
+				{
+					var buttonId:Button.ButtonID = button.get( "id" );
+					this._unchooseDungeonButton( buttonId, window );
+					return; // end function, because only 1 button can be choosen at the same time;
+				}
+			}
+		}
 	}
 
 
@@ -947,11 +966,20 @@ class State
 		//TODO: add text quest into quest window, add reward into quest window, add reward into state "reward" and add end poin of quest into state;
 	}
 
-	private function _unchooseDungeonButton( id:Button.ButtonID ):Void
+	private function _unchooseDungeonButton( id:Button.ButtonID, window:Window ):Void
 	{
 		this._selectedDungeon = { DungeonType: null, DungeonDifficulty: null };
-		var windowAndButton:Dynamic = this._findWindowAndButtonOnChooseDungeonScene( id );
-		windowAndButton.button.changeActiveStatus();
+		if( window == null )
+		{
+			var windowAndButton:Dynamic = this._findWindowAndButtonOnChooseDungeonScene( id );
+			windowAndButton.button.changeActiveStatus();
+		}
+		else
+		{
+			var button:Button = window.getButtonById( id );
+			button.changeActiveStatus();
+		}
+		
 		//TDOD: remove text quest from window ( clear ), remove reward from quest window ( clear ), remove end poind and reward from state;
 	}
 
