@@ -75,6 +75,11 @@ typedef HeroConfig =
 	var MaxPassiveSkills:Int;
 }
 
+typedef SaveLoadConfig = 
+{
+
+}
+
 typedef Position =
 {
   var First:Int;
@@ -355,6 +360,16 @@ class Hero
 			case "cold": this._resistCold = value;
 			default: throw 'Error in Hero.setResistTo. Can not set $resist';
 		}
+	}
+
+	public function save():Dynamic
+	{
+		return null;
+	}
+
+	public function load( config:Dynamic ):Void
+	{
+
 	}
 
 

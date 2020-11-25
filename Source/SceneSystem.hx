@@ -116,7 +116,7 @@ class SceneSystem
 			case "startScene": this._changeSceneToStartScene( scene );
 			case "cityScene": this._changeSceneToCityScene( scene );
 			case "chooseDungeonScene": this._changeSceneToChooseDungeonScene( scene );
-			case "dungeonCaveOneEasy", "dungeonCaveOneNormal", "dungeonCaveOneHard", "dungeonCaveOneExtreme": this._changeSceneToDungeonCave( scene );
+			case "dungeonCaveOneEasy", "dungeonCaveOneNormal", "dungeonCaveOneHard", "dungeonCaveOneExtreme": this._changeSceneToDungeon( scene );
 			default: throw 'Error in SceneSystem.changeSceneTo. Can not change scene to "$sceneName"';
 		}
 	}
@@ -202,11 +202,6 @@ class SceneSystem
 		if( config == null )
 			throw 'Error in SceneSystem.createScene. Deploy ID: "$deployId + " does not exist in SceneDeploy data';
 
-		if( deployId >= 1100 )
-		{
-			var battleScene:Scene = this._createBattleScene( sceneDeployId, config );
-			return battleScene;
-		}
 
 		var id:SceneID = SceneID( this._parent.createId() );
 		var sprite:Sprite = new Sprite();
@@ -246,6 +241,64 @@ class SceneSystem
 		}
 
 		this._scenesArray.push( scene );
+		return scene;
+	}
+
+	public function createBattleScene( deployId:Int ):BattleScene
+	{
+		var sceneDeployId:SceneDeployID = SceneDeployID( deployId );
+		var config:Dynamic = this._parent.getSystem( "deploy" ).getScene( sceneDeployId );
+		if( config == null )
+			throw 'Error in SceneSystem.createScene. Deploy ID: "$deployId + " does not exist in SceneDeploy data';
+
+		var id:SceneID = SceneID( this._parent.createId() );
+		var sprite:Sprite = new Sprite();
+
+		
+		//var graphicsSprite:Sprite = this._createGraphicsSprite( config );
+		//sprite.addChild( graphicsSprite );
+		//var textSprite:Sprite = this._createTextSprite( config );
+		//sprite.addChild( textSprite );
+		
+		var graphicsSprite:Sprite = this._createGraphicsSpriteForBattleScene( config.images );
+		sprite.addChild( graphicsSprite );
+		var textSprite:Sprite = null;
+
+		var availableQuests:Array<String> = config.quest;
+		var minEnemyEvents:Int = config.enemyEventsMin;
+		var maxEnemyEvents:Int = config.enemyEventsMax;
+
+		var questIndex:Int = Math.floor( Math.random() * availableQuests.length );
+
+		var enemyEvents:Int = Math.floor( minEnemyEvents + Math.random()*( maxEnemyEvents - minEnemyEvents + 1 ));
+		var quest:Dynamic = config.quest[ questIndex ];
+
+
+		var configForScene:BattleScene.BattleSceneConfig =
+		{
+			ID: id,
+			Name: config.name,
+			DeployID: sceneDeployId,
+			GraphicsSprite: sprite,
+			ImagesNum: config.images.length,
+			Difficulty: config.difficulty,
+			DungeonLength: config.dungeonLength,
+			EnemyEvents: enemyEvents,
+			CurrentQuest: quest
+		};
+
+		var scene = new BattleScene( configForScene );
+		scene.init( 'Error in SceneSystem.createScene. Error in Scene.init' );
+
+		var configWindow:Array<Int> = config.window;
+		if( configWindow != null ) // Внутри Window есть чайлды в виде button. создаются в функции создании окна.
+		{
+			var ui:UserInterface = this._parent.getSystem( "ui" );
+			for( i in 0...configWindow.length )
+			{
+				ui.createWindow( configWindow[ i ] );
+			}
+		}
 		return scene;
 	}
 
@@ -607,24 +660,20 @@ class SceneSystem
 		this._drawUiForScene( scene );
 	}
 
-	private function _changeSceneToDungeonCave( scene:Scene ):Void
+	private function _changeSceneToDungeon( scene:Scene ):Void
 	{
+		
 		var currentScene:Scene = this._activeScene;
 		var ui:UserInterface = this._parent.getSystem( "ui" );
 		var state:State = this._parent.getSystem( "state" );
 		
 		ui.hide();
-		ui.closeAllActiveWindows();
-
-		state.clearAllChooseHeroToDungeonButton();
-		state.clearChoosenDungeon();
-
-		var sceneLoader:Scene = this.getSceneByName( "loaderScene" ); // withoutchek. because loader already created when game started;
-		this._activeScene = sceneLoader;
 		this._nextDrawScene = scene;
-		this.hideScene( currentScene );
-		this._undrawUiForScene( currentScene );			
-		
+		this.undrawSceneWithHide( currentScene );
+
+		//TODO: create object for dungeon scenes - heroes, quest, inventory;
+		state.clearAllChooseHeroToDungeonButton();
+		state.clearChoosenDungeon();				
 	}
 
 	private function _afterDrawScene( scene:Scene ):Void
@@ -703,59 +752,6 @@ class SceneSystem
 				return i;
 		}
 		return null;
-	}
-
-	private function _createBattleScene( sceneDeployId:SceneDeployID, config:Dynamic ):Scene
-	{
-		var id:SceneID = SceneID( this._parent.createId() );
-		var sprite:Sprite = new Sprite();
-
-		
-		//var graphicsSprite:Sprite = this._createGraphicsSprite( config );
-		//sprite.addChild( graphicsSprite );
-		//var textSprite:Sprite = this._createTextSprite( config );
-		//sprite.addChild( textSprite );
-		
-		var graphicsSprite:Sprite = this._createGraphicsSpriteForBattleScene( config.images );
-		sprite.addChild( graphicsSprite );
-		var textSprite:Sprite = null;
-
-		var availableQuests:Array<String> = config.quest;
-		var minEnemyEvents:Int = config.enemyEventsMin;
-		var maxEnemyEvents:Int = config.enemyEventsMax;
-
-		var questIndex:Int = Math.floor( Math.random() * availableQuests.length );
-
-		var enemyEvents:Int = Math.floor( minEnemyEvents + Math.random()*( maxEnemyEvents - minEnemyEvents + 1 ));
-		var quest:Dynamic = config.quest[ questIndex ];
-
-
-		var configForScene:BattleScene.BattleSceneConfig =
-		{
-			ID: id,
-			Name: config.name,
-			DeployID: sceneDeployId,
-			GraphicsSprite: sprite,
-			ImagesNum: config.images.length,
-			Difficulty: config.difficulty,
-			DungeonLength: config.dungeonLength,
-			EnemyEvents: enemyEvents,
-			CurrentQuest: quest
-		};
-
-		var scene = new BattleScene( configForScene );
-		scene.init( 'Error in SceneSystem.createScene. Error in Scene.init' );
-
-		var configWindow:Array<Int> = config.window;
-		if( configWindow != null ) // Внутри Window есть чайлды в виде button. создаются в функции создании окна.
-		{
-			var ui:UserInterface = this._parent.getSystem( "ui" );
-			for( i in 0...configWindow.length )
-			{
-				ui.createWindow( configWindow[ i ] );
-			}
-		}
-		return scene;
 	}
 
 	private function _createGraphicsSprite( config:Dynamic ):Sprite

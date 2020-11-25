@@ -25,6 +25,11 @@ class BattleScene extends Scene
     private var _quest:Dynamic;
     private var _numOfBackgroundImages:Int;
 
+    private var _heroesInBattle:Array<Hero>;
+    private var _enemiesInBattle:Array<Enemy>;
+    //private var _treasure:Array<Treasure>;
+
+
 
     public inline function new( config:BattleSceneConfig ):Void
     {
@@ -35,7 +40,7 @@ class BattleScene extends Scene
             Name: config.Name,
             GraphicsSprite: config.GraphicsSprite
         };
-
+        
         this._difficulty = config.Difficulty;
         this._dungeonLength = config.DungeonLength;
         this._enemyEvents = config.EnemyEvents;
@@ -43,23 +48,8 @@ class BattleScene extends Scene
         this._numOfBackgroundImages = config.ImagesNum;
         this._enemyEventsRemaning = config.EnemyEvents;
 
-        this._init();
-        super( sceneConfig );
-    }
-
-    public function getFromBattleScene( value:String ):Dynamic
-    {
-        switch( value )
-        {
-            case "difficulty": return this._difficulty;
-            case "dungeonLength": return this._dungeonLength;
-            case "enemyEvents": return this._enemyEvents;
-            case "enemyEventsRemaning": return this._enemyEventsRemaning;
-            case "quest": return this._quest;
-            case "numOfBackgroundImages": return this._numOfBackgroundImages;
-            default: throw 'Error in BattleScene.getFromBattleScene. can not get "$value".';
-        }
-        return null;
+        this._init();   
+        super( sceneConfig );    
     }
 
     private function _init():Void
@@ -80,6 +70,36 @@ class BattleScene extends Scene
         if( this._numOfBackgroundImages <= 1 || this._numOfBackgroundImages == null )
             throw '$error Background images are not valid number. $_numOfBackgroundImages';
         //TODO: check all fields;
+    }
+
+    public function addHeroes( heroes:Array<Hero> ):Void
+    {
+        this._heroesInBattle = heroes;
+    }
+
+    public function getFromBattleScene( value:String ):Dynamic
+    {
+        switch( value )
+        {
+            case "difficulty": return this._difficulty;
+            case "dungeonLength": return this._dungeonLength;
+            case "enemyEvents": return this._enemyEvents;
+            case "enemyEventsRemaning": return this._enemyEventsRemaning;
+            case "quest": return this._quest;
+            case "numOfBackgroundImages": return this._numOfBackgroundImages;
+            default: throw 'Error in BattleScene.getFromBattleScene. can not get "$value".';
+        }
+        return null;
+    }
+
+    public function getHeroesInBattle():Array<Hero>
+    {
+        return this._heroesInBattle;
+    }
+
+    public function getEnemiesInBattle():Array<Enemy>
+    {
+        return this._enemiesInBattle;
     }
 
 }

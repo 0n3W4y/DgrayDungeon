@@ -491,7 +491,7 @@ class State
 	//PRIVATE
 
 
-	private function _prepareJourneyToDungeon( array:Array<Hero>, dungeon:Int ):Void
+	private function _prepareJourneyToDungeon( heroes:Array<Hero>, dungeon:Int ):Void
 	{
 			//TODO:
 			//1. open shop window, to buy staff for dungeon, like water, food, bandages, healthkits, shovel, e.t.c
@@ -499,7 +499,9 @@ class State
 			//3. Copy heroes to dungeon scene ( do shadow copy of each hero )
 			//	this._setPositionHeroesToDungeonFromArray( array );
 			var sceneSystem:SceneSystem = this._parent.getSystem( "scene" );
-			var scene:Scene = sceneSystem.createScene( dungeon );
+			var scene:BattleScene = sceneSystem.createBattleScene( dungeon );
+			var shadowCopyOfHeroes:Array<Hero> = this._createShadowCopyOfHeroes( heroes );
+			scene.addHeroes( heroes );
 			sceneSystem.changeSceneTo( scene );
 	}
 
@@ -995,6 +997,14 @@ class State
 				return button;
 		}
 		return null;
+	}
+
+	private function _createShadowCopyOfHeroes( heroes:Array<Hero> ):Array<Hero>
+	{
+		var newHeroes:Array<Hero> = new Array<Hero>();
+		//TODO: get each hero, do save(); then crete new hero - do load;
+		//return newHeroes;
+		return heroes;
 	}
 
 
