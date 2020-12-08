@@ -21,7 +21,7 @@ class BattleScene extends Scene
     private var _difficulty:String;
     private var _dungeonLength:Int;
     private var _enemyEvents:Int;
-    private var _enemyEventsRemaning:Int;
+    private var _enemyEventsRemaining:Int;
     private var _quest:Dynamic;
     private var _numOfBackgroundImages:Int;
 
@@ -46,7 +46,7 @@ class BattleScene extends Scene
         this._enemyEvents = config.EnemyEvents;
         this._quest = config.CurrentQuest;
         this._numOfBackgroundImages = config.ImagesNum;
-        this._enemyEventsRemaning = config.EnemyEvents;
+        this._enemyEventsRemaining = config.EnemyEvents;
 
         this._init();   
         super( sceneConfig );    
@@ -84,7 +84,7 @@ class BattleScene extends Scene
             case "difficulty": return this._difficulty;
             case "dungeonLength": return this._dungeonLength;
             case "enemyEvents": return this._enemyEvents;
-            case "enemyEventsRemaning": return this._enemyEventsRemaning;
+            case "enemyEventsRemaning": return this._enemyEventsRemaining;
             case "quest": return this._quest;
             case "numOfBackgroundImages": return this._numOfBackgroundImages;
             default: throw 'Error in BattleScene.getFromBattleScene. can not get "$value".';
