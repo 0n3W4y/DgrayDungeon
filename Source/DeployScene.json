@@ -58,12 +58,15 @@
 		"dungeonLength": 40,
 		"enemyEventsMin": 2,
 		"enemyEventsMax": 8,
-		"population": [ "skeletonArcher", "skeletonSwrodsman", "superSlime" ],
-		"bosses": [ "superSkeleton" ],
+		"treasureEventsMin": 2,
+		"treasureEventsMax": 6,
+		"trapEventsMin": 1,
+		"trapEventsMax": 4,
+		"treasures": [ "fontain" ],
+		"population": [ "skeletonArcher", "skeletonSwrodsman", "slime" ],
+		"bosses": [ "superSlime" ],
 		"quest": [ "quest1", "quest2" ],
-		"maxSceneObjects": 10,
-		"minSceneObjects": 4,
-		"sceneObjects": [ "fontain", "trap1", "trap2" ]
+		"traps": [ "trap1", "trap2" ]
 	},
 	
 	"1101":
@@ -76,12 +79,15 @@
 		"dungeonLength": 63,
 		"enemyEventsMin": 3,
 		"enemyEventsMax": 11,
-		"population": [ "skeletonArcher", "skeletonSwrodsman", "superSlime" ],
-		"bosses": [ "superSkeleton" ],
+		"treasureEventsMin": 2,
+		"treasureEventsMax": 6,
+		"trapEventsMin": 1,
+		"trapEventsMax": 4,
+		"treasures": [ "fontain" ],
+		"population": [ "skeletonArcher", "skeletonSwrodsman", "slime" ],
+		"bosses": [ "superSlime, superSkeleton" ],
 		"quest": [ "quest1", "quest2" ],
-		"maxSceneObjects": 10,
-		"minSceneObjects": 4,
-		"sceneObjects": [ "fontain", "trap1", "trap2" ]
+		"traps": [ "trap1", "trap2" ]
 	},
 
 	"1102":
@@ -94,12 +100,15 @@
 		"dungeonLength": 79,
 		"enemyEventsMin": 4,
 		"enemyEventsMax": 15,
+		"treasureEventsMin": 2,
+		"treasureEventsMax": 6,
+		"trapEventsMin": 1,
+		"trapEventsMax": 4,
+		"treasures": [ "fontain" ],
 		"population": [ "skeletonArcher", "skeletonSwrodsman", "superSlime" ],
 		"bosses": [ "superSkeleton" ],
 		"quest": [ "quest1", "quest2" ],
-		"maxSceneObjects": 10,
-		"minSceneObjects": 4,
-		"sceneObjects": [ "fontain", "trap1", "trap2" ]
+		"traps": [ "trap1", "trap2" ]
 	},
 
 	"1103":
@@ -112,11 +121,14 @@
 		"dungeonLength": 92,
 		"enemyEventsMin": 5,
 		"enemyEventsMax": 20,
+		"treasureEventsMin": 2,
+		"treasureEventsMax": 6,
+		"trapEventsMin": 1,
+		"trapEventsMax": 4,
+		"treasures": [ "fontain" ],
 		"population": [ "skeletonArcher", "skeletonSwrodsman", "superSlime" ],
 		"bosses": [ "superSkeleton" ],
 		"quest": [ "quest1", "quest2" ],
-		"maxSceneObjects": 10,
-		"minSceneObjects": 4,
-		"sceneObjects": [ "fontain", "trap1", "trap2" ]
+		"traps": [ "trap1", "trap2" ]
 	}
 }

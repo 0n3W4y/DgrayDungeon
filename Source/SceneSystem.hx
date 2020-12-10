@@ -265,13 +265,20 @@ class SceneSystem
 		var textSprite:Sprite = null;
 
 		var availableQuests:Array<String> = config.quest;
+		var questIndex:Int = Math.floor( Math.random() * availableQuests.length );
+		var quest:Dynamic = config.quest[ questIndex ];
+
 		var minEnemyEvents:Int = config.enemyEventsMin;
 		var maxEnemyEvents:Int = config.enemyEventsMax;
+		var enemyEvents:Int = Math.floor( minEnemyEvents + Math.random()*( maxEnemyEvents - ( minEnemyEvents + 1 )));
 
-		var questIndex:Int = Math.floor( Math.random() * availableQuests.length );
+		var minTreasureEvents:Int = config.treasureEventsMin;
+		var maxTreasureEvents:Int = config.treasureEventsMax;
+		var treasureEvents:Int = Math.floor( minTreasureEvents + Math.random()*( maxTreasureEvents - ( minTreasureEvents + 1 )));
 
-		var enemyEvents:Int = Math.floor( minEnemyEvents + Math.random()*( maxEnemyEvents - minEnemyEvents + 1 ));
-		var quest:Dynamic = config.quest[ questIndex ];
+		var minTrapEvents:Int = config.trapEventsMin;
+		var maxTrapEvents:Int = config.trapEventsMax;
+		var trapEvents:Int = Math.floor( minTrapEvents + Math.random()*( maxTrapEvents - ( minTrapEvents + 1 )));	
 
 
 		var configForScene:BattleScene.BattleSceneConfig =
@@ -284,6 +291,8 @@ class SceneSystem
 			Difficulty: config.difficulty,
 			DungeonLength: config.dungeonLength,
 			EnemyEvents: enemyEvents,
+			TreasureEvents: treasureEvents,
+			TrapEvents: trapEvents,
 			CurrentQuest: quest
 		};
 
